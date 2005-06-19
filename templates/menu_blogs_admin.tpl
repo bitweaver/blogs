@@ -1,0 +1,1 @@
+<ul><li><a class="item" href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=blogs">{tr}Blogs Settings{/tr}</a></li></ul>

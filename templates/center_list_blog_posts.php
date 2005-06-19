@@ -1,0 +1,93 @@
+<?php
+
+global $smarty, $gBlog, $gBitSystem, $categlib, $_REQUEST, $maxRecords, $gQueryUserId, $package_categories;
+$postRecords = ( $module_rows ? $module_rows : $maxRecords );
+
+if (defined("CATEGORIES_PKG_PATH")) {
+  include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
+}
+include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+require_once( USERS_PKG_PATH.'BitUser.php' );
+
+if ($gBitSystem->isPackageActive( 'categories' )) {
+  if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
+    $categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
+  } elseif (isset($_REQUEST['delcategs']) and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
+    $categlib->uncategorize('blogpost',$_REQUEST['post_id']);
+  }
+  $categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
+  $smarty->assign('categs',$categs['data']);
+  $smarty->assign('page','view.php');
+  $choosecateg = str_replace('"',"'",$smarty->fetch('bitpackage:blogs/popup_categs.tpl'));
+  $smarty->assign('choosecateg',$choosecateg);
+}
+
+if ( empty( $_REQUEST["sort_mode"] ) ) {
+	$sort_mode = 'created_desc';
+} else {
+	$sort_mode = $_REQUEST["sort_mode"];
+}
+
+$smarty->assign_by_ref('sort_mode', $sort_mode);
+
+// If offset is set use it if not then use offset =0
+// use the maxRecords php variable to set the limit
+// if sortMode is not set then use last_modified_desc
+if (!isset($_REQUEST["offset"])) {
+	$offset = 0;
+} else {
+	$offset = $_REQUEST["offset"];
+}
+
+if (isset($_REQUEST['page'])) {
+	$page = $_REQUEST['page'];
+	$offset = ($page - 1) * $postRecords;
+}
+
+$smarty->assign_by_ref('offset', $offset);
+
+if (isset($_REQUEST["find"])) {
+	$find = $_REQUEST["find"];
+} else {
+	$find = '';
+}
+$smarty->assign('find', $find);
+
+$smarty->assign('showBlogTitle', 'y');
+
+$listHash['max_records'] = $postRecords;
+$listHash['parse_data'] = TRUE;
+$listHash['load_comments'] = TRUE;
+// Get a list of last changes to the Wiki database
+if ($gQueryUserId) {
+	$listHash['user_id'] = $gQueryUserId;
+} elseif( $_REQUEST['user_id'] ) {
+	$listHash['user_id'] = $_REQUEST['user_id'];
+}
+
+$blogPost = new BitBlogPost();
+$blogPosts = $blogPost->getList( $listHash );
+
+// If there're more records then assign next_offset
+$cant_pages = ceil($blogPosts["cant"] / $postRecords);
+$smarty->assign_by_ref('cant_pages', $cant_pages);
+$smarty->assign('actual_page', 1 + ($offset / $postRecords));
+
+if ($blogPosts["cant"] > ($offset + $postRecords)) {
+	$smarty->assign('next_offset', $offset + $postRecords);
+} else {
+	$smarty->assign('next_offset', -1);
+}
+
+// If offset is > 0 then prev_offset
+if ($offset > 0) {
+	$smarty->assign('prev_offset', $offset - $postRecords);
+} else {
+	$smarty->assign('prev_offset', -1);
+}
+
+$smarty->assign_by_ref('blogPosts', $blogPosts["data"]);
+//print_r($blogPosts["data"]);
+
+
+?>
