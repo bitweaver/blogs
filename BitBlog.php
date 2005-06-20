@@ -40,7 +40,7 @@ class BitBlog extends BitBase {
 
 		$query = "SELECT tb.*, uu.`login` as `user`, uu.`real_name`
 			  FROM `".BIT_DB_PREFIX."tiki_blogs` tb INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = tb.`user_id`)
-			  $mid order by ".$this->convert_sortmode($sort_mode);
+			  $mid order by tb.".$this->convert_sortmode($sort_mode);
 
 		$result = $this->query($query,$bindvars,$maxRecords,$offset);
 
