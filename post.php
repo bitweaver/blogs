@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1 2005/06/19 03:57:42 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.1 2005/06/25 11:11:10 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -16,7 +16,7 @@ $gBitSystem->verifyPackage( 'blogs' );
 // Now check permissions to access this page
 $gBitSystem->verifyPermission( 'bit_p_blog_post' );
 
-$smarty->assign('wysiwyg', 'n');
+include_once( LIBERTY_PKG_PATH.'edit_help_inc.php' );
 
 if (isset($_REQUEST['wysiwyg']) && $_REQUEST['wysiwyg'] == 'y') {
 	$smarty->assign('wysiwyg', 'y');
