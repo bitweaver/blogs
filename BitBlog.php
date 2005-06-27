@@ -1,9 +1,16 @@
 <?php
+/**
+ * @package bitweaver
+ */
+ 
 require_once( BLOGS_PKG_PATH.'BitBlogPost.php');
 require_once( LIBERTY_PKG_PATH.'LibertyComment.php');
 
 define( 'BITBLOG_CONTENT_TYPE_GUID', 'bitblog' );
 
+/**
+ * @package BitBlog
+ */
 class BitBlog extends BitBase {
 	function BitBlog() {
 		BitBase::BitBase();

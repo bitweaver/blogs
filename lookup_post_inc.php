@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package BitBlog
+ */
+
 	global $gContent, $smarty;
 
 	if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {

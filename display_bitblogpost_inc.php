@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package BitBlog
+ */
 
 if (defined("CATEGORIES_PKG_PATH")) {
   include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
