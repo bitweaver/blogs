@@ -1,6 +1,6 @@
 <?php
 /**
- * @package BitBlog
+ * @package blogs
  */
 
 global $gBitSystem, $smarty, $bit_p_blog_admin;

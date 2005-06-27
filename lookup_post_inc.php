@@ -1,6 +1,7 @@
 <?php
 /**
- * @package BitBlog
+ * @package blogs
+ * @subpackage functions
  */
 
 	global $gContent, $smarty;

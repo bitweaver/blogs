@@ -1,5 +1,13 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.php,v 1.1 2005/06/19 03:57:42 bitweaver Exp $
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.php,v 1.1.1.1.2.1 2005/06/27 10:08:44 lsces Exp $
+ * @package blogs
+ * @subpackage modules
+ */
+
+/**
+ * required setup
+ */
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );
 

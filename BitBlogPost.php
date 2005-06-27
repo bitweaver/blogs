@@ -1,34 +1,37 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.1 2005/06/27 00:39:24 lsces Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitBlogPost.php,v 1.1.1.1.2.1 2005/06/27 00:39:24 lsces Exp $
-*
-* Virtual base class (as much as one can have such things in PHP) for all
-* derived tikiwiki classes that require database access.
-*
-* @package bitweaver
-*
-* created 2004/10/20
-*
-* @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
-*
-* @version $Revision: 1.1.1.1.2.1 $ $Date: 2005/06/27 00:39:24 $ $Author: lsces $
-*/
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ *
+ * Virtual base class (as much as one can have such things in PHP) for all
+ * derived tikiwiki classes that require database access.
+ * @package blogs
+ *
+ * created 2004/10/20
+ *
+ * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
+ *
+ * @version $Revision: 1.1.1.1.2.2 $ $Date: 2005/06/27 10:08:40 $ $Author: lsces $
+ */
 
+/**
+ * required setup
+ */
 require_once( LIBERTY_PKG_PATH.'LibertyComment.php');
 require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php');
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 
-/**
- * @package BitBlog
- */
 define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
 
+/**
+ * @package blogs
+ * @subpackage BitBlogPost
+ */
 class BitBlogPost extends LibertyAttachable {
 	var $mPostId;
 	function BitBlogPost( $pPostId=NULL, $pContentId=NULL ) {
