@@ -1,9 +1,16 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.1 2005/06/19 03:57:42 bitweaver Exp $
 /**
-* Params: 
-* - title : if is "title", show the title of the post, else show the date of creation
-*/
+ * Params: 
+ * - title : if is "title", show the title of the post, else show the date of creation
+ *
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.2 2005/06/28 07:45:39 spiderr Exp $
+ * @package blogs
+ * @subpackage modules
+ */
+
+/**
+ * required setup
+ */
 if( !defined( 'MAX_BLOG_PREVIEW_LENGTH' ) ) {
 	define ('MAX_BLOG_PREVIEW_LENGTH', 100);
 }

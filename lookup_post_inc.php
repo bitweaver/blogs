@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package blogs
+ * @subpackage functions
+ */
+
 	global $gContent, $smarty;
 
 	if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {

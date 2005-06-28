@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package blogs
+ */
+
 global $gBitSystem, $smarty, $bit_p_blog_admin;
 $gBitSystem->registerPackage( 'blogs', dirname( __FILE__).'/' );
 

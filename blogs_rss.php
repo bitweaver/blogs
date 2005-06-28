@@ -1,10 +1,17 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.1 2005/06/19 03:57:41 bitweaver Exp $
+/**
+* @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.2 2005/06/28 07:45:39 spiderr Exp $
+* @package blogs
+* @subpackage functions
 
-// Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+* All Rights Reserved. See copyright.txt for details and a complete list of authors.
+* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+*/
 
+/**
+ * required setup
+ */
 require_once( '../bit_setup_inc.php' );
 require_once( KERNEL_PKG_PATH.'BitBase.php' );
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );

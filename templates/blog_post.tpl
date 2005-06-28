@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1 2005/06/19 03:57:42 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.2 2005/06/28 07:45:40 spiderr Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -120,8 +120,10 @@ function confirmDelete(fileName, location) {
 				</tr>
 			</table>
 		{/if}
+
+		<br /><br />
+		{include file="bitpackage:liberty/edit_help_inc.tpl"}
+
 	</div><!-- end .body -->
 </div><!-- end .blogs -->
 {/strip}
-
-{include file="bitpackage:liberty/edit_help.tpl"}
