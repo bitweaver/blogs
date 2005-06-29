@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.1.1.1.2.3 2005/06/29 07:09:08 jht001 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -24,11 +24,16 @@ global $gContent;
 $postId = !empty( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : NULL;
 $conId = !empty( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL;
 
+
+
 $gContent = new BitBlogPost( $postId, $conId );
 if( $gContent->load() ) {
 	include_once( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
 } else {
 	$gBitSystem->fatalError( 'Post could not be found.' );
 }
+
+
+
 
 ?>

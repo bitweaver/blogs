@@ -166,7 +166,25 @@ $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 $smarty->assign('ownsblog', ( $gBitUser->isValid() && $gBitUser->mUserId == $gContent->mInfo["user_id"] ) ? 'y' : 'n' );
 
 if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' ) ) {
+	$comments_at_top_of_page = 'n';
+	  
 	$maxComments = $gBitSystem->getPreference( 'blog_comments_per_page' );
+	if (!empty($_REQUEST["comments_maxComments"])) {
+		$maxComments = $_REQUEST["comments_maxComments"];
+		$comments_at_top_of_page = 'y';
+	}
+	$comments_sort_mode = $gBitSystem->getPreference( 'wiki_comments_default_ordering' );
+	if (!empty($_REQUEST["comments_sort_mode"])) {
+		$comments_sort_mode = $_REQUEST["comments_sort_mode"];
+		$comments_at_top_of_page = 'y';
+	}
+
+	$comments_display_style = 'flat';
+	if (!empty($_REQUEST["comments_style"])) {
+		$comments_display_style = $_REQUEST["comments_style"];
+		$comments_at_top_of_page = 'y';
+	}
+
 	$comments_return_url = $PHP_SELF."?post_id=".$gContent->mPostId;
 	$commentsParentId = $gContent->mInfo['content_id'];
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
