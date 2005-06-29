@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1 2005/06/19 03:57:42 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.1 2005/06/29 18:25:10 drewslater Exp $ *}
 <div class="display blogs">
 <div class="floaticon">
 	{if $gBitUser->hasPermission( 'bit_p_blog_post' )}
@@ -8,7 +8,7 @@
 	{/if}
 
 	{if $gBitSystemPrefs.package_rss eq 'y' && $rss_blog eq 'y'}
-		<a title="{tr}RSS feed{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}blog_rss.php?blog_id={$blog_id}">{biticon ipackage="rss" iname="rss" iexplain="RSS feed"}</a>
+		<a title="{tr}RSS feed{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}blogs_rss.php?blog_id={$blog_id}">{biticon ipackage="rss" iname="rss" iexplain="RSS feed"}</a>
 	{/if}
 
 	{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
