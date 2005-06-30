@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.1.1.1.2.3 2005/06/30 18:14:37 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -68,8 +68,6 @@ if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
 $smarty->assign('ownsblog', $gContent->isBlogOwner() );
 
 if ($feature_blogposts_comments == 'y') {
-	$maxComments = $gBitSystem->getPreference( 'blog_comments_per_page' );
-	$comments_default_ordering = $blog_comments_default_ordering;
 	$comments_vars = array(
 		'post_id',
 		'offset',

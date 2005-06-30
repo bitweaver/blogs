@@ -166,7 +166,6 @@ $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 $smarty->assign('ownsblog', ( $gBitUser->isValid() && $gBitUser->mUserId == $gContent->mInfo["user_id"] ) ? 'y' : 'n' );
 
 if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' ) ) {
-	$maxComments = $gBitSystem->getPreference( 'blog_comments_per_page' );
 	$comments_return_url = $PHP_SELF."?post_id=".$gContent->mPostId;
 	$commentsParentId = $gContent->mInfo['content_id'];
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );

@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.3 2005/06/30 18:14:37 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.3 2005/06/30 18:14:37 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.2 $ $Date: 2005/06/27 10:08:40 $ $Author: lsces $
+ * @version $Revision: 1.1.1.1.2.3 $ $Date: 2005/06/30 18:14:37 $ $Author: squareing $
  */
 
 /**
@@ -75,7 +75,7 @@ class BitBlogPost extends LibertyAttachable {
 					$comment = new LibertyComment();
 					$this->mInfo['num_comments'] = $comment->getNumComments($this->mInfo['content_id']);
 					// Get the comments associated with this post
-					$this->mInfo['comments'] = $comment->getComments($this->mInfo['content_id'], $gBitSystem->getPreference( 'blog_comments_per_page', 10 ) );
+					$this->mInfo['comments'] = $comment->getComments($this->mInfo['content_id'], $gBitSystem->getPreference( 'comments_per_page', 10 ) );
 				}
 
 				if (!$this->mInfo['trackbacks_from'] || $this->mInfo['trackbacks_from']===null)
@@ -381,7 +381,7 @@ class BitBlogPost extends LibertyAttachable {
 				$res['num_comments'] = $comment->getNumComments($res['content_id']);
 				if( $pListHash['load_comments'] ) {
 					// Get the comments associated with this post
-					$res['comments'] = $comment->getComments($res['content_id'], $gBitSystem->getPreference( 'blog_comments_per_page', 10 ) );
+					$res['comments'] = $comment->getComments($res['content_id'], $gBitSystem->getPreference( 'comments_per_page', 10 ) );
 				}
 			} else {
 				$res['comments'] = NULL;

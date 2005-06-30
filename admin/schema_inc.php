@@ -92,8 +92,6 @@ $gBitInstaller->registerUserPermissions( BLOGS_PKG_NAME, array(
 
 // ### Default Preferences
 $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
-	array( BLOGS_PKG_NAME, 'blog_comments_default_ordering','points_desc'),
-	array( BLOGS_PKG_NAME, 'blog_comments_per_page','10'),
 	array( BLOGS_PKG_NAME, 'blog_list_activity','y'),
 	array( BLOGS_PKG_NAME, 'blog_list_created','y'),
 	array( BLOGS_PKG_NAME, 'blog_list_description','y'),

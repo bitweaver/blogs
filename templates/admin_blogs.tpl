@@ -32,7 +32,7 @@
 						{formlabel label=`$output.label` for=$item}
 						{forminput}
 							{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
-							{formhelp note=`$output.help` page=`$output.page`}
+							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>
 				{/foreach}
@@ -52,13 +52,14 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="In blog listing show user as" for="blog_list_user_as"}
+					{formlabel label="Display user as" for="blog_list_user_as"}
 					{forminput}
 						<select name="blog_list_user" id="blog_list_user_as">
 							<option value="text" {if $blog_list_user eq 'text'}selected="selected"{/if}>{tr}Plain text{/tr}</option>
 							<option value="link" {if $blog_list_user eq 'link'}selected="selected"{/if}>{tr}Link to user information{/tr}</option>
 							<option value="avatar" {if $blog_list_user eq 'avatar'}selected="selected"{/if}>{tr}User avatar{/tr}</option>
 						</select>
+						{formhelp note="Decide how blog post author information is displayed."}
 					{/forminput}
 				</div>
 
@@ -99,46 +100,13 @@
 						{formlabel label=`$output.label` for=$item}
 						{forminput}
 							{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
-							{formhelp note=`$output.help` page=`$output.page`}
+							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>
 				{/foreach}
 
 				<div class="row submit">
 					<input type="submit" name="listTabSubmit" value="{tr}Change preferences{/tr}" />
-				</div>
-			{/legend}
-		{/jstab}
-
-		{jstab title="Blog Comments Settings"}
-			{legend legend="Blog Comments Settings"}
-				<div class="row">
-					{formlabel label="Post level comments" for="feature_blogposts_comments"}
-					{forminput}
-						<input type="checkbox" name="feature_blogposts_comments" id="feature_blogposts_comments" {if $gBitSystemPrefs.feature_blogposts_comments eq 'y'}checked="checked"{/if} />
-					{/forminput}
-				</div>
-
-				<div class="row">
-					{formlabel label="Default number of comments per page" for="blog_comments_per_page"}
-					{forminput}
-						<input size="5" type="text" name="blog_comments_per_page" id="blog_comments_per_page" value="{$blog_comments_per_page|escape}" />
-					{/forminput}
-				</div>
-
-				<div class="row">
-					{formlabel label="Comments default ordering" for="blog_comments_default_ordering"}
-					{forminput}
-						<select name="blog_comments_default_ordering" id="blog_comments_default_ordering">
-							<option value="comment_date_desc" {if $blog_comments_default_ordering eq 'comment_date_desc'}selected="selected"{/if}>{tr}Newest first{/tr}</option>
-							<option value="comment_date_asc" {if $blog_comments_default_ordering eq 'comment_date_asc'}selected="selected"{/if}>{tr}Oldest first{/tr}</option>
-							<option value="points_desc" {if $blog_comments_default_ordering eq 'points_desc'}selected="selected"{/if}>{tr}Points{/tr}</option>
-						</select>
-					{/forminput}
-				</div>
-
-				<div class="row submit">
-					<input type="submit" name="commentTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}
