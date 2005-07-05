@@ -43,7 +43,7 @@ global $gBitInstaller;
 $gBitInstaller->makePackageHomeable(BLOGS_PKG_NAME);
 
 foreach( array_keys( $tables ) AS $tableName ) {
-	$gBitInstaller->registerSchemaTable( BLOGS_PKG_DIR, $tableName, $tables[$tableName] );
+	$gBitInstaller->registerSchemaTable( BLOGS_PKG_NAME, $tableName, $tables[$tableName] );
 }
 
 $gBitInstaller->registerPackageInfo( BLOGS_PKG_NAME, array(
@@ -63,13 +63,13 @@ $indices = array (
 );
 // TODO - SPIDERR - following seems to cause time _decrease_ cause bigint on postgres. need more investigation
 //	'tiki_blog_posts_created_idx' => array( 'table' => 'tiki_blog_posts', 'cols' => 'created', 'opts' => NULL ),
-$gBitInstaller->registerSchemaIndexes( BLOGS_PKG_DIR, $indices );
+$gBitInstaller->registerSchemaIndexes( BLOGS_PKG_NAME, $indices );
 
 // ### Sequences
 $sequences = array (
 	'tiki_blog_posts_post_id_seq' => array( 'start' => 1 ) 
 );
-$gBitInstaller->registerSchemaSequences( BLOGS_PKG_DIR, $sequences );
+$gBitInstaller->registerSchemaSequences( BLOGS_PKG_NAME, $sequences );
 
 // ### Default MenuOptions
 $gBitInstaller->registerMenuOptions( BLOGS_PKG_NAME, array (
