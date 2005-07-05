@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.1.1.1.2.1 2005/06/30 18:14:38 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.1.1.1.2.2 2005/07/05 09:15:05 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -53,7 +53,7 @@ $formBlogFeatures = array(
 		'label' => 'Rankings',
 		'note' => 'Enable the use of rankings based on page hits.',
 	),
-	"feature_blog_comments" => array(
+	"feature_blogposts_comments" => array(
 		'label' => 'Blog Post Comments',
 		'note' => 'Allow the addition of comments to blog posts.',
 	),
