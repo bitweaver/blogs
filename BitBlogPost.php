@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.3 2005/06/30 18:14:37 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.4 2005/07/09 02:51:39 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.3 2005/06/30 18:14:37 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.4 2005/07/09 02:51:39 jht001 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.3 $ $Date: 2005/06/30 18:14:37 $ $Author: squareing $
+ * @version $Revision: 1.1.1.1.2.4 $ $Date: 2005/07/09 02:51:39 $ $Author: jht001 $
  */
 
 /**
@@ -236,21 +236,6 @@ class BitBlogPost extends LibertyAttachable {
 	}
 
 	function getDisplayUrl( $pPostId=NULL ) {
-		if( empty( $pPostId ) ) {
-			$pPostId = $this->mPostId;
-		}
-		global $gBitSystem;
-		$ret = NULL;
-		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
-			$ret = BLOGS_PKG_URL."post/$pPostId";
-		} else {
-			$ret = BLOGS_PKG_URL.'view_post.php?post_id='.$pPostId;
-		}
-		return $ret;
-	}
-
-
-	function getDisplayLink( $pPostId=NULL, $pMixed=NULL ) {
 		$ret = NULL;
 		if( empty( $pPostId ) ) {
 			$pPostId = $this->mPostId;
@@ -264,6 +249,11 @@ class BitBlogPost extends LibertyAttachable {
 			}
 		}
 		return $ret;
+	}
+
+
+	function getDisplayLink( $pPostId=NULL, $pMixed=NULL ) {
+		return BitBlogPost::getDisplayUrl( $pPostId );
 	}
 
     /**
