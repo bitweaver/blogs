@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.2 2005/07/04 20:17:28 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.3 2005/07/15 21:26:20 squareing Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -50,7 +50,7 @@ function confirmDelete(fileName, location) {
 							<div class="row">
 								{formlabel label="Title" for="title"}
 								{forminput}
-									<input type="text" size="60" name="title" id="title" value="{$title|escape}" />
+									<input type="text" size="50" name="title" id="title" value="{$title|escape}" />
 								{/forminput}
 							</div>
 						{/if}
