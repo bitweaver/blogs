@@ -1,6 +1,6 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.tpl,v 1.1 2005/06/19 03:57:42 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.tpl,v 1.1.1.1.2.1 2005/07/15 12:00:56 squareing Exp $ *}
 {strip}
-{if $gBitSystemPrefs.package_blogs eq 'y'}
+{if $gBitSystem->isPackageActive( 'blogs' )}
 	{if $nonums eq 'y'}
 		{eval var="{tr}Most `$module_rows` visited blogs{/tr}" assign="tpl_module_title"}
 	{else}

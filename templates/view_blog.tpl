@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.2 2005/07/04 21:53:49 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.3 2005/07/15 12:00:56 squareing Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -8,7 +8,7 @@
 			{/if}
 		{/if}
 
-		{if $gBitSystemPrefs.package_rss eq 'y' && $rss_blog eq 'y'}
+		{if $gBitSystem->isPackageActive( 'rss' ) && $rss_blog eq 'y'}
 			<a title="{tr}RSS feed{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}blogs_rss.php?blog_id={$blog_id}">{biticon ipackage="rss" iname="rss" iexplain="RSS feed"}</a>
 		{/if}
 
@@ -16,7 +16,7 @@
 			<a title="{tr}Edit blog{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}edit.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="config" iexplain="edit"}</a>
 		{/if}
 		
-		{if $gBitUser->isRegistered() and $gBitSystemPrefs.feature_user_watches eq 'y'}
+		{if $gBitUser->isRegistered() and $gBitSystem->isFeatureActive( 'feature_user_watches' )}
 			{if $user_watching_blog eq 'n'}
 				<a title="{tr}monitor this blog{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}view.php?blog_id={$blog_id}&amp;watch_event=blog_post&amp;watch_object={$blog_id}&amp;watch_action=add">{biticon ipackage="users" iname="watch" iexplain="monitor this blog"}</a>
 			{else}

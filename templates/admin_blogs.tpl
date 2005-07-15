@@ -63,7 +63,7 @@
 					{/forminput}
 				</div>
 
-				{if $gBitSystemPrefs.package_categories eq 'y'}
+				{if $gBitSystem->isPackageActive( 'categories' )}
 				<div class="row">
 					{formlabel label="Use a category for posts" for="blog_categ"}
 					{forminput}

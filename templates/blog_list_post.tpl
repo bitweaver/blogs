@@ -7,7 +7,7 @@
 >
 	{if $gBitUser->hasPermission( 'bit_p_view_tabs_and_tools' )}
 		<div class="floaticon">
-			{if $gBitSystemPrefs.package_rss eq 'y' && $gBitSystemPrefs.rss_blogs eq 'y'}
+			{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
 				<a href="{$gBitLoc.BLOGS_PKG_URL}blogs_rss.php?blog_id={$blogPosts[ix].blog_id}">{biticon ipackage=rss iname=rss iexplain="rss feed"}</a>
 			{/if}
 			{if ($blogPosts[ix].ownsblog eq 'y') or ($gBitUser->mUserId and $blogPosts[ix].user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
@@ -16,7 +16,7 @@
 			{/if}
 
 			{**====== NOTEPAD PACKAGE CHECK IS BROKEN
-			{if $gBitUser->mUserId and $gBitSystemPrefs.package_notepad eq 'y' and $gBitUser->hasPermission( 'bit_p_notepad' )}
+			{if $gBitUser->mUserId and $gBitSystem->isPackageActive( 'notepad' ) and $gBitUser->hasPermission( 'bit_p_notepad' )}
 				<a title="{tr}Save to notepad{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}view.php?blog_id={$blogPosts[ix].blog_id}&amp;savenotepad={$blogPosts[ix].post_id}">{biticon ipackage=liberty iname="save" iexplain="save"}</a>
 			{/if}
 			========= NOTEPAD PACKAGE CHECK IS BROKEN **}
@@ -63,7 +63,7 @@
 
 		{if $blogPosts[ix].trackbacks_from_count}({tr}referenced by{/tr}: {$blogPosts[ix].trackbacks_from_count} {tr}posts{/tr} / {tr}references{/tr}: {$blogPosts[ix].trackbacks_to_count} {tr}posts{/tr}){/if}
 
-		{if $blogPosts[ix].allow_comments eq 'y' and $gBitSystemPrefs.feature_blogposts_comments eq 'y'}
+		{if $blogPosts[ix].allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}
 			&nbsp;{$blogPosts[ix].num_comments} {if $blogPosts[ix].num_comments == 1} {tr}comment{/tr} {else} {tr}comments{/tr}{/if} &nbsp;|&nbsp;
 			 <a href="{$gBitLoc.BLOGS_PKG_URL}view_post.php?find={$find}&amp;blog_id={$blogPosts[ix].blog_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;post_id={$blogPosts[ix].post_id}&post_comment_request=1">{if $blogPosts[ix].num_comments > 0}{tr}view comments{/tr}{else}{tr}add comment{/tr}{/if}</a>
 		{/if}
