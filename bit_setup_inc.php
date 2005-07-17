@@ -13,8 +13,6 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
 
     $smarty->assign('home_blog', 0);
-    $smarty->assign('blog_comments_default_ordering', 'points_desc');
-    $smarty->assign('blog_comments_per_page', 10);
     $smarty->assign('blog_spellcheck', 'n');
     $smarty->assign('blog_list_order', 'created_desc');
     $smarty->assign('blog_list_title', 'y');

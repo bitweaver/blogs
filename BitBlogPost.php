@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.2 2005/06/28 07:45:39 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.3 2005/07/17 17:35:56 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.2 2005/06/28 07:45:39 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.3 2005/07/17 17:35:56 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.2 $ $Date: 2005/06/28 07:45:39 $ $Author: spiderr $
+ * @version $Revision: 1.3 $ $Date: 2005/07/17 17:35:56 $ $Author: squareing $
  */
 
 /**
@@ -75,7 +75,7 @@ class BitBlogPost extends LibertyAttachable {
 					$comment = new LibertyComment();
 					$this->mInfo['num_comments'] = $comment->getNumComments($this->mInfo['content_id']);
 					// Get the comments associated with this post
-					$this->mInfo['comments'] = $comment->getComments($this->mInfo['content_id'], $gBitSystem->getPreference( 'blog_comments_per_page', 10 ) );
+					$this->mInfo['comments'] = $comment->getComments($this->mInfo['content_id'], $gBitSystem->getPreference( 'comments_per_page', 10 ) );
 				}
 
 				if (!$this->mInfo['trackbacks_from'] || $this->mInfo['trackbacks_from']===null)
@@ -236,21 +236,6 @@ class BitBlogPost extends LibertyAttachable {
 	}
 
 	function getDisplayUrl( $pPostId=NULL ) {
-		if( empty( $pPostId ) ) {
-			$pPostId = $this->mPostId;
-		}
-		global $gBitSystem;
-		$ret = NULL;
-		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
-			$ret = BLOGS_PKG_URL."post/$pPostId";
-		} else {
-			$ret = BLOGS_PKG_URL.'view_post.php?post_id='.$pPostId;
-		}
-		return $ret;
-	}
-
-
-	function getDisplayLink( $pPostId=NULL, $pMixed=NULL ) {
 		$ret = NULL;
 		if( empty( $pPostId ) ) {
 			$pPostId = $this->mPostId;
@@ -264,6 +249,11 @@ class BitBlogPost extends LibertyAttachable {
 			}
 		}
 		return $ret;
+	}
+
+
+	function getDisplayLink( $pPostId=NULL, $pMixed=NULL ) {
+		return BitBlogPost::getDisplayUrl( $pPostId );
 	}
 
     /**
@@ -381,7 +371,7 @@ class BitBlogPost extends LibertyAttachable {
 				$res['num_comments'] = $comment->getNumComments($res['content_id']);
 				if( $pListHash['load_comments'] ) {
 					// Get the comments associated with this post
-					$res['comments'] = $comment->getComments($res['content_id'], $gBitSystem->getPreference( 'blog_comments_per_page', 10 ) );
+					$res['comments'] = $comment->getComments($res['content_id'], $gBitSystem->getPreference( 'comments_per_page', 10 ) );
 				}
 			} else {
 				$res['comments'] = NULL;

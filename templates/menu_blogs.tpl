@@ -7,7 +7,7 @@
 		<li><a class="item" href="{$gBitLoc.BLOGS_PKG_URL}edit.php">{tr}Create a Blog{/tr}</a></li>
 	{/if}{if $gBitUser->hasPermission( 'bit_p_blog_post' )}
 		<li><a class="item" href="{$gBitLoc.BLOGS_PKG_URL}post.php">{tr}Post to a Blog{/tr}</a></li>
-	{/if}{if $gBitSystemPrefs.feature_blog_rankings eq 'y' and $gBitUser->hasPermission( 'bit_p_read_blog' )}
+	{/if}{if $gBitSystem->isFeatureActive( 'feature_blog_rankings' ) and $gBitUser->hasPermission( 'bit_p_read_blog' )}
 		<li><a class="item" href="{$gBitLoc.BLOGS_PKG_URL}rankings.php">{tr}Blog Rankings{/tr}</a></li>
 	{/if}
 </ul>

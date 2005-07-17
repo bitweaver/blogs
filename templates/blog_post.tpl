@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.2 2005/06/28 07:45:40 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.3 2005/07/17 17:36:01 squareing Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -17,7 +17,10 @@ function confirmDelete(fileName, location) {
 
 	<div class="body">
 		{if $preview eq 'y'}
-		  {include file="bitpackage:blogs/preview_post.tpl"}
+			<h2>Preview {$title}</h2>
+			<div class="preview">
+				{include file="bitpackage:blogs/view_blog_post.tpl"}
+			</div>
 		{/if}
 
 		{form enctype="multipart/form-data" name="blogpost" id="editpageform"}
@@ -47,7 +50,7 @@ function confirmDelete(fileName, location) {
 							<div class="row">
 								{formlabel label="Title" for="title"}
 								{forminput}
-									<input type="text" size="60" name="title" id="title" value="{$title|escape}" />
+									<input type="text" size="50" name="title" id="title" value="{$title|escape}" />
 								{/forminput}
 							</div>
 						{/if}

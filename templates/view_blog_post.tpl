@@ -59,7 +59,7 @@
 	<div class="footer">
 	  <a href="{$gBitLoc.BLOGS_PKG_URL}view_post.php?post_id={$post_id}">{tr}Permalink{/tr}</a>
 	  {tr}referenced by{/tr} {$post_info.trackbacks_from_count} {tr}posts{/tr} | {tr}references{/tr} {$post_info.trackbacks_to_count} {tr}posts{/tr}
-	  {if $post_info.allow_comments eq 'y' and $gBitSystemPrefs.feature_blogposts_comments eq 'y'}
+	  {if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}
 	    | {$post_info.num_comments} {tr}comments{/tr}
 
 	  {/if}
@@ -99,7 +99,7 @@
 		{/if}
 </div> {* end .blog *}
 
-{if $post_info.allow_comments eq 'y' and $gBitSystemPrefs.feature_blogposts_comments eq 'y'}
+{if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}
 {if $gBitUser->hasPermission( 'bit_p_read_comments' )}
 
 {include file="bitpackage:liberty/comments.tpl"}

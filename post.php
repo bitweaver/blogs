@@ -1,7 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.2 2005/06/28 07:45:39 spiderr Exp $
-
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.3 2005/07/17 17:35:56 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -127,8 +126,6 @@ if( isset($_REQUEST["post_id"]) && $_REQUEST["post_id"] > 0 ) {
 	$smarty->assign('trackbacks_to', NULL);
 }
 
-$smarty->assign('preview', 'n');
-
 if (isset($_REQUEST["preview"])) {
 	$data = $_REQUEST['edit'];
 	$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
@@ -143,14 +140,19 @@ if (isset($_REQUEST["preview"])) {
 		}
 	}
 
-	if (empty($data))
-		$data = '';
-
+	// used by the preview page
+	$post_info_blog = array($gBlog->get_blog($_REQUEST['blog_id']));
+	$post_info = array(
+		'title' => isset( $_REQUEST["title"] ) ? $_REQUEST['title'] : '',
+		'blogtitle' => isset( $post_info_blog[0]["title"] ) ? $post_info_blog[0]['title'] : '',
+		'use_title' => 'y',
+		'created' => time(),
+	);
+	$smarty->assign('post_info', $post_info);
 	$smarty->assign('data', $data);
 	$smarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
 	$smarty->assign('parsed_data', $parsed_data);
 	$smarty->assign('preview', 'y');
-
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
 	$smarty->assign('individual', 'n');
 

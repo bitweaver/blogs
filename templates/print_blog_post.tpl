@@ -55,7 +55,7 @@ a:hover { background-color : #deceae;  }
 <tr><td>
 <a href="{$gBitLoc.BLOGS_PKG_URL}view_post.php?blog_id={$post_info.blog_id}&post_id={$post_info.post_id}">{tr}Permalink{/tr}</a>
 ({tr}referenced by{/tr}: {$post_info.trackbacks_from_count} {tr}posts{/tr} {tr}references{/tr}: {$post_info.trackbacks_to_count} {tr}posts{/tr})
-{if $post_info.allow_comments eq 'y' and $gBitSystemPrefs.feature_blogposts_comments eq 'y'}
+{if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}
 {$post_info.num_comments} {tr}comments{/tr}
 &nbsp;<a href="{$gBitLoc.BLOGS_PKG_URL}view_post.php?find={$find}&amp;blog_id={$post_info.blog_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;post_id={$post_info.post_id}">{tr}view comments{/tr}</a>
 {/if}

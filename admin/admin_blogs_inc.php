@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.1 2005/06/19 03:57:42 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.2 2005/07/17 17:35:58 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -11,7 +11,7 @@ if (isset($_REQUEST["blogset"]) && isset($_REQUEST["homeBlog"])) {
 
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
 if (defined("CATEGORIES_PKG_PATH")  and $gBitSystem->isPackageActive( 'categories' )) {
-  include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
+	include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 	$categs = $categlib->get_all_categories();
 	$smarty->assign('categs',$categs);
 }
@@ -19,8 +19,6 @@ if (defined("CATEGORIES_PKG_PATH")  and $gBitSystem->isPackageActive( 'categorie
 $formBlogLists = array(
 	"blog_list_title" => array(
 		'label' => 'Title',
-		'note' => '',
-		'page' => '',
 	),
 	"blog_list_description" => array(
 		'label' => 'Description',
@@ -32,16 +30,20 @@ $formBlogLists = array(
 		'label' => 'Last modification time',
 	),
 	"blog_list_user" => array(
-		'label' => 'User',
+		'label' => 'Creator',
+		'note' => 'The creator of a particular blog.',
 	),
 	"blog_list_posts" => array(
 		'label' => 'Posts',
+		'note' => 'Number of posts submitted to any given blog.',
 	),
 	"blog_list_visits" => array(
 		'label' => 'Visits',
+		'note' => 'Number of times a given blog has been visited.',
 	),
 	"blog_list_activity" => array(
 		'label' => 'Activity',
+		'note' => 'This number is an indication of how active a given blog is. The number is calculated based on god knows what...',
 	),
 );
 $smarty->assign( 'formBlogLists',$formBlogLists );
@@ -49,6 +51,11 @@ $smarty->assign( 'formBlogLists',$formBlogLists );
 $formBlogFeatures = array(
 	"feature_blog_rankings" => array(
 		'label' => 'Rankings',
+		'note' => 'Enable the use of rankings based on page hits.',
+	),
+	"feature_blogposts_comments" => array(
+		'label' => 'Blog Post Comments',
+		'note' => 'Allow the addition of comments to blog posts.',
 	),
 	"blog_spellcheck" => array(
 		'label' => 'Spellchecking',
@@ -82,20 +89,7 @@ if( $processForm ) {
 		$gBitSystem->storePreference("blog_parent_categ", $_REQUEST["blog_parent_categ"]);
 		$smarty->assign('blog_parent_categ', $_REQUEST['blog_parent_categ']);
 	}
-
-	if (isset($_REQUEST["blog_comments_per_page"])) {
-		$gBitSystem->storePreference("blog_comments_per_page", $_REQUEST["blog_comments_per_page"]);
-
-		$smarty->assign('blog_comments_per_page', $_REQUEST["blog_comments_per_page"]);
-	}
-
-	if (isset($_REQUEST["blog_comments_default_ordering"])) {
-		$gBitSystem->storePreference("blog_comments_default_ordering", $_REQUEST["blog_comments_default_ordering"]);
-
-		$smarty->assign('blog_comments_default_ordering', $_REQUEST["blog_comments_default_ordering"]);
-	}
 }
-
 
 $blogs = $gBlog->list_blogs(0, -1, 'created_desc', '');
 $smarty->assign_by_ref('blogs', $blogs["data"]);

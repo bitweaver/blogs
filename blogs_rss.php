@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.2 2005/06/28 07:45:39 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.3 2005/07/17 17:35:56 squareing Exp $
 * @package blogs
 * @subpackage functions
 
@@ -32,7 +32,7 @@ if (!$gBitUser->hasPermission( 'bit_p_read_blog' )) {
 
 if (!empty($_REQUEST['blog_id'])) {
 	$blogInfo = $gBlog->get_blog($_REQUEST['blog_id']);
-	$title = $gBitSystem->getPreference( 'title_rss_blog', "Tiki RSS feed for " ).$blogInfo['title'];
+	$title = $gBitSystem->getPreference( 'title_rss_blog', "RSS feed for " ).$blogInfo['title'];
 	$desc = $gBitSystem->getPreference( 'desc_rss_blog', "Last modifications to the Blog: " ).$blogInfo['description'];
 } else {	
 	$title = "Blogs RSS feed for ".$gBitSystem->getPreference("siteTitle","Tiki");

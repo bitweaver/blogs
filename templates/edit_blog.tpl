@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.1 2005/06/19 03:57:42 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.2 2005/07/17 17:36:01 squareing Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -92,7 +92,7 @@
 					{/legend}
 				{/jstab}
 
-				{if $gBitSystemPrefs.package_categories eq 'y'}
+				{if $gBitSystem->isPackageActive( 'categories' )}
 					{jstab title="Categorize"}
 						{legend legend="Categorize"}
 							{include file="bitpackage:categories/categorize.tpl"}
