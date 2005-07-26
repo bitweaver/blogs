@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.3 2005/07/26 15:50:01 drewslater Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -28,10 +28,10 @@ if (isset($_REQUEST["blog_id"])) {
 	$blog_id = 0;
 }
 
-$smarty->assign('individual', 'n');
+$gBitSmarty->assign('individual', 'n');
 
 if ($gBitUser->object_has_one_permission($blog_id, 'blog')) {
-	$smarty->assign('individual', 'y');
+	$gBitSmarty->assign('individual', 'y');
 
 	if (!$gBitUser->isAdmin()) {
 		// Now get all the permissions that are set for this content type
@@ -39,33 +39,33 @@ if ($gBitUser->object_has_one_permission($blog_id, 'blog')) {
 		foreach( array_keys( $perms ) as $permName ) {
 			if ($gBitUser->object_has_permission( $user, $_REQUEST["blog_id"], 'blog', $permName ) ) {
 				$$permName = 'y';
-				$smarty->assign( $permName, 'y');
+				$gBitSmarty->assign( $permName, 'y');
 			} else {
 				$$permName = 'n';
-				$smarty->assign( $permName, 'n');
+				$gBitSmarty->assign( $permName, 'n');
 			}
 		}
 	}
 }
 
-$smarty->assign('blog_id', $blog_id);
-$smarty->assign('title', '');
-$smarty->assign('description', '');
-$smarty->assign('public', 'n');
-$smarty->assign('use_find', 'y');
-$smarty->assign('use_title', 'y');
-$smarty->assign('allow_comments', 'y');
-$smarty->assign('max_posts', 10);
+$gBitSmarty->assign('blog_id', $blog_id);
+$gBitSmarty->assign('title', '');
+$gBitSmarty->assign('description', '');
+$gBitSmarty->assign('public', 'n');
+$gBitSmarty->assign('use_find', 'y');
+$gBitSmarty->assign('use_title', 'y');
+$gBitSmarty->assign('allow_comments', 'y');
+$gBitSmarty->assign('max_posts', 10);
 
 
 if (!isset($created)) {
 	$created=time();
-	$smarty->assign('created', $created);
+	$gBitSmarty->assign('created', $created);
 }
 
 if (!isset($last_modified)) {
 	$last_modified=time();
-	$smarty->assign('last_modified', $last_modified);
+	$gBitSmarty->assign('last_modified', $last_modified);
 }
 
 if (isset($_REQUEST["heading"])and $bit_p_edit_templates) {
@@ -74,7 +74,7 @@ if (isset($_REQUEST["heading"])and $bit_p_edit_templates) {
 	$heading = '';
 }
 
-$smarty->assign_by_ref('heading', $heading);
+$gBitSmarty->assign_by_ref('heading', $heading);
 
 if (isset($_REQUEST["blog_id"]) && $_REQUEST["blog_id"] > 0) {
 	// Check permission
@@ -84,36 +84,36 @@ if (isset($_REQUEST["blog_id"]) && $_REQUEST["blog_id"] > 0) {
 		$gBitSystem->verifyPermission( 'bit_p_blog_admin', "Permission denied you cannot edit this blog" );
 	}
 
-	$smarty->assign('title', $data["title"]);
-	$smarty->assign('description', $data["description"]);
-	$smarty->assign('public', $data["public"]);
-	$smarty->assign('use_title', $data["use_title"]);
-	$smarty->assign('allow_comments', $data["allow_comments"]);
-	$smarty->assign('use_find', $data["use_find"]);
-	$smarty->assign('max_posts', $data["max_posts"]);
-	$smarty->assign('heading', $data["heading"]);
+	$gBitSmarty->assign('title', $data["title"]);
+	$gBitSmarty->assign('description', $data["description"]);
+	$gBitSmarty->assign('public', $data["public"]);
+	$gBitSmarty->assign('use_title', $data["use_title"]);
+	$gBitSmarty->assign('allow_comments', $data["allow_comments"]);
+	$gBitSmarty->assign('use_find', $data["use_find"]);
+	$gBitSmarty->assign('max_posts', $data["max_posts"]);
+	$gBitSmarty->assign('heading', $data["heading"]);
 } else {
 	$data = NULL;
 }
 
 // Now check permissions to access this page
 if (!$gBitUser->hasPermission( 'bit_p_create_blogs' ) && ($gBitUser->mUserId != $data['user_id'] || !$gBitUser->mUserId) ) {
-	$smarty->assign('msg', tra("Permission denied you cannot create or edit blogs"));
+	$gBitSmarty->assign('msg', tra("Permission denied you cannot create or edit blogs"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
 
 if (isset($_REQUEST['preview'])) {
-	$smarty->assign('title', $_REQUEST["title"]);
+	$gBitSmarty->assign('title', $_REQUEST["title"]);
 
-	$smarty->assign('description', $_REQUEST["description"]);
-	$smarty->assign('public', isset($_REQUEST["public"]) ? 'y' : 'n');
-	$smarty->assign('use_find', isset($_REQUEST["use_find"]) ? 'y' : 'n');
-	$smarty->assign('use_title', isset($_REQUEST["use_title"]) ? 'y' : 'n');
-	$smarty->assign('allow_comments', isset($_REQUEST["allow_comments"]) ? 'y' : 'n');
-	$smarty->assign('max_posts', $_REQUEST["max_posts"]);
-	$smarty->assign('heading', $heading);
+	$gBitSmarty->assign('description', $_REQUEST["description"]);
+	$gBitSmarty->assign('public', isset($_REQUEST["public"]) ? 'y' : 'n');
+	$gBitSmarty->assign('use_find', isset($_REQUEST["use_find"]) ? 'y' : 'n');
+	$gBitSmarty->assign('use_title', isset($_REQUEST["use_title"]) ? 'y' : 'n');
+	$gBitSmarty->assign('allow_comments', isset($_REQUEST["allow_comments"]) ? 'y' : 'n');
+	$gBitSmarty->assign('max_posts', $_REQUEST["max_posts"]);
+	$gBitSmarty->assign('heading', $heading);
 }
 
 if (isset($_REQUEST['save_blog'])) {
@@ -157,7 +157,7 @@ if ($gBitSystem->isPackageActive( 'categories' )) {
 
 $gBitSystem->setBrowserTitle("Edit Blog Post - ".$data['title']);
 // Display the Index Template
-$smarty->assign('show_page_bar', 'n');
+$gBitSmarty->assign('show_page_bar', 'n');
 $gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl');
 
 ?>

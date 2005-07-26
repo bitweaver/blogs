@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_modified_blogs.php,v 1.1.1.1.2.1 2005/06/27 10:08:44 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_modified_blogs.php,v 1.1.1.1.2.2 2005/07/26 15:50:02 drewslater Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -15,5 +15,5 @@ global $gBlog, $gQueryUserId, $module_rows;
 
 $ranking = $gBlog->list_blogs(0, $module_rows, 'last_modified_desc', '', $gQueryUserId );
 
-$smarty->assign('modLastModifiedBlogs', $ranking["data"]);
+$gBitSmarty->assign('modLastModifiedBlogs', $ranking["data"]);
 ?>

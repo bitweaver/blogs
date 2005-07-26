@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.1.1.1.2.3 2005/06/30 18:14:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.1.1.1.2.4 2005/07/26 15:50:01 drewslater Exp $
 
  * @package blogs
  * @subpackage functions
@@ -24,21 +24,21 @@ if (!isset($_REQUEST["post_id"])) {
 }
 
 include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
-$smarty->assign('post_info', $gContent->mInfo );
+$gBitSmarty->assign('post_info', $gContent->mInfo );
 
 //Build absolute URI for this
 $parts = parse_url($_SERVER['REQUEST_URI']);
 $uri = httpPrefix(). $parts['path'] . '?blog_id=' . $gContent->mInfo['blog_id'] . '&post_id=' . $gContent->mInfo['post_id'];
 $uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['blog_id'] . '/' . $gContent->mInfo['post_id'];
-$smarty->assign('uri', $uri);
-$smarty->assign('uri2', $uri2);
+$gBitSmarty->assign('uri', $uri);
+$gBitSmarty->assign('uri2', $uri2);
 
-$smarty->assign( 'parsed_data', $gContent->parseData() );
+$gBitSmarty->assign( 'parsed_data', $gContent->parseData() );
 
-$smarty->assign('individual', 'n');
+$gBitSmarty->assign('individual', 'n');
 
 if ($gBitUser->object_has_one_permission($gContent->mInfo["blog_id"], 'blog')) {
-	$smarty->assign('individual', 'y');
+	$gBitSmarty->assign('individual', 'y');
 
 	if (!$gBitUser->isAdmin()) {
 		// Now get all the permissions that are set for this content type
@@ -46,10 +46,10 @@ if ($gBitUser->object_has_one_permission($gContent->mInfo["blog_id"], 'blog')) {
 		foreach( array_keys( $perms ) as $permName ) {
 			if ($gBitUser->object_has_permission( $user, $_REQUEST["blog_id"], 'blog', $permName ) ) {
 				$$permName = 'y';
-				$smarty->assign( $permName, 'y');
+				$gBitSmarty->assign( $permName, 'y');
 			} else {
 				$$permName = 'n';
-				$smarty->assign( $permName, 'n');
+				$gBitSmarty->assign( $permName, 'n');
 			}
 		}
 	}
@@ -58,14 +58,14 @@ if ($gBitUser->object_has_one_permission($gContent->mInfo["blog_id"], 'blog')) {
 if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
 	$bit_p_create_blogs = 'y';
 
-	$smarty->assign('bit_p_create_blogs', 'y');
+	$gBitSmarty->assign('bit_p_create_blogs', 'y');
 	$bit_p_blog_post = 'y';
-	$smarty->assign('bit_p_blog_post', 'y');
+	$gBitSmarty->assign('bit_p_blog_post', 'y');
 	$bit_p_read_blog = 'y';
-	$smarty->assign('bit_p_read_blog', 'y');
+	$gBitSmarty->assign('bit_p_read_blog', 'y');
 }
 
-$smarty->assign('ownsblog', $gContent->isBlogOwner() );
+$gBitSmarty->assign('ownsblog', $gContent->isBlogOwner() );
 
 if ($feature_blogposts_comments == 'y') {
 	$comments_vars = array(
@@ -93,8 +93,8 @@ if (!isset($_REQUEST['addresses'])) {
 	$_REQUEST['addresses'] = '';
 }
 
-$smarty->assign('addresses', $_REQUEST['addresses']);
-$smarty->assign('sent', 'n');
+$gBitSmarty->assign('addresses', $_REQUEST['addresses']);
+$gBitSmarty->assign('sent', 'n');
 
 if (isset($_REQUEST['send'])) {
 	
@@ -104,17 +104,17 @@ if (isset($_REQUEST['send'])) {
 	$machine = httpPrefix(). $gContent->getDisplayLink();
 
 	foreach ($emails as $email) {
-		$smarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
+		$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 
-		$smarty->assign('mail_user', $gBitUser->getDisplayName() );
-		$smarty->assign('mail_title', $gContent->mInfo['title'] ? $gContent->mInfo['title'] : date("d/m/Y [h:i]", $gContent->mInfo['created']));
-		$smarty->assign('mail_machine', $machine);
-		$mail_data = $smarty->fetch('bitpackage:blogs/blogs_send_link.tpl');
+		$gBitSmarty->assign('mail_user', $gBitUser->getDisplayName() );
+		$gBitSmarty->assign('mail_title', $gContent->mInfo['title'] ? $gContent->mInfo['title'] : date("d/m/Y [h:i]", $gContent->mInfo['created']));
+		$gBitSmarty->assign('mail_machine', $machine);
+		$mail_data = $gBitSmarty->fetch('bitpackage:blogs/blogs_send_link.tpl');
 		@mail($email, tra('Post recommendation at'). ' ' . $_SERVER["SERVER_NAME"], $mail_data,
 			"From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 	}
 
-	$smarty->assign('sent', 'y');
+	$gBitSmarty->assign('sent', 'y');
 }
 $gBitSystem->setBrowserTitle("Send Blog Post: ".$gContent->mInfo['title']);
 

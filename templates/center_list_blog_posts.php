@@ -1,6 +1,6 @@
 <?php
 
-global $smarty, $gBlog, $gBitSystem, $categlib, $_REQUEST, $maxRecords, $gQueryUserId, $package_categories;
+global $gBitSmarty, $gBlog, $gBitSystem, $categlib, $_REQUEST, $maxRecords, $gQueryUserId, $package_categories;
 $postRecords = ( $module_rows ? $module_rows : $maxRecords );
 
 if (defined("CATEGORIES_PKG_PATH")) {
@@ -16,10 +16,10 @@ if ($gBitSystem->isPackageActive( 'categories' )) {
     $categlib->uncategorize('blogpost',$_REQUEST['post_id']);
   }
   $categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
-  $smarty->assign('categs',$categs['data']);
-  $smarty->assign('page','view.php');
-  $choosecateg = str_replace('"',"'",$smarty->fetch('bitpackage:blogs/popup_categs.tpl'));
-  $smarty->assign('choosecateg',$choosecateg);
+  $gBitSmarty->assign('categs',$categs['data']);
+  $gBitSmarty->assign('page','view.php');
+  $choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
+  $gBitSmarty->assign('choosecateg',$choosecateg);
 }
 
 if ( empty( $_REQUEST["sort_mode"] ) ) {
@@ -28,7 +28,7 @@ if ( empty( $_REQUEST["sort_mode"] ) ) {
 	$sort_mode = $_REQUEST["sort_mode"];
 }
 
-$smarty->assign_by_ref('sort_mode', $sort_mode);
+$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
 
 // If offset is set use it if not then use offset =0
 // use the maxRecords php variable to set the limit
@@ -44,16 +44,16 @@ if (isset($_REQUEST['page'])) {
 	$offset = ($page - 1) * $postRecords;
 }
 
-$smarty->assign_by_ref('offset', $offset);
+$gBitSmarty->assign_by_ref('offset', $offset);
 
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
 } else {
 	$find = '';
 }
-$smarty->assign('find', $find);
+$gBitSmarty->assign('find', $find);
 
-$smarty->assign('showBlogTitle', 'y');
+$gBitSmarty->assign('showBlogTitle', 'y');
 
 $listHash['max_records'] = $postRecords;
 $listHash['parse_data'] = TRUE;
@@ -70,23 +70,23 @@ $blogPosts = $blogPost->getList( $listHash );
 
 // If there're more records then assign next_offset
 $cant_pages = ceil($blogPosts["cant"] / $postRecords);
-$smarty->assign_by_ref('cant_pages', $cant_pages);
-$smarty->assign('actual_page', 1 + ($offset / $postRecords));
+$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assign('actual_page', 1 + ($offset / $postRecords));
 
 if ($blogPosts["cant"] > ($offset + $postRecords)) {
-	$smarty->assign('next_offset', $offset + $postRecords);
+	$gBitSmarty->assign('next_offset', $offset + $postRecords);
 } else {
-	$smarty->assign('next_offset', -1);
+	$gBitSmarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
 if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $postRecords);
+	$gBitSmarty->assign('prev_offset', $offset - $postRecords);
 } else {
-	$smarty->assign('prev_offset', -1);
+	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$smarty->assign_by_ref('blogPosts', $blogPosts["data"]);
+$gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 //print_r($blogPosts["data"]);
 
 

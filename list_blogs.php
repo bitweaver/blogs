@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.1.1.1.2.3 2005/07/26 15:50:01 drewslater Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -22,7 +22,7 @@ $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 
 /*
 if($feature_listPages != 'y') {
-  $smarty->assign('msg',tra("This feature is disabled"));
+  $gBitSmarty->assign('msg',tra("This feature is disabled"));
   $gBitSystem->display( 'error.tpl' );
   die;
 }
@@ -31,7 +31,7 @@ if($feature_listPages != 'y') {
 /*
 // Now check permissions to access this page
 if(!$gBitUser->hasPermission( 'bit_p_view' )) {
-  $smarty->assign('msg',tra("Permission denied you cannot view pages"));
+  $gBitSmarty->assign('msg',tra("Permission denied you cannot view pages"));
   $gBitSystem->display( 'error.tpl' );
   die;
 }
@@ -67,7 +67,7 @@ if( empty( $_REQUEST["sort_mode"] ) ) {
 	$sort_mode = $_REQUEST["sort_mode"];
 }
 
-$smarty->assign_by_ref('sort_mode', $sort_mode);
+$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
 
 // If offset is set use it if not then use offset =0
 // use the maxRecords php variable to set the limit
@@ -83,7 +83,7 @@ if (isset($_REQUEST['page'])) {
 	$offset = ($page - 1) * $maxRecords;
 }
 
-$smarty->assign_by_ref('offset', $offset);
+$gBitSmarty->assign_by_ref('offset', $offset);
 
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
@@ -91,7 +91,7 @@ if (isset($_REQUEST["find"])) {
 	$find = '';
 }
 
-$smarty->assign('find', $find);
+$gBitSmarty->assign('find', $find);
 
 // Get a list of last changes to the Wiki database
 $listpages = $gBlog->list_blogs($offset, $maxRecords, $sort_mode, $find);
@@ -132,23 +132,23 @@ for ($i = 0; $i < count($listpages["data"]); $i++) {
 
 // If there're more records then assign next_offset
 $cant_pages = ceil($listpages["cant"] / $maxRecords);
-$smarty->assign_by_ref('cant_pages', $cant_pages);
-$smarty->assign('actual_page', 1 + ($offset / $maxRecords));
+$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
 if ($listpages["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
+	$gBitSmarty->assign('next_offset', $offset + $maxRecords);
 } else {
-	$smarty->assign('next_offset', -1);
+	$gBitSmarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
 if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
+	$gBitSmarty->assign('prev_offset', $offset - $maxRecords);
 } else {
-	$smarty->assign('prev_offset', -1);
+	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$smarty->assign_by_ref('listpages', $listpages["data"]);
+$gBitSmarty->assign_by_ref('listpages', $listpages["data"]);
 //print_r($listpages["data"]);
 $section = 'blogs';
 

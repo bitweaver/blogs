@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.2 2005/06/27 10:08:40 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.3 2005/07/26 15:50:01 drewslater Exp $
 
  * @package blogs
  * @subpackage functions
@@ -22,7 +22,7 @@ if (defined("CATEGORIES_PKG_PATH")) {
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 	
 $gBitSystem->verifyPackage( 'blogs' );
-$smarty->assign('showBlogTitle', 'y');
+$gBitSmarty->assign('showBlogTitle', 'y');
 
 if (isset($_REQUEST['user_id']) && !isset($_REQUEST['blog_id'])) {
 	// We will try and grab the first blog owned by the user id given
@@ -36,10 +36,10 @@ if (!isset($_REQUEST["blog_id"])) {
 	$gBitSystem->fatalError( 'No blog indicated' );
 }
 
-$smarty->assign('individual', 'n');
+$gBitSmarty->assign('individual', 'n');
 
 if ($gBitUser->object_has_one_permission( $_REQUEST["blog_id"], $gBlog->getContentType() )) {
-	$smarty->assign('individual', 'y');
+	$gBitSmarty->assign('individual', 'y');
 
 	if (!$gBitUser->isAdmin()) {
 		// Now get all the permissions that are set for this type of permissions 'image gallery'
@@ -52,11 +52,11 @@ if ($gBitUser->object_has_one_permission( $_REQUEST["blog_id"], $gBlog->getConte
 			if ($gBitUser->object_has_permission( $gBitUser->mUserId, $_REQUEST["blog_id"], $gBlog->getContentType(), $perm_name ) ) {
 				$$perm_name = 'y';
 
-				$smarty->assign("$perm_name", 'y');
+				$gBitSmarty->assign("$perm_name", 'y');
 			} else {
 				$$perm_name = 'n';
 
-				$smarty->assign("$perm_name", 'n');
+				$gBitSmarty->assign("$perm_name", 'n');
 			}
 		}
 	}
@@ -71,43 +71,43 @@ if ($gBitSystem->isPackageActive( 'categories' )) {
 		$categlib->uncategorize('blogpost',$_REQUEST['post_id']);
 	}
 	$categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
-	$smarty->assign('categs',$categs['data']);
-	$smarty->assign('page','view.php');
-	$choosecateg = str_replace('"',"'",$smarty->fetch('bitpackage:blogs/popup_categs.tpl'));
-	$smarty->assign('choosecateg',$choosecateg);
+	$gBitSmarty->assign('categs',$categs['data']);
+	$gBitSmarty->assign('page','view.php');
+	$choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
+	$gBitSmarty->assign('choosecateg',$choosecateg);
 }
 $blog_data = $gBlog->get_blog($_REQUEST["blog_id"]);
 
 if( !empty( $blog_data['blog_style'] ) && $gBitSystem->getPreference('feature_user_theme') == 'h' ) {
 	$gBitSystem->setStyle( $blog_data['blog_style'] );
 	$gBitLoc['styleSheet'] = $gBitSystem->getStyleCss( $blog_data['blog_style'], $blog_data['user_id'] );
-	$smarty->assign( 'userStyle', $blog_data['blog_style'] );
+	$gBitSmarty->assign( 'userStyle', $blog_data['blog_style'] );
 }
 
 $ownsblog = ($gBitUser->mUserId == $blog_data["user_id"] ) ? 'y' : 'n';
-$smarty->assign('ownsblog', $ownsblog);
+$gBitSmarty->assign('ownsblog', $ownsblog);
 
 if (!$blog_data) {
 	$gBitSystem->fatalError( 'Blog not found' );
 }
 
 $gBlog->add_blog_hit($_REQUEST["blog_id"]);
-$smarty->assign('blog_id', $_REQUEST["blog_id"]);
-$smarty->assign('title', $blog_data["title"]);
-$smarty->assign('heading', $blog_data["heading"]);
-$smarty->assign('use_title', $blog_data["use_title"]);
-$smarty->assign('use_find', $blog_data["use_find"]);
-$smarty->assign('allow_comments', $blog_data["allow_comments"]);
-$smarty->assign('description', $blog_data["description"]);
-$smarty->assign('created', $blog_data["created"]);
-$smarty->assign('last_modified', $blog_data["last_modified"]);
-$smarty->assign('posts', $blog_data["posts"]);
-$smarty->assign('public', $blog_data["public"]);
-$smarty->assign('hits', $blog_data["hits"]);
-$smarty->assign('creator', $blog_data["user_id"]);
-$smarty->assign('activity', $blog_data["activity"]);
-$smarty->assign('avatar', $blog_data["avatar"]);
-$smarty->assign_by_ref('blog_data', $blog_data);
+$gBitSmarty->assign('blog_id', $_REQUEST["blog_id"]);
+$gBitSmarty->assign('title', $blog_data["title"]);
+$gBitSmarty->assign('heading', $blog_data["heading"]);
+$gBitSmarty->assign('use_title', $blog_data["use_title"]);
+$gBitSmarty->assign('use_find', $blog_data["use_find"]);
+$gBitSmarty->assign('allow_comments', $blog_data["allow_comments"]);
+$gBitSmarty->assign('description', $blog_data["description"]);
+$gBitSmarty->assign('created', $blog_data["created"]);
+$gBitSmarty->assign('last_modified', $blog_data["last_modified"]);
+$gBitSmarty->assign('posts', $blog_data["posts"]);
+$gBitSmarty->assign('public', $blog_data["public"]);
+$gBitSmarty->assign('hits', $blog_data["hits"]);
+$gBitSmarty->assign('creator', $blog_data["user_id"]);
+$gBitSmarty->assign('activity', $blog_data["activity"]);
+$gBitSmarty->assign('avatar', $blog_data["avatar"]);
+$gBitSmarty->assign_by_ref('blog_data', $blog_data);
 
 if (isset($_REQUEST["remove"])) {
 	
@@ -145,26 +145,26 @@ if (!empty($_REQUEST['offset'])) {
 	$offset = 0;
 }
 $cant_pages = ceil($blogPosts["cant"] / $blog_data["max_posts"]);
-$smarty->assign_by_ref('cant_pages', $cant_pages);
-$smarty->assign('actual_page', 1 + ($listHash['offset'] / $blog_data["max_posts"]));
-$smarty->assign_by_ref('offset', $listHash['offset']);
-$smarty->assign_by_ref('sort_mode', $listHash['sort_mode']);
+$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assign('actual_page', 1 + ($listHash['offset'] / $blog_data["max_posts"]));
+$gBitSmarty->assign_by_ref('offset', $listHash['offset']);
+$gBitSmarty->assign_by_ref('sort_mode', $listHash['sort_mode']);
 
 if ($blogPosts["cant"] > ($listHash['offset'] + $blog_data["max_posts"])) {
-	$smarty->assign('next_offset', $offset + $blog_data["max_posts"]);
+	$gBitSmarty->assign('next_offset', $offset + $blog_data["max_posts"]);
 } else {
-	$smarty->assign('next_offset', -1);
+	$gBitSmarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
 if ($listHash['offset'] > 0) {
-	$smarty->assign('prev_offset', $offset - $blog_data["max_posts"]);
+	$gBitSmarty->assign('prev_offset', $offset - $blog_data["max_posts"]);
 } else {
-	$smarty->assign('prev_offset', -1);
+	$gBitSmarty->assign('prev_offset', -1);
 }
 
 // If there're more records then assign next_offset
-$smarty->assign_by_ref('blogPosts', $blogPosts["data"]);
+$gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 //print_r($blogPosts["data"]);
 
 if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
@@ -194,10 +194,10 @@ if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 		}
 	}
 
-	$smarty->assign('user_watching_blog', 'n');
+	$gBitSmarty->assign('user_watching_blog', 'n');
 
 	if ( $watch = $gBitUser->getEventWatches( $gBitUser->mUserId, 'blog_post', $_REQUEST['blog_id'])) {
-		$smarty->assign('user_watching_blog', 'y');
+		$gBitSmarty->assign('user_watching_blog', 'y');
 	}
 }
 
