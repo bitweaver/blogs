@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.5 2005/07/26 15:50:01 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.6 2005/07/27 18:00:06 drewslater Exp $
 
  * @package blogs
  * @subpackage functions
@@ -220,6 +220,8 @@ if (isset($_REQUEST["preview"])) {
 		$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
 		$gBitSmarty->assign('trackbacks_to', explode(',', $_REQUEST['trackback']));
 		$gBitSmarty->assign('parsed_data', $parsed_data);
+		
+		$gContent->load();
 	}
 }
 
