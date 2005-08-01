@@ -1,6 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.3 2005/07/17 17:35:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.4 2005/08/01 18:40:04 squareing Exp $
+
  * @package blogs
  * @subpackage functions
  */
@@ -24,7 +25,7 @@ $gBitSystem->verifyPermission( 'bit_p_blog_post' );
 include_once( LIBERTY_PKG_PATH.'edit_help_inc.php' );
 
 if (isset($_REQUEST['wysiwyg']) && $_REQUEST['wysiwyg'] == 'y') {
-	$smarty->assign('wysiwyg', 'y');
+	$gBitSmarty->assign('wysiwyg', 'y');
 }
 
 if (isset($_REQUEST["blog_id"])) {
@@ -55,13 +56,13 @@ if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
 		if ($blogInfo) {
 			//if (($blogInfo['user_id'] != $gBitUser->mUserId && $blogInfo['public'] != 'y') && !$gBlog->viewerCanPostIntoBlog()) {
 			if ($gBlog->viewerCanPostIntoBlog()) {
-				$smarty->assign('msg', tra("You cannot post into this blog"));
+				$gBitSmarty->assign('msg', tra("You cannot post into this blog"));
 				$gBitSystem->display('error.tpl');
 				die();
 			}
 			$blogs = array($blogInfo);
 		} else {
-			$smarty->assign('msg',tra("The given blog does not exist"));
+			$gBitSmarty->assign('msg',tra("The given blog does not exist"));
 			$gBitSystem->display('error.tpl');
 			die();
 		}
@@ -76,9 +77,9 @@ if (!$blog_id && count($blogs) > 0) {
 if (count($blogs) == 0) {
 	if( $gBitUser->hasPermission( 'bit_p_create_blogs' )) {
 		$mid = 'bitpackage:blogs/edit_blog.tpl';
-		$smarty->assign('warning', tra("Before you can post, you first need to create a blog that will hold your posts."));
+		$gBitSmarty->assign('warning', tra("Before you can post, you first need to create a blog that will hold your posts."));
 	} else {
-		$smarty->assign('msg', tra("You can't post in any blog maybe you have to create a blog first"));
+		$gBitSmarty->assign('msg', tra("You can't post in any blog maybe you have to create a blog first"));
 		$mid = 'error.tpl';
 	}
 
@@ -89,11 +90,11 @@ if (count($blogs) == 0) {
 	$mid = 'bitpackage:blogs/blog_post.tpl';
 }
 
-$smarty->assign('data', '');
-$smarty->assign('created', date("U"));
+$gBitSmarty->assign('data', '');
+$gBitSmarty->assign('created', date("U"));
 
 $blog_data = $gBlog->get_blog($blog_id);
-$smarty->assign_by_ref('blog_data', $blog_data);
+$gBitSmarty->assign_by_ref('blog_data', $blog_data);
 
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 if ( $gBitSystem->isPackageActive('categories') ) {
@@ -116,14 +117,14 @@ if( isset($_REQUEST["post_id"]) && $_REQUEST["post_id"] > 0 ) {
 		$gBitSystem->verifyPermission( 'bit_p_blog_admin', "Permission denied you cannot edit this blog" );
 	}
 
-	$smarty->assign('data', $gContent->mInfo["data"]);
-	$smarty->assign('title', $gContent->mInfo["title"]);
-	$smarty->assign('trackbacks_to', $gContent->mInfo["trackbacks_to"]);
-	$smarty->assign('created', $gContent->mInfo["created"]);
-	$smarty->assign('parsed_data', $gContent->parseData() );
+	$gBitSmarty->assign('data', $gContent->mInfo["data"]);
+	$gBitSmarty->assign('title', $gContent->mInfo["title"]);
+	$gBitSmarty->assign('trackbacks_to', $gContent->mInfo["trackbacks_to"]);
+	$gBitSmarty->assign('created', $gContent->mInfo["created"]);
+	$gBitSmarty->assign('parsed_data', $gContent->parseData() );
 } else {
 	// Avoid undefined trackbacks_to smarty var in the case of 'preview'
-	$smarty->assign('trackbacks_to', NULL);
+	$gBitSmarty->assign('trackbacks_to', NULL);
 }
 
 if (isset($_REQUEST["preview"])) {
@@ -134,9 +135,9 @@ if (isset($_REQUEST["preview"])) {
 		if (isset($_REQUEST["spellcheck"]) && $_REQUEST["spellcheck"] == 'on') {
 			$parsed_data = $gBitSystem->spellcheckreplace($data, $parsed_data, $language, 'blogedit');
 
-			$smarty->assign('spellcheck', 'y');
+			$gBitSmarty->assign('spellcheck', 'y');
 		} else {
-			$smarty->assign('spellcheck', 'n');
+			$gBitSmarty->assign('spellcheck', 'n');
 		}
 	}
 
@@ -148,16 +149,16 @@ if (isset($_REQUEST["preview"])) {
 		'use_title' => 'y',
 		'created' => time(),
 	);
-	$smarty->assign('post_info', $post_info);
-	$smarty->assign('data', $data);
-	$smarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
-	$smarty->assign('parsed_data', $parsed_data);
-	$smarty->assign('preview', 'y');
+	$gBitSmarty->assign('post_info', $post_info);
+	$gBitSmarty->assign('data', $data);
+	$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
+	$gBitSmarty->assign('parsed_data', $parsed_data);
+	$gBitSmarty->assign('preview', 'y');
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
-	$smarty->assign('individual', 'n');
+	$gBitSmarty->assign('individual', 'n');
 
 	if ($gBitUser->object_has_one_permission($_REQUEST["blog_id"], 'blog')) {
-		$smarty->assign('individual', 'y');
+		$gBitSmarty->assign('individual', 'y');
 
 		if (!$gBitUser->isAdmin()) {
 			// Now get all the permissions that are set for this content type
@@ -165,10 +166,10 @@ if (isset($_REQUEST["preview"])) {
 			foreach( array_keys( $perms ) as $permName ) {
 				if ($gBitUser->object_has_permission( $user, $_REQUEST["blog_id"], 'blog', $permName ) ) {
 					$$permName = 'y';
-					$smarty->assign( $permName, 'y');
+					$gBitSmarty->assign( $permName, 'y');
 				} else {
 					$$permName = 'n';
-					$smarty->assign( $permName, 'n');
+					$gBitSmarty->assign( $permName, 'n');
 				}
 			}
 		}
@@ -177,11 +178,11 @@ if (isset($_REQUEST["preview"])) {
 	if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
 		$bit_p_create_blogs = 'y';
 
-		$smarty->assign('bit_p_create_blogs', 'y');
+		$gBitSmarty->assign('bit_p_create_blogs', 'y');
 		$bit_p_blog_post = 'y';
-		$smarty->assign('bit_p_blog_post', 'y');
+		$gBitSmarty->assign('bit_p_blog_post', 'y');
 		$bit_p_read_blog = 'y';
-		$smarty->assign('bit_p_read_blog', 'y');
+		$gBitSmarty->assign('bit_p_read_blog', 'y');
 	}
 
 	$title = isset($_REQUEST['title']) ? $_REQUEST['title'] : '';
@@ -202,7 +203,7 @@ if (isset($_REQUEST["preview"])) {
 			include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
 		}
 		$postid = $_REQUEST['post_id'];
-		$smarty->assign('post_id', $gContent->mPostId);
+		$gBitSmarty->assign('post_id', $gContent->mPostId);
 
 		if (isset($_REQUEST['save_post_exit'])) {
 			header ("location: ".BLOGS_PKG_URL."view_post.php?post_id=$postid");
@@ -215,24 +216,26 @@ if (isset($_REQUEST["preview"])) {
 		if (empty($data))
 			$data = '';
 
-		$smarty->assign('data', $data);
-		$smarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
-		$smarty->assign('trackbacks_to', explode(',', $_REQUEST['trackback']));
-		$smarty->assign('parsed_data', $parsed_data);
+		$gBitSmarty->assign('data', $data);
+		$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
+		$gBitSmarty->assign('trackbacks_to', explode(',', $_REQUEST['trackback']));
+		$gBitSmarty->assign('parsed_data', $parsed_data);
+		
+		$gContent->load();
 	}
 }
 
 // WYSIWYG and Quicktag variable
-$smarty->assign( 'textarea_id', 'editblog' );
+$gBitSmarty->assign( 'textarea_id', 'editblog' );
 
 if (isset($_REQUEST["post_id"])) {
 	$post_id = $_REQUEST["post_id"];
 } else {
 	$post_id = NULL;
 }
-$smarty->assign_by_ref('post_id', $post_id);
+$gBitSmarty->assign_by_ref('post_id', $post_id);
 
-$smarty->assign_by_ref('post_images', $gContent->mStorage);
+$gBitSmarty->assign_by_ref('post_images', $gContent->mStorage);
 
 $sameurl_elements = array(
 	'offset',
@@ -243,14 +246,14 @@ $sameurl_elements = array(
 	'post_id'
 );
 
-$smarty->assign_by_ref('blogs', $blogs);
-$smarty->assign('blog_id', $blog_id);
+$gBitSmarty->assign_by_ref('blogs', $blogs);
+$gBitSmarty->assign('blog_id', $blog_id);
 $section = 'blogs';
 
 
 $gBitSystem->setBrowserTitle("Create Blog Post");
 // Display the Index Template
 $gBitSystem->display( $mid );
-$smarty->assign('show_page_bar', 'n');
+$gBitSmarty->assign('show_page_bar', 'n');
 
 ?>

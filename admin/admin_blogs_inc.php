@@ -1,19 +1,19 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.2 2005/07/17 17:35:58 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.3 2005/08/01 18:40:04 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 if (isset($_REQUEST["blogset"]) && isset($_REQUEST["homeBlog"])) {
 	
 	$gBitSystem->storePreference("home_blog", $_REQUEST["homeBlog"]);
-	$smarty->assign('home_blog', $_REQUEST["homeBlog"]);
+	$gBitSmarty->assign('home_blog', $_REQUEST["homeBlog"]);
 }
 
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
 if (defined("CATEGORIES_PKG_PATH")  and $gBitSystem->isPackageActive( 'categories' )) {
 	include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 	$categs = $categlib->get_all_categories();
-	$smarty->assign('categs',$categs);
+	$gBitSmarty->assign('categs',$categs);
 }
 
 $formBlogLists = array(
@@ -46,7 +46,7 @@ $formBlogLists = array(
 		'note' => 'This number is an indication of how active a given blog is. The number is calculated based on god knows what...',
 	),
 );
-$smarty->assign( 'formBlogLists',$formBlogLists );
+$gBitSmarty->assign( 'formBlogLists',$formBlogLists );
 
 $formBlogFeatures = array(
 	"feature_blog_rankings" => array(
@@ -61,7 +61,7 @@ $formBlogFeatures = array(
 		'label' => 'Spellchecking',
 	),
 );
-$smarty->assign( 'formBlogFeatures',$formBlogFeatures );
+$gBitSmarty->assign( 'formBlogFeatures',$formBlogFeatures );
 
 $processForm = set_tab();
 
@@ -75,22 +75,22 @@ if( $processForm ) {
 	$gBitSystem->storePreference("feature_blogposts_comments", isset( $_REQUEST["feature_blogposts_comments"] ) ? 'y' : 'n');
 	$gBitSystem->storePreference("blog_list_order", $_REQUEST["blog_list_order"]);
 	$gBitSystem->storePreference("blog_list_user", $_REQUEST["blog_list_user"]);
-	$smarty->assign('blog_list_order', $_REQUEST["blog_list_order"]);
-	$smarty->assign('blog_list_user', $_REQUEST['blog_list_user']);
+	$gBitSmarty->assign('blog_list_order', $_REQUEST["blog_list_order"]);
+	$gBitSmarty->assign('blog_list_user', $_REQUEST['blog_list_user']);
 	
 	if ($gBitSystem->isPackageActive( 'categories' )) {
 		if (isset($_REQUEST["blog_categ"]) && $_REQUEST["blog_categ"] == "on") {
 			$gBitSystem->storePreference("blog_categ", 'y');
-			$smarty->assign("blog_categ", 'y');
+			$gBitSmarty->assign("blog_categ", 'y');
 		} else {
 			$gBitSystem->storePreference("blog_categ", 'n');
-			$smarty->assign("blog_categ", 'n');
+			$gBitSmarty->assign("blog_categ", 'n');
 		}
 		$gBitSystem->storePreference("blog_parent_categ", $_REQUEST["blog_parent_categ"]);
-		$smarty->assign('blog_parent_categ', $_REQUEST['blog_parent_categ']);
+		$gBitSmarty->assign('blog_parent_categ', $_REQUEST['blog_parent_categ']);
 	}
 }
 
 $blogs = $gBlog->list_blogs(0, -1, 'created_desc', '');
-$smarty->assign_by_ref('blogs', $blogs["data"]);
+$gBitSmarty->assign_by_ref('blogs', $blogs["data"]);
 ?>

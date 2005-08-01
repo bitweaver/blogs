@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.php,v 1.2 2005/06/28 07:45:40 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.php,v 1.3 2005/08/01 18:40:05 squareing Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -16,6 +16,6 @@ global $gBlog, $gQueryUserId, $modlib;
 $params = $modlib->get_module_params('bitpackage:blogs/mod_top_visited_blogs.tpl', $gQueryUserId);
 $ranking = $gBlog->list_blogs(0, $params['rows'], 'hits_desc', '',$gQueryUserId,' `hits` IS NOT NULL ');
 
-$smarty->assign('modTopVisitedBlogs', $ranking["data"]);
-$smarty->assign('bulletSrc', isset($params["bullet"]) ? $params['bullet'] : NULL);
+$gBitSmarty->assign('modTopVisitedBlogs', $ranking["data"]);
+$gBitSmarty->assign('bulletSrc', isset($params["bullet"]) ? $params['bullet'] : NULL);
 ?>

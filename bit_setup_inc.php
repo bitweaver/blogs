@@ -3,7 +3,7 @@
  * @package blogs
  */
 
-global $gBitSystem, $smarty, $bit_p_blog_admin;
+global $gBitSystem, $gBitSmarty, $bit_p_blog_admin;
 $gBitSystem->registerPackage( 'blogs', dirname( __FILE__).'/' );
 
 if( $gBitSystem->isPackageActive( 'blogs' ) ) {
@@ -12,18 +12,18 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
 
-    $smarty->assign('home_blog', 0);
-    $smarty->assign('blog_spellcheck', 'n');
-    $smarty->assign('blog_list_order', 'created_desc');
-    $smarty->assign('blog_list_title', 'y');
-    $smarty->assign('blog_list_description', 'y');
-    $smarty->assign('blog_list_created', 'y');
-    $smarty->assign('blog_list_lastmodif', 'y');
-    $smarty->assign('blog_list_user', 'y');
-    $smarty->assign('blog_list_posts', 'y');
-    $smarty->assign('blog_list_visits', 'y');
-    $smarty->assign('blog_list_activity', 'y');
-    $smarty->assign('blog_list_user', 'text');
+    $gBitSmarty->assign('home_blog', 0);
+    $gBitSmarty->assign('blog_spellcheck', 'n');
+    $gBitSmarty->assign('blog_list_order', 'created_desc');
+    $gBitSmarty->assign('blog_list_title', 'y');
+    $gBitSmarty->assign('blog_list_description', 'y');
+    $gBitSmarty->assign('blog_list_created', 'y');
+    $gBitSmarty->assign('blog_list_lastmodif', 'y');
+    $gBitSmarty->assign('blog_list_user', 'y');
+    $gBitSmarty->assign('blog_list_posts', 'y');
+    $gBitSmarty->assign('blog_list_visits', 'y');
+    $gBitSmarty->assign('blog_list_activity', 'y');
+    $gBitSmarty->assign('blog_list_user', 'text');
 
 }
 

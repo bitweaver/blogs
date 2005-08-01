@@ -1,6 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.3 2005/07/17 17:35:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.4 2005/08/01 18:40:04 squareing Exp $
+
  * @package blogs
  * @subpackage functions
  */
@@ -23,14 +24,14 @@ if (!isset($_REQUEST["post_id"])) {
 
 include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 
-$smarty->assign('post_info', $gContent->mInfo );
+$gBitSmarty->assign('post_info', $gContent->mInfo );
 
 //Build absolute URI for this
 $parts = parse_url($_SERVER['REQUEST_URI']);
 $uri = httpPrefix(). $parts['path'] . '?blog_id=' . $gContent->mInfo['blog_id'] . '&post_id=' . $gContent->mInfo['post_id'];
 $uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['blog_id'] . '/' . $gContent->mInfo['post_id'];
-$smarty->assign('uri', $uri);
-$smarty->assign('uri2', $uri2);
+$gBitSmarty->assign('uri', $uri);
+$gBitSmarty->assign('uri2', $uri2);
 
 if (!isset($_REQUEST['offset']))
 	$_REQUEST['offset'] = 0;
@@ -41,19 +42,19 @@ if (!isset($_REQUEST['sort_mode']))
 if (!isset($_REQUEST['find']))
 	$_REQUEST['find'] = '';
 
-$smarty->assign('offset', $_REQUEST["offset"]);
-$smarty->assign('sort_mode', $_REQUEST["sort_mode"]);
-$smarty->assign('find', $_REQUEST["find"]);
+$gBitSmarty->assign('offset', $_REQUEST["offset"]);
+$gBitSmarty->assign('sort_mode', $_REQUEST["sort_mode"]);
+$gBitSmarty->assign('find', $_REQUEST["find"]);
 $offset = $_REQUEST["offset"];
 $sort_mode = $_REQUEST["sort_mode"];
 $find = $_REQUEST["find"];
 
-$smarty->assign( 'parsed_data', $gContent->parseData() );
+$gBitSmarty->assign( 'parsed_data', $gContent->parseData() );
 
-$smarty->assign('individual', 'n');
+$gBitSmarty->assign('individual', 'n');
 
 if ($gBitUser->object_has_one_permission($gContent->mInfo['blog_id'], 'blog')) {
-	$smarty->assign('individual', 'y');
+	$gBitSmarty->assign('individual', 'y');
 
 	if (!$gBitUser->isAdmin()) {
 		// Now get all the permissions that are set for this content type
@@ -61,10 +62,10 @@ if ($gBitUser->object_has_one_permission($gContent->mInfo['blog_id'], 'blog')) {
 		foreach( array_keys( $perms ) as $permName ) {
 			if ($gBitUser->object_has_permission( $user, $_REQUEST["blog_id"], 'blog', $permName ) ) {
 				$$permName = 'y';
-				$smarty->assign( $permName, 'y');
+				$gBitSmarty->assign( $permName, 'y');
 			} else {
 				$$permName = 'n';
-				$smarty->assign( $permName, 'n');
+				$gBitSmarty->assign( $permName, 'n');
 			}
 		}
 	}
@@ -73,11 +74,11 @@ if ($gBitUser->object_has_one_permission($gContent->mInfo['blog_id'], 'blog')) {
 if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
 	$bit_p_create_blogs = 'y';
 
-	$smarty->assign('bit_p_create_blogs', 'y');
+	$gBitSmarty->assign('bit_p_create_blogs', 'y');
 	$bit_p_blog_post = 'y';
-	$smarty->assign('bit_p_blog_post', 'y');
+	$gBitSmarty->assign('bit_p_blog_post', 'y');
 	$bit_p_read_blog = 'y';
-	$smarty->assign('bit_p_read_blog', 'y');
+	$gBitSmarty->assign('bit_p_read_blog', 'y');
 }
 
 $gBitSystem->verifyPermission( 'bit_p_read_blog' );
@@ -88,7 +89,7 @@ if ($gBitUser->mUserId && $gBitUser->mUserId == $gContent->mInfo['blog_user_id']
 	$ownsblog = 'y';
 }
 
-$smarty->assign('ownsblog', $ownsblog);
+$gBitSmarty->assign('ownsblog', $ownsblog);
 
 if ($feature_theme_control == 'y') {
 	$cat_type = 'blog';
@@ -105,6 +106,6 @@ if ($feature_blogposts_comments == 'y') {
 
 $gBitSystem->setBrowserTitle( $gContent->mInfo['title'] );
 // Display the template
-$smarty->display("bitpackage:blogs/print_blog_post.tpl");
+$gBitSmarty->display("bitpackage:blogs/print_blog_post.tpl");
 
 ?>

@@ -1,6 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.3 2005/07/17 17:35:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.4 2005/08/01 18:40:04 squareing Exp $
+
  * @package blogs
  * @subpackage functions
  */
@@ -31,4 +32,8 @@ if( $gContent->load() ) {
 } else {
 	$gBitSystem->fatalError( 'Post could not be found.' );
 }
+
+
+
+
 ?>

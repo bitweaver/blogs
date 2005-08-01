@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.2 2005/06/28 07:45:39 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.3 2005/08/01 18:40:04 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -20,7 +20,7 @@ include_once( KERNEL_PKG_PATH.'rank_lib.php' );
 $gBitSystem->verifyPackage( 'blogs' );
 
 if ($feature_blog_rankings != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_blog_rankings");
+	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_blog_rankings");
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
@@ -43,7 +43,7 @@ $allrankings = array(
 )
 );
 
-$smarty->assign('allrankings', $allrankings);
+$gBitSmarty->assign('allrankings', $allrankings);
 
 if (!isset($_REQUEST["which"])) {
 	$which = 'blog_ranking_top_blogs';
@@ -51,7 +51,7 @@ if (!isset($_REQUEST["which"])) {
 	$which = $_REQUEST["which"];
 }
 
-$smarty->assign('which', $which);
+$gBitSmarty->assign('which', $which);
 
 // Get the page from the request var or default it to HomePage
 if (!isset($_REQUEST["limit"])) {
@@ -60,7 +60,7 @@ if (!isset($_REQUEST["limit"])) {
 	$limit = $_REQUEST["limit"];
 }
 
-$smarty->assign_by_ref('limit', $limit);
+$gBitSmarty->assign_by_ref('limit', $limit);
 
 // Rankings:
 // Top Pages
@@ -74,8 +74,8 @@ $rank["title"] = $rk["title"];
 $rank["y"] = $rk["y"];
 $rankings[] = $rank;
 
-$smarty->assign_by_ref('rankings', $rankings);
-$smarty->assign('rpage', 'rankings.php');
+$gBitSmarty->assign_by_ref('rankings', $rankings);
+$gBitSmarty->assign('rpage', 'rankings.php');
 
 
 // Display the template
