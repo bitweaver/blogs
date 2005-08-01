@@ -315,7 +315,7 @@ class BitBlog extends BitBase {
 
 	function viewerCanPostIntoBlog() {
 		global $gBitUser;
-		return ($this->mInfo['user_id'] == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->mInfo['public'] == 'y' || $this->viewerHasPermission('bit_p_blog_post'));
+		return ($this->mInfo['user_id'] == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->mInfo['public'] == 'y' );
 	}
 
 	function viewerHasPermission($pPermName = NULL) {

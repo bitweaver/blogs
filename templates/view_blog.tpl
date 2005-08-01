@@ -1,9 +1,9 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.3 2005/07/15 12:00:56 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.4 2005/08/01 21:13:54 drewslater Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
 		{if $gBitUser->hasPermission( 'bit_p_blog_post' )}
-			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'bit_p_blog_admin' ) or $public eq 'y' or $bit_p_blog_post eq 'y'}
+			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->object_has_permission($gBitUser->mUserId, $blog_id, 'bitblog', 'bit_p_blog_post') or $gBitUser->hasPermission( 'bit_p_blog_admin' ) or $public eq 'y'}			
 				<a title="{tr}post{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}post.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="post" iexplain="post"}</a>
 			{/if}
 		{/if}
