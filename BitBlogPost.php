@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.5 2005/07/26 15:50:01 drewslater Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.6 2005/08/02 17:20:00 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.5 2005/07/26 15:50:01 drewslater Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.6 2005/08/02 17:20:00 lsces Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.5 $ $Date: 2005/07/26 15:50:01 $ $Author: drewslater $
+ * @version $Revision: 1.1.1.1.2.6 $ $Date: 2005/08/02 17:20:00 $ $Author: lsces $
  */
 
 /**
@@ -248,12 +248,15 @@ class BitBlogPost extends LibertyAttachable {
 				$ret = BLOGS_PKG_URL.'view_post.php?post_id='.$pPostId;
 			}
 		}
+		else {
+			$ret = BLOGS_PKG_URL.'view_post.php?post='.$pPostId;
+		}
 		return $ret;
 	}
 
 
 	function getDisplayLink( $pPostId=NULL, $pMixed=NULL ) {
-		return BitBlogPost::getDisplayUrl( $pPostId );
+		return "<a title=\"$pPostId\" href=\"" . BitBlogPost::getDisplayUrl( $pPostId ) . "\">$pPostId</a>";
 	}
 
     /**
