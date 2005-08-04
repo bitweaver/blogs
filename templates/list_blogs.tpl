@@ -35,9 +35,7 @@
 			</ul>
 		</div>
 
-		<div class="clear"></div>
-		
-		<ul class="data">
+		<ul class="clear data">
 			{section name=changes loop=$listpages}
 				<li class="item {cycle values='odd,even'}">
 					<div class="floaticon">
