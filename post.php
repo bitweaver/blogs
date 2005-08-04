@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.7 2005/08/04 08:46:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.8 2005/08/04 08:48:53 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -130,10 +130,6 @@ if( isset($_REQUEST["post_id"]) && $_REQUEST["post_id"] > 0 ) {
 if (isset($_REQUEST["preview"])) {
 	$data = $_REQUEST['edit'];
 
-	if( $gBitSystem->isPackageActive( 'pigeonholes' ) && isset( $_REQUEST['pigeonholes'] ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-		include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
-	}
-
 	$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
 
 	if ($blog_spellcheck == 'y') {
@@ -210,11 +206,6 @@ if (isset($_REQUEST["preview"])) {
 		$postid = $_REQUEST['post_id'];
 		$gBitSmarty->assign('post_id', $gContent->mPostId);
 
-		// add member to pigeonholes
-		if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-			include_once( PIGEONHOLES_PKG_PATH.'pigeonholes_processor_inc.php' );
-		}
-
 		if (isset($_REQUEST['save_post_exit'])) {
 			header ("location: ".BLOGS_PKG_URL."view_post.php?post_id=$postid");
 			die;
@@ -259,11 +250,6 @@ $sameurl_elements = array(
 $gBitSmarty->assign_by_ref('blogs', $blogs);
 $gBitSmarty->assign('blog_id', $blog_id);
 $section = 'blogs';
-
-// Pigeonholes
-if( $gBitSystem->isPackageActive( 'pigeonholes' ) && $gBitUser->hasPermission( 'bit_p_insert_pigeonhole_member' ) ) {
-	include_once( PIGEONHOLES_PKG_PATH.'get_pigeonholes_pathlist_inc.php' );
-}
 
 $gBitSystem->setBrowserTitle("Create Blog Post");
 // Display the Index Template
