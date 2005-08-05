@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.3 2005/07/26 15:50:01 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.4 2005/08/05 22:59:50 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -80,7 +80,7 @@ $blog_data = $gBlog->get_blog($_REQUEST["blog_id"]);
 
 if( !empty( $blog_data['blog_style'] ) && $gBitSystem->getPreference('feature_user_theme') == 'h' ) {
 	$gBitSystem->setStyle( $blog_data['blog_style'] );
-	$gBitLoc['styleSheet'] = $gBitSystem->getStyleCss( $blog_data['blog_style'], $blog_data['user_id'] );
+	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $blog_data['blog_style'], $blog_data['user_id'] );
 	$gBitSmarty->assign( 'userStyle', $blog_data['blog_style'] );
 }
 

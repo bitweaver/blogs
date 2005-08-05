@@ -53,15 +53,15 @@ a:hover { background-color : #deceae;  }
 <hr />
 <table>
 <tr><td>
-<a href="{$gBitLoc.BLOGS_PKG_URL}view_post.php?blog_id={$post_info.blog_id}&post_id={$post_info.post_id}">{tr}Permalink{/tr}</a>
+<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$post_info.blog_id}&post_id={$post_info.post_id}">{tr}Permalink{/tr}</a>
 ({tr}referenced by{/tr}: {$post_info.trackbacks_from_count} {tr}posts{/tr} {tr}references{/tr}: {$post_info.trackbacks_to_count} {tr}posts{/tr})
 {if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}
 {$post_info.num_comments} {tr}comments{/tr}
-&nbsp;<a href="{$gBitLoc.BLOGS_PKG_URL}view_post.php?find={$find}&amp;blog_id={$post_info.blog_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;post_id={$post_info.post_id}">{tr}view comments{/tr}</a>
+&nbsp;<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?find={$find}&amp;blog_id={$post_info.blog_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;post_id={$post_info.post_id}">{tr}view comments{/tr}</a>
 {/if}
 </td><td>
-<a title="{tr}print{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage=liberty iname="print" iexplain="Print"}</a>
-<a title="{tr}email this post{/tr}" href="{$gBitLoc.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage=liberty iname="mail_send" iexplain="Email"}</a>
+<a title="{tr}print{/tr}" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage=liberty iname="print" iexplain="Print"}</a>
+<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage=liberty iname="mail_send" iexplain="Email"}</a>
 </td></tr></table>
 </div>
 

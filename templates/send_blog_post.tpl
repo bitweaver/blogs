@@ -17,7 +17,7 @@
 </div>
 {else}
 	<h3>{tr}Send post to these addresses{/tr}</h3>
-	<form method="post" action="{$gBitLoc.BLOGS_PKG_URL}send_post.php">
+	<form method="post" action="{$smarty.const.BLOGS_PKG_URL}send_post.php">
 	<input type="hidden" name="post_id" value="{$post_info.post_id}" />
 	<table class="panel">
 	<tr>

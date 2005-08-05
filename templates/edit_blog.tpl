@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.1.1.1.2.1 2005/07/15 12:00:56 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.1.1.1.2.2 2005/08/05 22:59:51 squareing Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -21,7 +21,7 @@
 		{/if}
 
 		{if $individual eq 'y'}
-			{formfeedback warning="<a href='`$gBitLoc.KERNEL_PKG_URL`object_permissions.php?objectName=blog%20`$title`&amp;object_type=blog&amp;permType=blogs&amp;object_id=`$blog_id`'>There are individual permissions set for this blog</a>" position="top"}
+			{formfeedback warning="<a href='`$smarty.const.KERNEL_PKG_URL`object_permissions.php?objectName=blog%20`$title`&amp;object_type=blog&amp;permType=blogs&amp;object_id=`$blog_id`'>There are individual permissions set for this blog</a>" position="top"}
 		{/if}
 
 		{form ipackage="blogs" ifile="edit.php"}

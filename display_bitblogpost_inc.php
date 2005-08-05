@@ -66,7 +66,7 @@ $gBitSmarty->assign('blog_id', $_REQUEST["blog_id"]);
 
 if( !empty( $gContent->mInfo['blog_style'] ) && $gBitSystem->getPreference('feature_user_theme') == 'h' ) {
 	$gBitSystem->setStyle( $gContent->mInfo['blog_style'] );
-	$gBitLoc['styleSheet'] = $gBitSystem->getStyleCss( $gContent->mInfo['blog_style'], $gContent->mInfo['user_id'] );
+	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gContent->mInfo['blog_style'], $gContent->mInfo['user_id'] );
 	$gBitSmarty->assign( 'userStyle', $gContent->mInfo['blog_style'] );
 }
 
