@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.4 2005/08/05 22:59:50 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.5 2005/08/06 20:46:24 lsces Exp $
 
  * @package blogs
  * @subpackage functions
@@ -187,7 +187,7 @@ if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 		if ($_REQUEST['watch_action'] == 'add') {
 			$blogPost = new BitBlogPost( $_REQUEST['watch_object'] );
 			if( $blogPost->load() ) {
-				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], tra('blog'), $blogPost->mInfo['title'], $blogPost->getDisplayLink() );
+				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], tra('blog'), $blogPost->mInfo['title'], $blogPost->getDisplayUrl() );
 			}
 		} else {
 			$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );
