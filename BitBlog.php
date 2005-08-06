@@ -213,14 +213,14 @@ class BitBlog extends BitBase {
 	}
 
 	function expunge($blog_id) {
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		$query = "delete from `".BIT_DB_PREFIX."tiki_blogs` where `blog_id`=?";
 
 		$result = $this->query($query,array((int) $blog_id));
 		$query = "delete from `".BIT_DB_PREFIX."tiki_blog_posts` where `blog_id`=?";
 		$result = $this->query($query,array((int) $blog_id));
 		$this->remove_object( BITBLOG_CONTENT_TYPE_GUID, $blog_id );
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		return true;
 	}
 

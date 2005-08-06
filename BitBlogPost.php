@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.7 2005/08/04 00:02:58 southpawz Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.8 2005/08/06 18:31:31 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.7 2005/08/04 00:02:58 southpawz Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.8 2005/08/06 18:31:31 lsces Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.7 $ $Date: 2005/08/04 00:02:58 $ $Author: southpawz $
+ * @version $Revision: 1.1.1.1.2.8 $ $Date: 2005/08/06 18:31:31 $ $Author: lsces $
  */
 
 /**
@@ -136,7 +136,7 @@ class BitBlogPost extends LibertyAttachable {
                 global $gBlog, $gBitSystem;
                 $pParamHash['upload']['thumbnail'] = TRUE;
 
-                $this->mDb->StartTrans();
+                $this->StartTrans();
                 if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
                         if( !empty( $pParamHash['attachment_id'] ) ) {
                                 // we just shoved an attachment onto the blog so we will concat the new link for usability.
@@ -206,13 +206,13 @@ class BitBlogPost extends LibertyAttachable {
                                 $result = $this->query($query,array($trackbacks,$user_id,$post_id));
                         }
                 }
-                $this->mDb->CompleteTrans();
+                $this->CompleteTrans();
                 return( count( $this->mErrors ) == 0 );
         }
 
 
         function expunge() {
-                $this->mDb->StartTrans();
+                $this->StartTrans();
                 // let's force a full load to make sure everything is loaded.
                 $this->load();
                 if( $this->isValid() ) {
@@ -230,7 +230,7 @@ class BitBlogPost extends LibertyAttachable {
                         // Do this last so foreign keys won't complain (not the we have them... yet ;-)
                         LibertyAttachable::expunge();
                 }
-                $this->mDb->CompleteTrans();
+                $this->CompleteTrans();
 
                 return true;
         }
@@ -440,14 +440,14 @@ class BitBlogPost extends LibertyAttachable {
 
         function getTrackbacksFrom() {
                 if( $this->isValid() ) {
-                        $st = $this->mDb->getOne("select `trackbacks_from` from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?",array( $this->mPostId ) );
+                        $st = $this->getOne("select `trackbacks_from` from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?",array( $this->mPostId ) );
                         return unserialize($st);
                 }
         }
 
         function getTrackbacksTo() {
                 if( $this->isValid() ) {
-                        $st = $this->mDb->getOne("select `trackbacks_to` from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?", array( $this->mPostId ) );
+                        $st = $this->getOne("select `trackbacks_to` from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?", array( $this->mPostId ) );
                         return unserialize($st);
                 }
         }
