@@ -8,6 +8,8 @@
 	</div>
 
 	<div class="body">
+		{minifind sort_mode=$sort_mode}
+
 		<div class="navbar">
 			<ul>
 				<li>{biticon ipackage=liberty iname=sort iexplain="sort by"}</li>
@@ -112,11 +114,9 @@
 				</li>
 			{/section}
 		</ul>
+
+		{pagination}
 	</div><!-- end .body -->
-
-	{pagination}
-
-	{minifind sort_mode=$sort_mode}
 </div><!-- end .blog -->
 
 {/strip}
