@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.10 2005/08/07 13:15:05 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.11 2005/08/07 16:23:24 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.10 2005/08/07 13:15:05 lsces Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.11 2005/08/07 16:23:24 lsces Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.10 $ $Date: 2005/08/07 13:15:05 $ $Author: lsces $
+ * @version $Revision: 1.1.1.1.2.11 $ $Date: 2005/08/07 16:23:24 $ $Author: lsces $
  */
 
 /**
@@ -65,7 +65,7 @@ class BitBlogPost extends LibertyAttachable {
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 				WHERE tbp.`$lookupColumn`=? ";
 
-			$result = $this->getDb()->query($query,array((int) $lookupId));
+			$result = $this->mDb->query($query,array((int) $lookupId));
 
 			if ($result->numRows()) {
 				$this->mInfo = $result->fetchRow();
@@ -150,7 +150,7 @@ class BitBlogPost extends LibertyAttachable {
 		global $gBlog, $gBitSystem;
 		$pParamHash['upload']['thumbnail'] = TRUE;
 
-		$this->getDb()->StartTrans();
+		$this->mDb->StartTrans();
 		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
  			if( !empty( $pParamHash['attachment_id'] ) ) {
 				// we just shoved an attachment onto the blog so we will concat the new link for usability.
@@ -167,19 +167,19 @@ class BitBlogPost extends LibertyAttachable {
 				$now = date("U");
 				if (empty($pParamHash['post_date']))
 					$pParamHash['post_date'] = (int)$now;
-				$pParamHash['post_id'] = $this->getDb()->GenID('tiki_blog_posts_post_id_seq');
+				$pParamHash['post_id'] = $this->mDb->GenID('tiki_blog_posts_post_id_seq');
 
 				$query = "insert into `".BIT_DB_PREFIX."tiki_blog_posts`(`blog_id`, `post_id`, `content_id`, `trackbacks_from`,`trackbacks_to`) values(?,?,?,?,?)";
-				$result = $this->getDb()->query($query,array($pParamHash['blog_id'],$pParamHash['post_id'],$pParamHash['content_store']['content_id'],serialize(array()),serialize(array())));
+				$result = $this->mDb->query($query,array($pParamHash['blog_id'],$pParamHash['post_id'],$pParamHash['content_store']['content_id'],serialize(array()),serialize(array())));
 				$this->mPostId = $pParamHash['post_id'];
 
 				// Send trackbacks recovering only successful trackbacks
 				$trackbacks = serialize( $this->sendTrackbacks( $pParamHash['trackback'] ) );
 				// Update post with trackbacks successfully sent
 				$query = "update `".BIT_DB_PREFIX."tiki_blog_posts` set `trackbacks_from`=?, `trackbacks_to` = ? where `post_id`=?";
-				$this->getDb()->query($query,array(serialize(array()),$trackbacks,(int) $pParamHash['post_id']));
+				$this->mDb->query($query,array(serialize(array()),$trackbacks,(int) $pParamHash['post_id']));
 				$query = "update `".BIT_DB_PREFIX."tiki_blogs` set `last_modified`=?,`posts`=`posts`+1 where `blog_id`=?";
-				$result = $this->getDb()->query($query,array((int)$now,(int) $pParamHash['blog_id']));
+				$result = $this->mDb->query($query,array((int)$now,(int) $pParamHash['blog_id']));
 				$gBlog->add_blog_activity($pParamHash['blog_id']);
 
 				// let's reload to get a full mInfo hash which is needed below
@@ -217,10 +217,10 @@ class BitBlogPost extends LibertyAttachable {
 			if( !empty( $pParamHash['trackbacks'] ) ) {
 				$trackbacks = serialize($gBlog->send_trackbacks($post_id, $trackbacks));
 				$query = "update `".BIT_DB_PREFIX."tiki_blog_posts` set `trackbacks_to`=? where `post_id`=?";
-				$result = $this->getDb()->query($query,array($trackbacks,$user_id,$post_id));
+				$result = $this->mDb->query($query,array($trackbacks,$user_id,$post_id));
 			}
 		}
-		$this->getDb()->CompleteTrans();
+		$this->mDb->CompleteTrans();
 		return( count( $this->mErrors ) == 0 );
 	}
 
@@ -229,7 +229,7 @@ class BitBlogPost extends LibertyAttachable {
 	 * Remove complete blog post set and any comments
 	 */
 	function expunge() {
-		$this->getDb()->StartTrans();
+		$this->mDb->StartTrans();
 		// let's force a full load to make sure everything is loaded.
 		$this->load();
 		if( $this->isValid() ) {
@@ -240,14 +240,14 @@ class BitBlogPost extends LibertyAttachable {
 			}
 
 			$query = "delete from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?";
-			$result = $this->getDb()->query( $query, array( (int) $this->mPostId ) );
+			$result = $this->mDb->query( $query, array( (int) $this->mPostId ) );
 
 			$query = "update `".BIT_DB_PREFIX."tiki_blogs` set `posts`=`posts`-1 where `blog_id`=?";
-			$result = $this->getDb()->query( $query, array( (int)$this->mInfo['blog_id'] ) );
+			$result = $this->mDb->query( $query, array( (int)$this->mInfo['blog_id'] ) );
 			// Do this last so foreign keys won't complain (not the we have them... yet ;-)
 			LibertyAttachable::expunge();
 		}
-		$this->getDb()->CompleteTrans();
+		$this->mDb->CompleteTrans();
 
 		return true;
 	}
@@ -389,10 +389,10 @@ class BitBlogPost extends LibertyAttachable {
 				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = tc.`user_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_attachments` ta ON (uu.`user_id` = ta.`user_id` AND ta.`attachment_id` = uu.`avatar_attachment_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_files` tf ON (tf.`file_id` = ta.`foreign_id`)
-				WHERE tb.`blog_id` = tbp.`blog_id` $whereSql $mid order by tc.".$this->getDb()->convert_sortmode( $pListHash['sort_mode'] );
+				WHERE tb.`blog_id` = tbp.`blog_id` $whereSql $mid order by tc.".$this->mDb->convert_sortmode( $pListHash['sort_mode'] );
 		$query_cant = "SELECT COUNT(tbp.`post_id`) FROM `".BIT_DB_PREFIX."tiki_blog_posts` tbp, `".BIT_DB_PREFIX."tiki_content` tc WHERE tc.`content_id` = tbp.`content_id` $whereSql $mid";
-		$result = $this->getDb()->query($query,$bindvars,$pListHash['max_records'],$pListHash['offset']);
-		$cant = $this->getDb()->getOne($query_cant,$bindvars);
+		$result = $this->mDb->query($query,$bindvars,$pListHash['max_records'],$pListHash['offset']);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -463,7 +463,7 @@ class BitBlogPost extends LibertyAttachable {
 			$tbs[$url] = $aux;
 			$st = serialize($tbs);
 			$query = "update `".BIT_DB_PREFIX."tiki_blog_posts` set `trackbacks_from`=? where `post_id`=?";
-			$this->getDb()->query( $query, array( $st, $this->mPostId ) );
+			$this->mDb->query( $query, array( $st, $this->mPostId ) );
 			return true;
 		}
 	}
@@ -473,7 +473,7 @@ class BitBlogPost extends LibertyAttachable {
 	 */
 	function getTrackbacksFrom() {
 		if( $this->isValid() ) {
-			$st = $this->getDb()->getOne("select `trackbacks_from` from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?",array( $this->mPostId ) );
+			$st = $this->mDb->getOne("select `trackbacks_from` from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?",array( $this->mPostId ) );
 			return unserialize($st);
 		}
 	}
@@ -483,7 +483,7 @@ class BitBlogPost extends LibertyAttachable {
 	 */
 	function getTrackbacksTo() {
 		if( $this->isValid() ) {
-			$st = $this->getDb()->getOne("select `trackbacks_to` from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?", array( $this->mPostId ) );
+			$st = $this->mDb->getOne("select `trackbacks_to` from `".BIT_DB_PREFIX."tiki_blog_posts` where `post_id`=?", array( $this->mPostId ) );
 			return unserialize($st);
 		}
 	}
@@ -495,7 +495,7 @@ class BitBlogPost extends LibertyAttachable {
 		if( $this->isValid() ) {
 			$empty = serialize(array());
 			$query = "update `".BIT_DB_PREFIX."tiki_blog_posts` set `trackbacks_from` = ? where `post_id`=?";
-			$this->getDb()->query( $query, array( $empty, $this->mPostId ) );
+			$this->mDb->query( $query, array( $empty, $this->mPostId ) );
 		}
 	}
 
@@ -506,7 +506,7 @@ class BitBlogPost extends LibertyAttachable {
  		if( $this->isValid() ) {
  			$empty = serialize(array());
 			$query = "update `".BIT_DB_PREFIX."tiki_blog_posts` set `trackbacks_to` = ? where `post_id`=?";
-			$this->getDb()->query( $query, array( $empty, $this->mPostId ) );
+			$this->mDb->query( $query, array( $empty, $this->mPostId ) );
 		}
 	}
 
