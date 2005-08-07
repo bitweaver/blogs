@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.1 2005/06/19 03:57:42 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.2 2005/08/07 17:35:55 squareing Exp $ *}
 {if $blogPosts || $showEmpty}
 <div class="floaticon">{bithelp}</div>
 
@@ -17,7 +17,7 @@
 		{/section}
 	</div>
 
-	{pagination url="`$gBitLoc.BLOGS_PKG_URL`index.php" user_id="`$gQueryUserId`"}
+	{pagination url="`$smarty.const.BLOGS_PKG_URL`index.php" user_id="`$gQueryUserId`"}
 
 	{*minifind sort_mode=$sort_mode*}
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-global $gBitSystem, $gUpgradeFrom, $gUpgradeTo;
+global $gBitSystem, $gUpgradeFrom, $gUpgradeTo, $gBitDb;
 
 require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
@@ -52,20 +52,20 @@ array( 'QUERY' =>
 // STEP 3
 array( 'PHP' => '
 	global $gBitSystem;
-	$startPost = $gBitSystem->getOne( "SELECT MAX(`post_id`) FROM `'.BIT_DB_PREFIX.'tiki_blog_posts`" );
-	$gBitSystem->mDb->mDb->CreateSequence( "tiki_blog_posts_post_id_seq", $startPost + 1 );
+	$startPost = $gBitSystem->mDb->getOne( "SELECT MAX(`post_id`) FROM `'.BIT_DB_PREFIX.'tiki_blog_posts`" );
+	$gBitSystem->mDb->CreateSequence( "tiki_blog_posts_post_id_seq", $startPost + 1 );
 	$query = "SELECT tbp.`post_id`, uu.`user_id`, uu.`user_id` AS modifier_user_id, tbp.`created`, tbp.`created` AS last_modified, tbp.`data`, tbp.`title`
 			  FROM `'.BIT_DB_PREFIX.'tiki_blog_posts` tbp INNER JOIN `'.BIT_DB_PREFIX.'users_users` uu ON( tbp.`user`=uu.`login` )";
-	if( $rs = $gBitSystem->query( $query ) ) {
+	if( $rs = $gBitSystem->mDb->query( $query ) ) {
 		while( !$rs->EOF ) {
 			$postId = $rs->fields["post_id"];
 			unset( $rs->fields["post_id"] );
-			$conId = $gBitSystem->mDb->mDb->GenID( "tiki_content_id_seq" );
+			$conId = $gBitDb->GenID( "tiki_content_id_seq" );
 			$rs->fields["content_id"] = $conId;
 			$rs->fields["content_type_guid"] = BITBLOGPOST_CONTENT_TYPE_GUID;
 			$rs->fields["format_guid"] = PLUGIN_GUID_TIKIWIKI;
 			$gBitSystem->mDb->associateInsert( "tiki_content", $rs->fields );
-			$gBitSystem->query( "UPDATE `'.BIT_DB_PREFIX.'tiki_blog_posts` SET `content_id`=? WHERE `post_id`=? ", array( $conId, $postId ) );
+			$gBitSystem->mDb->query( "UPDATE `'.BIT_DB_PREFIX.'tiki_blog_posts` SET `content_id`=? WHERE `post_id`=? ", array( $conId, $postId ) );
 			$rs->MoveNext();
 		}
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.3 2005/08/01 18:40:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.4 2005/08/07 17:35:54 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -80,7 +80,7 @@ $blog_data = $gBlog->get_blog($_REQUEST["blog_id"]);
 
 if( !empty( $blog_data['blog_style'] ) && $gBitSystem->getPreference('feature_user_theme') == 'h' ) {
 	$gBitSystem->setStyle( $blog_data['blog_style'] );
-	$gBitLoc['styleSheet'] = $gBitSystem->getStyleCss( $blog_data['blog_style'], $blog_data['user_id'] );
+	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $blog_data['blog_style'], $blog_data['user_id'] );
 	$gBitSmarty->assign( 'userStyle', $blog_data['blog_style'] );
 }
 
@@ -187,7 +187,7 @@ if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 		if ($_REQUEST['watch_action'] == 'add') {
 			$blogPost = new BitBlogPost( $_REQUEST['watch_object'] );
 			if( $blogPost->load() ) {
-				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], tra('blog'), $blogPost->mInfo['title'], $blogPost->getDisplayLink() );
+				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], tra('blog'), $blogPost->mInfo['title'], $blogPost->getDisplayUrl() );
 			}
 		} else {
 			$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );

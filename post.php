@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.4 2005/08/01 18:40:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.5 2005/08/07 17:35:54 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -129,6 +129,7 @@ if( isset($_REQUEST["post_id"]) && $_REQUEST["post_id"] > 0 ) {
 
 if (isset($_REQUEST["preview"])) {
 	$data = $_REQUEST['edit'];
+
 	$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
 
 	if ($blog_spellcheck == 'y') {
@@ -249,7 +250,6 @@ $sameurl_elements = array(
 $gBitSmarty->assign_by_ref('blogs', $blogs);
 $gBitSmarty->assign('blog_id', $blog_id);
 $section = 'blogs';
-
 
 $gBitSystem->setBrowserTitle("Create Blog Post");
 // Display the Index Template

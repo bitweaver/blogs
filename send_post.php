@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.4 2005/08/01 18:40:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.5 2005/08/07 17:35:54 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -101,7 +101,7 @@ if (isset($_REQUEST['send'])) {
 	$emails = explode(',', $_REQUEST['addresses']);
 
 	$foo = parse_url($_SERVER["REQUEST_URI"]);
-	$machine = httpPrefix(). $gContent->getDisplayLink();
+	$machine = $gContent->getDisplayUrl();
 
 	foreach ($emails as $email) {
 		$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);

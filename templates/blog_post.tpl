@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.3 2005/07/17 17:36:01 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.4 2005/08/07 17:35:55 squareing Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -115,7 +115,7 @@ function confirmDelete(fileName, location) {
 				<tr class="{cycle values="odd,even"}">
 					<td align="center">{if $storage.thumbnail_url.small}<img src="{$storage.thumbnail_url.small}" /><br/>{/if}{$storage.filename}</td>
 					<td>{$storage.wiki_plugin_link|escape}</td>
-					<td align="right"><a href="javascript:confirmDelete('Delete {$storage.filename}?','{$gBitLoc.BLOGS_PKG_URL}post.php?post_id={$post_id}&amp;remove_image={$attachmentId}')">{biticon ipackage=liberty iname=delete iexplain="remove"}</a></td>
+					<td align="right"><a href="javascript:confirmDelete('Delete {$storage.filename}?','{$smarty.const.BLOGS_PKG_URL}post.php?post_id={$post_id}&amp;remove_image={$attachmentId}')">{biticon ipackage=liberty iname=delete iexplain="remove"}</a></td>
 				</tr>
 				{/foreach}
 				<tr>
