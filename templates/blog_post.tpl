@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.4 2005/08/05 22:59:51 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.5 2005/08/10 15:40:37 squareing Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -83,6 +83,12 @@ function confirmDelete(fileName, location) {
 						{/legend}
 					{/jstab}
 				{/if}
+
+				{foreach from=$integrationFiles item=file key=package}
+					{if $gBitSystem->isPackageActive( $package )}
+						{include file=$file}
+					{/if}
+				{/foreach}
 
 				{jstab title="Attachments"}
 					{legend legend="Attachments"}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.8 2005/08/04 08:48:53 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.9 2005/08/10 15:40:36 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -105,7 +105,7 @@ if ( $gBitSystem->isPackageActive('categories') ) {
 
 
 if (isset($_REQUEST['remove_image'])) {
-	
+
 	$gContent->expungeAttachment( $_REQUEST['remove_image'] );
 }
 
@@ -155,6 +155,13 @@ if (isset($_REQUEST["preview"])) {
 	$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
 	$gBitSmarty->assign('parsed_data', $parsed_data);
 	$gBitSmarty->assign('preview', 'y');
+
+	// get files from all packages that process this data further
+	foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
+		if( $gBitSystem->isPackageActive( $package ) ) {
+			include_once( $file );
+		}
+	}
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
 	$gBitSmarty->assign('individual', 'n');
 
@@ -206,6 +213,13 @@ if (isset($_REQUEST["preview"])) {
 		$postid = $_REQUEST['post_id'];
 		$gBitSmarty->assign('post_id', $gContent->mPostId);
 
+		// get files from all packages that process this data further
+		foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
+			if( $gBitSystem->isPackageActive( $package ) ) {
+				include_once( $file );
+			}
+		}
+
 		if (isset($_REQUEST['save_post_exit'])) {
 			header ("location: ".BLOGS_PKG_URL."view_post.php?post_id=$postid");
 			die;
@@ -214,20 +228,31 @@ if (isset($_REQUEST["preview"])) {
 		$data = $_REQUEST['edit'];
 		$parsed_data = $gContent->parseData($_REQUEST['edit']);
 
-		if (empty($data))
+		if( empty( $data ) ) {
 			$data = '';
+		}
 
 		$gBitSmarty->assign('data', $data);
 		$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
 		$gBitSmarty->assign('trackbacks_to', explode(',', $_REQUEST['trackback']));
 		$gBitSmarty->assign('parsed_data', $parsed_data);
-		
+
 		$gContent->load();
 	}
 }
 
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', 'editblog' );
+
+// get files from all packages that process this data further
+foreach( $gBitSystem->getPackageIntegrationFiles( 'get_form_info_inc.php', TRUE ) as $package => $file ) {
+	if( $gBitSystem->isPackageActive( $package ) ) {
+		include_once( $file );
+	}
+}
+
+// assign the integration template files
+$gBitSmarty->assign( 'integrationFiles', $gBitSystem->getPackageIntegrationFiles( 'templates/form_info_inc.tpl', TRUE ) );
 
 if (isset($_REQUEST["post_id"])) {
 	$post_id = $_REQUEST["post_id"];
