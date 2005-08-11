@@ -9,6 +9,10 @@
     trackback:ping="{$uri2}" />
 </rdf:RDF>
 -->
+{if $gBitSystem->isPackageActive( 'pigeonholes' )}
+	{include file="bitpackage:pigeonholes/display_paths.tpl"}
+{/if}
+
 <div class="display blogs">
 	<div class="floaticon">
 		{if ($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
@@ -57,12 +61,11 @@
 	</div> <!-- end .body -->
 
 	<div class="footer">
-	  <a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?post_id={$post_id}">{tr}Permalink{/tr}</a>
-	  {tr}referenced by{/tr} {$post_info.trackbacks_from_count} {tr}posts{/tr} | {tr}references{/tr} {$post_info.trackbacks_to_count} {tr}posts{/tr}
-	  {if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}
-	    | {$post_info.num_comments} {tr}comments{/tr}
-
-	  {/if}
+		<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?post_id={$post_id}">{tr}Permalink{/tr}</a>
+		{tr}referenced by{/tr} {$post_info.trackbacks_from_count} {tr}posts{/tr} | {tr}references{/tr} {$post_info.trackbacks_to_count} {tr}posts{/tr}
+		{if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}
+			| {$post_info.num_comments} {tr}comments{/tr}
+		{/if}
 	</div> {* end .footer *}
 
 	{if $pages > 1}
@@ -76,33 +79,35 @@
 	{/if}
 
 	{if $post_info.trackbacks_from_count > 0}
-	<h2>{tr}Trackback pings{/tr}:</h2>
-	<table>
-	<tr>
-	  <th>{tr}Title{/tr}</th>
-	  <th>{tr}URI{/tr}</th>
-	  <th>{tr}Blog name{/tr}</th>
-	</tr>
-	{cycle values="even,odd" print=false}
-	{foreach from=$post_info.trackbacks_from key=key item=item}
-	<tr class="{cycle}">
-	  <td>{$item.title}</td>
-	  <td><a href="{$key}" title="{$key}" class="external">{$key|truncate:"40"}</a></td>
-	  <td>{$item.blog_name}</td>
-	</tr>
-	{/foreach}
-	</table>
+		<table>
+			<caption>{tr}Trackback Pings{/tr}</caption>
+				<tr>
+					<th>{tr}Title{/tr}</th>
+					<th>{tr}URI{/tr}</th>
+					<th>{tr}Blog name{/tr}</th>
+				</tr>
+			{cycle values="even,odd" print=false}
+			{foreach from=$post_info.trackbacks_from key=key item=item}
+				<tr class="{cycle}">
+					<td>{$item.title}</td>
+					<td><a href="{$key}" title="{$key}" class="external">{$key|truncate:"40"}</a></td>
+					<td>{$item.blog_name}</td>
+				</tr>
+			{/foreach}
+		</table>
 	{/if}
 
-		{if $gBitSystem->isPackageActive( 'categories' )}
-			{include file="bitpackage:categories/categories_objects.tpl"}
-		{/if}
+	{if $gBitSystem->isPackageActive( 'pigeonholes' )}
+		{include file="bitpackage:pigeonholes/display_members.tpl"}
+	{/if}
+
+	{if $gBitSystem->isPackageActive( 'categories' )}
+		{include file="bitpackage:categories/categories_objects.tpl"}
+	{/if}
 </div> {* end .blog *}
 
 {if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}
-{if $gBitUser->hasPermission( 'bit_p_read_comments' )}
-
-{include file="bitpackage:liberty/comments.tpl"}
-
-{/if}
+	{if $gBitUser->hasPermission( 'bit_p_read_comments' )}
+		{include file="bitpackage:liberty/comments.tpl"}
+	{/if}
 {/if}
