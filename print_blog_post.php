@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.1.1.1.2.4 2005/07/26 15:50:01 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.1.1.1.2.5 2005/08/12 11:38:53 wolff_borg Exp $
 
  * @package blogs
  * @subpackage functions
@@ -92,8 +92,8 @@ if ($gBitUser->mUserId && $gBitUser->mUserId == $gContent->mInfo['blog_user_id']
 $gBitSmarty->assign('ownsblog', $ownsblog);
 
 if ($feature_theme_control == 'y') {
-	$cat_type = 'blog';
-	$cat_objid = $gContent->mInfo['blog_id'];
+	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
+	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );
 }
 

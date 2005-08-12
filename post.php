@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.9 2005/08/10 15:40:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.10 2005/08/12 11:38:53 wolff_borg Exp $
 
  * @package blogs
  * @subpackage functions
@@ -98,8 +98,8 @@ $gBitSmarty->assign_by_ref('blog_data', $blog_data);
 
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 if ( $gBitSystem->isPackageActive('categories') ) {
-	$cat_type = BITBLOGPOST_CONTENT_TYPE_GUID;
-	$cat_objid = $gContent->mPostId;
+	$cat_obj_type = BITBLOGPOST_CONTENT_TYPE_GUID;
+	$cat_objid = $gContent->mContentId;
 	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
 }
 

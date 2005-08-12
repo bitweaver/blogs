@@ -7,7 +7,7 @@
 /**
  * required setup
  */
-if (defined("CATEGORIES_PKG_PATH")) {
+if ($gBitSystem->isPackageActive( 'categories' )) {
   include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 }
 
@@ -174,7 +174,7 @@ if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' ) ) {
 $section = 'blogs';
 
 if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
-	$cat_type = 'blog';
+	$cat_obj_type = 'blog';
 
 	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );

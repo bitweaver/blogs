@@ -12,6 +12,10 @@
 {if $gBitSystem->isPackageActive( 'pigeonholes' )}
 	{include file="bitpackage:pigeonholes/display_paths.tpl"}
 {/if}
+{if $gBitSystem->isPackageActive( 'categories' )}
+	{include file="bitpackage:categories/categories_nav.tpl"}
+{/if}
+
 
 <div class="display blogs">
 	<div class="floaticon">
@@ -37,9 +41,6 @@
 				{$post_info.created|bit_long_date}
 			{/if}
 		</h1>
-		{if $gBitSystem->isPackageActive( 'categories' )}
-			{include file="bitpackage:categories/categories_nav.tpl"}
-		{/if}
 		<div class="date">
 			{$post_info.created|bit_long_date}
 		</div>
