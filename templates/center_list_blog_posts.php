@@ -58,6 +58,8 @@ $gBitSmarty->assign('showBlogTitle', 'y');
 $listHash['max_records'] = $postRecords;
 $listHash['parse_data'] = TRUE;
 $listHash['load_comments'] = TRUE;
+$listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
+$listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 1);
 // Get a list of last changes to the Wiki database
 if ($gQueryUserId) {
 	$listHash['user_id'] = $gQueryUserId;
@@ -85,7 +87,7 @@ if ($offset > 0) {
 } else {
 	$gBitSmarty->assign('prev_offset', -1);
 }
-
+$gBitSmarty->assign_by_ref('gQueryUserId', $listHash['user_id']);
 $gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 //print_r($blogPosts["data"]);
 
