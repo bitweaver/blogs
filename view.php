@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.6 2005/08/12 11:38:53 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.7 2005/08/15 16:33:41 drewslater Exp $
 
  * @package blogs
  * @subpackage functions
@@ -140,6 +140,7 @@ $listHash['blog_id'] = $_REQUEST['blog_id'];
 $listHash['parse_data'] = TRUE;
 $listHash['max_records'] = $blog_data['max_posts'];
 $listHash['load_num_comments'] = TRUE;
+$listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
 $blogPosts = $blogPost->getList( $listHash );
 //$blogPosts = $blogPost->getList($_REQUEST["blog_id"], $offset, $blog_data["max_posts"], $sort_mode, $find );
 if (!empty($_REQUEST['offset'])) {
