@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.10 2005/08/12 11:38:53 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.11 2005/08/16 04:38:45 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -97,11 +97,8 @@ $blog_data = $gBlog->get_blog($blog_id);
 $gBitSmarty->assign_by_ref('blog_data', $blog_data);
 
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
-if ( $gBitSystem->isPackageActive('categories') ) {
-	$cat_obj_type = BITBLOGPOST_CONTENT_TYPE_GUID;
-	$cat_objid = $gContent->mContentId;
-	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
-}
+
+$gContent->invokeServices( 'content_edit_function' );
 
 
 if (isset($_REQUEST['remove_image'])) {
@@ -203,22 +200,8 @@ if (isset($_REQUEST["preview"])) {
 	}
 
 	if( $gContent->store( $_REQUEST ) ) {
-		if ( $gBitSystem->isPackageActive('categories') ) {
-			$cat_desc = $gLibertySystem->mContentTypes[BITBLOGPOST_CONTENT_TYPE_GUID]['content_description'].' by '.$gBitUser->getDisplayName( FALSE, array( 'real_name' => $gContent->mInfo['real_name'], 'user' => $gContent->mInfo['user'], 'user_id'=>$gContent->mInfo['user_id'] ) );
-			$cat_name = $gContent->getTitle();
-			$cat_href = $gContent->getDisplayUrl();
-			$cat_objid = $gContent->mContentId;
-			include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
-		}
 		$postid = $_REQUEST['post_id'];
 		$gBitSmarty->assign('post_id', $gContent->mPostId);
-
-		// get files from all packages that process this data further
-		foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
-			if( $gBitSystem->isPackageActive( $package ) ) {
-				include_once( $file );
-			}
-		}
 
 		if (isset($_REQUEST['save_post_exit'])) {
 			header ("location: ".BLOGS_PKG_URL."view_post.php?post_id=$postid");
@@ -243,16 +226,6 @@ if (isset($_REQUEST["preview"])) {
 
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', 'editblog' );
-
-// get files from all packages that process this data further
-foreach( $gBitSystem->getPackageIntegrationFiles( 'get_form_info_inc.php', TRUE ) as $package => $file ) {
-	if( $gBitSystem->isPackageActive( $package ) ) {
-		include_once( $file );
-	}
-}
-
-// assign the integration template files
-$gBitSmarty->assign( 'integrationFiles', $gBitSystem->getPackageIntegrationFiles( 'templates/form_info_inc.tpl', TRUE ) );
 
 if (isset($_REQUEST["post_id"])) {
 	$post_id = $_REQUEST["post_id"];

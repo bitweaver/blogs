@@ -34,11 +34,7 @@
 		{/if}
 
 		<div class="date">
-			{if $gBitSystem->isPackageActive( 'categories' )}
-				{assign var=cats value=$blogPosts[ix].categs}
-				{include file="bitpackage:categories/categories_nav.tpl"}
-			{/if}
-
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav'}
 			{if $showBlogTitle}{displayname hash=$blogPosts[ix]} {tr}in{/tr} <a href="{$blogPosts[ix].blog_url}">{$blogPosts[ix].blogtitle}</a>{/if}<br />
 			{$blogPosts[ix].created|bit_long_date}
 		</div>

@@ -2,7 +2,7 @@
 /**
  * @package blogs
  */
- 
+
 /**
  * required setup
  */

@@ -13,8 +13,6 @@ if ($gBitSystem->isPackageActive( 'categories' )) {
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
-global $PHP_SELF;
-
 if (!isset($gContent->mPostId) && !isset($gContent->mPostId)) {
 	$parts = parse_url($_SERVER['REQUEST_URI']);
 
@@ -54,6 +52,9 @@ if (!isset($gContent->mPostId) && !isset($gContent->mPostId)) {
 }
 
 $gBitSystem->verifyPackage( 'blogs' );
+
+$displayHash = array( 'perm_name' => 'bit_p_view' );
+$gContent->invokeServices( 'content_display_function', $displayHash );
 
 if (!isset($gContent->mPostId) && $post_id) {
 	$gContent->mPostId = $gContent->mInfo['blog_id'];
@@ -166,7 +167,7 @@ $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 $gBitSmarty->assign('ownsblog', ( $gBitUser->isValid() && $gBitUser->mUserId == $gContent->mInfo["user_id"] ) ? 'y' : 'n' );
 
 if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' ) ) {
-	$comments_return_url = $PHP_SELF."?post_id=".$gContent->mPostId;
+	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
 	$commentsParentId = $gContent->mInfo['content_id'];
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
@@ -187,7 +188,7 @@ if( $gBitSystem->isPackageActive( 'categories' ) ) {
 }
 
 if ( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && isset($_REQUEST['savenotepad'])) {
-	
+
 	$gBitSystem->replace_note($user, 0, $gContent->mInfo['title'] ? $gContent->mInfo['title'] : date("d/m/Y [h:i]", $gContent->mInfo['created']), $gContent->mInfo['data']);
 }
 

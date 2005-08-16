@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.5 2005/08/10 15:40:37 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.6 2005/08/16 04:38:45 spiderr Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -8,6 +8,8 @@ function confirmDelete(fileName, location) {
 }
 </script>
 {/literal}
+
+{assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
 
 {strip}
 <div class="edit blogs">
@@ -69,6 +71,11 @@ function confirmDelete(fileName, location) {
 							{/forminput}
 						</div>
 
+						{if $serviceEditTpls.access_control }
+							{include file=$serviceEditTpls.access_control"}
+						{/if}
+
+
 						<div class="row submit">
 							<input type="submit" name="preview" value="{tr}Preview{/tr}" />&nbsp;
 							<input type="submit" name="save_post_exit" value="{tr}Save{/tr}" />
@@ -76,19 +83,14 @@ function confirmDelete(fileName, location) {
 					{/legend}
 				{/jstab}
 
-				{if $gBitSystem->isPackageActive( 'categories' )}
+				{if $serviceEditTpls.categorization }
 					{jstab title="Categorize"}
 						{legend legend="Categorize"}
-							{include file="bitpackage:categories/categorize.tpl"}
+							{include file=$serviceEditTpls.categorization"}
 						{/legend}
 					{/jstab}
 				{/if}
 
-				{foreach from=$integrationFiles item=file key=package}
-					{if $gBitSystem->isPackageActive( $package )}
-						{include file=$file}
-					{/if}
-				{/foreach}
 
 				{jstab title="Attachments"}
 					{legend legend="Attachments"}

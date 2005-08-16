@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.1.1.1.2.4 2005/08/10 15:40:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.1.1.1.2.5 2005/08/16 04:38:45 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -21,16 +21,10 @@ if ( empty( $_REQUEST["post_id"] ) && empty( $_REQUEST["content_id"] ) ) {
 }
 
 global $gContent;
-$postId = !empty( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : NULL;
-$conId = !empty( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL;
 
-$gContent = new BitBlogPost( $postId, $conId );
+require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
+
 if( $gContent->load() ) {
-	// get the pigeonholes info
-	if( $gBitSystem->isPackageActive( 'pigeonholes' ) ) {
-		include_once( PIGEONHOLES_PKG_PATH.'get_pigeonholes_info_inc.php' );
-	}
-
 	include_once( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
 } else {
 	$gBitSystem->fatalError( 'Post could not be found.' );

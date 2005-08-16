@@ -1,10 +1,10 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.4 2005/08/12 11:38:53 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.5 2005/08/16 04:38:45 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
-// 
+//
 
 // @package blogs
 
@@ -117,7 +117,7 @@ if (isset($_REQUEST['preview'])) {
 }
 
 if (isset($_REQUEST['save_blog'])) {
-	
+
 	if (isset($_REQUEST["public"]) && $_REQUEST["public"] == 'on') {
 		$public = 'y';
 	} else {
