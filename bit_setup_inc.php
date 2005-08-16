@@ -7,8 +7,9 @@ global $gBitSystem, $gBitSmarty, $bit_p_blog_admin;
 $gBitSystem->registerPackage( 'blogs', dirname( __FILE__).'/' );
 
 if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-
-	$gBitSystem->registerAppMenu( 'blogs', 'Blogs', BLOGS_PKG_URL.'index.php', 'bitpackage:blogs/menu_blogs.tpl', 'blogs');
+	if ($gBitUser->hasPermission( 'bit_p_read_blog' )) {
+		$gBitSystem->registerAppMenu( 'blogs', 'Blogs', BLOGS_PKG_URL.'index.php', 'bitpackage:blogs/menu_blogs.tpl', 'blogs');
+	}
 
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
 
