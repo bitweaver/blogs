@@ -60,7 +60,7 @@ $listHash['max_records'] = $postRecords;
 $listHash['parse_data'] = TRUE;
 $listHash['load_comments'] = TRUE;
 $listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
-$listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 1);
+$listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
 // Get a list of last changes to the Wiki database
 if ($gQueryUserId) {
 	$listHash['user_id'] = $gQueryUserId;
