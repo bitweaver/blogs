@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.6 2005/08/16 04:38:45 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.7 2005/08/17 23:42:53 squareing Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -57,6 +57,8 @@ function confirmDelete(fileName, location) {
 							</div>
 						{/if}
 
+						{include file="bitpackage:liberty/edit_format.tpl"}
+
 						{if $gBitSystem->isPackageActive( 'smileys' )}
 							{include file="bitpackage:smileys/smileys_full.tpl"}
 						{/if}
@@ -91,7 +93,6 @@ function confirmDelete(fileName, location) {
 					{/jstab}
 				{/if}
 
-
 				{jstab title="Attachments"}
 					{legend legend="Attachments"}
 						{include file="bitpackage:liberty/edit_storage.tpl"}
@@ -100,8 +101,6 @@ function confirmDelete(fileName, location) {
 
 				{jstab title="Advanced Options"}
 					{legend legend="Advanced Options"}
-						{include file="bitpackage:liberty/edit_format.tpl"}
-
 						<div class="row">
 							{formlabel label="Send trackback pings" for="trackback"}
 							{forminput}
@@ -110,6 +109,12 @@ function confirmDelete(fileName, location) {
 							{/forminput}
 						</div>
 					{/legend}
+
+					{if $serviceEditTpls.menu}
+						{legend legend="Insert in Menu"}
+							{include file=$serviceEditTpls.menu"}
+						{/legend}
+					{/if}
 				{/jstab}
 			{/jstabs}
 		{/form}
