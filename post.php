@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.11 2005/08/16 04:38:45 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.12 2005/08/17 18:37:12 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -152,13 +152,6 @@ if (isset($_REQUEST["preview"])) {
 	$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
 	$gBitSmarty->assign('parsed_data', $parsed_data);
 	$gBitSmarty->assign('preview', 'y');
-
-	// get files from all packages that process this data further
-	foreach( $gBitSystem->getPackageIntegrationFiles( 'form_processor_inc.php', TRUE ) as $package => $file ) {
-		if( $gBitSystem->isPackageActive( $package ) ) {
-			include_once( $file );
-		}
-	}
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
 	$gBitSmarty->assign('individual', 'n');
 
