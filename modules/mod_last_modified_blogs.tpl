@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_modified_blogs.tpl,v 1.1.1.1.2.3 2005/08/22 18:59:10 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_modified_blogs.tpl,v 1.1.1.1.2.4 2005/08/22 19:26:05 spiderr Exp $ *}
 {strip}
 {if $gBitSystem->isFeatureActive( 'feature_blogs' )}
 	{if $nonums eq 'y'}
@@ -9,7 +9,7 @@
 	{bitmodule title="$moduleTitle" name="last_modified_blogs"}
 		<ol class="blogs">
 			{section name=ix loop=$modLastModifiedBlogs}
-				<li><a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$modLastModifiedBlogs[ix].blog_id}">{$modLastModifiedBlogs[ix].title|default:"Blog `$modLastModifiedBlogs[ix].blog_id`"}</a></li>
+				<li><a href="{$modLastModifiedBlogs[ix].blog_url}">{$modLastModifiedBlogs[ix].title|default:"Blog `$modLastModifiedBlogs[ix].blog_id`"}</a></li>
 			{sectionelse}
 				<li></li>
 			{/section}
