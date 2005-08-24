@@ -7,9 +7,6 @@
 /**
  * required setup
  */
-if ($gBitSystem->isPackageActive( 'categories' )) {
-  include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
-}
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
@@ -179,12 +176,6 @@ if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 
 	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );
-}
-
-if( $gBitSystem->isPackageActive( 'categories' ) ) {
-	$cat_obj_type = BITBLOGPOST_CONTENT_TYPE_GUID;
-	$cat_objid = $gContent->mContentId;
-	include_once( CATEGORIES_PKG_PATH.'categories_display_inc.php' );
 }
 
 if ( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && isset($_REQUEST['savenotepad'])) {
