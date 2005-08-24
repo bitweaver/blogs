@@ -75,20 +75,21 @@
 					<div class="date">
 						{if $blog_list_user eq 'y'}
 							{if $blog_list_user eq 'link'}
-								{tr}Created by{/tr} {$listpages[changes].user|userlink}
+								{tr}Created by {$listpages[changes].user|userlink}{/tr}
 							{elseif $blog_list_user eq 'avatar'}
 								{$listpages[changes].user|avatarize}
 							{else}
-								{tr}Created by{/tr} {$listpages[changes].user}
+								{tr}Created by {$listpages[changes].user}{/tr}
 							{/if}
 						{/if}
 
 						{if $blog_list_created eq 'y'}
-							<br />{tr}Created on{/tr} {$listpages[changes].created|bit_short_date}
+							{tr}{if $blog_list_user ne 'y'}<br />Created{/if} on {$listpages[changes].created|bit_short_date}{/tr}
+							<br />
 						{/if}
 
 						{if $blog_list_lastmodif eq 'y'}
-							<br />{tr}Last Modified{/tr} {$listpages[changes].last_modified|bit_short_datetime}
+							{tr}Last Modified {$listpages[changes].last_modified|bit_short_datetime}{/tr}
 						{/if}
 					</div>
 

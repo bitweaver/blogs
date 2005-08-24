@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_active_blogs.tpl,v 1.3 2005/08/07 17:35:54 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_active_blogs.tpl,v 1.4 2005/08/24 20:49:32 squareing Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'blogs' ) && $gBitUser->hasPermission( 'bit_p_read_blog' )}
 	{if $nonums eq 'y'}
@@ -9,7 +9,7 @@
 	{bitmodule title="$moduleTitle" name="top_active_blogs"}
 		<ol class="blogs">
 			{section name=ix loop=$modTopActiveBlogs}
-				<li><a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$modTopActiveBlogs[ix].blog_id}">{$modTopActiveBlogs[ix].title}</a></li>
+				<li><a href="{$modTopActiveBlogs[ix].blog_url}">{$modTopActiveBlogs[ix].title|default:"Blog `$modTopActiveBlogs[ix].blog_id`"}</a></li>
 			{sectionelse}
 				<li></li>
 			{/section}

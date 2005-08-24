@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.4 2005/08/07 17:35:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.5 2005/08/24 20:49:32 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -16,7 +16,7 @@ $iPageTitle = 'test';
  */
 require_once( '../bit_setup_inc.php' );
 
-if (defined("CATEGORIES_PKG_PATH")) {
+if ($gBitSystem->isPackageActive( 'categories' )) {
   include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 }
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
@@ -65,6 +65,9 @@ if ($gBitUser->object_has_one_permission( $_REQUEST["blog_id"], $gBlog->getConte
 $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 
 if ($gBitSystem->isPackageActive( 'categories' )) {
+	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
+	$cat_objid = $gContent->mContentId;
+	include_once( CATEGORIES_PKG_PATH.'categories_display_inc.php' );
 	if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
 		$categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
 	} elseif (isset($_REQUEST['delcategs']) and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
@@ -137,6 +140,7 @@ $listHash['blog_id'] = $_REQUEST['blog_id'];
 $listHash['parse_data'] = TRUE;
 $listHash['max_records'] = $blog_data['max_posts'];
 $listHash['load_num_comments'] = TRUE;
+$listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
 $blogPosts = $blogPost->getList( $listHash );
 //$blogPosts = $blogPost->getList($_REQUEST["blog_id"], $offset, $blog_data["max_posts"], $sort_mode, $find );
 if (!empty($_REQUEST['offset'])) {
@@ -168,8 +172,8 @@ $gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 //print_r($blogPosts["data"]);
 
 if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
-	$cat_type = 'blog';
-	$cat_objid = $_REQUEST['blog_id'];
+	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
+	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );
 }
 

@@ -9,12 +9,11 @@
     trackback:ping="{$uri2}" />
 </rdf:RDF>
 -->
-{if $gBitSystem->isPackageActive( 'pigeonholes' )}
-	{include file="bitpackage:pigeonholes/display_paths.tpl"}
-{/if}
 
 <div class="display blogs">
 	<div class="floaticon">
+		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon'}
+
 		{if ($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
 			<a href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 			<a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$post_info.blog_id}&amp;remove={$post_info.post_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
@@ -37,13 +36,12 @@
 				{$post_info.created|bit_long_date}
 			{/if}
 		</h1>
-		{if $gBitSystem->isPackageActive( 'categories' )}
-			{include file="bitpackage:categories/categories_nav.tpl"}
-		{/if}
 		<div class="date">
 			{$post_info.created|bit_long_date}
 		</div>
 	</div>
+
+{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav'}
 
 	<div class="body"
 	    {if $user_dbl eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' ))}
@@ -97,13 +95,8 @@
 		</table>
 	{/if}
 
-	{if $gBitSystem->isPackageActive( 'pigeonholes' )}
-		{include file="bitpackage:pigeonholes/display_members.tpl"}
-	{/if}
+	{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view'}
 
-	{if $gBitSystem->isPackageActive( 'categories' )}
-		{include file="bitpackage:categories/categories_objects.tpl"}
-	{/if}
 </div> {* end .blog *}
 
 {if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'feature_blogposts_comments' )}

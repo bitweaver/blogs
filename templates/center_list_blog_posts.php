@@ -9,13 +9,14 @@ if (defined("CATEGORIES_PKG_PATH")) {
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );
 
-if ($gBitSystem->isPackageActive( 'categories' )) {
+if ($gBitSystem->isPackageActive( 'vvcat' )) {
   if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
     $categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
   } elseif (isset($_REQUEST['delcategs']) and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
     $categlib->uncategorize('blogpost',$_REQUEST['post_id']);
   }
   $categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
+
   $gBitSmarty->assign('categs',$categs['data']);
   $gBitSmarty->assign('page','view.php');
   $choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
@@ -58,6 +59,8 @@ $gBitSmarty->assign('showBlogTitle', 'y');
 $listHash['max_records'] = $postRecords;
 $listHash['parse_data'] = TRUE;
 $listHash['load_comments'] = TRUE;
+$listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
+$listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
 // Get a list of last changes to the Wiki database
 if ($gQueryUserId) {
 	$listHash['user_id'] = $gQueryUserId;
@@ -66,6 +69,9 @@ if ($gQueryUserId) {
 }
 
 $blogPost = new BitBlogPost();
+if( empty( $gContent ) ) {
+	$smarty->assign_by_ref( 'gContent', $blogPost );
+}
 $blogPosts = $blogPost->getList( $listHash );
 
 // If there're more records then assign next_offset
@@ -85,7 +91,7 @@ if ($offset > 0) {
 } else {
 	$gBitSmarty->assign('prev_offset', -1);
 }
-
+$gBitSmarty->assign_by_ref('gQueryUserId', $listHash['user_id']);
 $gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 //print_r($blogPosts["data"]);
 

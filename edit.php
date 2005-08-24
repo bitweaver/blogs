@@ -1,10 +1,10 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.3 2005/08/01 18:40:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.4 2005/08/24 20:49:32 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
-// 
+//
 
 // @package blogs
 
@@ -117,7 +117,7 @@ if (isset($_REQUEST['preview'])) {
 }
 
 if (isset($_REQUEST['save_blog'])) {
-	
+
 	if (isset($_REQUEST["public"]) && $_REQUEST["public"] == 'on') {
 		$public = 'y';
 	} else {
@@ -135,23 +135,38 @@ if (isset($_REQUEST['save_blog'])) {
 	    $heading, $use_title, $use_find,
 	    $allow_comments);
 
-	$cat_type = 'blog';
-	$cat_objid = $bid;
+	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
+	$cat_objid = $gContent->mContentId;
 	$cat_desc = substr($_REQUEST["description"], 0, 200);
 	$cat_name = $_REQUEST["title"];
 	$cat_href = BitBlog::getBlogUrl( $cat_objid );
 	if ($gBitSystem->isPackageActive( 'categories' )) {
 		include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
+		foreach( $categories['data'] as $key => $cat ) {
+			foreach( $_REQUEST['cat_categories'] as $rCat ) {
+				if( $cat['category_id'] == $rCat ) {
+					$categories['data'][$key]['incat'] = 'y';
+				}
+			}
+		}
+
 	}
 
 	header ("location: ".BLOGS_PKG_URL.'post.php?blog_id='.$bid );
 	die;
 }
 
-$cat_type = 'blog';
-$cat_objid = $blog_id;
+$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
+$cat_objid = $gContent->mContentId;
 if ($gBitSystem->isPackageActive( 'categories' )) {
 	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
+	foreach( $categories['data'] as $key => $cat ) {
+		foreach( $_REQUEST['cat_categories'] as $rCat ) {
+			if( $cat['category_id'] == $rCat ) {
+				$categories['data'][$key]['incat'] = 'y';
+			}
+		}
+	}
 }
 
 

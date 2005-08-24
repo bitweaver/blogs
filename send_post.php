@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.5 2005/08/07 17:35:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.6 2005/08/24 20:49:32 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -83,9 +83,8 @@ if ($feature_blogposts_comments == 'y') {
 $section = 'blogs';
 
 if ($feature_theme_control == 'y') {
-	$cat_type = 'blog';
-
-	$cat_objid = $_REQUEST['blog_id'];
+	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
+	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );
 }
 

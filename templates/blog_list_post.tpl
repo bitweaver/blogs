@@ -7,6 +7,7 @@
 >
 	{if $gBitUser->hasPermission( 'bit_p_view_tabs_and_tools' )}
 		<div class="floaticon">
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$blogPosts[ix]}
 			{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
 				<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$blogPosts[ix].blog_id}">{biticon ipackage=rss iname=rss iexplain="rss feed"}</a>
 			{/if}
@@ -34,11 +35,7 @@
 		{/if}
 
 		<div class="date">
-			{if $gBitSystem->isPackageActive( 'categories' )}
-				{assign var=cats value=$blogPosts[ix].categs}
-				{include file="bitpackage:categories/categories_nav.tpl"}
-			{/if}
-
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$blogPosts[ix]}
 			{if $showBlogTitle}{displayname hash=$blogPosts[ix]} {tr}in{/tr} <a href="{$blogPosts[ix].blog_url}">{$blogPosts[ix].blogtitle}</a>{/if}<br />
 			{$blogPosts[ix].created|bit_long_date}
 		</div>
