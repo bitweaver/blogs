@@ -193,8 +193,9 @@ class BitBlog extends BitBase {
 	function replace_blog($title, $description, $user_id, $public, $max_posts, $blog_id, $heading, $use_title, $use_find,
 		$allow_comments, $creation_date = NULL) {
 		global $gBitSystem;
+		$now = date("U");
 		if ($creation_date == NULL)
-			$creation_date = (int)$gBitSystem->getUTCTime();
+			$creation_date = (int)$now;
 
 		if ( !empty( $blog_id ) ) {
 			$query = "update `".BIT_DB_PREFIX."tiki_blogs` set `title`=? ,`description`=?,`user_id`=?,`public`=?,`last_modified`=?,`max_posts`=?,`heading`=?,`use_title`=?,`use_find`=?,`allow_comments`=? where `blog_id`=?";
