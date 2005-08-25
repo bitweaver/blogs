@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.12 2005/08/17 18:37:12 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.13 2005/08/25 17:09:16 lsces Exp $
 
  * @package blogs
  * @subpackage functions
@@ -91,7 +91,7 @@ if (count($blogs) == 0) {
 }
 
 $gBitSmarty->assign('data', '');
-$gBitSmarty->assign('created', date("U"));
+$gBitSmarty->assign('created', $gBitSystem->getUTCTime());
 
 $blog_data = $gBlog->get_blog($blog_id);
 $gBitSmarty->assign_by_ref('blog_data', $blog_data);

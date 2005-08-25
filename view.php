@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.7 2005/08/15 16:33:41 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.8 2005/08/25 17:09:16 lsces Exp $
 
  * @package blogs
  * @subpackage functions
@@ -133,7 +133,7 @@ if (isset($_REQUEST["remove"])) {
 }
 
 
-$now = date("U");
+$now = $gBitSystem->getUTCTime();
 
 $blogPost = new BitBlogPost();
 $listHash['blog_id'] = $_REQUEST['blog_id'];
