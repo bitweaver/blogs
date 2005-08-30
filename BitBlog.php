@@ -192,7 +192,8 @@ class BitBlog extends BitBase {
 
 	function replace_blog($title, $description, $user_id, $public, $max_posts, $blog_id, $heading, $use_title, $use_find,
 		$allow_comments, $creation_date = NULL) {
-		$now = date("U");
+		global $gBitSystem;
+		$now = $gBitSystem->getUTCTime();
 		if ($creation_date == NULL)
 			$creation_date = (int)$now;
 

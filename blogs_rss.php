@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.3 2005/07/17 17:35:56 squareing Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.4 2005/08/30 22:14:46 squareing Exp $
 * @package blogs
 * @subpackage functions
 
@@ -38,7 +38,7 @@ if (!empty($_REQUEST['blog_id'])) {
 	$title = "Blogs RSS feed for ".$gBitSystem->getPreference("siteTitle","Tiki");
 	$desc = $gBitSystem->getPreference( 'desc_rss_blog', "Last modifications to the Blogs" );
 }
-$now = date("U");
+$now = $gBitSystem->getUTCTime();
 $id = "blog_id";
 $desc_id = "parsed_data";
 $dateId = "created";

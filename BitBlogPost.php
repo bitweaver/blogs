@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.6 2005/08/24 20:49:32 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.7 2005/08/30 22:14:46 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.6 2005/08/24 20:49:32 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.7 2005/08/30 22:14:46 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.6 $ $Date: 2005/08/24 20:49:32 $ $Author: squareing $
+ * @version $Revision: 1.7 $ $Date: 2005/08/30 22:14:46 $ $Author: squareing $
  */
 
 /**
@@ -166,11 +166,11 @@ class BitBlogPost extends LibertyAttachable {
 				LibertyContent::store( $pParamHash );
 			}
 			if (empty($pParamHash['post_id'])) {
-				global $gBitSmarty;
+				global $gBitSmarty, $gBitSystem;
 				global $feature_user_watches;
 				$tracks = serialize(explode(',', $pParamHash['trackback']));
 				$pParamHash['edit'] = strip_tags($pParamHash['edit'], '<a><b><i><h1><h2><h3><h4><h5><h6><ul><li><ol><br><p><table><tr><td><img><pre>');
-				$now = date("U");
+				$now = $gBitSystem->getUTCTime();
 				if (empty($pParamHash['post_date']))
 					$pParamHash['post_date'] = (int)$now;
 				$pParamHash['post_id'] = $this->mDb->GenID('tiki_blog_posts_post_id_seq');
@@ -200,7 +200,7 @@ class BitBlogPost extends LibertyAttachable {
 							$gBitSmarty->assign('mail_title', $this->mInfo['title']);
 							$gBitSmarty->assign('mail_blogid', $this->mInfo['blog_id']);
 							$gBitSmarty->assign('mail_postid', $this->mPostId);
-							$gBitSmarty->assign('mail_date', date("U"));
+							$gBitSmarty->assign('mail_date', $gBitSystem->getUTCTime());
 							$gBitSmarty->assign('mail_user', $this->mInfo['user']);
 							$gBitSmarty->assign('mail_data', $this->mInfo['data']);
 							$gBitSmarty->assign('mail_hash', $not['hash']);

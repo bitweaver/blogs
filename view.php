@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.5 2005/08/24 20:49:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.6 2005/08/30 22:14:46 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -133,7 +133,7 @@ if (isset($_REQUEST["remove"])) {
 }
 
 
-$now = date("U");
+$now = $gBitSystem->getUTCTime();
 
 $blogPost = new BitBlogPost();
 $listHash['blog_id'] = $_REQUEST['blog_id'];
@@ -141,6 +141,7 @@ $listHash['parse_data'] = TRUE;
 $listHash['max_records'] = $blog_data['max_posts'];
 $listHash['load_num_comments'] = TRUE;
 $listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
+$listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
 $blogPosts = $blogPost->getList( $listHash );
 //$blogPosts = $blogPost->getList($_REQUEST["blog_id"], $offset, $blog_data["max_posts"], $sort_mode, $find );
 if (!empty($_REQUEST['offset'])) {
