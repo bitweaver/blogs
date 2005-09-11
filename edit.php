@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.5 2005/08/16 04:38:45 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.6 2005/09/11 08:22:23 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -136,7 +136,7 @@ if (isset($_REQUEST['save_blog'])) {
 	    $allow_comments);
 
 	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
-	$cat_objid = $gContent->mContentId;
+	$cat_objid = $bid;
 	$cat_desc = substr($_REQUEST["description"], 0, 200);
 	$cat_name = $_REQUEST["title"];
 	$cat_href = BitBlog::getBlogUrl( $cat_objid );
@@ -157,7 +157,7 @@ if (isset($_REQUEST['save_blog'])) {
 }
 
 $cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
-$cat_objid = $gContent->mContentId;
+$cat_objid = $blog_id;
 if ($gBitSystem->isPackageActive( 'categories' )) {
 	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
 	foreach( $categories['data'] as $key => $cat ) {
