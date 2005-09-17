@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.6 2005/09/11 08:22:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.7 2005/09/17 14:10:42 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -135,39 +135,38 @@ if (isset($_REQUEST['save_blog'])) {
 	    $heading, $use_title, $use_find,
 	    $allow_comments);
 
-	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
-	$cat_objid = $bid;
-	$cat_desc = substr($_REQUEST["description"], 0, 200);
-	$cat_name = $_REQUEST["title"];
-	$cat_href = BitBlog::getBlogUrl( $cat_objid );
-	if ($gBitSystem->isPackageActive( 'categories' )) {
-		include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
-		foreach( $categories['data'] as $key => $cat ) {
-			foreach( $_REQUEST['cat_categories'] as $rCat ) {
-				if( $cat['category_id'] == $rCat ) {
-					$categories['data'][$key]['incat'] = 'y';
-				}
-			}
-		}
-
-	}
+//	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
+//	$cat_objid = $bid;
+//	$cat_desc = substr($_REQUEST["description"], 0, 200);
+//	$cat_name = $_REQUEST["title"];
+//	$cat_href = BitBlog::getBlogUrl( $cat_objid );
+//	if ($gBitSystem->isPackageActive( 'categories' )) {
+//		include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
+//		foreach( $categories['data'] as $key => $cat ) {
+//			foreach( $_REQUEST['cat_categories'] as $rCat ) {
+//				if( $cat['category_id'] == $rCat ) {
+//					$categories['data'][$key]['incat'] = 'y';
+//				}
+//			}
+//		}
+//	}
 
 	header ("location: ".BLOGS_PKG_URL.'post.php?blog_id='.$bid );
 	die;
 }
 
-$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
-$cat_objid = $blog_id;
-if ($gBitSystem->isPackageActive( 'categories' )) {
-	include_once( CATEGORIES_PKG_PATH.'categorize_list_inc.php' );
-	foreach( $categories['data'] as $key => $cat ) {
-		foreach( $_REQUEST['cat_categories'] as $rCat ) {
-			if( $cat['category_id'] == $rCat ) {
-				$categories['data'][$key]['incat'] = 'y';
-			}
-		}
-	}
-}
+//$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
+//$cat_objid = $blog_id;
+//if ($gBitSystem->isPackageActive( 'categories' )) {
+//	include_once( CATEGORIES_PKG_PATH.'categorize_inc.php' );
+//	foreach( $categories['data'] as $key => $cat ) {
+//		foreach( $_REQUEST['cat_categories'] as $rCat ) {
+//			if( $cat['category_id'] == $rCat ) {
+//				$categories['data'][$key]['incat'] = 'y';
+//			}
+//		}
+//	}
+//}
 
 
 $gBitSystem->setBrowserTitle("Edit Blog Post - ".$data['title']);
