@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.8 2005/09/21 21:45:05 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.9 2005/09/21 22:51:10 squareing Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -71,7 +71,7 @@ function confirmDelete(fileName, location) {
 							{/forminput}
 						</div>
 
-						{include file="bitpackage:liberty/edit_service_minis_inc.tpl}
+						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
 
 						<div class="row submit">
 							<input type="submit" name="preview" value="{tr}Preview{/tr}" />&nbsp;
@@ -80,7 +80,7 @@ function confirmDelete(fileName, location) {
 					{/legend}
 				{/jstab}
 
-				{include file="bitpackage:liberty/edit_service_tabs_inc.tpl}
+				{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_tab_tpl}
 
 				{jstab title="Attachments"}
 					{legend legend="Attachments"}
