@@ -70,7 +70,7 @@ if ($gQueryUserId) {
 
 $blogPost = new BitBlogPost();
 if( empty( $gContent ) ) {
-	$smarty->assign_by_ref( 'gContent', $blogPost );
+	$gBitSmarty->assign_by_ref( 'gContent', $blogPost );
 }
 $blogPosts = $blogPost->getList( $listHash );
 
