@@ -1,9 +1,9 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.5 2005/08/05 22:59:51 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.6 2005/10/11 05:41:58 spiderr Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
 		{if $gBitUser->hasPermission( 'bit_p_blog_post' )}
-			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->object_has_permission($gBitUser->mUserId, $blog_id, 'bitblog', 'bit_p_blog_post') or $gBitUser->hasPermission( 'bit_p_blog_admin' ) or $public eq 'y'}			
+			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->object_has_permission($gBitUser->mUserId, $blog_id, 'bitblog', 'bit_p_blog_post') or $gBitUser->hasPermission( 'bit_p_blog_admin' ) or $public eq 'y'}
 				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="post" iexplain="post"}</a>
 			{/if}
 		{/if}
@@ -15,7 +15,7 @@
 		{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
 			<a title="{tr}Edit blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="config" iexplain="edit"}</a>
 		{/if}
-		
+
 		{if $gBitUser->isRegistered() and $gBitSystem->isFeatureActive( 'feature_user_watches' )}
 			{if $user_watching_blog eq 'n'}
 				<a title="{tr}monitor this blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$blog_id}&amp;watch_event=blog_post&amp;watch_object={$blog_id}&amp;watch_action=add">{biticon ipackage="users" iname="watch" iexplain="monitor this blog"}</a>
