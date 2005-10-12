@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.6 2005/08/24 20:49:32 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.7 2005/10/12 15:13:49 spiderr Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -8,8 +8,6 @@ function confirmDelete(fileName, location) {
 }
 </script>
 {/literal}
-
-{assign var=serviceEditTpls value=$gLibertySystem->getServiceValues('content_edit_tpl')}
 
 {strip}
 <div class="edit blogs">
@@ -73,10 +71,7 @@ function confirmDelete(fileName, location) {
 							{/forminput}
 						</div>
 
-						{if $serviceEditTpls.access_control }
-							{include file=$serviceEditTpls.access_control"}
-						{/if}
-
+						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
 
 						<div class="row submit">
 							<input type="submit" name="preview" value="{tr}Preview{/tr}" />&nbsp;
@@ -85,13 +80,7 @@ function confirmDelete(fileName, location) {
 					{/legend}
 				{/jstab}
 
-				{if $serviceEditTpls.categorization }
-					{jstab title="Categorize"}
-						{legend legend="Categorize"}
-							{include file=$serviceEditTpls.categorization"}
-						{/legend}
-					{/jstab}
-				{/if}
+				{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_tab_tpl}
 
 				{jstab title="Attachments"}
 					{legend legend="Attachments"}
@@ -109,12 +98,6 @@ function confirmDelete(fileName, location) {
 							{/forminput}
 						</div>
 					{/legend}
-
-					{if $serviceEditTpls.menu}
-						{legend legend="Insert in Menu"}
-							{include file=$serviceEditTpls.menu"}
-						{/legend}
-					{/if}
 				{/jstab}
 			{/jstabs}
 		{/form}

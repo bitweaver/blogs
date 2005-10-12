@@ -3,7 +3,7 @@
  * @package blogs
  */
 
-global $gBitSystem, $gBitSmarty, $bit_p_blog_admin;
+global $gBitSystem, $gBitUser, $gBitSmarty, $bit_p_blog_admin;
 $gBitSystem->registerPackage( 'blogs', dirname( __FILE__).'/' );
 
 if( $gBitSystem->isPackageActive( 'blogs' ) ) {

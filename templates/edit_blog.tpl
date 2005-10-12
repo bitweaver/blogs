@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.3 2005/08/07 17:35:55 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.4 2005/10/12 15:13:49 spiderr Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -25,81 +25,69 @@
 		{/if}
 
 		{form ipackage="blogs" ifile="edit.php"}
-			{jstabs}
-				{jstab title="Edit/Create Blog"}
-					{legend legend="Edit Blog"}
-						<input type="hidden" name="blog_id" value="{$blog_id|escape}" />
-						<div class="row">
-							{formfeedback warning=$warning}
-							{formlabel label="Title" for="title"}
-							{forminput}
-								<input type="text" name="title" id="title" value="{if $title}{$title|escape}{else}{displayname hash=$gBitUser->mInfo nolink=FALSE}'s Blog{/if}" />
-							{/forminput}
-						</div>
+			{legend legend="Edit Blog"}
+				<input type="hidden" name="blog_id" value="{$blog_id|escape}" />
+				<div class="row">
+					{formfeedback warning=$warning}
+					{formlabel label="Title" for="title"}
+					{forminput}
+						<input type="text" name="title" id="title" value="{if $title}{$title|escape}{else}{displayname hash=$gBitUser->mInfo nolink=FALSE}'s Blog{/if}" />
+					{/forminput}
+				</div>
 
-						<div class="row">
-							{formlabel label="Description" for="description"}
-							{forminput}
-								<textarea name="description" id="description" rows="2" cols="40">{$description|escape}</textarea>
-								{formhelp note=''}
-							{/forminput}
-						</div>
+				<div class="row">
+					{formlabel label="Description" for="description"}
+					{forminput}
+						<textarea name="description" id="description" rows="2" cols="40">{$description|escape}</textarea>
+						{formhelp note=''}
+					{/forminput}
+				</div>
 
-						<div class="row">
-							{formlabel label="Number of posts to show" for="max_posts"}
-							{forminput}
-								<input type="text" name="max_posts" id="max_posts" value="{$max_posts|escape|default:10}" />
-								{formhelp note='Enter the number of blog posts you wish to display when viewing this blog.'}
-							{/forminput}
-						</div>
+				<div class="row">
+					{formlabel label="Number of posts to show" for="max_posts"}
+					{forminput}
+						<input type="text" name="max_posts" id="max_posts" value="{$max_posts|escape|default:10}" />
+						{formhelp note='Enter the number of blog posts you wish to display when viewing this blog.'}
+					{/forminput}
+				</div>
 
-						<div class="row">
-							{formlabel label="Allow other user to post in this blog" for="public"}
-							{forminput}
-								<input type="checkbox" name="public" id="public" {if $public eq 'y'}checked="checked"{/if} />
-								{formhelp note=''}
-							{/forminput}
-						</div>
+				<div class="row">
+					{formlabel label="Public" for="public"}
+					{forminput}
+						<input type="checkbox" name="public" id="public" {if $public eq 'y'}checked="checked"{/if} />
+						{formhelp note='Allow other user to post in this blog'}
+					{/forminput}
+				</div>
 
-						<div class="row">
-							{formlabel label="Use titles in blog posts" for="use_title"}
-							{forminput}
-								<input type="checkbox" name="use_title" id="use_title" {if !$use_title || $use_title eq 'y'}checked="checked"{/if} />
-								{formhelp note='If this is not seelcted, the time and date of when the post was created will be displayed instead of the post title.'}
-							{/forminput}
-						</div>
+				<div class="row">
+					{formlabel label="Use titles in blog posts" for="use_title"}
+					{forminput}
+						<input type="checkbox" name="use_title" id="use_title" {if !$use_title || $use_title eq 'y'}checked="checked"{/if} />
+						{formhelp note='If this is not seelcted, the time and date of when the post was created will be displayed instead of the post title.'}
+					{/forminput}
+				</div>
 
-						<div class="row">
-							{formlabel label="Allow search" for="use_find"}
-							{forminput}
-								<input type="checkbox" name="use_find" id="use_find" {if !$use_find || $use_find eq 'y'}checked="checked"{/if} />
-								{formhelp note='Allow userers to search this blog for occurances of words.'}
-							{/forminput}
-						</div>
+				<div class="row">
+					{formlabel label="Allow search" for="use_find"}
+					{forminput}
+						<input type="checkbox" name="use_find" id="use_find" {if !$use_find || $use_find eq 'y'}checked="checked"{/if} />
+						{formhelp note='Allow userers to search this blog for occurances of words.'}
+					{/forminput}
+				</div>
 
-						<div class="row">
-							{formlabel label="Allow comments" for="allow_comments"}
-							{forminput}
-								<input type="checkbox" name="allow_comments" id="allow_comments" {if !$allow_comments || $allow_comments eq 'y'}checked="checked"{/if} />
-								{formhelp note='Are other users allowed to add comments to posts made in this blog?'}
-							{/forminput}
-						</div>
+				<div class="row">
+					{formlabel label="Allow comments" for="allow_comments"}
+					{forminput}
+						<input type="checkbox" name="allow_comments" id="allow_comments" {if !$allow_comments || $allow_comments eq 'y'}checked="checked"{/if} />
+						{formhelp note='Are other users allowed to add comments to posts made in this blog?'}
+					{/forminput}
+				</div>
 
-						<div class="row submit">
-							<input type="submit" name="preview" value="{tr}preview{/tr}" />&nbsp;
-							<input type="submit" name="save_blog" value="{tr}save{/tr}" />
-						</div>
-					{/legend}
-				{/jstab}
-
-				{if $gBitSystem->isPackageActive( 'categories' )}
-					{jstab title="Categorize"}
-						{legend legend="Categorize"}
-							{include file="bitpackage:categories/categorize.tpl"}
-						{/legend}
-					{/jstab}
-				{/if}
-			{/jstabs}
+				<div class="row submit">
+					<input type="submit" name="preview" value="{tr}preview{/tr}" />&nbsp;
+					<input type="submit" name="save_blog" value="{tr}save{/tr}" />
+				</div>
+			{/legend}
 		{/form}
 
 	</div><!-- end .body -->

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.6 2005/08/30 22:14:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.7 2005/10/12 15:13:49 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -20,7 +20,7 @@ if ($gBitSystem->isPackageActive( 'categories' )) {
   include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 }
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
-	
+
 $gBitSystem->verifyPackage( 'blogs' );
 $gBitSmarty->assign('showBlogTitle', 'y');
 
@@ -28,7 +28,7 @@ if (isset($_REQUEST['user_id']) && !isset($_REQUEST['blog_id'])) {
 	// We will try and grab the first blog owned by the user id given
 	$blogsList = $gBlog->list_user_blogs($_REQUEST['user_id']);
 	if (!empty($blogsList[0]['blog_id'])) {
-		$_REQUEST['blog_id'] = $blogsList[0]['blog_id'];		
+		$_REQUEST['blog_id'] = $blogsList[0]['blog_id'];
 	}
 }
 
@@ -65,9 +65,8 @@ if ($gBitUser->object_has_one_permission( $_REQUEST["blog_id"], $gBlog->getConte
 $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 
 if ($gBitSystem->isPackageActive( 'categories' )) {
-	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
-	$cat_objid = $gContent->mContentId;
-	include_once( CATEGORIES_PKG_PATH.'categories_display_inc.php' );
+	$gBlog->mContentId = $_REQUEST["blog_id"];
+	categories_display( $gBlog );
 	if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
 		$categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
 	} elseif (isset($_REQUEST['delcategs']) and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
@@ -113,13 +112,13 @@ $gBitSmarty->assign('avatar', $blog_data["avatar"]);
 $gBitSmarty->assign_by_ref('blog_data', $blog_data);
 
 if (isset($_REQUEST["remove"])) {
-	
+
 	$blogPost = new BitBlogPost( $_REQUEST["remove"] );
 	if( $blogPost->load() ) {
 		if( !$ownsblog && !$gBitUser->mUserId || $blogPost->mInfo["user_id"] != $gBitUser->mUserId) {
 			$gBitSystem->verifyPermission( 'bit_p_blog_admin', "Permission denied you cannot remove this post" );
 		}
-		
+
 		if( !empty( $_REQUEST['cancel'] ) ) {
 			// user cancelled - just continue on, doing nothing
 		} elseif( empty( $_REQUEST['confirm'] ) ) {
@@ -179,7 +178,7 @@ if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 }
 
 if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->hasPermission( 'bit_p_notepad' ) && isset($_REQUEST['savenotepad']) ) {
-	
+
 	$blogPost = new BitBlogPost( $_REQUEST['savenotepad'] );
 	if( $blogPost->load() ) {
 		$gBitSystem->replace_note( $gBitUser->mUserId, 0, $blogPost->mInfo['title'] ? $blogPost->mInfo['title'] : date("d/m/Y [h:i]", $blogPost->mInfo['created']), $blogPost->mInfo['data']);
@@ -188,7 +187,7 @@ if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->hasPermission( 'bit_
 
 if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 	if( $gBitUser->isValid() && isset( $_REQUEST['watch_event'] ) ) {
-		
+
 		if ($_REQUEST['watch_action'] == 'add') {
 			$blogPost = new BitBlogPost( $_REQUEST['watch_object'] );
 			if( $blogPost->load() ) {
