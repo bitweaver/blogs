@@ -1,64 +1,51 @@
 <?php
-/**
-* @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.1.1.1.2.4 2005/08/25 17:09:16 lsces Exp $
-* @package blogs
-* @subpackage functions
-
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-*/
-
-/**
- * required setup
- */
-require_once( '../bit_setup_inc.php' );
-require_once( KERNEL_PKG_PATH.'BitBase.php' );
+require_once( "../bit_setup_inc.php" );
+require_once( RSS_PKG_PATH."rss_inc.php" );
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
-global $gBitSystem;
+$gBitSystem->verifyPackage( 'rss' );
+$gBitSystem->verifyPackage( 'blogs' );
+$gBitUser->hasPermission( 'bit_p_read_blog' );
 
-if ($rss_blogs != 'y') {
-	$errmsg=tra("rss feed disabled");
-	require_once( RSS_PKG_PATH.'rss_error.php' );
-}
+// feed info
+$rss->title = $gBitSystem->getPreference( 'title_rss_blogs', $gBitSystem->mPrefs['siteTitle'] );
+$rss->description = $gBitSystem->getPreference( 'desc_rss_blogs', $gBitSystem->mPrefs['siteTitle'].' - '.tra( 'RSS Feed' ) );
 
-if (!$gBitUser->hasPermission( 'bit_p_read_blog' )) {
-	$errmsg=tra("Permission denied you cannot view this section");
-	require_once( RSS_PKG_PATH.'rss_error.php' );
-}
-
-
-if (!empty($_REQUEST['blog_id'])) {
-	$blogInfo = $gBlog->get_blog($_REQUEST['blog_id']);
-	$title = $gBitSystem->getPreference( 'title_rss_blog', "RSS feed for " ).$blogInfo['title'];
-	$desc = $gBitSystem->getPreference( 'desc_rss_blog', "Last modifications to the Blog: " ).$blogInfo['description'];
-} else {	
-	$title = "Blogs RSS feed for ".$gBitSystem->getPreference("siteTitle","Tiki");
-	$desc = $gBitSystem->getPreference( 'desc_rss_blog', "Last modifications to the Blogs" );
-}
-$now = $gBitSystem->getUTCTime();
-$id = "blog_id";
-$desc_id = "parsed_data";
-$dateId = "created";
-$readrepl = "view_post.php?$id=";
-
-require( RSS_PKG_PATH.'rss_read_cache.php' );
-
-if ($output == "EMPTY") {
+// check permission to view wiki pages
+if( !$gBitUser->hasPermission( 'bit_p_read_blog' ) ) {
+	require_once( RSS_PKG_PATH."rss_error.php" );
+} else {
 	$blogPost = new BitBlogPost();
-	$listHash['sort_mode'] = $dateId.'_desc';
+	$listHash['sort_mode'] = 'last_modified_desc';
 	$listHash['max_records'] = $gBitSystem->getPreference( 'max_rss_blogs', 10 );
 	$listHash['parse_data'] = TRUE;
-	if (!empty($_REQUEST['blog_id'])) {
+	if( !empty($_REQUEST['blog_id'] ) ) {
 		$listHash['blog_id'] = $_REQUEST['blog_id'];
 	}
+	$feeds = $blogPost->getList( $listHash );
 
-	$changes = $blogPost->getList( $listHash );
-	$output="";
+	// get all the data ready for the feed creator
+	foreach( $feeds['data'] as $feed ) {
+		$item = new FeedItem();
+		$item->title = $feed['title'];
+		$item->link = 'http://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL.$blogPost->getDisplayUrl( $feed['post_id'] );
+		$item->description = $feed['data'];
+
+		$item->date = (int) $feed['last_modified'];
+		$item->source = 'http://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL;
+		$item->author = $gBitUser->getDisplayName( FALSE, $feed );
+
+		$item->descriptionTruncSize = $gBitSystem->getPreference( 'rssfeed_truncate', 500 );
+		$item->descriptionHtmlSyndicated = true;
+
+		// pass the item on to the rss feed creator
+		$rss->addItem( $item );
+	}
+
+	// finally we are ready to serve the data
+	$cacheFile = TEMP_PKG_PATH.'rss/blogs_'.$version.'.xml';
+	$rss->useCached( $cacheFile ); // use cached version if age < 1 hour
+	echo $rss->saveFeed( $rss_version_name, $cacheFile );
 }
-
-require( RSS_PKG_PATH.'rss.php' );
-
 ?>
