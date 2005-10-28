@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.9 2005/09/21 22:51:10 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.10 2005/10/28 13:10:34 squareing Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -73,6 +73,8 @@ function confirmDelete(fileName, location) {
 
 						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
 
+						{include file="bitpackage:liberty/edit_storage_list.tpl"}
+
 						<div class="row submit">
 							<input type="submit" name="preview" value="{tr}Preview{/tr}" />&nbsp;
 							<input type="submit" name="save_post_exit" value="{tr}Save{/tr}" />
@@ -101,24 +103,6 @@ function confirmDelete(fileName, location) {
 				{/jstab}
 			{/jstabs}
 		{/form}
-
-		{if count($post_images) > 0}
-			<table class="data">
-				<tr>
-					<th>Filename</th><th>Link</th><th>Actions</th>
-				</tr>
-				{foreach key=attachmentId from=$post_images item=storage}
-				<tr class="{cycle values="odd,even"}">
-					<td align="center">{if $storage.thumbnail_url.small}<img src="{$storage.thumbnail_url.small}" /><br/>{/if}{$storage.filename}</td>
-					<td>{$storage.wiki_plugin_link|escape}</td>
-					<td align="right"><a href="javascript:confirmDelete('Delete {$storage.filename}?','{$smarty.const.BLOGS_PKG_URL}post.php?post_id={$post_id}&amp;remove_image={$attachmentId}')">{biticon ipackage=liberty iname=delete iexplain="remove"}</a></td>
-				</tr>
-				{/foreach}
-				<tr>
-					<td colspan="3">Copy the links listed above into the text field to display the images in your blog post</td>
-				</tr>
-			</table>
-		{/if}
 
 		<br /><br />
 		{include file="bitpackage:liberty/edit_help_inc.tpl"}
