@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.4 2005/10/12 15:13:49 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.5 2005/10/29 17:51:57 squareing Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -9,15 +9,21 @@
 	</div>
 
 	<div class="body">
-		{if strlen($heading) > 0}
-		<div class="preview">
-			<div class="heading">
-				<h2>{$description}</h2>
+		{if strlen($title) > 0}
+			<div class="preview">
+				<div class="header">
+					<h1>{$title}</h1>
+					{if $description}<h2>{$description}</h2>{/if}
+					{if strlen($heading) > 0}
+						<div class="introduction">{eval var=$heading}</div>
+					{else}
+						<div class="date">
+							{tr}Created by{/tr} {displayname hash=$blog_data}{tr} on {/tr}{$created|bit_short_datetime}<br />
+							{tr}Last modified{/tr} {$last_modified|bit_short_datetime}
+						</div>
+					{/if}
+				</div>
 			</div>
-			<div class="introduction">
-			  {eval var=$heading}
-			</div>
-		</div>
 		{/if}
 
 		{if $individual eq 'y'}
@@ -38,7 +44,7 @@
 				<div class="row">
 					{formlabel label="Description" for="description"}
 					{forminput}
-						<textarea name="description" id="description" rows="2" cols="40">{$description|escape}</textarea>
+						<textarea name="description" id="description" rows="2" cols="50">{$description|escape}</textarea>
 						{formhelp note=''}
 					{/forminput}
 				</div>

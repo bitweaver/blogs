@@ -3,37 +3,37 @@
 $tables = array(
 
 'tiki_blog_activity' => "
-  blog_id I4 NOTNULL PRIMARY,
-  day I8 NOTNULL PRIMARY,
-  posts I4
+	blog_id I4 NOTNULL PRIMARY,
+	day I8 NOTNULL PRIMARY,
+	posts I4
 ",
 
 'tiki_blog_posts' => "
-  post_id I4 PRIMARY,
-  content_id I4 NOTNULL,
-  blog_id I4 NOTNULL,
-  trackbacks_to X,
-  trackbacks_from X
+	post_id I4 PRIMARY,
+	content_id I4 NOTNULL,
+	blog_id I4 NOTNULL,
+	trackbacks_to X,
+	trackbacks_from X
 ",
 
 'tiki_blogs' => "
-  blog_id I4 AUTO PRIMARY,
-  user_id I4 NOTNULL,
-  created I8 NOTNULL,
-  last_modified I8 NOTNULL,
-  title C(200),
-  description X,
-  `public` C(1),
-  posts I4,
-  max_posts I4,
-  hits I4,
-  activity decimal(4,2),
-  heading X,
-  use_find C(1),
-  use_title C(1),
-  add_date C(1),
-  add_poster C(1),
-  allow_comments C(1)
+	blog_id I4 AUTO PRIMARY,
+	user_id I4 NOTNULL,
+	created I8 NOTNULL,
+	last_modified I8 NOTNULL,
+	title C(200),
+	description X,
+	`public` C(1),
+	posts I4,
+	max_posts I4,
+	hits I4,
+	activity decimal(4,2),
+	heading X,
+	use_find C(1),
+	use_title C(1),
+	add_date C(1),
+	add_poster C(1),
+	allow_comments C(1)
 "
 
 );

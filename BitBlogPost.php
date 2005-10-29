@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.7 2005/08/30 22:14:46 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.8 2005/10/29 17:51:56 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.7 2005/08/30 22:14:46 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.8 2005/10/29 17:51:56 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.7 $ $Date: 2005/08/30 22:14:46 $ $Author: squareing $
+ * @version $Revision: 1.8 $ $Date: 2005/10/29 17:51:56 $ $Author: squareing $
  */
 
 /**
@@ -103,7 +103,7 @@ class BitBlogPost extends LibertyAttachable {
 				LibertyAttachable::load();
 				if( $this->mStorage ) {
 					foreach( array_keys( $this->mStorage ) as $key ) {
-						$this->mStorage[$key]['wiki_plugin_link'] = '{ATTACHMENT(id=>'.$key.')}{ATTACHMENT}';
+						$this->mStorage[$key]['wiki_plugin_link'] = '{attachment id='.$key.'}';
 					}
 				}
 			}
@@ -388,7 +388,7 @@ class BitBlogPost extends LibertyAttachable {
 			$bindVars[]= $pListHash['date'];
 		}
 
-		$query = "SELECT tbp.*, tc.*, tct.*, tb.`title` AS `blogtitle`, tb.`allow_comments`, uu.`email`, uu.`login` as `user`, uu.`real_name`, tf.`storage_path` as avatar $selectSql
+		$query = "SELECT tbp.*, tc.*, tct.*, tb.`title` AS `blogtitle`, tb.`description` AS `blogdescription`, tb.`allow_comments`, uu.`email`, uu.`login` as `user`, uu.`real_name`, tf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."tiki_blogs` tb, `".BIT_DB_PREFIX."tiki_blog_posts` tbp
 				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tbp.`content_id`)
 				INNER JOIN `".BIT_DB_PREFIX."tiki_content_types` tct ON (tc.`content_type_guid` = tct.`content_type_guid`)
