@@ -23,7 +23,7 @@
 				<div class="row">
 					{formlabel label="Email Addresses" for="addresses"}
 					{forminput}
-						<textarea cols="60" rows="2" name="addresses" id="addresses">{$addresses|escape}</textarea>
+						<textarea cols="50" rows="2" name="addresses" id="addresses">{$addresses|escape}</textarea>
 						{formhelp note="List of email addresses separated by commas."}
 					{/forminput}
 				</div>

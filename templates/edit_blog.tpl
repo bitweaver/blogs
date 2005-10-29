@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.1.1.1.2.3 2005/09/17 14:10:42 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.1.1.1.2.4 2005/10/29 11:43:05 squareing Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -38,7 +38,7 @@
 				<div class="row">
 					{formlabel label="Description" for="description"}
 					{forminput}
-						<textarea name="description" id="description" rows="2" cols="40">{$description|escape}</textarea>
+						<textarea name="description" id="description" rows="2" cols="50">{$description|escape}</textarea>
 						{formhelp note=''}
 					{/forminput}
 				</div>

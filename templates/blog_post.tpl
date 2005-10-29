@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.10 2005/10/28 13:10:34 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.11 2005/10/29 11:43:05 squareing Exp $ *}
 {literal}
 <script type="text/javascript">
 function confirmDelete(fileName, location) {
@@ -67,7 +67,7 @@ function confirmDelete(fileName, location) {
 
 						<div class="row">
 							{forminput}
-								<textarea id="{$textarea_id}" name="edit" rows="{$rows|default:20}" cols="{$cols|default:80}">{$data}</textarea>
+								<textarea id="{$textarea_id}" name="edit" rows="{$rows|default:20}" cols="{$cols|default:50}">{$data}</textarea>
 							{/forminput}
 						</div>
 
@@ -95,7 +95,7 @@ function confirmDelete(fileName, location) {
 						<div class="row">
 							{formlabel label="Send trackback pings" for="trackback"}
 							{forminput}
-								<textarea name="trackback" id="trackback" rows="3" cols="60">{section name=ix loop=$trackbacks_to}{if not $smarty.section.ix.first},{/if}{$trackbacks_to[ix]}{/section}</textarea>
+								<textarea name="trackback" id="trackback" rows="3" cols="50">{section name=ix loop=$trackbacks_to}{if not $smarty.section.ix.first},{/if}{$trackbacks_to[ix]}{/section}</textarea>
 								{formhelp note="Insert a comma separated list of URIs to send blogs."}
 							{/forminput}
 						</div>
