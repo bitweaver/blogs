@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.7 2005/10/12 15:13:49 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.8 2005/11/22 07:25:21 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -64,7 +64,7 @@ if ($gBitUser->object_has_one_permission( $_REQUEST["blog_id"], $gBlog->getConte
 
 $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 
-if ($gBitSystem->isPackageActive( 'categories' )) {
+if ($gBitSystem->isPackageActive( 'categories' ) && function_exists( 'categories_display' ) ) {
 	$gBlog->mContentId = $_REQUEST["blog_id"];
 	categories_display( $gBlog );
 	if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {

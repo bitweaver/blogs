@@ -1,4 +1,13 @@
 <?php
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.7 2005/11/22 07:25:21 squareing Exp $
+ * @package blogs
+ * @subpackage functions
+ */
+
+/**
+ * Initialization
+ */
 require_once( "../bit_setup_inc.php" );
 require_once( RSS_PKG_PATH."rss_inc.php" );
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
@@ -36,7 +45,7 @@ if( !$gBitUser->hasPermission( 'bit_p_read_blog' ) ) {
 	// get all the data ready for the feed creator
 	foreach( $feeds['data'] as $feed ) {
 		$item = new FeedItem();
-		$item->title = $feed['title'];
+		$item->title = (($feed['title']) ? ($feed['title']) : (date("D, d M Y", (int) $feed['created'])));
 		$item->link = BIT_BASE_URI.$blogPost->getDisplayUrl( $feed['post_id'] );
 		$item->description = $feed['parsed_data'];
 
