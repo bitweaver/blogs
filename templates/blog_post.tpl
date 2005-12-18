@@ -1,14 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.8 2005/10/29 17:51:57 squareing Exp $ *}
-{literal}
-<script type="text/javascript">
-function confirmDelete(fileName, location) {
-	if (confirm("Are you sure you want to delete" + fileName + "?")) {
-		document.location = location;
-	}
-}
-</script>
-{/literal}
-
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.9 2005/12/18 22:27:35 squareing Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
