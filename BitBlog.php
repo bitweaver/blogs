@@ -107,10 +107,13 @@ class BitBlog extends BitBase {
 
 	function getBlogUrl( $pBlogId ) {
 		global $gBitSystem;
-		if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
-			$ret = BLOGS_PKG_URL.$pBlogId;
-		} else {
-			$ret = BLOGS_PKG_URL.'view.php?blog_id='.$pBlogId;
+		$ret = NULL;
+		if ( $this->verifyId( $pBlogId ) ) {
+			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
+				$ret = BLOGS_PKG_URL.$pBlogId;
+			} else {
+				$ret = BLOGS_PKG_URL.'view.php?blog_id='.$pBlogId;
+			}
 		}
 		return $ret;
 	}
@@ -120,7 +123,7 @@ class BitBlog extends BitBase {
 	function get_blog($blog_id) {
 		global $gBitSystem;
 		$ret = NULL;
-		if ($blog_id && is_numeric($blog_id)) {
+		if ( $this->verifyId( $blog_id ) ) {
 
 			$query = "SELECT tb.*, uu.`login` as `user`, uu.`user_id`, uu.`real_name`, tup.`value` AS `blog_style`, tf.`storage_path` as avatar
 				  	  FROM `".BIT_DB_PREFIX."tiki_blogs` tb INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = tb.`user_id`)
@@ -149,7 +152,7 @@ class BitBlog extends BitBase {
 	/*shared*/
 	function list_user_blogs($user_id = NULL, $include_public = false) {
 		$ret = NULL;
-		if ($user_id && is_numeric($user_id)) {
+		if ( $this->verifyId( $user_id ) ) {
 			$bindvars=array();
 			$bindvars[] = (int)$user_id;
 			$mid = '';
@@ -175,7 +178,7 @@ class BitBlog extends BitBase {
 		global $count_admin_pvs;
 		global $gBitUser;
 
-		if ($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) {
+		if ( $this->verifyId( $blog_id ) && ($count_admin_pvs == 'y' || !$gBitUser->isAdmin()) ){
 			$bindvars = array( $blog_id );
 			$ownerSql = '';
 			if( $gBitUser->isValid() ) {
@@ -197,7 +200,7 @@ class BitBlog extends BitBase {
 		if ($creation_date == NULL)
 			$creation_date = (int)$now;
 
-		if ( !empty( $blog_id ) ) {
+		if ( $this->verifyId( $blog_id ) ) {
 			$query = "update `".BIT_DB_PREFIX."tiki_blogs` set `title`=? ,`description`=?,`user_id`=?,`public`=?,`last_modified`=?,`max_posts`=?,`heading`=?,`use_title`=?,`use_find`=?,`allow_comments`=? where `blog_id`=?";
 
 			$result = $this->mDb->query($query,array($title,$description,$user_id,$public,$now,$max_posts,$heading,$use_title,$use_find,$allow_comments,$blog_id));
@@ -214,15 +217,19 @@ class BitBlog extends BitBase {
 	}
 
 	function expunge($blog_id) {
-		$this->mDb->StartTrans();
-		$query = "delete from `".BIT_DB_PREFIX."tiki_blogs` where `blog_id`=?";
+		$ret = FALSE;
+		if ( $this->verifyId( $blog_id ) ) {
+			$this->mDb->StartTrans();
+			$query = "delete from `".BIT_DB_PREFIX."tiki_blogs` where `blog_id`=?";
 
-		$result = $this->mDb->query($query,array((int) $blog_id));
-		$query = "delete from `".BIT_DB_PREFIX."tiki_blog_posts` where `blog_id`=?";
-		$result = $this->mDb->query($query,array((int) $blog_id));
-		$this->remove_object( BITBLOG_CONTENT_TYPE_GUID, $blog_id );
-		$this->mDb->CompleteTrans();
-		return true;
+			$result = $this->mDb->query($query,array( (int)$blog_id) );
+			$query = "delete from `".BIT_DB_PREFIX."tiki_blog_posts` where `blog_id`=?";
+			$result = $this->mDb->query($query,array( (int)$blog_id) );
+			$this->remove_object( BITBLOG_CONTENT_TYPE_GUID, $blog_id );
+			$this->mDb->CompleteTrans();
+			$ret = true;
+		}
+		return $ret;
 	}
 
 	// ported from gBitSystem - one day BitBlog will inherit from LibertyContent, until then, dupe this func...
@@ -245,7 +252,7 @@ class BitBlog extends BitBase {
 		$ret = NULL;
 		$bindvars = array();
 
-		if ($blog_id && is_numeric($blog_id)) {
+		if ( $this->verifyId( $blog_id ) ) {
 			$sql = "SELECT `post_id` FROM `".BIT_DB_PREFIX."tiki_blog_posts` WHERE `blog_id` = ?";
 			$rs = $this->mDb->query($sql, array($blog_id));
 			$rows = $rs->getRows();
@@ -262,42 +269,43 @@ class BitBlog extends BitBase {
 
 
 	function add_blog_activity($blog_id) {
+		if( $this->verifyId( $blog_id ) )
+			//Caclulate activity, update tiki_blogs and purge activity table
+			$today = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
 
-		//Caclulate activity, update tiki_blogs and purge activity table
-		$today = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+			$day0 = $today - (24 * 60 * 60);
+			$day1 = $today - (2 * 24 * 60 * 60);
+			$day2 = $today - (3 * 24 * 60 * 60);
+			// Purge old activity
+			$query = "delete from `".BIT_DB_PREFIX."tiki_blog_activity` where `day`<?";
+			$result = $this->mDb->query($query,array((int) $day2));
+			// Register new activity
+			$query = "select count(*) from `".BIT_DB_PREFIX."tiki_blog_activity` where `blog_id`=? and `day`=?";
+			$result = $this->mDb->getOne($query,array((int) $blog_id,(int)$today));
 
-		$day0 = $today - (24 * 60 * 60);
-		$day1 = $today - (2 * 24 * 60 * 60);
-		$day2 = $today - (3 * 24 * 60 * 60);
-		// Purge old activity
-		$query = "delete from `".BIT_DB_PREFIX."tiki_blog_activity` where `day`<?";
-		$result = $this->mDb->query($query,array((int) $day2));
-		// Register new activity
-		$query = "select count(*) from `".BIT_DB_PREFIX."tiki_blog_activity` where `blog_id`=? and `day`=?";
-		$result = $this->mDb->getOne($query,array((int) $blog_id,(int)$today));
+			if ($result) {
+				$query = "update `".BIT_DB_PREFIX."tiki_blog_activity` set `posts`=`posts`+1 where `blog_id`=? and `day`=?";
+			} else {
+				$query = "insert into `".BIT_DB_PREFIX."tiki_blog_activity`(`blog_id`,`day`,`posts`) values(?,?,1)";
+			}
 
-		if ($result) {
-			$query = "update `".BIT_DB_PREFIX."tiki_blog_activity` set `posts`=`posts`+1 where `blog_id`=? and `day`=?";
-		} else {
-			$query = "insert into `".BIT_DB_PREFIX."tiki_blog_activity`(`blog_id`,`day`,`posts`) values(?,?,1)";
+			$result = $this->mDb->query($query,array((int) $blog_id,(int) $today));
+			// Calculate activity
+			$query = "select `posts` from `".BIT_DB_PREFIX."tiki_blog_activity` where `blog_id`=? and `day`=?";
+			$vtoday = $this->mDb->getOne($query,array((int) $blog_id,(int) $today));
+			$day0 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day0));
+			$day1 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day1));
+			$day2 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day2));
+			$activity = (2 * $vtoday) + ($day0)+(0.5 * $day1) + (0.25 * $day2);
+			// Update tiki_blogs with activity information
+			$query = "update `".BIT_DB_PREFIX."tiki_blogs` set `activity`=? where `blog_id`=?";
+			$result = $this->mDb->query($query,array($activity,(int) $blog_id));
 		}
-
-		$result = $this->mDb->query($query,array((int) $blog_id,(int) $today));
-		// Calculate activity
-		$query = "select `posts` from `".BIT_DB_PREFIX."tiki_blog_activity` where `blog_id`=? and `day`=?";
-		$vtoday = $this->mDb->getOne($query,array((int) $blog_id,(int) $today));
-		$day0 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day0));
-		$day1 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day1));
-		$day2 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day2));
-		$activity = (2 * $vtoday) + ($day0)+(0.5 * $day1) + (0.25 * $day2);
-		// Update tiki_blogs with activity information
-		$query = "update `".BIT_DB_PREFIX."tiki_blogs` set `activity`=? where `blog_id`=?";
-		$result = $this->mDb->query($query,array($activity,(int) $blog_id));
 	}
 
 	function get_blog_owner($blog_id) {
 		$user_id = NULL;
-		if ($blog_id && is_numeric($blog_id)) {
+		if ( $this->verifyId( $blog_id ) ) {
 			$sql = "SELECT `user_id` FROM `".BIT_DB_PREFIX."tiki_blogs` WHERE `blog_id` = ?";
 			$user_id = $this->mDb->getOne($sql, array($blog_id));
 		}
@@ -306,7 +314,7 @@ class BitBlog extends BitBase {
 
 	function get_post_owner($post_id) {
 		$user_id = NULL;
-		if ($post_id && is_numeric($post_id)){
+		if ( $this->verifyId( $blog_id ) ) {
 			$sql = "SELECT tc.`user_id` FROM `".BIT_DB_PREFIX."tiki_blog_posts` tbp, `".BIT_DB_PREFIX."tiki_content` tc
 					WHERE tbp.`post_id`= ? AND tbp.`content_id` = tc.`content_id`";
 			$user_id = $this->mDb->getOne($sql, array($post_id));

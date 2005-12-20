@@ -7,7 +7,7 @@
 	global $gContent, $gBitSmarty;
 
 	if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {
-		$postId = !empty( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : NULL;
+		$postId = !empty( $_REQUEST['post_id']z ) ? $_REQUEST['post_id'] : NULL;
 		$conId = !empty( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL;
 		$gContent = new BitBlogPost( $postId, $conId );
 		$gContent->load();
