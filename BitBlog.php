@@ -269,7 +269,7 @@ class BitBlog extends BitBase {
 
 
 	function add_blog_activity($blog_id) {
-		if( $this->verifyId( $blog_id ) )
+		if( $this->verifyId( $blog_id ) ) {
 			//Caclulate activity, update tiki_blogs and purge activity table
 			$today = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
 
