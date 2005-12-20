@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.17 2005/12/20 17:42:57 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.18 2005/12/20 21:02:39 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.17 2005/12/20 17:42:57 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.18 2005/12/20 21:02:39 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.17 $ $Date: 2005/12/20 17:42:57 $ $Author: spiderr $
+ * @version $Revision: 1.1.1.1.2.18 $ $Date: 2005/12/20 21:02:39 $ $Author: squareing $
  */
 
 /**
@@ -116,7 +116,7 @@ class BitBlogPost extends LibertyAttachable {
 	 */
 	function verify( &$pParamHash ) {
 		global $gBitUser;
-		if( $this->verifyId( $pParamHash['post_id'] ) && empty( $this->mContentId ) && empty( $pParamHash['content_id'] ) ) {
+		if( @$this->verifyId( $pParamHash['post_id'] ) && empty( $this->mContentId ) && empty( $pParamHash['content_id'] ) ) {
 			$this->mPostId = $pParamHash['post_id'];
 			$this->load();
 		}
@@ -158,7 +158,7 @@ class BitBlogPost extends LibertyAttachable {
 
 		$this->mDb->StartTrans();
 		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
- 			if( $this->verifyId( $pParamHash['attachment_id'] ) ) {
+ 			if( @$this->verifyId( $pParamHash['attachment_id'] ) ) {
 				// we just shoved an attachment onto the blog so we will concat the new link for usability.
 				// THis is a bit hackish to do here. I imagine we will allow for this down in Liberty eventually,
 				// but right now there is a chicken-n-egg situation storing 'data' before the attachments. - spiderr
