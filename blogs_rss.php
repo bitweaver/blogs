@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.1.1.1.2.8 2005/11/14 19:34:29 mej Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.1.1.1.2.9 2005/12/26 12:02:45 squareing Exp $
  * @package article
  * @subpackage functions
  */
@@ -53,7 +53,7 @@ if( !$gBitUser->hasPermission( 'bit_p_read_blog' ) ) {
 		$item->source = 'http://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL;
 		$item->author = $gBitUser->getDisplayName( FALSE, $feed );
 
-		$item->descriptionTruncSize = $gBitSystem->getPreference( 'rssfeed_truncate', 1000 );
+		$item->descriptionTruncSize = $gBitSystem->getPreference( 'rssfeed_truncate', 5000 );
 		$item->descriptionHtmlSyndicated = TRUE;
 
 		// pass the item on to the rss feed creator
