@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.8 2005/10/29 17:51:56 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.9 2005/12/26 12:23:44 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.8 2005/10/29 17:51:56 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.9 2005/12/26 12:23:44 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.8 $ $Date: 2005/10/29 17:51:56 $ $Author: squareing $
+ * @version $Revision: 1.9 $ $Date: 2005/12/26 12:23:44 $ $Author: squareing $
  */
 
 /**
@@ -43,22 +43,22 @@ class BitBlogPost extends LibertyAttachable {
 			'handler_file' => 'BitBlogPost.php',
 			'maintainer_url' => 'http://www.bitweaver.org'
 		) );
-		$this->mPostId = $pPostId;
-		$this->mContentId = $pContentId;
+		$this->mPostId = (int)$pPostId;
+		$this->mContentId = (int)$pContentId;
 	}
 
 	/**
 	 * Load a Blog Post section
 	 */
 	function load( $pLoadComments = TRUE ) {
-		if( !empty( $this->mPostId ) || !empty( $this->mContentId ) ) {
+		if( $this->verifyId( $this->mPostId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem;
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-			$lookupColumn = !empty( $this->mPostId )? 'post_id' : 'content_id';
-			$lookupId = !empty( $this->mPostId )? $this->mPostId : $this->mContentId;
+			$lookupColumn = $this->verifyId( $this->mPostId )? 'post_id' : 'content_id';
+			$lookupId = $this->verifyId( $this->mPostId )? $this->mPostId : $this->mContentId;
 			array_push( $bindVars, $lookupId );
 
 			$query = "SELECT tbp.*, tc.*, tb.`title` as `blogtitle`, tb.`allow_comments`,tb.`allow_comments`, tb.`use_title`, tb.`user_id` AS `blog_user_id`, uu.`login` as `user`, uu.`real_name`, tf.`storage_path` as avatar, tup.`value` AS `blog_style` $selectSql
@@ -116,7 +116,7 @@ class BitBlogPost extends LibertyAttachable {
 	 */
 	function verify( &$pParamHash ) {
 		global $gBitUser;
-		if( !empty( $pParamHash['post_id'] ) && empty( $this->mContentId ) && empty( $pParamHash['content_id'] ) ) {
+		if( @$this->verifyId( $pParamHash['post_id'] ) && empty( $this->mContentId ) && empty( $pParamHash['content_id'] ) ) {
 			$this->mPostId = $pParamHash['post_id'];
 			$this->load();
 		}
@@ -131,7 +131,7 @@ class BitBlogPost extends LibertyAttachable {
 	 * Check that the class has a valid blog loaded
 	 */
 	function isValid() {
-		return( !empty( $this->mPostId ) && is_numeric( $this->mPostId ) && $this->mPostId > 0 );
+		return( $this->verifyId( $this->mPostId ) && is_numeric( $this->mPostId ) && $this->mPostId > 0 );
 	}
 
 	/**
@@ -158,7 +158,7 @@ class BitBlogPost extends LibertyAttachable {
 
 		$this->mDb->StartTrans();
 		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
- 			if( !empty( $pParamHash['attachment_id'] ) ) {
+ 			if( @$this->verifyId( $pParamHash['attachment_id'] ) ) {
 				// we just shoved an attachment onto the blog so we will concat the new link for usability.
 				// THis is a bit hackish to do here. I imagine we will allow for this down in Liberty eventually,
 				// but right now there is a chicken-n-egg situation storing 'data' before the attachments. - spiderr
@@ -276,8 +276,6 @@ class BitBlogPost extends LibertyAttachable {
 			} else {
 				$ret = BLOGS_PKG_URL.'view_post.php?post_id='.$pPostId;
 			}
-		} else {
-			$ret = BLOGS_PKG_URL.'view_post.php?post='.$pPostId;
 		}
 		return $ret;
 	}
@@ -367,12 +365,12 @@ class BitBlogPost extends LibertyAttachable {
 		$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 		$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-		if( !empty( $pListHash['blog_id'] ) ) {
+		if( @$this->verifyId( $pListHash['blog_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['blog_id'] );
 			$whereSql = ' AND tbp.`blog_id` = ? ';
 		}
 
-		if( !empty( $pListHash['user_id'] ) ) {
+		if( @$this->verifyId( $pListHash['user_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['user_id'] );
 			$whereSql = ' AND tc.`user_id` = ? ';
 		}
