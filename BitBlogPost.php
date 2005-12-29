@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.9 2005/12/26 12:23:44 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.10 2005/12/29 18:26:57 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.9 2005/12/26 12:23:44 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.10 2005/12/29 18:26:57 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.9 $ $Date: 2005/12/26 12:23:44 $ $Author: squareing $
+ * @version $Revision: 1.10 $ $Date: 2005/12/29 18:26:57 $ $Author: squareing $
  */
 
 /**
@@ -264,22 +264,22 @@ class BitBlogPost extends LibertyAttachable {
 	 * @param	object	PostId of the item to use
 	 * @return	object	Url String
 	 */
-	function getDisplayUrl( $pPostId=NULL ) {
+	function getDisplayUrl( $pContentId=NULL ) {
 		$ret = NULL;
-		if( empty( $pPostId ) ) {
-			$pPostId = $this->mPostId;
+		if( empty( $pContentId ) ) {
+			$pContentId = $this->mPostId;
 		}
 		global $gBitSystem;
-		if( is_numeric( $pPostId ) ) {
-			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
-				$ret = BLOGS_PKG_URL.'post/'.$pPostId;
+		if( @BitBase::verifyId( $pContentId ) ) {
+			$rewrite_tag = $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ? 'view/' : '';
+			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
+				$ret = BLOGS_PKG_URL.$rewrite_tag.'content/'.$pContentId;
 			} else {
-				$ret = BLOGS_PKG_URL.'view_post.php?post_id='.$pPostId;
+				$ret = BLOGS_PKG_URL.'view_post.php?content_id='.$pContentId;
 			}
 		}
 		return $ret;
 	}
-
 
 	/**
 	 * Generate a valid display link for the Blog
@@ -288,8 +288,22 @@ class BitBlogPost extends LibertyAttachable {
 	 * @param	array	Not used
 	 * @return	object	Fully formatted html link for use by Liberty
 	 */
-	function getDisplayLink( $pPostId=NULL, $pMixed=NULL ) {
-		return "<a title=\"$pPostId\" href=\"" . BitBlogPost::getDisplayUrl( $pPostId ) . "\">$pPostId</a>";
+	function getDisplayLink( $pTitle=NULL, $pMixed=NULL ) {
+		global $gBitSystem;
+		if( empty( $pTitle ) && !empty( $this ) ) {
+			$pTitle = $this->mInfo['title'];
+		}
+
+		if( empty( $pMixed ) && !empty( $this ) ) {
+			$pMixed = $this->mInfo;
+		}
+
+		$ret = $pTitle;
+		if( $gBitSystem->isPackageActive( 'blogs' ) ) {
+			$ret = '<a title="'.$pTitle.'" href="'.BitBlogPost::getDisplayUrl( $pMixed['content_id'] ).'">'.$pTitle.'</a>';
+		}
+
+		return $ret;
 	}
 
     /**

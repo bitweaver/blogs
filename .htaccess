@@ -3,4 +3,5 @@
 	RewriteBase    /blogs/
 	RewriteRule    ^([0-9]+)$  view.php?blog_id=$1  [L]
 	RewriteRule    ^post/([0-9]+)$  view_post.php?post_id=$1  [L]
+	RewriteRule    ^content/([0-9]+)$  view_post.php?content_id=$1  [L]
 </IfModule>
