@@ -30,7 +30,7 @@
 
 	<div class="header">
 		<h1>
-			{if $post_info.use_title eq 'y' && $post_info.title}
+			{if $post_info.use_title eq 'y'}
 				{$post_info.title}
 			{else}
 				{$post_info.created|bit_long_date}

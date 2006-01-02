@@ -10,7 +10,7 @@
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
-if (!isset($gContent->mPostId) && !isset($gContent->mPostId)) {
+if (!isset($gContent->mPostId)) {
 	$parts = parse_url($_SERVER['REQUEST_URI']);
 
 	$paths = explode('/', $parts['path']);
@@ -176,6 +176,17 @@ if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 
 	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );
+}
+
+if ( ! $gContent->mInfo['title'] ) {
+	$date_format = $gBitSystem->get_long_date_format();
+	if ( $gBitSystem->mServerTimestamp->get_display_offset() ) {
+		$format = preg_replace("/ ?%Z/", "", $format);
+	} else {
+		$format = preg_replace("/%Z/", "UTC", $format);
+	}
+	$date_string = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($gContent->mInfo['created']);
+	$gContent->mInfo['title'] = $gBitSystem->mServerTimestamp->strftime($date_format, $date_string, true);
 }
 
 if ( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && isset($_REQUEST['savenotepad'])) {
