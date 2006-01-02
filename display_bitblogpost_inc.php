@@ -178,17 +178,6 @@ if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 	include( THEMES_PKG_PATH.'tc_inc.php' );
 }
 
-if ( ! $gContent->mInfo['title'] ) {
-	$date_format = $gBitSystem->get_long_date_format();
-	if ( $gBitSystem->mServerTimestamp->get_display_offset() ) {
-		$format = preg_replace("/ ?%Z/", "", $format);
-	} else {
-		$format = preg_replace("/%Z/", "UTC", $format);
-	}
-	$date_string = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($gContent->mInfo['created']);
-	$gContent->mInfo['title'] = $gBitSystem->mServerTimestamp->strftime($date_format, $date_string, true);
-}
-
 if ( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && isset($_REQUEST['savenotepad'])) {
 
 	$gBitSystem->replace_note($user, 0, $gContent->mInfo['title'] ? $gContent->mInfo['title'] : date("d/m/Y [h:i]", $gContent->mInfo['created']), $gContent->mInfo['data']);
