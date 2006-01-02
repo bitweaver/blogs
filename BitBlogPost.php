@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.22 2006/01/02 10:40:32 mej Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.23 2006/01/02 11:09:26 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.22 2006/01/02 10:40:32 mej Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.23 2006/01/02 11:09:26 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.22 $ $Date: 2006/01/02 10:40:32 $ $Author: mej $
+ * @version $Revision: 1.1.1.1.2.23 $ $Date: 2006/01/02 11:09:26 $ $Author: squareing $
  */
 
 /**
@@ -78,19 +78,9 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mPostId = $this->mInfo['post_id'];
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mInfo['blog_url'] = BitBlog::getBlogUrl( $this->mInfo['blog_id'] );
+				$this->mInfo['title'] = $this->getTitle();
 
-				if ( ! $this->mInfo['title'] ) {
-					$date_format = $gBitSystem->get_long_date_format();
-					if ( $gBitSystem->mServerTimestamp->get_display_offset() ) {
-						$date_format = preg_replace("/ ?%Z/", "", $date_format);
-					} else {
-						$date_format = preg_replace("/%Z/", "UTC", $date_format);
-					}
-					$date_string = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($this->mInfo['created']);
-					$this->mInfo['title'] = $gBitSystem->mServerTimestamp->strftime($date_format, $date_string, true);
-				}
-
-				if ($pLoadComments) {
+				if( $pLoadComments ) {
 					$comment = new LibertyComment();
 					$this->mInfo['num_comments'] = $comment->getNumComments($this->mInfo['content_id']);
 					// Get the comments associated with this post
@@ -120,6 +110,29 @@ class BitBlogPost extends LibertyAttachable {
 			}
 		}
 		return( count( $this->mInfo ) );
+	}
+
+	function getTitle( $pHash = NULL ) {
+		global $gBitSystem;
+		$ret = NULL;
+		if( empty( $pHash ) && !empty( $this->mInfo ) ) {
+			$pHash = &$this->mInfo;
+		}
+
+		if( empty( $pHash['title'] ) ) {
+			$date_format = $gBitSystem->get_long_date_format();
+			if( $gBitSystem->mServerTimestamp->get_display_offset() ) {
+				$date_format = preg_replace( "/ ?%Z/", "", $date_format );
+			} else {
+				$date_format = preg_replace( "/%Z/", "UTC", $date_format );
+			}
+			$date_string = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC( $pHash['created'] );
+			$ret = $gBitSystem->mServerTimestamp->strftime( $date_format, $date_string, true );
+		} else {
+			$ret = $pHash['title'];
+		}
+
+		return $ret;
 	}
 
 	/**
@@ -311,7 +324,7 @@ class BitBlogPost extends LibertyAttachable {
 
 		$ret = $pTitle;
 		if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-			$ret = '<a title="'.$pTitle.'" href="'.BitBlogPost::getDisplayUrl( $pMixed['content_id'] ).'">'.$pTitle.'</a>';
+			$ret = '<a title="'.BitBlogPost::getTitle( $pMixed ).'" href="'.BitBlogPost::getDisplayUrl( $pMixed['content_id'] ).'">'.BitBlogPost::getTitle( $pMixed ).'</a>';
 		}
 
 		return $ret;
