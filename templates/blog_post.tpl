@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.12 2005/12/18 19:57:30 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.13 2006/01/08 19:12:43 squareing Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -41,6 +41,7 @@
 								{formlabel label="Title" for="title"}
 								{forminput}
 									<input type="text" size="50" name="title" id="title" value="{$title|escape}" />
+									{formhelp note="When you leave the title blank, the current date will be substituted automagically."}
 								{/forminput}
 							</div>
 						{/if}
