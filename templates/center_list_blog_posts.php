@@ -61,6 +61,17 @@ $listHash['parse_data'] = TRUE;
 $listHash['load_comments'] = TRUE;
 $listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
 $listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
+
+if( !empty( $module_params['blog_id'] ) && is_numeric( $module_params['blog_id'] ) ) {
+	$listHash['blog_id'] = $module_params['blog_id'];
+}
+if( !empty( $module_params['user_id'] ) && is_numeric( $module_params['user_id'] ) ) {
+	$listHash['user_id'] = $module_params['user_id'];
+}
+if ( !empty( $module_params['sort_mode'] ) ) {
+	$listHash['sort_mode'] = $module_params['sort_mode'];
+}
+
 // Get a list of last changes to the Wiki database
 if ($gQueryUserId) {
 	$listHash['user_id'] = $gQueryUserId;

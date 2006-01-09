@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.23 2006/01/02 11:09:26 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.24 2006/01/09 04:40:07 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.23 2006/01/02 11:09:26 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.24 2006/01/09 04:40:07 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.23 $ $Date: 2006/01/02 11:09:26 $ $Author: squareing $
+ * @version $Revision: 1.1.1.1.2.24 $ $Date: 2006/01/09 04:40:07 $ $Author: spiderr $
  */
 
 /**
@@ -403,16 +403,15 @@ class BitBlogPost extends LibertyAttachable {
 		$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 		$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
+		$whereSql = '';
 		if( @$this->verifyId( $pListHash['blog_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['blog_id'] );
-			$whereSql = ' AND tbp.`blog_id` = ? ';
+			$whereSql .= ' AND tbp.`blog_id` = ? ';
 		}
-
 		if( @$this->verifyId( $pListHash['user_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['user_id'] );
-			$whereSql = ' AND tc.`user_id` = ? ';
+			$whereSql .= ' AND tc.`user_id` = ? ';
 		}
-
 		if( $pListHash['find'] ) {
 			$findesc = '%' . strtoupper( $pListHash['find'] ) . '%';
  			$whereSql .= "AND (UPPER(`data`) like ?) ";
