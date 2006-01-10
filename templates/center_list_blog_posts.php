@@ -4,23 +4,23 @@ global $gBitSmarty, $gBlog, $gBitSystem, $categlib, $_REQUEST, $maxRecords, $gQu
 $postRecords = ( $module_rows ? $module_rows : $maxRecords );
 
 if (defined("CATEGORIES_PKG_PATH")) {
-  include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
+	include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 }
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );
 
 if ($gBitSystem->isPackageActive( 'vvcat' )) {
-  if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
-    $categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
-  } elseif (isset($_REQUEST['delcategs']) and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
-    $categlib->uncategorize('blogpost',$_REQUEST['post_id']);
-  }
-  $categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
+	if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
+		$categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
+	} elseif (isset($_REQUEST['delcategs']) and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
+		$categlib->uncategorize('blogpost',$_REQUEST['post_id']);
+	}
+	$categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
 
-  $gBitSmarty->assign('categs',$categs['data']);
-  $gBitSmarty->assign('page','view.php');
-  $choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
-  $gBitSmarty->assign('choosecateg',$choosecateg);
+	$gBitSmarty->assign('categs',$categs['data']);
+	$gBitSmarty->assign('page','view.php');
+	$choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
+	$gBitSmarty->assign('choosecateg',$choosecateg);
 }
 
 if ( empty( $_REQUEST["sort_mode"] ) ) {
@@ -62,10 +62,10 @@ $listHash['load_comments'] = TRUE;
 $listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
 $listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
 
-if( !empty( $module_params['blog_id'] ) && is_numeric( $module_params['blog_id'] ) ) {
+if( @BitBase::verifyId( $module_params['blog_id'] ) ) {
 	$listHash['blog_id'] = $module_params['blog_id'];
 }
-if( !empty( $module_params['user_id'] ) && is_numeric( $module_params['user_id'] ) ) {
+if( @BitBase::verifyId( $module_params['user_id'] ) ) {
 	$listHash['user_id'] = $module_params['user_id'];
 }
 if ( !empty( $module_params['sort_mode'] ) ) {
