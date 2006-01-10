@@ -10,7 +10,7 @@
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
-if (!isset($gContent->mPostId) && !isset($gContent->mPostId)) {
+if (!isset($gContent->mPostId)) {
 	$parts = parse_url($_SERVER['REQUEST_URI']);
 
 	$paths = explode('/', $parts['path']);
