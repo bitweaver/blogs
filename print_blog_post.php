@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.5 2005/08/24 20:49:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.6 2006/01/14 19:54:03 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -98,7 +98,7 @@ if ($feature_theme_control == 'y') {
 }
 
 if ($feature_blogposts_comments == 'y') {
-	$comments_return_url = $PHP_SELF."?post_id=$post_id";
+	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=$post_id";
 	$commentsParentId = $gContent->mContentId;
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
