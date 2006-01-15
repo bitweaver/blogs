@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.1.1.1.2.10 2006/01/02 15:59:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.1.1.1.2.11 2006/01/15 15:42:29 squareing Exp $
  * @package article
  * @subpackage functions
  */
@@ -41,6 +41,9 @@ if( !$gBitUser->hasPermission( 'bit_p_read_blog' ) ) {
 		$rss->title = $feeds['data'][0]['blogtitle'];
 		$rss->description = $feeds['data'][0]['blogdescription'];
 	}
+
+	// set the rss link
+	$rss->link = 'http://'.$_SERVER['HTTP_HOST'].BLOGS_PKG_URL;
 
 	// get all the data ready for the feed creator
 	foreach( $feeds['data'] as $feed ) {
