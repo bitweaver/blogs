@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.10 2006/01/10 21:11:26 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.11 2006/01/17 00:22:50 squareing Exp $
  * @package article
  * @subpackage functions
  */
@@ -24,7 +24,7 @@ if( !$gBitUser->hasPermission( 'bit_p_read_blog' ) ) {
 	require_once( RSS_PKG_PATH."rss_error.php" );
 } else {
 	// check if we want to use the cache file
-	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.BLOGS_PKG_NAME.'_'.$version.'.xml';
+	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.BLOGS_PKG_NAME.( !empty( $_REQUEST['blog_id'] ) ? "_".$_REQUEST['blog_id'] : "" ).'_'.$version.'.xml';
 	$rss->useCached( $cacheFile ); // use cached version if age < 1 hour
 
 	$blogPost = new BitBlogPost();
@@ -41,6 +41,9 @@ if( !$gBitUser->hasPermission( 'bit_p_read_blog' ) ) {
 		$rss->title = $feeds['data'][0]['blogtitle'];
 		$rss->description = $feeds['data'][0]['blogdescription'];
 	}
+
+	// set the rss link
+	$rss->link = 'http://'.$_SERVER['HTTP_HOST'].BLOGS_PKG_URL.( !empty( $_REQUEST['blog_id'] ) ? "?blog_id=".$_REQUEST['blog_id'] : "" );
 
 	// get all the data ready for the feed creator
 	foreach( $feeds['data'] as $feed ) {
