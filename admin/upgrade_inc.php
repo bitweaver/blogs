@@ -6,6 +6,18 @@ require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $upgrades = array(
 
+'TIKIWIKI19' => array (
+	'TIKIWIKI18' => array (
+/* Sliced and diced TW 1.9 upgrade scripts that did actual schema alterations
+
+ALTER TABLE `tiki_blog_posts` ADD `priv` VARCHAR( 1 );
+ALTER TABLE `tiki_blogs` ADD `show_avatar` char(1) default NULL;
+ALTER TABLE tiki_blog_posts MODIFY data_size int(11) unsigned NOT NULL default '0';
+
+*/
+	)
+),
+
 'BONNIE' => array(
 	'BWR1' => array(
 
