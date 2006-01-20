@@ -6,8 +6,20 @@ require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $upgrades = array(
 
+'TIKIWIKI19' => array (
+	'TIKIWIKI18' => array (
+/* Sliced and diced TW 1.9 upgrade scripts that did actual schema alterations
+
+ALTER TABLE `tiki_blog_posts` ADD `priv` VARCHAR( 1 );
+ALTER TABLE `tiki_blogs` ADD `show_avatar` char(1) default NULL;
+ALTER TABLE tiki_blog_posts MODIFY data_size int(11) unsigned NOT NULL default '0';
+
+*/
+	)
+),
+
 'BONNIE' => array(
-	'CLYDE' => array(
+	'BWR1' => array(
 
 // STEP 1
 array( 'DATADICT' => array(
@@ -75,7 +87,7 @@ array( 'PHP' => '
 // STEP 4
 array( 'QUERY' =>
 	array( 'SQL92' => array(
-	// Update Blog Post comments - we have no Blog level comments in CLYDE
+	// Update Blog Post comments - we have no Blog level comments in BWR1
 	"UPDATE `".BIT_DB_PREFIX."tiki_comments` SET `objectType`='".BITBLOGPOST_CONTENT_TYPE_GUID."' WHERE `objectType`='post'",
 	"UPDATE `".BIT_DB_PREFIX."tiki_comments` SET `parent_id`=(SELECT `content_id` FROM `".BIT_DB_PREFIX."tiki_blog_posts` WHERE `post_id`=`".BIT_DB_PREFIX."tiki_comments`.`object`) WHERE `parent_id`=0 AND `objectType`='".BITBLOGPOST_CONTENT_TYPE_GUID."'",
 	),

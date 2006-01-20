@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.11 2006/01/10 21:11:26 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.12 2006/01/20 11:06:48 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.11 2006/01/10 21:11:26 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.12 2006/01/20 11:06:48 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.11 $ $Date: 2006/01/10 21:11:26 $ $Author: squareing $
+ * @version $Revision: 1.12 $ $Date: 2006/01/20 11:06:48 $ $Author: squareing $
  */
 
 /**
@@ -324,7 +324,7 @@ class BitBlogPost extends LibertyAttachable {
 
 		$ret = $pTitle;
 		if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-			$ret = '<a title="'.BitBlogPost::getTitle( $pMixed ).'" href="'.BitBlogPost::getDisplayUrl( $pMixed['content_id'] ).'">'.BitBlogPost::getTitle( $pMixed ).'</a>';
+			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitle( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrl( $pMixed['content_id'] ).'">'.htmlspecialchars( BitBlogPost::getTitle( $pMixed  ) ).'</a>';
 		}
 
 		return $ret;
