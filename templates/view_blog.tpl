@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.6 2005/10/11 05:41:58 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.1.1.1.2.7 2006/01/26 13:45:05 squareing Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -32,8 +32,8 @@
 			<div class="introduction">{eval var=$heading}</div>
 		{else}
 			<div class="date">
-				{tr}Created by{/tr} {displayname hash=$blog_data}{tr} on {/tr}{$created|bit_short_datetime}<br />
-				{tr}Last modified{/tr} {$last_modified|bit_short_datetime}
+				{tr}Created by{/tr}: {displayname hash=$blog_data}, {$created|bit_short_datetime}<br />
+				{tr}Last modified{/tr}: {$last_modified|bit_short_datetime}
 			</div>
 		{/if}
 	</div>
