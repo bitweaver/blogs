@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.13 2005/08/25 17:09:16 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.14 2006/01/27 07:27:17 seannerd Exp $
 
  * @package blogs
  * @subpackage functions
@@ -195,6 +195,14 @@ if (isset($_REQUEST["preview"])) {
 	if( $gContent->store( $_REQUEST ) ) {
 		$postid = $_REQUEST['post_id'];
 		$gBitSmarty->assign('post_id', $gContent->mPostId);
+
+		// Add the content to the search index if the blog allows indexing.
+		$query   = "SELECT `use_find` FROM `" . BIT_DB_PREFIX . "tiki_blogs` WHERE blog_id = " . $blog_id ;
+		$allowed = $gBitSystem->mDb->getOne($query, array());
+		if( isset($allowed) and $allowed == "y" and $gBitSystem->isPackageActive( 'search' ) and isset($search_index_on_submit) and $search_index_on_submit == 'y') {
+			require_once( SEARCH_PKG_PATH.'refresh_functions.php');
+			refresh_index_tiki_content($gContent->mContentId);
+		}
 
 		if (isset($_REQUEST['save_post_exit'])) {
 			header ("location: ".BLOGS_PKG_URL."view_post.php?post_id=$postid");
