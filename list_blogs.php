@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.3 2005/08/01 18:40:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.4 2006/01/27 21:55:04 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -20,25 +20,7 @@ $gBitSystem->verifyPackage( 'blogs' );
 
 $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 
-/*
-if($feature_listPages != 'y') {
-  $gBitSmarty->assign('msg',tra("This feature is disabled"));
-  $gBitSystem->display( 'error.tpl' );
-  die;
-}
-*/
-
-/*
-// Now check permissions to access this page
-if(!$gBitUser->hasPermission( 'bit_p_view' )) {
-  $gBitSmarty->assign('msg',tra("Permission denied you cannot view pages"));
-  $gBitSystem->display( 'error.tpl' );
-  die;
-}
-*/
 if (isset($_REQUEST["remove"])) {
-	
-
 	// Check if it is the owner
 	if( $data = $gBlog->get_blog($_REQUEST["remove"]) ) {
 		if( !empty( $_REQUEST['cancel'] ) ) {
@@ -155,7 +137,7 @@ $section = 'blogs';
 if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'mobile') {
 	include_once( HAWHAW_PKG_PATH.'hawtiki_lib.php' );
 
-	HAWBIT_list_blogs($listpages, $bit_p_read_blog);
+	HAWBIT_list_blogs($listpages, $gBitUser->hasPermission( 'bit_p_read_blog' ) );
 }
 
 

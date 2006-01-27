@@ -143,16 +143,6 @@ if ($gBitUser->object_has_one_permission($_REQUEST["blog_id"], 'blog')) {
 	}
 }
 
-if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
-	$bit_p_create_blogs = 'y';
-
-	$gBitSmarty->assign('bit_p_create_blogs', 'y');
-	$bit_p_blog_post = 'y';
-	$gBitSmarty->assign('bit_p_blog_post', 'y');
-	$bit_p_read_blog = 'y';
-	$gBitSmarty->assign('bit_p_read_blog', 'y');
-}
-
 $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 /*if (!$gBitUser->hasPermission( 'bit_p_read_blog' )) {
 	$gBitSmarty->assign('msg', tra("Permission denied you can not view this section"));

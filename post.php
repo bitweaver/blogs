@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.8 2005/08/30 22:14:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.9 2006/01/27 21:55:04 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -171,16 +171,6 @@ if (isset($_REQUEST["preview"])) {
 				}
 			}
 		}
-	}
-
-	if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
-		$bit_p_create_blogs = 'y';
-
-		$gBitSmarty->assign('bit_p_create_blogs', 'y');
-		$bit_p_blog_post = 'y';
-		$gBitSmarty->assign('bit_p_blog_post', 'y');
-		$bit_p_read_blog = 'y';
-		$gBitSmarty->assign('bit_p_read_blog', 'y');
 	}
 
 	$title = isset($_REQUEST['title']) ? $_REQUEST['title'] : '';
