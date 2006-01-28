@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.5 2006/01/26 14:56:40 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.6 2006/01/28 09:13:37 squareing Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -41,11 +41,12 @@
 	<div class="footer">
 		{$posts} {tr}posts{/tr} | {$hits} {tr}visits{/tr} | {tr}Activity{/tr} {$activity|string_format:"%.2f"}
 	</div>
-
-
-	{section name=ix loop=$blogPosts}
+		
+	{foreach from=$blogPosts item=aPost}
 		{include file="bitpackage:blogs/blog_list_post.tpl"}
-	{/section}
+	{foreachelse}
+		<div class="norecords">{tr}No records found{/tr}</div>
+	{/foreach}
 
 	{pagination blog_id=$blog_id}
 

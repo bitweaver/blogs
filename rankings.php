@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.4 2006/01/27 21:55:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.5 2006/01/28 09:13:36 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -19,12 +19,7 @@ include_once( KERNEL_PKG_PATH.'rank_lib.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
-if (!$gBitSystem->isFeatureActive( 'feature_blog_rankings' )) {
-	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_blog_rankings");
-
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
+$gBitSystem->verifyFeature( 'feature_blog_rankings' );
 
 $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 
