@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.8 2006/01/27 07:27:00 seannerd Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.9 2006/01/28 05:17:13 seannerd Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -136,7 +136,7 @@ if (isset($_REQUEST['save_blog'])) {
 	    $allow_comments);
 
 	// Add the content to the search index if the blog allows indexing.
-	if( $use_find == "y" and $gBitSystem->isPackageActive( 'search' ) and isset($search_index_on_submit) and $search_index_on_submit == 'y') {
+	if( $use_find == "y" and $gBitSystem->isPackageActive( 'search' ) and $gBitSystem->isFeatureActive("search_index_on_submit")) {
 		require_once( SEARCH_PKG_PATH.'refresh_functions.php');
 		refresh_index_blogs($_REQUEST["blog_id"]);
 		// This is the old way - once the blogs are moved to tiki content, do the index update like this:

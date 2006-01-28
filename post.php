@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.14 2006/01/27 07:27:17 seannerd Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.1.1.1.2.15 2006/01/28 05:18:27 seannerd Exp $
 
  * @package blogs
  * @subpackage functions
@@ -199,7 +199,7 @@ if (isset($_REQUEST["preview"])) {
 		// Add the content to the search index if the blog allows indexing.
 		$query   = "SELECT `use_find` FROM `" . BIT_DB_PREFIX . "tiki_blogs` WHERE blog_id = " . $blog_id ;
 		$allowed = $gBitSystem->mDb->getOne($query, array());
-		if( isset($allowed) and $allowed == "y" and $gBitSystem->isPackageActive( 'search' ) and isset($search_index_on_submit) and $search_index_on_submit == 'y') {
+		if( isset($allowed) and $allowed == "y" and $gBitSystem->isPackageActive( 'search' ) and $gBitSystem->isFeatureActive("search_index_on_submit")) {
 			require_once( SEARCH_PKG_PATH.'refresh_functions.php');
 			refresh_index_tiki_content($gContent->mContentId);
 		}
