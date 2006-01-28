@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.25 2006/01/20 09:55:14 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.1.1.1.2.26 2006/01/28 09:18:00 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.1.1.1.2.25 2006/01/20 09:55:14 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.1.1.1.2.26 2006/01/28 09:18:00 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.1.1.1.2.25 $ $Date: 2006/01/20 09:55:14 $ $Author: squareing $
+ * @version $Revision: 1.1.1.1.2.26 $ $Date: 2006/01/28 09:18:00 $ $Author: squareing $
  */
 
 /**
@@ -191,7 +191,6 @@ class BitBlogPost extends LibertyAttachable {
 			}
 			if (empty($pParamHash['post_id'])) {
 				global $gBitSmarty, $gBitSystem;
-				global $feature_user_watches;
 				$tracks = serialize(explode(',', $pParamHash['trackback']));
 				$pParamHash['edit'] = strip_tags($pParamHash['edit'], '<a><b><i><h1><h2><h3><h4><h5><h6><ul><li><ol><br><p><table><tr><td><img><pre>');
 				$now = $gBitSystem->getUTCTime();

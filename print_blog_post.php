@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.1.1.1.2.6 2006/01/14 09:14:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.1.1.1.2.7 2006/01/28 09:18:00 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -71,16 +71,6 @@ if ($gBitUser->object_has_one_permission($gContent->mInfo['blog_id'], 'blog')) {
 	}
 }
 
-if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
-	$bit_p_create_blogs = 'y';
-
-	$gBitSmarty->assign('bit_p_create_blogs', 'y');
-	$bit_p_blog_post = 'y';
-	$gBitSmarty->assign('bit_p_blog_post', 'y');
-	$bit_p_read_blog = 'y';
-	$gBitSmarty->assign('bit_p_read_blog', 'y');
-}
-
 $gBitSystem->verifyPermission( 'bit_p_read_blog' );
 
 $ownsblog = 'n';
@@ -91,13 +81,13 @@ if ($gBitUser->mUserId && $gBitUser->mUserId == $gContent->mInfo['blog_user_id']
 
 $gBitSmarty->assign('ownsblog', $ownsblog);
 
-if ($feature_theme_control == 'y') {
+if ($gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
 	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );
 }
 
-if ($feature_blogposts_comments == 'y') {
+if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' )) {
 	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=$post_id";
 	$commentsParentId = $gContent->mContentId;
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );

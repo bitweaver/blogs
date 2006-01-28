@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.9 2006/01/28 05:17:13 seannerd Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.10 2006/01/28 09:18:00 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -68,7 +68,7 @@ if (!isset($last_modified)) {
 	$gBitSmarty->assign('last_modified', $last_modified);
 }
 
-if (isset($_REQUEST["heading"])and $bit_p_edit_templates) {
+if (isset($_REQUEST["heading"]) && $gBitUser->hasPermission( 'bit_p_edit_templates' ) ) {
 	$heading = $_REQUEST["heading"];
 } else {
 	$heading = '';

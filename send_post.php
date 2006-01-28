@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.1.1.1.2.7 2005/08/12 11:38:53 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.1.1.1.2.8 2006/01/28 09:18:00 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -55,19 +55,9 @@ if ($gBitUser->object_has_one_permission($gContent->mInfo["blog_id"], 'blog')) {
 	}
 }
 
-if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
-	$bit_p_create_blogs = 'y';
-
-	$gBitSmarty->assign('bit_p_create_blogs', 'y');
-	$bit_p_blog_post = 'y';
-	$gBitSmarty->assign('bit_p_blog_post', 'y');
-	$bit_p_read_blog = 'y';
-	$gBitSmarty->assign('bit_p_read_blog', 'y');
-}
-
 $gBitSmarty->assign('ownsblog', $gContent->isBlogOwner() );
 
-if ($feature_blogposts_comments == 'y') {
+if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' )) {
 	$comments_vars = array(
 		'post_id',
 		'offset',
@@ -82,7 +72,7 @@ if ($feature_blogposts_comments == 'y') {
 
 $section = 'blogs';
 
-if ($feature_theme_control == 'y') {
+if ($gBitSystem->isFeatureActive( 'feature_theme_control' )) {
 	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
 	$cat_objid = $gContent->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );

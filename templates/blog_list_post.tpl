@@ -30,8 +30,6 @@
 	<div class="header">
 		{if $aPost.title}
 			<h1>{$aPost.title}</h1>
-		{else}
-			<h1>{$aPost.created|bit_long_date}</h1>
 		{/if}
 
 		<div class="date">
