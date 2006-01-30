@@ -125,12 +125,13 @@ class BitBlog extends BitBase {
 		$ret = NULL;
 		if ( $this->verifyId( $blog_id ) ) {
 
-			$query = "SELECT tb.*, uu.`login` as `user`, uu.`user_id`, uu.`real_name`, tup.`value` AS `blog_style`, tf.`storage_path` as avatar
+			$query = "SELECT tb.*, uu.`login` as `user`, uu.`user_id`, uu.`real_name`, tf.`storage_path` as avatar
 				  	  FROM `".BIT_DB_PREFIX."tiki_blogs` tb INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = tb.`user_id`)
 			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_attachments` ta ON (uu.`user_id` = ta.`user_id` AND uu.`avatar_attachment_id`=ta.`attachment_id`)
 						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_files` tf ON (tf.`file_id` = ta.`foreign_id`)
-						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 			  		  WHERE tb.`blog_id`= ?";
+					  // this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
+//						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 
 			$result = $this->mDb->query($query,array((int)$blog_id));
 			$ret = $result->fetchRow();
