@@ -2,13 +2,13 @@
 
 $tables = array(
 
-'tiki_blog_activity' => "
+'blog_activity' => "
 	blog_id I4 NOTNULL PRIMARY,
 	day I8 NOTNULL PRIMARY,
 	posts I4
 ",
 
-'tiki_blog_posts' => "
+'blog_posts' => "
 	post_id I4 PRIMARY,
 	content_id I4 NOTNULL,
 	blog_id I4 NOTNULL,
@@ -16,7 +16,7 @@ $tables = array(
 	trackbacks_from X
 ",
 
-'tiki_blogs' => "
+'blogs' => "
 	blog_id I4 AUTO PRIMARY,
 	user_id I4 NOTNULL,
 	created I8 NOTNULL,
@@ -56,18 +56,18 @@ $gBitInstaller->registerPackageInfo( BLOGS_PKG_NAME, array(
 
 // ### Indexes
 $indices = array (
-	'tiki_blog_posts_blog_id_idx' => array( 'table' => 'tiki_blog_posts', 'cols' => 'blog_id', 'opts' => NULL ),
-	'tiki_blogs_title_idx' => array( 'table' => 'tiki_blogs', 'cols' => 'title', 'opts' => NULL ),
-	'tiki_blogs_hits_idx' => array( 'table' => 'tiki_blogs', 'cols' => 'hits', 'opts' => NULL ),
-	'tiki_blogs_user_id_idx' => array( 'table' => 'tiki_blogs', 'cols' => 'user_id', 'opts' => NULL )
+	'blog_posts_blog_id_idx' => array( 'table' => 'blog_posts', 'cols' => 'blog_id', 'opts' => NULL ),
+	'blogs_title_idx' => array( 'table' => 'blogs', 'cols' => 'title', 'opts' => NULL ),
+	'blogs_hits_idx' => array( 'table' => 'blogs', 'cols' => 'hits', 'opts' => NULL ),
+	'blogs_user_id_idx' => array( 'table' => 'blogs', 'cols' => 'user_id', 'opts' => NULL )
 );
 // TODO - SPIDERR - following seems to cause time _decrease_ cause bigint on postgres. need more investigation
-//	'tiki_blog_posts_created_idx' => array( 'table' => 'tiki_blog_posts', 'cols' => 'created', 'opts' => NULL ),
+//	'blog_posts_created_idx' => array( 'table' => 'blog_posts', 'cols' => 'created', 'opts' => NULL ),
 $gBitInstaller->registerSchemaIndexes( BLOGS_PKG_NAME, $indices );
 
 // ### Sequences
 $sequences = array (
-	'tiki_blog_posts_post_id_seq' => array( 'start' => 1 ) 
+	'blog_posts_post_id_seq' => array( 'start' => 1 ) 
 );
 $gBitInstaller->registerSchemaSequences( BLOGS_PKG_NAME, $sequences );
 
