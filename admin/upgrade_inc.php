@@ -6,6 +6,25 @@ require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $upgrades = array(
 
+	'BWR1' => array(
+		'BWR2' => array(
+// de-tikify tables
+array( 'DATADICT' => array(
+	array( 'RENAMETABLE' => array(
+		'tiki_blogs' => 'blogs',
+		'tiki_blog_activity' => 'blog_activity',
+		'tiki_blog_posts' => 'blog_posts',
+	)),
+)),
+array( 'PHP' => '
+	global $gBitSystem;
+	$current = $gBitSystem->mDb->GenID( "tiki_blog_post_id_seq" );
+	$gBitSystem->mDb->DropSequence( "tiki_blog_post_id_seq");
+	$gBitSystem->mDb->CreateSequence( "blog_post_id_seq", $current );
+' ),
+		)
+	),
+
 'TIKIWIKI19' => array (
 	'TIKIWIKI18' => array (
 /* Sliced and diced TW 1.9 upgrade scripts that did actual schema alterations
