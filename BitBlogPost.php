@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.15 2006/01/31 20:16:31 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.16 2006/02/01 18:40:38 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.15 2006/01/31 20:16:31 bitweaver Exp $
+ * $Id: BitBlogPost.php,v 1.16 2006/02/01 18:40:38 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.15 $ $Date: 2006/01/31 20:16:31 $ $Author: bitweaver $
+ * @version $Revision: 1.16 $ $Date: 2006/02/01 18:40:38 $ $Author: squareing $
  */
 
 /**
@@ -61,13 +61,13 @@ class BitBlogPost extends LibertyAttachable {
 			$lookupId = $this->verifyId( $this->mPostId )? $this->mPostId : $this->mContentId;
 			array_push( $bindVars, $lookupId );
 
-			$query = "SELECT bp.*, tc.*, b.`title` as `blogtitle`, b.`allow_comments`,b.`allow_comments`, b.`use_title`, b.`user_id` AS `blog_user_id`, uu.`login` as `user`, uu.`real_name`, tf.`storage_path` as avatar $selectSql
+			$query = "SELECT bp.*, lc.*, b.`title` as `blogtitle`, b.`allow_comments`,b.`allow_comments`, b.`use_title`, b.`user_id` AS `blog_user_id`, uu.`login` as `user`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = bp.`content_id`)
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
 				INNER JOIN `".BIT_DB_PREFIX."blogs` b ON (b.`blog_id` = bp.`blog_id`)
-				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = tc.`user_id` ) $joinSql
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_files` tf ON (tf.`file_id` = a.`foreign_id`)
+				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` ) $joinSql
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 				WHERE bp.`$lookupColumn`=? $whereSql ";
 				// this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
 //				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
@@ -410,7 +410,7 @@ class BitBlogPost extends LibertyAttachable {
 		}
 		if( @$this->verifyId( $pListHash['user_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['user_id'] );
-			$whereSql .= ' AND tc.`user_id` = ? ';
+			$whereSql .= ' AND lc.`user_id` = ? ';
 		}
 		if( $pListHash['find'] ) {
 			$findesc = '%' . strtoupper( $pListHash['find'] ) . '%';
@@ -419,19 +419,19 @@ class BitBlogPost extends LibertyAttachable {
 		}
 
 		if( !empty( $pListHash['date'] ) && is_numeric( $pListHash['date'] ) ) {
-			$whereSql .= " AND  tc.`created`<=? ";
+			$whereSql .= " AND  lc.`created`<=? ";
 			$bindVars[]= $pListHash['date'];
 		}
 
-		$query = "SELECT bp.*, tc.*, tct.*, b.`title` AS `blogtitle`, b.`description` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login` as `user`, uu.`real_name`, tf.`storage_path` as avatar $selectSql
+		$query = "SELECT bp.*, lc.*, tct.*, b.`title` AS `blogtitle`, b.`description` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login` as `user`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blogs` b, `".BIT_DB_PREFIX."blog_posts` bp
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = bp.`content_id`)
-				INNER JOIN `".BIT_DB_PREFIX."tiki_content_types` tct ON (tc.`content_type_guid` = tct.`content_type_guid`)
-				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = tc.`user_id`) $joinSql
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_attachments` a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_files` tf ON (tf.`file_id` = a.`foreign_id`)
-				WHERE b.`blog_id` = bp.`blog_id` $whereSql order by tc.".$this->mDb->convert_sortmode( $pListHash['sort_mode'] );
-		$query_cant = "SELECT COUNT(bp.`post_id`) FROM `".BIT_DB_PREFIX."blog_posts` bp, `".BIT_DB_PREFIX."tiki_content` tc WHERE tc.`content_id` = bp.`content_id` $whereSql ";
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content_types` tct ON (lc.`content_type_guid` = tct.`content_type_guid`)
+				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`) $joinSql
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
+				WHERE b.`blog_id` = bp.`blog_id` $whereSql order by lc.".$this->mDb->convert_sortmode( $pListHash['sort_mode'] );
+		$query_cant = "SELECT COUNT(bp.`post_id`) FROM `".BIT_DB_PREFIX."blog_posts` bp, `".BIT_DB_PREFIX."liberty_content` lc WHERE lc.`content_id` = bp.`content_id` $whereSql ";
 		$result = $this->mDb->query($query,$bindVars,$pListHash['max_records'],$pListHash['offset']);
 		$cant = $this->mDb->getOne($query_cant,$bindVars);
 		$ret = array();

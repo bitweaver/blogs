@@ -125,10 +125,10 @@ class BitBlog extends BitBase {
 		$ret = NULL;
 		if ( $this->verifyId( $blog_id ) ) {
 
-			$query = "SELECT b.*, uu.`login` as `user`, uu.`user_id`, uu.`real_name`, tf.`storage_path` as avatar
+			$query = "SELECT b.*, uu.`login` as `user`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar
 				  	  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
-			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
-						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_files` tf ON (tf.`file_id` = a.`foreign_id`)
+			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
+						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 			  		  WHERE b.`blog_id`= ?";
 					  // this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
 //						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
@@ -241,7 +241,7 @@ class BitBlog extends BitBase {
 		}
 		// Now remove comments
 		$object = $type . $id;
-//		$query = "delete from `".BIT_DB_PREFIX."tiki_comments` where `object`=?  and `object_type`=?";
+//		$query = "delete from `".BIT_DB_PREFIX."liberty_comments` where `object`=?  and `object_type`=?";
 //		$result = $this->mDb->query($query, array( $id, $type ));
 		// Remove individual permissions for this object if they exist
 		$query = "delete from `".BIT_DB_PREFIX."users_objectpermissions` where `object_id`=? and `object_type`=?";
@@ -316,8 +316,8 @@ class BitBlog extends BitBase {
 	function get_post_owner($post_id) {
 		$user_id = NULL;
 		if ( $this->verifyId( $blog_id ) ) {
-			$sql = "SELECT tc.`user_id` FROM `".BIT_DB_PREFIX."blog_posts` bp, `".BIT_DB_PREFIX."tiki_content` tc
-					WHERE bp.`post_id`= ? AND bp.`content_id` = tc.`content_id`";
+			$sql = "SELECT lc.`user_id` FROM `".BIT_DB_PREFIX."blog_posts` bp, `".BIT_DB_PREFIX."liberty_content` lc
+					WHERE bp.`post_id`= ? AND bp.`content_id` = lc.`content_id`";
 			$user_id = $this->mDb->getOne($sql, array($post_id));
 		}
 		return $user_id;
