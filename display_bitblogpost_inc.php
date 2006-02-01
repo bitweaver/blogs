@@ -161,13 +161,6 @@ if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' ) ) {
 
 $section = 'blogs';
 
-if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
-	$cat_obj_type = 'blog';
-
-	$cat_objid = $gContent->mContentId;
-	include( THEMES_PKG_PATH.'tc_inc.php' );
-}
-
 if ( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && isset($_REQUEST['savenotepad'])) {
 
 	$gBitSystem->replace_note($user, 0, $gContent->mInfo['title'] ? $gContent->mInfo['title'] : date("d/m/Y [h:i]", $gContent->mInfo['created']), $gContent->mInfo['data']);

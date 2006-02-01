@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.8 2005/11/22 07:25:21 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.9 2006/02/01 20:38:40 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -170,12 +170,6 @@ if ($listHash['offset'] > 0) {
 // If there're more records then assign next_offset
 $gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 //print_r($blogPosts["data"]);
-
-if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
-	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
-	$cat_objid = $gContent->mContentId;
-	include( THEMES_PKG_PATH.'tc_inc.php' );
-}
 
 if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->hasPermission( 'bit_p_notepad' ) && isset($_REQUEST['savenotepad']) ) {
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.7 2006/01/27 21:55:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.8 2006/02/01 20:38:40 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -71,12 +71,6 @@ if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' )) {
 }
 
 $section = 'blogs';
-
-if ($gBitSystem->isFeatureActive( 'feature_theme_control' )) {
-	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
-	$cat_objid = $gContent->mContentId;
-	include( THEMES_PKG_PATH.'tc_inc.php' );
-}
 
 if (!isset($_REQUEST['addresses'])) {
 	$_REQUEST['addresses'] = '';

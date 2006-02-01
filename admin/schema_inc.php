@@ -71,17 +71,6 @@ $sequences = array (
 );
 $gBitInstaller->registerSchemaSequences( BLOGS_PKG_NAME, $sequences );
 
-// ### Default MenuOptions
-$gBitInstaller->registerMenuOptions( BLOGS_PKG_NAME, array (
-	array(42,'s','Blogs','list_blogs.php',450,'feature_blogs','bit_p_read_blog',''),
-	array(42,'o','List blogs','list_blogs.php',455,'feature_blogs','bit_p_read_blog',''),
-	array(42,'o','Rankings','rankings.php',460,'feature_blogs,feature_blog_rankings','bit_p_read_blog',''),
-	array(42,'o','Create/Edit blog','edit.php',465,'feature_blogs','bit_p_read_blog,bit_p_create_blogs',''),
-	array(42,'o','Post','post.php',470,'feature_blogs','bit_p_read_blog,bit_p_blog_post',''),
-	array(42,'o','Admin posts','index.php',475,'feature_blogs','bit_p_read_blog,bit_p_blog_admin','')
-) );
-
-
 // ### Default UserPermissions
 $gBitInstaller->registerUserPermissions( BLOGS_PKG_NAME, array(
 	array('bit_p_create_blogs', 'Can create a blog', 'registered', BLOGS_PKG_NAME),
