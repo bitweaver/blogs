@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.13 2006/01/08 19:12:43 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.1.1.1.2.14 2006/02/03 12:35:44 squareing Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -58,7 +58,7 @@
 
 						<div class="row">
 							{forminput}
-								<textarea id="{$textarea_id}" name="edit" rows="{$rows|default:20}" cols="{$cols|default:50}">{$data}</textarea>
+								<textarea id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$data|escape:html}</textarea>
 							{/forminput}
 						</div>
 
