@@ -15,13 +15,10 @@ array( 'DATADICT' => array(
 		'tiki_blog_activity' => 'blog_activity',
 		'tiki_blog_posts' => 'blog_posts',
 	)),
+	array( 'RENAMESEQUENCE' => array(
+		"tiki_blog_posts_post_id_seq" => "blog_posts_post_id_seq",
+	)),
 )),
-array( 'PHP' => '
-	global $gBitSystem;
-	$current = $gBitSystem->mDb->GenID( "tiki_blog_post_id_seq" );
-	$gBitSystem->mDb->DropSequence( "tiki_blog_post_id_seq");
-	$gBitSystem->mDb->CreateSequence( "blog_post_id_seq", $current );
-' ),
 		)
 	),
 
