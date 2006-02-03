@@ -3,7 +3,7 @@
  * Params: 
  * - title : if is "title", show the title of the post, else show the date of creation
  *
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.3 2005/08/01 18:40:05 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.4 2006/02/03 17:23:54 squareing Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -20,13 +20,14 @@ include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );
 require_once( KERNEL_PKG_PATH.'mod_lib.php' );
 
-global $gBitSmarty, $gBlog, $modlib, $gQueryUserId, $module_rows, $module_params, $gBitSystem;
+global $gBitSmarty, $gBlog, $gQueryUserId, $module_rows, $module_params, $gBitSystem;
 
 $listHash = array( 'user_id' => $gQueryUserId, 'sort_mode' => 'created_desc', 'max_records' => $module_rows, 'parse_data' => TRUE );
 $blogPost = new BitBlogPost();
 $ranking = $blogPost->getList( $listHash );
 
-$modParams = $modlib->get_module_params('bitpackage:blogs/mod_last_blog_posts.tpl', $gQueryUserId);
+$gBitThemes = new BitModules();
+$modParams = $gBitThemes->getModuleParameters('bitpackage:blogs/mod_last_blog_posts.tpl', $gQueryUserId);
 
 $maxPreviewLength = (!empty($modParams['max_preview_length']) ? $modParams['max_preview_length'] : MAX_BLOG_PREVIEW_LENGTH);
 $user_blog_id = NULL;
