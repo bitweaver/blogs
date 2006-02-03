@@ -3,7 +3,7 @@
  * Params: 
  * - title : if is "title", show the title of the post, else show the date of creation
  *
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.4 2006/02/03 17:23:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.5 2006/02/03 17:28:21 squareing Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -18,7 +18,6 @@ if( !defined( 'MAX_BLOG_PREVIEW_LENGTH' ) ) {
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );
-require_once( KERNEL_PKG_PATH.'mod_lib.php' );
 
 global $gBitSmarty, $gBlog, $gQueryUserId, $module_rows, $module_params, $gBitSystem;
 
