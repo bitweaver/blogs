@@ -159,14 +159,6 @@ if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' ) ) {
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
 
-$section = 'blogs';
-
-if ( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->isValid() && isset($_REQUEST['savenotepad'])) {
-
-	$gBitSystem->replace_note($user, 0, $gContent->mInfo['title'] ? $gContent->mInfo['title'] : date("d/m/Y [h:i]", $gContent->mInfo['created']), $gContent->mInfo['data']);
-}
-
-
 $gBitSystem->setBrowserTitle($gContent->mInfo['title'].' - '.$gContent->mInfo['blogtitle']);
 // Display the template
 $gBitSystem->display( 'bitpackage:blogs/view_blog_post.tpl');

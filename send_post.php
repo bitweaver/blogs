@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.8 2006/02/01 20:38:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.9 2006/02/04 19:04:34 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -70,8 +70,6 @@ if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' )) {
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
 
-$section = 'blogs';
-
 if (!isset($_REQUEST['addresses'])) {
 	$_REQUEST['addresses'] = '';
 }
@@ -80,7 +78,6 @@ $gBitSmarty->assign('addresses', $_REQUEST['addresses']);
 $gBitSmarty->assign('sent', 'n');
 
 if (isset($_REQUEST['send'])) {
-	
 	$emails = explode(',', $_REQUEST['addresses']);
 
 	$foo = parse_url($_SERVER["REQUEST_URI"]);

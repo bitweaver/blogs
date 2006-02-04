@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.9 2006/02/01 20:38:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.10 2006/02/04 19:04:34 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -198,14 +198,6 @@ if( $gBitSystem->isFeatureActive( 'feature_user_watches' ) ) {
 		$gBitSmarty->assign('user_watching_blog', 'y');
 	}
 }
-
-if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'mobile') {
-	include_once( HAWHAW_PKG_PATH.'hawtiki_lib.php' );
-
-	HAWBIT_view_blog($blogPosts, $blog_data);
-}
-
-
 
 $gBitSystem->setBrowserTitle($blog_data['title']);
 // Display the template

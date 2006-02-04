@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.9 2006/01/27 21:55:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.10 2006/02/04 19:04:34 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -230,7 +230,6 @@ $sameurl_elements = array(
 
 $gBitSmarty->assign_by_ref('blogs', $blogs);
 $gBitSmarty->assign('blog_id', $blog_id);
-$section = 'blogs';
 
 $gBitSystem->setBrowserTitle("Create Blog Post");
 // Display the Index Template

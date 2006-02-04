@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.4 2006/01/27 21:55:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.5 2006/02/04 19:04:34 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -131,15 +131,6 @@ if ($offset > 0) {
 }
 
 $gBitSmarty->assign_by_ref('listpages', $listpages["data"]);
-//print_r($listpages["data"]);
-$section = 'blogs';
-
-if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'mobile') {
-	include_once( HAWHAW_PKG_PATH.'hawtiki_lib.php' );
-
-	HAWBIT_list_blogs($listpages, $gBitUser->hasPermission( 'bit_p_read_blog' ) );
-}
-
 
 $gBitSystem->setBrowserTitle("View All Blogs");
 // Display the template
