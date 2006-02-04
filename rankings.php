@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.5 2006/01/28 09:13:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.6 2006/02/04 10:10:50 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -15,7 +15,6 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-include_once( KERNEL_PKG_PATH.'rank_lib.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
@@ -63,7 +62,7 @@ $gBitSmarty->assign_by_ref('limit', $limit);
 // Top Authors
 $rankings = array();
 
-$rk = $ranklib->$which($limit);
+$rk = $which($limit);
 $rank["data"] = $rk["data"];
 $rank["title"] = $rk["title"];
 $rank["y"] = $rk["y"];
@@ -74,6 +73,72 @@ $gBitSmarty->assign('rpage', 'rankings.php');
 
 
 // Display the template
-$gBitSystem->display( 'bitpackage:kernel/ranking.tpl');
+$gBitSystem->display( 'bitpackage:blogs/ranking.tpl');
 
+// =============================== some ranking functions - as soon as blogs are part of LibertyContent, we can use LibertyContent::getContentRanking()
+function blog_ranking_top_blogs($limit) {
+	global $gBitSystem;
+	$query = "select * from `".BIT_DB_PREFIX."blogs` order by `hits` desc";
+
+	$result = $gBitSystem->mDb->query($query,array(),$limit,0);
+	$ret = array();
+
+	while ($res = $result->fetchRow()) {
+		$aux["name"] = $res["title"];
+
+		$aux["hits"] = $res["hits"];
+		$aux["href"] = BLOGS_PKG_URL.'view.php?blog_id=' . $res["blog_id"];
+		$ret[] = $aux;
+	}
+
+	$retval["data"] = $ret;
+	$retval["title"] = tra("Most visited blogs");
+	$retval["y"] = tra("Visits");
+	return $retval;
+}
+
+function blog_ranking_top_active_blogs($limit) {
+	global $gBitSystem;
+	$query = "select * from `".BIT_DB_PREFIX."blogs` order by `activity` desc";
+
+	$result = $gBitSystem->mDb->query($query,array(),$limit,0);
+	$ret = array();
+
+	while ($res = $result->fetchRow()) {
+		$aux["name"] = $res["title"];
+
+		$aux["hits"] = $res["activity"];
+		$aux["href"] = BLOGS_PKG_URL.'view.php?blog_id=' . $res["blog_id"];
+		$ret[] = $aux;
+	}
+
+	$retval["data"] = $ret;
+	$retval["title"] = tra("Most active blogs");
+	$retval["y"] = tra("Activity");
+	return $retval;
+}
+
+function blog_ranking_last_posts($limit) {
+	global $gBitSystem;
+	$query = "select * from `".BIT_DB_PREFIX."blog_posts` order by `post_id` desc";
+
+	$result = $gBitSystem->mDb->query($query,array(),$limit,0);
+	$ret = array();
+
+	while ($res = $result->fetchRow()) {
+		$q = "select title, created from `".BIT_DB_PREFIX."blogs` where `blog_id`=";
+		$q.= $res["blog_id"];
+		$result2 = $gBitSystem->mDb->query($q,array(),$limit,0);
+		$res2 = $result2->fetchRow();
+		$aux["name"] = $res2["title"];
+		$aux["hits"] = $gBitSystem->get_long_datetime($res2["created"]);
+		$aux["href"] = BLOGS_PKG_URL.'view.php?blog_id=' . $res["blog_id"];
+		$ret[] = $aux;
+	}
+
+	$retval["data"] = $ret;
+	$retval["title"] = tra("Blogs last posts");
+	$retval["y"] = tra("Post date");
+	return $retval;
+}
 ?>
