@@ -44,7 +44,7 @@
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav'}
 
 	<div class="body"
-	    {if $user_dbl eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' ))}
+	    {if $gBitUser->getPreference( 'user_dbl' ) eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' ))}
 			ondblclick="location.href='{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}';"
 		{/if}
 	>
