@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.8 2006/02/01 20:38:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.9 2006/02/06 22:56:37 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -81,7 +81,7 @@ if ($gBitUser->mUserId && $gBitUser->mUserId == $gContent->mInfo['blog_user_id']
 
 $gBitSmarty->assign('ownsblog', $ownsblog);
 
-if ($gBitSystem->isFeatureActive( 'feature_blogposts_comments' )) {
+if ($gBitSystem->isFeatureActive( 'blogposts_comments' )) {
 	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=$post_id";
 	$commentsParentId = $gContent->mContentId;
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
