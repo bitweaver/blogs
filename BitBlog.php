@@ -21,7 +21,7 @@ class BitBlog extends BitBase {
 
 	// BLOG METHODS ////
 	/*shared*/
-	function list_blogs($offset = 0, $maxRecords = -1, $sort_mode = 'created_desc', $find = '', $user_id = NULL, $add_sql = NULL) {
+	function list_blogs($offset = 0, $max_records = -1, $sort_mode = 'created_desc', $find = '', $user_id = NULL, $add_sql = NULL) {
 		global $gBitSystem;
 
 		if ($find) {
@@ -52,7 +52,7 @@ class BitBlog extends BitBase {
 			  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
 			  $mid order by b.".$this->mDb->convert_sortmode($sort_mode);
 
-		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
 
 		$ret = array();
 
@@ -73,7 +73,7 @@ class BitBlog extends BitBase {
 		return $retval;
 	}
 
-	function get_user_blogs($user_id, $maxRecords = NULL) {
+	function get_user_blogs($user_id, $max_records = NULL) {
 		$ret = NULL;
 
 		if ($user_id) {
@@ -82,8 +82,8 @@ class BitBlog extends BitBase {
 					FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
 					WHERE b.`user_id` = ? $mid";
 
-			if ($maxRecords && is_numeric($maxRecords) && $maxRecords >= 0) {
-				$blogsRes = $this->mDb->query($sql, array($user_id), $maxRecord);
+			if ($max_records && is_numeric($max_records) && $max_records >= 0) {
+				$blogsRes = $this->mDb->query($sql, array($user_id), $max_records);
 			} else {
 				$blogsRes = $this->mDb->query($sql, array($user_id));
 			}

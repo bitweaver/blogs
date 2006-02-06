@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.11 2006/01/17 00:22:50 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.12 2006/02/06 00:05:58 squareing Exp $
  * @package article
  * @subpackage functions
  */
@@ -16,8 +16,8 @@ $gBitSystem->verifyPackage( 'rss' );
 $gBitSystem->verifyPackage( 'blogs' );
 
 // default feed info
-$rss->title = $gBitSystem->getPreference( 'title_rss_blogs', $gBitSystem->mPrefs['siteTitle'].' - '.tra( 'Blogs' ) );
-$rss->description = $gBitSystem->getPreference( 'desc_rss_blogs', $gBitSystem->mPrefs['siteTitle'].' - '.tra( 'RSS Feed' ) );
+$rss->title = $gBitSystem->getPreference( 'title_rss_blogs', $gBitSystem->mPrefs['site_title'].' - '.tra( 'Blogs' ) );
+$rss->description = $gBitSystem->getPreference( 'desc_rss_blogs', $gBitSystem->mPrefs['site_title'].' - '.tra( 'RSS Feed' ) );
 
 // check permission to view wiki pages
 if( !$gBitUser->hasPermission( 'bit_p_read_blog' ) ) {

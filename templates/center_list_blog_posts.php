@@ -1,7 +1,7 @@
 <?php
 
-global $gBitSmarty, $gBlog, $gBitSystem, $categlib, $_REQUEST, $maxRecords, $gQueryUserId, $package_categories;
-$postRecords = ( $module_rows ? $module_rows : $maxRecords );
+global $gBitSmarty, $gBlog, $gBitSystem, $categlib, $_REQUEST, $max_records, $gQueryUserId, $package_categories;
+$postRecords = ( $module_rows ? $module_rows : $max_records );
 
 if (defined("CATEGORIES_PKG_PATH")) {
 	include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
@@ -32,7 +32,7 @@ if ( empty( $_REQUEST["sort_mode"] ) ) {
 $gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
 
 // If offset is set use it if not then use offset =0
-// use the maxRecords php variable to set the limit
+// use the max_records php variable to set the limit
 // if sortMode is not set then use last_modified_desc
 if (!isset($_REQUEST["offset"])) {
 	$offset = 0;
