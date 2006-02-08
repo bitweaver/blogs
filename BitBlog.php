@@ -268,41 +268,6 @@ class BitBlog extends BitBase {
 	}
 
 
-	function add_blog_activity($blog_id) {
-		if( $this->verifyId( $blog_id ) ) {
-			//Caclulate activity, update blogs and purge activity table
-			$today = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
-
-			$day0 = $today - (24 * 60 * 60);
-			$day1 = $today - (2 * 24 * 60 * 60);
-			$day2 = $today - (3 * 24 * 60 * 60);
-			// Purge old activity
-			$query = "delete from `".BIT_DB_PREFIX."blog_activity` where `day`<?";
-			$result = $this->mDb->query($query,array((int) $day2));
-			// Register new activity
-			$query = "select count(*) from `".BIT_DB_PREFIX."blog_activity` where `blog_id`=? and `day`=?";
-			$result = $this->mDb->getOne($query,array((int) $blog_id,(int)$today));
-
-			if ($result) {
-				$query = "update `".BIT_DB_PREFIX."blog_activity` set `posts`=`posts`+1 where `blog_id`=? and `day`=?";
-			} else {
-				$query = "insert into `".BIT_DB_PREFIX."blog_activity`(`blog_id`,`day`,`posts`) values(?,?,1)";
-			}
-
-			$result = $this->mDb->query($query,array((int) $blog_id,(int) $today));
-			// Calculate activity
-			$query = "select `posts` from `".BIT_DB_PREFIX."blog_activity` where `blog_id`=? and `day`=?";
-			$vtoday = $this->mDb->getOne($query,array((int) $blog_id,(int) $today));
-			$day0 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day0));
-			$day1 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day1));
-			$day2 = $this->mDb->getOne($query,array((int) $blog_id,(int) $day2));
-			$activity = (2 * $vtoday) + ($day0)+(0.5 * $day1) + (0.25 * $day2);
-			// Update blogs with activity information
-			$query = "update `".BIT_DB_PREFIX."blogs` set `activity`=? where `blog_id`=?";
-			$result = $this->mDb->query($query,array($activity,(int) $blog_id));
-		}
-	}
-
 	function get_blog_owner($blog_id) {
 		$user_id = NULL;
 		if ( $this->verifyId( $blog_id ) ) {

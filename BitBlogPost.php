@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.17 2006/02/06 22:56:37 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.18 2006/02/08 01:50:31 bitweaver Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.17 2006/02/06 22:56:37 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.18 2006/02/08 01:50:31 bitweaver Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.17 $ $Date: 2006/02/06 22:56:37 $ $Author: squareing $
+ * @version $Revision: 1.18 $ $Date: 2006/02/08 01:50:31 $ $Author: bitweaver $
  */
 
 /**
@@ -210,7 +210,6 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mDb->query($query,array(serialize(array()),$trackbacks,(int) $pParamHash['post_id']));
 				$query = "update `".BIT_DB_PREFIX."blogs` set `last_modified`=?,`posts`=`posts`+1 where `blog_id`=?";
 				$result = $this->mDb->query($query,array((int)$now,(int) $pParamHash['blog_id']));
-				$gBlog->add_blog_activity($pParamHash['blog_id']);
 
 				// let's reload to get a full mInfo hash which is needed below
 				$this->load();

@@ -2,12 +2,6 @@
 
 $tables = array(
 
-'blog_activity' => "
-	blog_id I4 NOTNULL PRIMARY,
-	day I8 NOTNULL PRIMARY,
-	posts I4
-",
-
 'blog_posts' => "
 	post_id I4 PRIMARY,
 	content_id I4 NOTNULL,
