@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.10 2006/01/28 09:18:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.1.1.1.2.11 2006/02/08 03:07:11 seannerd Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -139,8 +139,8 @@ if (isset($_REQUEST['save_blog'])) {
 	if( $use_find == "y" and $gBitSystem->isPackageActive( 'search' ) and $gBitSystem->isFeatureActive("search_index_on_submit")) {
 		require_once( SEARCH_PKG_PATH.'refresh_functions.php');
 		refresh_index_blogs($_REQUEST["blog_id"]);
-		// This is the old way - once the blogs are moved to tiki content, do the index update like this:
-		// refresh_index_tiki_content($gContent->mContentId);
+		// The above is the old way - once the blogs are moved to tiki content, do the index update like this:
+		// refresh_index($gContent->mContentId);
 	}
 	
 	
