@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.18 2006/02/08 01:50:31 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.19 2006/02/08 23:24:23 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.18 2006/02/08 01:50:31 bitweaver Exp $
+ * $Id: BitBlogPost.php,v 1.19 2006/02/08 23:24:23 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.18 $ $Date: 2006/02/08 01:50:31 $ $Author: bitweaver $
+ * @version $Revision: 1.19 $ $Date: 2006/02/08 23:24:23 $ $Author: spiderr $
  */
 
 /**
@@ -72,10 +72,7 @@ class BitBlogPost extends LibertyAttachable {
 				// this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
 //				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 
-			$result = $this->mDb->query( $query, $bindVars );
-
-			if ($result->numRows()) {
-				$this->mInfo = $result->fetchRow();
+			if( $this->mInfo = $this->mDb->getRow( $query, $bindVars ) ) {
 				$this->mPostId = $this->mInfo['post_id'];
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mInfo['blog_url'] = BitBlog::getBlogUrl( $this->mInfo['blog_id'] );
