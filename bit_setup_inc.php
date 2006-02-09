@@ -8,9 +8,9 @@ $gBitSystem->registerPackage( 'blogs', dirname( __FILE__).'/' );
 
 if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 	if( $gBitUser->hasPermission( 'bit_p_blog_admin' ) ) {
-		$gBitUser->mPrefs['bit_p_create_blogs'] = TRUE;
-		$gBitUser->mPrefs['bit_p_blog_post'] = TRUE;
-		$gBitUser->mPrefs['bit_p_read_blog'] = TRUE;
+		$gBitUser->setPreference( 'bit_p_create_blogs', TRUE );
+		$gBitUser->setPreference( 'bit_p_blog_post', TRUE );
+		$gBitUser->setPreference( 'bit_p_read_blog', TRUE );
 	}
 
 	if ($gBitUser->hasPermission( 'bit_p_read_blog' )) {
