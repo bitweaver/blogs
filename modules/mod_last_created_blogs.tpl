@@ -1,6 +1,6 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_created_blogs.tpl,v 1.4 2005/08/24 20:49:32 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_created_blogs.tpl,v 1.5 2006/02/09 14:52:46 squareing Exp $ *}
 {strip}
-{if $gBitSystem->isFeatureActive( 'feature_blogs' )}
+{if $gBitSystem->isPackageActive( 'blogs' )}
 	{if $nonums eq 'y'}
 		{eval var="{tr}Last `$module_rows` Created blogs{/tr}" assign="tpl_module_title"}
 	{else}
