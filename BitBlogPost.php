@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.19 2006/02/08 23:24:23 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.20 2006/02/13 10:06:09 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.19 2006/02/08 23:24:23 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.20 2006/02/13 10:06:09 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.19 $ $Date: 2006/02/08 23:24:23 $ $Author: spiderr $
+ * @version $Revision: 1.20 $ $Date: 2006/02/13 10:06:09 $ $Author: squareing $
  */
 
 /**
@@ -291,8 +291,8 @@ class BitBlogPost extends LibertyAttachable {
 		}
 		global $gBitSystem;
 		if( @BitBase::verifyId( $pContentId ) ) {
-			$rewrite_tag = $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ? 'view/' : '';
-			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'feature_pretty_urls_extended' ) ) {
+			$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/' : '';
+			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				$ret = BLOGS_PKG_URL.$rewrite_tag.'content/'.$pContentId;
 			} else {
 				$ret = BLOGS_PKG_URL.'view_post.php?content_id='.$pContentId;
