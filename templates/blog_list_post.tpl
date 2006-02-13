@@ -16,12 +16,6 @@
 				<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$aPost.blog_id}&amp;remove={$aPost.post_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 			{/if}
 
-			{**====== NOTEPAD PACKAGE CHECK IS BROKEN
-			{if $gBitUser->mUserId and $gBitSystem->isPackageActive( 'notepad' ) and $gBitUser->hasPermission( 'bit_p_notepad' )}
-				<a title="{tr}Save to notepad{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$aPost.blog_id}&amp;savenotepad={$aPost.post_id}">{biticon ipackage=liberty iname="save" iexplain="save"}</a>
-			{/if}
-			========= NOTEPAD PACKAGE CHECK IS BROKEN **}
-
 			<a title="{tr}print{/tr}" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$aPost.post_id}">{biticon ipackage=liberty iname="print" iexplain="print"}</a>
 			<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$aPost.post_id}">{biticon ipackage=liberty iname="mail_send" iexplain="email this post"}</a>
 		</div>
@@ -33,7 +27,6 @@
 		{/if}
 
 		<div class="date">
-			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$aPost}
 			{if $showBlogTitle}{displayname hash=$aPost} {tr}in{/tr} <a href="{$aPost.blog_url}">{$aPost.blogtitle}</a>{/if}<br />
 			{$aPost.created|bit_long_date}
 		</div>
@@ -42,10 +35,9 @@
 	<div class="body">
 		<div class="content">
 			{if $aPost.avatar}<img src="{$aPost.avatar}" class="avatar" />{/if}
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$aPost}
 			{$aPost.parsed_data}
-			<p>
-				{tr}Posted on {$aPost.created|bit_long_datetime}{/tr}
-			</p>
+			<p>{tr}Posted on {$aPost.created|bit_long_datetime}{/tr}</p>
 		</div> <!-- end .content -->
 
 		{if $aPost.pages > 1}

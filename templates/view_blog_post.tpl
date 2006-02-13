@@ -10,9 +10,11 @@
 </rdf:RDF>
 -->
 
+{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$post_info}
+
 <div class="display blogs">
 	<div class="floaticon">
-		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon'}
+		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
 
 		{if ($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
 			<a href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
@@ -41,14 +43,14 @@
 		</div>
 	</div>
 
-{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav'}
-
 	<div class="body"
 	    {if $gBitUser->getPreference( 'user_dbl' ) eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' ))}
 			ondblclick="location.href='{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}';"
 		{/if}
 	>
 		<div class="content">
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$post_info}
+
 			{$parsed_data}
 			<p>
 				{displayname hash=$post_info}<br />
@@ -94,9 +96,6 @@
 			{/foreach}
 		</table>
 	{/if}
-
-	{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view'}
-
 </div> {* end .blog *}
 
 {if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blogposts_comments' )}
@@ -104,3 +103,6 @@
 		{include file="bitpackage:liberty/comments.tpl"}
 	{/if}
 {/if}
+
+{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view' serviceHash=$post_info}
+
