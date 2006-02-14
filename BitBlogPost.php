@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.20 2006/02/13 10:06:09 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.21 2006/02/14 21:53:24 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.20 2006/02/13 10:06:09 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.21 2006/02/14 21:53:24 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.20 $ $Date: 2006/02/13 10:06:09 $ $Author: squareing $
+ * @version $Revision: 1.21 $ $Date: 2006/02/14 21:53:24 $ $Author: squareing $
  */
 
 /**
@@ -55,7 +55,7 @@ class BitBlogPost extends LibertyAttachable {
 			global $gBitSystem;
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
-			$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
+			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$lookupColumn = $this->verifyId( $this->mPostId )? 'post_id' : 'content_id';
 			$lookupId = $this->verifyId( $this->mPostId )? $this->mPostId : $this->mContentId;
@@ -397,7 +397,7 @@ class BitBlogPost extends LibertyAttachable {
 		$this->prepGetList( $pListHash );
 
 		$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
-		$this->getServicesSql( 'content_load_function', $selectSql, $joinSql, $whereSql, $bindVars );
+		$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 		$whereSql = '';
 		if( @$this->verifyId( $pListHash['blog_id'] ) ) {
