@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.21 2006/02/14 21:53:24 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.22 2006/02/16 13:48:10 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.21 2006/02/14 21:53:24 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.22 2006/02/16 13:48:10 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.21 $ $Date: 2006/02/14 21:53:24 $ $Author: squareing $
+ * @version $Revision: 1.22 $ $Date: 2006/02/16 13:48:10 $ $Author: squareing $
  */
 
 /**
@@ -477,7 +477,7 @@ class BitBlogPost extends LibertyAttachable {
 				}
 
 				if( $pListHash['parse_data'] ) {
-					$res["parsed_data"] = $this->parseData($res["data"], $res['format_guid']);
+					$res["parsed_data"] = $this->parseData( $res );
 				}
 
 				$ret[] = $res;

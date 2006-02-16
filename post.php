@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.10 2006/02/04 19:04:34 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.11 2006/02/16 13:48:10 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -192,7 +192,7 @@ if (isset($_REQUEST["preview"])) {
 		}
 
 		$data = $_REQUEST['edit'];
-		$parsed_data = $gContent->parseData($_REQUEST['edit']);
+		$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
 
 		if( empty( $data ) ) {
 			$data = '';
