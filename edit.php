@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.6 2006/01/27 21:55:03 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.7 2006/02/19 00:55:27 lsces Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -51,7 +51,7 @@ if ($gBitUser->object_has_one_permission($blog_id, 'blog')) {
 $gBitSmarty->assign('blog_id', $blog_id);
 $gBitSmarty->assign('title', '');
 $gBitSmarty->assign('description', '');
-$gBitSmarty->assign('public', 'n');
+$gBitSmarty->assign('public_blog', 'n');
 $gBitSmarty->assign('use_find', 'y');
 $gBitSmarty->assign('use_title', 'y');
 $gBitSmarty->assign('allow_comments', 'y');
@@ -86,7 +86,7 @@ if (isset($_REQUEST["blog_id"]) && $_REQUEST["blog_id"] > 0) {
 
 	$gBitSmarty->assign('title', $data["title"]);
 	$gBitSmarty->assign('description', $data["description"]);
-	$gBitSmarty->assign('public', $data["public"]);
+	$gBitSmarty->assign('public_blog', $data["public_blog"]);
 	$gBitSmarty->assign('use_title', $data["use_title"]);
 	$gBitSmarty->assign('allow_comments', $data["allow_comments"]);
 	$gBitSmarty->assign('use_find', $data["use_find"]);
@@ -108,7 +108,7 @@ if (isset($_REQUEST['preview'])) {
 	$gBitSmarty->assign('title', $_REQUEST["title"]);
 
 	$gBitSmarty->assign('description', $_REQUEST["description"]);
-	$gBitSmarty->assign('public', isset($_REQUEST["public"]) ? 'y' : 'n');
+	$gBitSmarty->assign('public_blog', isset($_REQUEST["public_blog"]) ? 'y' : 'n');
 	$gBitSmarty->assign('use_find', isset($_REQUEST["use_find"]) ? 'y' : 'n');
 	$gBitSmarty->assign('use_title', isset($_REQUEST["use_title"]) ? 'y' : 'n');
 	$gBitSmarty->assign('allow_comments', isset($_REQUEST["allow_comments"]) ? 'y' : 'n');
@@ -118,7 +118,7 @@ if (isset($_REQUEST['preview'])) {
 
 if (isset($_REQUEST['save_blog'])) {
 
-	if (isset($_REQUEST["public"]) && $_REQUEST["public"] == 'on') {
+	if (isset($_REQUEST["public_blog"]) && $_REQUEST["public_blog"] == 'on') {
 		$public = 'y';
 	} else {
 		$public = 'n';

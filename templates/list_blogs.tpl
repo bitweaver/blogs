@@ -43,7 +43,7 @@
 					<div class="floaticon">
 						{if $gBitUser->hasPermission( 'bit_p_blog_post' )}
 							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'bit_p_blog_post' ))}
-								{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'bit_p_blog_admin' )) or ($listpages[changes].public eq 'y')}
+								{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'bit_p_blog_admin' )) or ($listpages[changes].public_blog eq 'y')}
 									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage=liberty iname="edit" iexplain="post"}</a>
 								{/if}
 							{/if}

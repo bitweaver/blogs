@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.22 2006/02/16 13:48:10 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.23 2006/02/19 00:55:27 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.22 2006/02/16 13:48:10 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.23 2006/02/19 00:55:27 lsces Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.22 $ $Date: 2006/02/16 13:48:10 $ $Author: squareing $
+ * @version $Revision: 1.23 $ $Date: 2006/02/19 00:55:27 $ $Author: lsces $
  */
 
 /**
@@ -61,7 +61,7 @@ class BitBlogPost extends LibertyAttachable {
 			$lookupId = $this->verifyId( $this->mPostId )? $this->mPostId : $this->mContentId;
 			array_push( $bindVars, $lookupId );
 
-			$query = "SELECT bp.*, lc.*, b.`title` as `blogtitle`, b.`allow_comments`,b.`allow_comments`, b.`use_title`, b.`user_id` AS `blog_user_id`, uu.`login` as `user`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
+			$query = "SELECT bp.*, lc.*, b.`title` as `blogtitle`, b.`allow_comments`,b.`allow_comments`, b.`use_title`, b.`user_id` AS `blog_user_id`, uu.`login` as `user_nic`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
 				INNER JOIN `".BIT_DB_PREFIX."blogs` b ON (b.`blog_id` = bp.`blog_id`)
@@ -221,7 +221,7 @@ class BitBlogPost extends LibertyAttachable {
 							$gBitSmarty->assign('mail_blogid', $this->mInfo['blog_id']);
 							$gBitSmarty->assign('mail_postid', $this->mPostId);
 							$gBitSmarty->assign('mail_date', $gBitSystem->getUTCTime());
-							$gBitSmarty->assign('mail_user', $this->mInfo['user']);
+							$gBitSmarty->assign('mail_user', $this->mInfo['user_nic']);
 							$gBitSmarty->assign('mail_data', $this->mInfo['data']);
 							$gBitSmarty->assign('mail_hash', $not['hash']);
 							$foo = parse_url($_SERVER["REQUEST_URI"]);
@@ -419,7 +419,7 @@ class BitBlogPost extends LibertyAttachable {
 			$bindVars[]= $pListHash['date'];
 		}
 
-		$query = "SELECT bp.*, lc.*, tct.*, b.`title` AS `blogtitle`, b.`description` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login` as `user`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
+		$query = "SELECT bp.*, lc.*, tct.*, b.`title` AS `blogtitle`, b.`description` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login` as `user_nic`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blogs` b, `".BIT_DB_PREFIX."blog_posts` bp
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content_types` tct ON (lc.`content_type_guid` = tct.`content_type_guid`)

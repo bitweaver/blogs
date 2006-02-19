@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.12 2006/02/13 10:06:10 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.13 2006/02/19 00:55:27 lsces Exp $
 
  * @package blogs
  * @subpackage functions
@@ -104,7 +104,7 @@ $gBitSmarty->assign('description', $blog_data["description"]);
 $gBitSmarty->assign('created', $blog_data["created"]);
 $gBitSmarty->assign('last_modified', $blog_data["last_modified"]);
 $gBitSmarty->assign('posts', $blog_data["posts"]);
-$gBitSmarty->assign('public', $blog_data["public"]);
+$gBitSmarty->assign('public_blog', $blog_data["public_blog"]);
 $gBitSmarty->assign('hits', $blog_data["hits"]);
 $gBitSmarty->assign('creator', $blog_data["user_id"]);
 $gBitSmarty->assign('activity', $blog_data["activity"]);

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.6 2006/01/26 14:56:40 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.7 2006/02/19 00:55:28 lsces Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -58,9 +58,9 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="Public" for="public"}
+					{formlabel label="Public" for="public_blog"}
 					{forminput}
-						<input type="checkbox" name="public" id="public" {if $public eq 'y'}checked="checked"{/if} />
+						<input type="checkbox" name="public_blog" id="public_blog" {if $public_blog eq 'y'}checked="checked"{/if} />
 						{formhelp note='Allow other user to post in this blog'}
 					{/forminput}
 				</div>

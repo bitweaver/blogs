@@ -48,7 +48,7 @@ class BitBlog extends BitBase {
 			}
 		}
 
-		$query = "SELECT b.*, uu.`login` as `user`, uu.`real_name`
+		$query = "SELECT b.*, uu.`login` as `user_nic`, uu.`real_name`
 			  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
 			  $mid order by b.".$this->mDb->convert_sortmode($sort_mode);
 
@@ -78,7 +78,7 @@ class BitBlog extends BitBase {
 
 		if ($user_id) {
 
-			$sql = "SELECT b.*, uu.`user_id`, uu.`login` as `user`, uu.`email`, uu.`real_name`
+			$sql = "SELECT b.*, uu.`user_id`, uu.`login` as `user_nic`, uu.`email`, uu.`real_name`
 					FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
 					WHERE b.`user_id` = ? $mid";
 
@@ -125,7 +125,7 @@ class BitBlog extends BitBase {
 		$ret = NULL;
 		if ( $this->verifyId( $blog_id ) ) {
 
-			$query = "SELECT b.*, uu.`login` as `user`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar
+			$query = "SELECT b.*, uu.`login` as `user_nic`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar
 				  	  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
 			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
@@ -158,10 +158,10 @@ class BitBlog extends BitBase {
 			$bindvars[] = (int)$user_id;
 			$mid = '';
 			if ($include_public) {
-				$mid .= "OR `public`=?";
+				$mid .= "OR `public_blog`=?";
 				$bindvars[]='y';
 			}
-			$query = "SELECT b.*, uu.`login` as `user`, uu.`real_name`
+			$query = "SELECT b.*, uu.`login` as `user_nic`, uu.`real_name`
 				  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
 			  	  WHERE b.`user_id` = ? $mid ";
 			$result = $this->mDb->query($query,$bindvars);
@@ -201,11 +201,11 @@ class BitBlog extends BitBase {
 			$creation_date = (int)$now;
 
 		if ( $this->verifyId( $blog_id ) ) {
-			$query = "update `".BIT_DB_PREFIX."blogs` set `title`=? ,`description`=?,`user_id`=?,`public`=?,`last_modified`=?,`max_posts`=?,`heading`=?,`use_title`=?,`use_find`=?,`allow_comments`=? where `blog_id`=?";
+			$query = "update `".BIT_DB_PREFIX."blogs` set `title`=? ,`description`=?,`user_id`=?,`public_blog`=?,`last_modified`=?,`max_posts`=?,`heading`=?,`use_title`=?,`use_find`=?,`allow_comments`=? where `blog_id`=?";
 
 			$result = $this->mDb->query($query,array($title,$description,$user_id,$public,$now,$max_posts,$heading,$use_title,$use_find,$allow_comments,$blog_id));
 		} else {
-			$query = "insert into `".BIT_DB_PREFIX."blogs`(`created`,`last_modified`,`title`,`description`,`user_id`,`public`,`posts`,`max_posts`,`hits`,`heading`,`use_title`,`use_find`,`allow_comments`)
+			$query = "insert into `".BIT_DB_PREFIX."blogs`(`created`,`last_modified`,`title`,`description`,`user_id`,`public_blog`,`posts`,`max_posts`,`hits`,`heading`,`use_title`,`use_find`,`allow_comments`)
                        values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			$result = $this->mDb->query($query,array($creation_date,(int) $now,$title,$description,$user_id,$public,0,(int) $max_posts,0,$heading,$use_title,$use_find,$allow_comments));
@@ -289,7 +289,7 @@ class BitBlog extends BitBase {
 
 	function viewerCanPostIntoBlog() {
 		global $gBitUser;
-		return ($this->mInfo['user_id'] == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->mInfo['public'] == 'y' );
+		return ($this->mInfo['user_id'] == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->mInfo['public_blog'] == 'y' );
 	}
 
 	function viewerHasPermission($pPermName = NULL) {

@@ -17,7 +17,7 @@ $tables = array(
 	last_modified I8 NOTNULL,
 	title C(200),
 	description X,
-	`public` C(1),
+	public_blog C(1),
 	posts I4,
 	max_posts I4,
 	hits I4,

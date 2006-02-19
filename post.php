@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.11 2006/02/16 13:48:10 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.12 2006/02/19 00:55:27 lsces Exp $
 
  * @package blogs
  * @subpackage functions
@@ -54,7 +54,7 @@ if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
 	if ($blog_id) {
 		$blogInfo = $gBlog->get_blog($blog_id);
 		if ($blogInfo) {
-			//if (($blogInfo['user_id'] != $gBitUser->mUserId && $blogInfo['public'] != 'y') && !$gBlog->viewerCanPostIntoBlog()) {
+			//if (($blogInfo['user_id'] != $gBitUser->mUserId && $blogInfo['public_blog'] != 'y') && !$gBlog->viewerCanPostIntoBlog()) {
 			if ($gBlog->viewerCanPostIntoBlog()) {
 				$gBitSmarty->assign('msg', tra("You cannot post into this blog"));
 				$gBitSystem->display('error.tpl');
