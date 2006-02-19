@@ -1,11 +1,11 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.7 2006/02/19 00:55:28 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.8 2006/02/19 19:32:34 spiderr Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit blogs">
 	<div class="header">
-		<h1>{tr}Create or Edit Blog{/tr}</h1>
+		<h1>{if $blog_id}{tr}Edit Blog{/tr}{else}{tr}Create Blog{/tr}{/if}</h1>
 	</div>
 
 	<div class="body">
@@ -31,7 +31,7 @@
 		{/if}
 
 		{form ipackage="blogs" ifile="edit.php"}
-			{legend legend="Edit Blog"}
+			{legend legend="Blog Settings"}
 				<input type="hidden" name="blog_id" value="{$blog_id|escape}" />
 				<div class="row">
 					{formfeedback warning=$warning}
@@ -57,6 +57,7 @@
 					{/forminput}
 				</div>
 
+				{if $gBitUser->hasPermission('bit_p_create_public_blog')}
 				<div class="row">
 					{formlabel label="Public" for="public_blog"}
 					{forminput}
@@ -64,6 +65,7 @@
 						{formhelp note='Allow other user to post in this blog'}
 					{/forminput}
 				</div>
+				{/if}
 
 				<div class="row">
 					{formlabel label="Use titles in blog posts" for="use_title"}

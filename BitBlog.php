@@ -195,10 +195,12 @@ class BitBlog extends BitBase {
 
 	function replace_blog($title, $description, $user_id, $public, $max_posts, $blog_id, $heading, $use_title, $use_find,
 		$allow_comments, $creation_date = NULL) {
-		global $gBitSystem;
+		global $gBitSystem, $gBitUser;
 		$now = $gBitSystem->getUTCTime();
 		if ($creation_date == NULL)
 			$creation_date = (int)$now;
+
+		$public = $gBitUser->hasPermission('bit_p_create_public_blog') ? $public : NULL;
 
 		if ( $this->verifyId( $blog_id ) ) {
 			$query = "update `".BIT_DB_PREFIX."blogs` set `title`=? ,`description`=?,`user_id`=?,`public_blog`=?,`last_modified`=?,`max_posts`=?,`heading`=?,`use_title`=?,`use_find`=?,`allow_comments`=? where `blog_id`=?";
@@ -289,7 +291,7 @@ class BitBlog extends BitBase {
 
 	function viewerCanPostIntoBlog() {
 		global $gBitUser;
-		return ($this->mInfo['user_id'] == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->mInfo['public_blog'] == 'y' );
+		return ($this->getField('user_id') == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->getField('public_blog') == 'y' );
 	}
 
 	function viewerHasPermission($pPermName = NULL) {
