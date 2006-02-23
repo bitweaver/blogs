@@ -125,7 +125,7 @@ class BitBlog extends BitBase {
 		$ret = NULL;
 		if ( $this->verifyId( $blog_id ) ) {
 
-			$query = "SELECT b.*, uu.`login` as `user_nic`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar
+			$query = "SELECT b.*, uu.`login`, uu.`login` as `user_nic`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar
 				  	  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
 			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
