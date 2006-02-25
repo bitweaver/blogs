@@ -3,7 +3,7 @@
  * Params: 
  * - title : if is "title", show the title of the post, else show the date of creation
  *
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.5 2006/02/03 17:28:21 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.6 2006/02/25 17:11:38 spiderr Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -25,7 +25,7 @@ $listHash = array( 'user_id' => $gQueryUserId, 'sort_mode' => 'created_desc', 'm
 $blogPost = new BitBlogPost();
 $ranking = $blogPost->getList( $listHash );
 
-$gBitThemes = new BitModules();
+$gBitThemes = new BitThemes();
 $modParams = $gBitThemes->getModuleParameters('bitpackage:blogs/mod_last_blog_posts.tpl', $gQueryUserId);
 
 $maxPreviewLength = (!empty($modParams['max_preview_length']) ? $modParams['max_preview_length'] : MAX_BLOG_PREVIEW_LENGTH);
