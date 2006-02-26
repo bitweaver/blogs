@@ -88,7 +88,7 @@ $gBitInstaller->registerUserPermissions( BLOGS_PKG_NAME, array(
 ) );
 
 // ### Default Preferences
-$gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
+$preferences = array(
 	array( BLOGS_PKG_NAME, 'blog_list_activity','y'),
 	array( BLOGS_PKG_NAME, 'blog_list_created','y'),
 	array( BLOGS_PKG_NAME, 'blog_list_description','y'),
@@ -104,7 +104,11 @@ $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
 	array( BLOGS_PKG_NAME, 'feature_blogposts_comments','n'),
 	array( BLOGS_PKG_NAME, 'feature_blog_rankings','y'),
 	array( BLOGS_PKG_NAME, 'feature_blogs','y'),
-	array( RSS_PKG_NAME, 'rss_'.BLOGS_PKG_NAME, 'y'),
-) );
+);
+
+if ($gBitInstaller->isPackageActive( 'rss' ))
+	$preferences[] = array( RSS_PKG_NAME, 'rss_'.BLOGS_PKG_NAME, 'y');
+
+$gBitInstaller->registerPreferences( BLOGS_PKG_NAME, $preferences );
 
 ?>
