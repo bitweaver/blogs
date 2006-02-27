@@ -245,7 +245,7 @@ class BitBlog extends BitBase {
 //		$query = "delete from `".BIT_DB_PREFIX."liberty_comments` where `object`=?  and `object_type`=?";
 //		$result = $this->mDb->query($query, array( $id, $type ));
 		// Remove individual permissions for this object if they exist
-		$query = "delete from `".BIT_DB_PREFIX."users_objectpermissions` where `object_id`=? and `object_type`=?";
+		$query = "delete from `".BIT_DB_PREFIX."users_object_permissions` where `object_id`=? and `object_type`=?";
 		$result = $this->mDb->query($query,array((int)$object,$type));
 		return true;
 	}

@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.23 2006/02/19 00:55:27 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.24 2006/02/27 14:48:08 bitweaver Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.23 2006/02/19 00:55:27 lsces Exp $
+ * $Id: BitBlogPost.php,v 1.24 2006/02/27 14:48:08 bitweaver Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.23 $ $Date: 2006/02/19 00:55:27 $ $Author: lsces $
+ * @version $Revision: 1.24 $ $Date: 2006/02/27 14:48:08 $ $Author: bitweaver $
  */
 
 /**
@@ -311,7 +311,7 @@ class BitBlogPost extends LibertyAttachable {
 	function getDisplayLink( $pTitle=NULL, $pMixed=NULL ) {
 		global $gBitSystem;
 		if( empty( $pTitle ) && !empty( $this ) ) {
-			$pTitle = $this->mInfo['title'];
+			$pTitle = $this->getField( 'title', $this->getContentTypeDescription() );
 		}
 
 		if( empty( $pMixed ) && !empty( $this ) ) {
