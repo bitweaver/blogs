@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.12 2006/02/19 00:55:27 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.13 2006/03/01 20:08:39 starrrider Exp $
 
  * @package blogs
  * @subpackage functions
@@ -208,7 +208,7 @@ if (isset($_REQUEST["preview"])) {
 }
 
 // WYSIWYG and Quicktag variable
-$gBitSmarty->assign( 'textarea_id', 'editblog' );
+$gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
 if (isset($_REQUEST["post_id"])) {
 	$post_id = $_REQUEST["post_id"];
