@@ -62,7 +62,7 @@ $_REQUEST["blog_id"] = $gContent->mInfo["blog_id"];
 
 $gBitSmarty->assign('blog_id', $_REQUEST["blog_id"]);
 
-if( !empty( $gContent->mInfo['blog_style'] ) && $gBitSystem->getPreference('users_themes') == 'h' ) {
+if( !empty( $gContent->mInfo['blog_style'] ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
 	$gBitSystem->setStyle( $gContent->mInfo['blog_style'] );
 	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gContent->mInfo['blog_style'], $gContent->mInfo['user_id'] );
 	$gBitSmarty->assign( 'userStyle', $gContent->mInfo['blog_style'] );

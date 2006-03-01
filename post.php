@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.13 2006/03/01 20:08:39 starrrider Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.14 2006/03/01 20:16:03 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -84,7 +84,7 @@ if (count($blogs) == 0) {
 	}
 
 } else {
-	if ($gBitSystem->getPreference('package_quicktags','n') == 'y') {
+	if ($gBitSystem->getConfig('package_quicktags','n') == 'y') {
 	  include_once( QUICKTAGS_PKG_PATH.'quicktags_inc.php' );
 	}
 	$mid = 'bitpackage:blogs/blog_post.tpl';

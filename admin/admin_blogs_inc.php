@@ -1,10 +1,10 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.5 2006/02/08 21:51:13 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.6 2006/03/01 20:16:03 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 if (isset($_REQUEST["blogset"]) && isset($_REQUEST["homeBlog"])) {
-	$gBitSystem->storePreference("home_blog", $_REQUEST["homeBlog"], BLOGS_PKG_NAME);
+	$gBitSystem->storeConfig("home_blog", $_REQUEST["homeBlog"], BLOGS_PKG_NAME);
 	$gBitSmarty->assign('home_blog', $_REQUEST["homeBlog"]);
 }
 
@@ -70,21 +70,21 @@ if( $processForm ) {
 		simple_set_toggle( $item, BLOGS_PKG_NAME );
 	}
 
-	$gBitSystem->storePreference("blogposts_comments", isset( $_REQUEST["blogposts_comments"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
-	$gBitSystem->storePreference("blog_list_order", $_REQUEST["blog_list_order"], BLOGS_PKG_NAME );
-	$gBitSystem->storePreference("blog_list_user", $_REQUEST["blog_list_user"], BLOGS_PKG_NAME );
+	$gBitSystem->storeConfig("blogposts_comments", isset( $_REQUEST["blogposts_comments"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
+	$gBitSystem->storeConfig("blog_list_order", $_REQUEST["blog_list_order"], BLOGS_PKG_NAME );
+	$gBitSystem->storeConfig("blog_list_user", $_REQUEST["blog_list_user"], BLOGS_PKG_NAME );
 	$gBitSmarty->assign('blog_list_order', $_REQUEST["blog_list_order"]);
 	$gBitSmarty->assign('blog_list_user', $_REQUEST['blog_list_user']);
 
 	if ($gBitSystem->isPackageActive( 'categories' )) {
 		if (isset($_REQUEST["blog_categ"]) && $_REQUEST["blog_categ"] == "on") {
-			$gBitSystem->storePreference("blog_categ", 'y', BLOGS_PKG_NAME );
+			$gBitSystem->storeConfig("blog_categ", 'y', BLOGS_PKG_NAME );
 			$gBitSmarty->assign("blog_categ", 'y');
 		} else {
-			$gBitSystem->storePreference("blog_categ", 'n', BLOGS_PKG_NAME );
+			$gBitSystem->storeConfig("blog_categ", 'n', BLOGS_PKG_NAME );
 			$gBitSmarty->assign("blog_categ", 'n');
 		}
-		$gBitSystem->storePreference("blog_parent_categ", $_REQUEST["blog_parent_categ"], BLOGS_PKG_NAME );
+		$gBitSystem->storeConfig("blog_parent_categ", $_REQUEST["blog_parent_categ"], BLOGS_PKG_NAME );
 		$gBitSmarty->assign('blog_parent_categ', $_REQUEST['blog_parent_categ']);
 	}
 }

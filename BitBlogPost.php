@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.24 2006/02/27 14:48:08 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.25 2006/03/01 20:16:03 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.24 2006/02/27 14:48:08 bitweaver Exp $
+ * $Id: BitBlogPost.php,v 1.25 2006/03/01 20:16:03 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.24 $ $Date: 2006/02/27 14:48:08 $ $Author: bitweaver $
+ * @version $Revision: 1.25 $ $Date: 2006/03/01 20:16:03 $ $Author: spiderr $
  */
 
 /**
@@ -82,7 +82,7 @@ class BitBlogPost extends LibertyAttachable {
 					$comment = new LibertyComment();
 					$this->mInfo['num_comments'] = $comment->getNumComments($this->mInfo['content_id']);
 					// Get the comments associated with this post
-					$this->mInfo['comments'] = $comment->getComments($this->mInfo['content_id'], $gBitSystem->getPreference( 'comments_per_page', 10 ) );
+					$this->mInfo['comments'] = $comment->getComments($this->mInfo['content_id'], $gBitSystem->getConfig( 'comments_per_page', 10 ) );
 				}
 
 				if (!$this->mInfo['trackbacks_from'] || $this->mInfo['trackbacks_from']===null)
@@ -443,7 +443,7 @@ class BitBlogPost extends LibertyAttachable {
 					$res['num_comments'] = $comment->getNumComments($res['content_id']);
 					if( $pListHash['load_comments'] ) {
 						// Get the comments associated with this post
-						$res['comments'] = $comment->getComments($res['content_id'], $gBitSystem->getPreference( 'comments_per_page', 10 ) );
+						$res['comments'] = $comment->getComments($res['content_id'], $gBitSystem->getConfig( 'comments_per_page', 10 ) );
 					}
 				} else {
 					$res['comments'] = NULL;

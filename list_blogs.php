@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.6 2006/02/06 00:05:58 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.7 2006/03/01 20:16:03 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -44,7 +44,7 @@ if (isset($_REQUEST["remove"])) {
 // days to get in the log 1,3,4,etc
 // it will default to 1 recovering information for today
 if( empty( $_REQUEST["sort_mode"] ) ) {
-	$sort_mode = $gBitSystem->getPreference( 'blog_list_order', 'created_desc' );
+	$sort_mode = $gBitSystem->getConfig( 'blog_list_order', 'created_desc' );
 } else {
 	$sort_mode = $_REQUEST["sort_mode"];
 }

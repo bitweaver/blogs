@@ -31,7 +31,7 @@
 					<div class="row">
 						{formlabel label=`$output.label` for=$item}
 						{forminput}
-							{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
+							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
 							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>
@@ -99,7 +99,7 @@
 					<div class="row">
 						{formlabel label=`$output.label` for=$item}
 						{forminput}
-							{html_checkboxes name="$item" values="y" checked=`$gBitSystemPrefs.$item` labels=false id=$item}
+							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
 							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.10 2006/02/06 22:56:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.11 2006/03/01 20:16:03 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -91,7 +91,7 @@ if (isset($_REQUEST['send'])) {
 		$gBitSmarty->assign('mail_machine', $machine);
 		$mail_data = $gBitSmarty->fetch('bitpackage:blogs/blogs_send_link.tpl');
 		@mail($email, tra('Post recommendation at'). ' ' . $_SERVER["SERVER_NAME"], $mail_data,
-			"From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
+			"From: ".$gBitSystem->getConfig( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 	}
 
 	$gBitSmarty->assign('sent', 'y');
