@@ -10,6 +10,11 @@ $upgrades = array(
 		'BWR2' => array(
 // de-tikify tables
 array( 'DATADICT' => array(
+	array( 'RENAMECOLUMN' => array(
+		'tiki_blogs' => array(
+			'`public`' => '`public_blog`',
+		),
+	)),
 	array( 'RENAMETABLE' => array(
 		'tiki_blogs' => 'blogs',
 		'tiki_blog_activity' => 'blog_activity',
