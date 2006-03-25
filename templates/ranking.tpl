@@ -36,7 +36,7 @@
 		{/form}
 
 		{section name=ix loop=$rankings}
-			<h2>{$rankings[ix].title}&nbsp;&nbsp;&nbsp; <small>[{$rankings[ix].y}]</small></h2>
+			<h2>{$rankings[ix].title|escape}&nbsp;&nbsp;&nbsp; <small>[{$rankings[ix].y}]</small></h2>
 			<ol>
 				{section name=xi loop=$rankings[ix].data}
 					<li class="{cycle values="even,odd"}">

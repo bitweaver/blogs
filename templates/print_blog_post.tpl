@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>
-{if $post_info.use_title eq 'y'}{$post_info.title} {tr}posted by{/tr} {displayname hash=$post_info nolink=TRUE} on {$post_info.created|bit_short_datetime}{else}{$post_info.created|bit_short_datetime} {tr}posted by{/tr} {displayname hash=$post_info}{/if}
+{if $post_info.use_title eq 'y'}{$post_info.title|escape} {tr}posted by{/tr} {displayname hash=$post_info nolink=TRUE} on {$post_info.created|bit_short_datetime}{else}{$post_info.created|bit_short_datetime} {tr}posted by{/tr} {displayname hash=$post_info}{/if}
 </title>
 </head>
 <style type="text/css">
@@ -33,7 +33,7 @@ a:hover { background-color : #deceae;  }
 <rdf:Description
     rdf:about="{$uri}"
     dc:identifer="{$uri}"
-    dc:title="{if $post_info.use_title eq 'y'}{$post_info.title} {tr}posted by{/tr} {$post_info.user} on {$post_info.created|bit_short_datetime}{else}{$post_info.created|bit_short_datetime} {tr}posted by{/tr} {$post_info.user}{/if}"
+    dc:title="{if $post_info.use_title eq 'y'}{$post_info.title|escape} {tr}posted by{/tr} {$post_info.user} on {$post_info.created|bit_short_datetime}{else}{$post_info.created|bit_short_datetime} {tr}posted by{/tr} {$post_info.user}{/if}"
     trackback:ping="{$uri2}" />
 </rdf:RDF>
 -->
@@ -42,7 +42,7 @@ a:hover { background-color : #deceae;  }
 
 <div class="head">
 {if $post_info.use_title eq 'y'}
-<div>{$post_info.title}</div>
+<div>{$post_info.title|escape}</div>
 <div class="postedby">{tr}posted by{/tr} {displayname hash=$post_info} on {$post_info.created|bit_short_datetime}</div>
 {else}
 <div class="postedby">{$post_info.created|bit_short_datetime} {tr}posted by{/tr} {displayname hash=$post_info}</div>

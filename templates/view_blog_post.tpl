@@ -5,7 +5,7 @@
 <rdf:Description
     rdf:about="{$uri}"
     dc:identifer="{$uri}"
-    dc:title="{if $post_info.use_title eq 'y'}{$post_info.title} {tr}posted by{/tr} {$post_info.user} on {$post_info.created|bit_short_datetime}{else}{$post_info.created|bit_short_datetime} {tr}posted by{/tr} {$post_info.user}{/if}"
+    dc:title="{if $post_info.use_title eq 'y'}{$post_info.title|escape} {tr}posted by{/tr} {$post_info.user} on {$post_info.created|bit_short_datetime}{else}{$post_info.created|bit_short_datetime} {tr}posted by{/tr} {$post_info.user}{/if}"
     trackback:ping="{$uri2}" />
 </rdf:RDF>
 -->
@@ -33,7 +33,7 @@
 	<div class="header">
 		<h1>
 			{if $post_info.use_title eq 'y'}
-				{$post_info.title}
+				{$post_info.title|escape}
 			{else}
 				{$post_info.created|bit_long_date}
 			{/if}
@@ -89,7 +89,7 @@
 			{cycle values="even,odd" print=false}
 			{foreach from=$post_info.trackbacks_from key=key item=item}
 				<tr class="{cycle}">
-					<td>{$item.title}</td>
+					<td>{$item.title|escape}</td>
 					<td><a href="{$key}" title="{$key}" class="external">{$key|truncate:"40"}</a></td>
 					<td>{$item.blog_name}</td>
 				</tr>

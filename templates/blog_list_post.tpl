@@ -23,7 +23,7 @@
 
 	<div class="header">
 		{if $aPost.title}
-			<h1>{$aPost.title}</h1>
+			<h1>{$aPost.title|escape}</h1>
 		{/if}
 
 		<div class="date">
