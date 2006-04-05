@@ -12,7 +12,7 @@ $upgrades = array(
 array( 'DATADICT' => array(
 	array( 'RENAMECOLUMN' => array(
 		'tiki_blogs' => array(
-			'`public`' => '`public_blog`',
+			'`public`' => '`public_blog` C(1)',
 		),
 	)),
 	array( 'RENAMETABLE' => array(
