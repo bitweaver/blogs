@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.14 2006/03/01 20:16:03 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.15 2006/04/11 13:03:37 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -20,7 +20,7 @@ include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 $gBitSystem->verifyPackage( 'blogs' );
 
 // Now check permissions to access this page
-$gBitSystem->verifyPermission( 'bit_p_blog_post' );
+$gBitSystem->verifyPermission( 'p_blogs_post' );
 
 include_once( LIBERTY_PKG_PATH.'edit_help_inc.php' );
 
@@ -37,7 +37,7 @@ if (isset($_REQUEST["blog_id"])) {
 
 // $blogs holds a list of blogs which the user can post into
 // If a specific blog_id is passed in, we will use that and not load up all the blogs
-if ($gBitUser->hasPermission( 'bit_p_blog_admin' )) {
+if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
 	if ($blog_id) {
 		$blogs = array($gBlog->get_blog($blog_id));
 	} else {
@@ -75,7 +75,7 @@ if (!$blog_id && count($blogs) > 0) {
 		$blog_id = $blogs[0]['blog_id'];	// Default to the first blog returned that this user owns
 }
 if (count($blogs) == 0) {
-	if( $gBitUser->hasPermission( 'bit_p_create_blogs' )) {
+	if( $gBitUser->hasPermission( 'p_blogs_create' )) {
 		$mid = 'bitpackage:blogs/edit_blog.tpl';
 		$gBitSmarty->assign('warning', tra("Before you can post, you first need to create a blog that will hold your posts."));
 	} else {
@@ -111,7 +111,7 @@ if( isset($_REQUEST["post_id"]) && $_REQUEST["post_id"] > 0 ) {
 	$gContent->load();
 
 	if( $gContent->mInfo["user_id"] != $gBitUser->mUserId || !$gBitUser->isValid() ) {
-		$gBitSystem->verifyPermission( 'bit_p_blog_admin', "Permission denied you cannot edit this blog" );
+		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
 	}
 
 	$gBitSmarty->assign('data', $gContent->mInfo["data"]);

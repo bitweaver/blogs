@@ -12,13 +12,13 @@ $registerHash = array(
 $gBitSystem->registerPackage( $registerHash );
 
 if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-	if( $gBitUser->hasPermission( 'bit_p_blog_admin' ) ) {
-		$gBitUser->setPreference( 'bit_p_create_blogs', TRUE );
-		$gBitUser->setPreference( 'bit_p_blog_post', TRUE );
-		$gBitUser->setPreference( 'bit_p_read_blog', TRUE );
+	if( $gBitUser->hasPermission( 'p_blogs_admin' ) ) {
+		$gBitUser->setPreference( 'p_blogs_create', TRUE );
+		$gBitUser->setPreference( 'p_blogs_post', TRUE );
+		$gBitUser->setPreference( 'p_blogs_view', TRUE );
 	}
 
-	if ($gBitUser->hasPermission( 'bit_p_read_blog' )) {
+	if ($gBitUser->hasPermission( 'p_blogs_view' )) {
 		$gBitSystem->registerAppMenu( BLOGS_PKG_NAME, ucfirst( BLOGS_PKG_DIR ), BLOGS_PKG_URL.'index.php', 'bitpackage:blogs/menu_blogs.tpl', BLOGS_PKG_NAME );
 	}
 

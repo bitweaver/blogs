@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.11 2006/03/01 20:16:03 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.12 2006/04/11 13:03:37 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -17,7 +17,7 @@ require_once( '../bit_setup_inc.php' );
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
-$gBitSystem->verifyPermission( 'bit_p_read_blog' );
+$gBitSystem->verifyPermission( 'p_blogs_view' );
 
 if (!isset($_REQUEST["post_id"])) {
 	$gBitSystem->fatalError( 'No post indicated' );

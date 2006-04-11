@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.7 2006/02/06 22:56:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.8 2006/04/11 13:03:37 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -20,7 +20,7 @@ $gBitSystem->verifyPackage( 'blogs' );
 
 $gBitSystem->verifyFeature( 'blog_rankings' );
 
-$gBitSystem->verifyPermission( 'bit_p_read_blog' );
+$gBitSystem->verifyPermission( 'p_blogs_view' );
 
 $allrankings = array(
 	array(

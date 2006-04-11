@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.14 2006/03/01 20:16:03 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.15 2006/04/11 13:03:37 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -62,7 +62,7 @@ if ($gBitUser->object_has_one_permission( $_REQUEST["blog_id"], $gBlog->getConte
 	}
 }
 
-$gBitSystem->verifyPermission( 'bit_p_read_blog' );
+$gBitSystem->verifyPermission( 'p_blogs_view' );
 
 if ($gBitSystem->isPackageActive( 'categories' ) && function_exists( 'categories_display' ) ) {
 	$gBlog->mContentId = $_REQUEST["blog_id"];
@@ -116,7 +116,7 @@ if (isset($_REQUEST["remove"])) {
 	$blogPost = new BitBlogPost( $_REQUEST["remove"] );
 	if( $blogPost->load() ) {
 		if( !$ownsblog && !$gBitUser->mUserId || $blogPost->mInfo["user_id"] != $gBitUser->mUserId) {
-			$gBitSystem->verifyPermission( 'bit_p_blog_admin', "Permission denied you cannot remove this post" );
+			$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot remove this post" );
 		}
 
 		if( !empty( $_REQUEST['cancel'] ) ) {

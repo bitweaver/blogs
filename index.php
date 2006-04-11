@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/index.php,v 1.4 2006/01/26 14:56:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/index.php,v 1.5 2006/04/11 13:03:37 squareing Exp $
 
  * @package blogss
  * @subpackage functions
@@ -19,7 +19,7 @@ if (defined("CATEGORIES_PKG_PATH")) {
 }
 
 $gBitSystem->verifyPackage( 'blogs' );
-$gBitSystem->verifyPermission( 'bit_p_read_blog' );
+$gBitSystem->verifyPermission( 'p_blogs_view' );
 
 if ($gBitSystem->isPackageActive( 'categories' )) {
 	if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {

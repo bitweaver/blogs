@@ -1,17 +1,17 @@
 {strip}
 
 <div class="post"
-	{if $gBitUser->getPreference( 'user_dbl' ) and (($aPost.ownsblog eq 'y') or ($gBitUser->mUserId and $aPost.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'bit_p_blog_admin' ))}
+	{if $gBitUser->getPreference( 'user_dbl' ) and (($aPost.ownsblog eq 'y') or ($gBitUser->mUserId and $aPost.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' ))}
 		ondblclick="location.href='{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$aPost.blog_id}{$blog_id}&amp;post_id={$aPost.post_id}{$post_id}';"
 	{/if}
 >
-	{if $gBitUser->hasPermission( 'bit_p_view_tabs_and_tools' )}
+	{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
 		<div class="floaticon">
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$aPost}
 			{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
 				<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$aPost.blog_id}">{biticon ipackage=rss iname=rss iexplain="rss feed"}</a>
 			{/if}
-			{if ($aPost.ownsblog eq 'y') or ($gBitUser->mUserId and $aPost.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
+			{if ($aPost.ownsblog eq 'y') or ($gBitUser->mUserId and $aPost.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
 				<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$aPost.blog_id}&amp;post_id={$aPost.post_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 				<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$aPost.blog_id}&amp;remove={$aPost.post_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 			{/if}

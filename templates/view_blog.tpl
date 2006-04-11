@@ -1,9 +1,9 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.8 2006/02/19 00:55:28 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.9 2006/04/11 13:03:38 squareing Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
-		{if $gBitUser->hasPermission( 'bit_p_blog_post' )}
-			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->object_has_permission($gBitUser->mUserId, $blog_id, 'bitblog', 'bit_p_blog_post') or $gBitUser->hasPermission( 'bit_p_blog_admin' ) or $public_blog eq 'y'}
+		{if $gBitUser->hasPermission( 'p_blogs_post' )}
+			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->object_has_permission($gBitUser->mUserId, $blog_id, 'bitblog', 'p_blogs_post') or $gBitUser->hasPermission( 'p_blogs_admin' ) or $public_blog eq 'y'}
 				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="post" iexplain="post"}</a>
 			{/if}
 		{/if}
@@ -12,7 +12,7 @@
 			<a title="{tr}RSS feed{/tr}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$blog_id}">{biticon ipackage="rss" iname="rss" iexplain="RSS feed"}</a>
 		{/if}
 
-		{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
+		{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
 			<a title="{tr}Edit blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="config" iexplain="edit"}</a>
 		{/if}
 

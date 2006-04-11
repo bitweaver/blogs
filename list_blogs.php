@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.7 2006/03/01 20:16:03 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.8 2006/04/11 13:03:37 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -18,7 +18,7 @@ include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
-$gBitSystem->verifyPermission( 'bit_p_read_blog' );
+$gBitSystem->verifyPermission( 'p_blogs_view' );
 
 if (isset($_REQUEST["remove"])) {
 	// Check if it is the owner
@@ -31,7 +31,7 @@ if (isset($_REQUEST["remove"])) {
 		} else {
 
 			if ($data["user_id"] != $gBitUser->mUserId) {
-				$gBitSystem->verifyPermission( 'bit_p_blog_admin', "Permission denied you cannot remove this blog" );
+				$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot remove this blog" );
 			}
 
 			$gBlog->expunge($_REQUEST["remove"]);
@@ -82,25 +82,25 @@ for ($i = 0; $i < count($listpages["data"]); $i++) {
 	if ($gBitUser->object_has_one_permission($listpages["data"][$i]["blog_id"], 'blog')) {
 		$listpages["data"][$i]["individual"] = 'y';
 
-		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'bit_p_read_blog')) {
+		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'p_blogs_view')) {
 			$listpages["data"][$i]["individual_bit_p_read_blog"] = 'y';
 		} else {
 			$listpages["data"][$i]["individual_bit_p_read_blog"] = 'n';
 		}
 
-		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'bit_p_blog_post')) {
+		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'p_blogs_post')) {
 			$listpages["data"][$i]["individual_bit_p_blog_post"] = 'y';
 		} else {
 			$listpages["data"][$i]["individual_bit_p_blog_post"] = 'n';
 		}
 
-		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'bit_p_create_blogs')) {
+		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'p_blogs_create')) {
 			$listpages["data"][$i]["individual_bit_p_create_blogs"] = 'y';
 		} else {
 			$listpages["data"][$i]["individual_bit_p_create_blogs"] = 'n';
 		}
 
-		if ($gBitUser->isAdmin() || $gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'bit_p_blog_admin'))
+		if ($gBitUser->isAdmin() || $gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'p_blogs_admin'))
 			{
 			$listpages["data"][$i]["individual_bit_p_create_blogs"] = 'y';
 

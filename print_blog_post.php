@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.10 2006/03/23 21:58:23 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.11 2006/04/11 13:03:37 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -71,7 +71,7 @@ if ($gBitUser->object_has_one_permission($gContent->mInfo['blog_id'], 'blog')) {
 	}
 }
 
-$gBitSystem->verifyPermission( 'bit_p_read_blog' );
+$gBitSystem->verifyPermission( 'p_blogs_view' );
 
 $ownsblog = 'n';
 

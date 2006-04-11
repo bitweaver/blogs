@@ -200,7 +200,7 @@ class BitBlog extends BitBase {
 		if ($creation_date == NULL)
 			$creation_date = (int)$now;
 
-		$public = $gBitUser->hasPermission('bit_p_create_public_blog') ? $public : NULL;
+		$public = $gBitUser->hasPermission('p_blogs_create_public_blog') ? $public : NULL;
 
 		if ( $this->verifyId( $blog_id ) ) {
 			$query = "update `".BIT_DB_PREFIX."blogs` set `title`=? ,`description`=?,`user_id`=?,`public_blog`=?,`last_modified`=?,`max_posts`=?,`heading`=?,`use_title`=?,`use_find`=?,`allow_comments`=? where `blog_id`=?";

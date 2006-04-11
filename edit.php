@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.7 2006/02/19 00:55:27 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.8 2006/04/11 13:03:37 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -81,7 +81,7 @@ if (isset($_REQUEST["blog_id"]) && $_REQUEST["blog_id"] > 0) {
 	$data = $gBlog->get_blog($_REQUEST["blog_id"]);
 
 	if ($data["user_id"] != $gBitUser->mUserId || !$gBitUser->mUserId) {
-		$gBitSystem->verifyPermission( 'bit_p_blog_admin', "Permission denied you cannot edit this blog" );
+		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
 	}
 
 	$gBitSmarty->assign('title', $data["title"]);
@@ -97,7 +97,7 @@ if (isset($_REQUEST["blog_id"]) && $_REQUEST["blog_id"] > 0) {
 }
 
 // Now check permissions to access this page
-if (!$gBitUser->hasPermission( 'bit_p_create_blogs' ) && ($gBitUser->mUserId != $data['user_id'] || !$gBitUser->mUserId) ) {
+if (!$gBitUser->hasPermission( 'p_blogs_create' ) && ($gBitUser->mUserId != $data['user_id'] || !$gBitUser->mUserId) ) {
 	$gBitSmarty->assign('msg', tra("Permission denied you cannot create or edit blogs"));
 
 	$gBitSystem->display( 'error.tpl' );

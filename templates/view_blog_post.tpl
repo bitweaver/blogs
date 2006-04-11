@@ -16,7 +16,7 @@
 	<div class="floaticon">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
 
-		{if ($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' )}
+		{if ($ownsblog eq 'y') or $gBitUser->hasPermission( 'p_blogs_admin' )}
 			<a href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 			<a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$post_info.blog_id}&amp;remove={$post_info.post_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 		{/if}
@@ -24,7 +24,7 @@
 		{if $gBitSystem->isPackageActive( 'notepad' ) and $gBitUser->hasPermission( 'bit_p_notepad' )}
 			<a title="{tr}Save to notepad{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;savenotepad=1">{biticon ipackage=liberty iname="save" iexplain="save"}</a>
 		{/if}
-		{if $gBitUser->hasPermission( 'bit_p_print' )}
+		{if $gBitUser->hasPermission( 'p_liberty_print' )}
 			<a href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_id}">{biticon ipackage=liberty iname="print" iexplain="print"}</a>
 		{/if}
 		<a href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_id}">{biticon ipackage=liberty iname="mail_send" iexplain="email this post"}</a>
@@ -44,7 +44,7 @@
 	</div>
 
 	<div class="body"
-	    {if $gBitUser->getPreference( 'user_dbl' ) eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'bit_p_blog_admin' ))}
+	    {if $gBitUser->getPreference( 'user_dbl' ) eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'p_blogs_admin' ))}
 			ondblclick="location.href='{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}';"
 		{/if}
 	>
@@ -99,7 +99,7 @@
 </div> {* end .blog *}
 
 {if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blogposts_comments' )}
-	{if $gBitUser->hasPermission( 'bit_p_read_comments' )}
+	{if $gBitUser->hasPermission( 'p_liberty_read_comments' )}
 		{include file="bitpackage:liberty/comments.tpl"}
 	{/if}
 {/if}

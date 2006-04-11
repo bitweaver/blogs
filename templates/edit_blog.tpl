@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.8 2006/02/19 19:32:34 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.9 2006/04/11 13:03:38 squareing Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -57,7 +57,7 @@
 					{/forminput}
 				</div>
 
-				{if $gBitUser->hasPermission('bit_p_create_public_blog')}
+				{if $gBitUser->hasPermission('p_blogs_create_public_blog')}
 				<div class="row">
 					{formlabel label="Public" for="public_blog"}
 					{forminput}

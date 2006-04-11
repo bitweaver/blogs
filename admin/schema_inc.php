@@ -67,11 +67,11 @@ $gBitInstaller->registerSchemaSequences( BLOGS_PKG_NAME, $sequences );
 
 // ### Default UserPermissions
 $gBitInstaller->registerUserPermissions( BLOGS_PKG_NAME, array(
-	array('bit_p_create_blogs', 'Can create a blog', 'registered', BLOGS_PKG_NAME),
-	array('bit_p_create_public_blog', 'Can create a public blog', 'editors', BLOGS_PKG_NAME),
-	array('bit_p_blog_post', 'Can post to a blog', 'registered', BLOGS_PKG_NAME),
-	array('bit_p_blog_admin', 'Can admin blogs', 'editors', BLOGS_PKG_NAME),
-	array('bit_p_read_blog', 'Can read blogs', 'basic', BLOGS_PKG_NAME)
+	array('p_blogs_create', 'Can create a blog', 'registered', BLOGS_PKG_NAME),
+	array('p_blogs_create_public_blog', 'Can create a public blog', 'editors', BLOGS_PKG_NAME),
+	array('p_blogs_post', 'Can post to a blog', 'registered', BLOGS_PKG_NAME),
+	array('p_blogs_admin', 'Can admin blogs', 'editors', BLOGS_PKG_NAME),
+	array('p_blogs_view', 'Can read blogs', 'basic', BLOGS_PKG_NAME)
 ) );
 
 // ### Default Preferences

@@ -50,7 +50,7 @@ if (!isset($gContent->mPostId)) {
 
 $gBitSystem->verifyPackage( 'blogs' );
 
-$displayHash = array( 'perm_name' => 'bit_p_view' );
+$displayHash = array( 'perm_name' => 'p_wiki_view_page' );
 $gContent->invokeServices( 'content_display_function', $displayHash );
 
 if (!isset($gContent->mPostId) && $post_id) {
@@ -143,8 +143,8 @@ if ($gBitUser->object_has_one_permission($_REQUEST["blog_id"], 'blog')) {
 	}
 }
 
-$gBitSystem->verifyPermission( 'bit_p_read_blog' );
-/*if (!$gBitUser->hasPermission( 'bit_p_read_blog' )) {
+$gBitSystem->verifyPermission( 'p_blogs_view' );
+/*if (!$gBitUser->hasPermission( 'p_blogs_view' )) {
 	$gBitSmarty->assign('msg', tra("Permission denied you can not view this section"));
 
 	$gBitSystem->display( 'error.tpl' );

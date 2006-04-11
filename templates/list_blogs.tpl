@@ -41,19 +41,19 @@
 			{section name=changes loop=$listpages}
 				<li class="item {cycle values='odd,even'}">
 					<div class="floaticon">
-						{if $gBitUser->hasPermission( 'bit_p_blog_post' )}
-							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'bit_p_blog_post' ))}
-								{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'bit_p_blog_admin' )) or ($listpages[changes].public_blog eq 'y')}
+						{if $gBitUser->hasPermission( 'p_blogs_post' )}
+							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_post' ))}
+								{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' )) or ($listpages[changes].public_blog eq 'y')}
 									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage=liberty iname="edit" iexplain="post"}</a>
 								{/if}
 							{/if}
 						{/if}
-						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'bit_p_blog_admin' ))}
+						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' ))}
 							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'bit_p_blog_create_blog' ))}
 								<a title="{tr}edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage=liberty iname="config" iexplain="configure"}</a>
 							{/if}
 						{/if}
-						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'bit_p_blog_admin' ))}
+						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' ))}
 							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'bit_p_blog_create_blog' ))}
 								<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$listpages[changes].blog_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 							{/if}
@@ -64,8 +64,8 @@
 					</div>
 
 					{if $blog_list_title eq 'y'}
-						<h2>{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'bit_p_read_blog' ))}<a title="{$listpages[changes].title|escape}" href="{$listpages[changes].blog_url}">{/if}
-						{$listpages[changes].title|escape}{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'bit_p_read_blog' ))}</a>{/if}</h2>
+						<h2>{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_view' ))}<a title="{$listpages[changes].title|escape}" href="{$listpages[changes].blog_url}">{/if}
+						{$listpages[changes].title|escape}{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_view' ))}</a>{/if}</h2>
 					{/if}
 
 					{if $blog_list_description eq 'y'}
