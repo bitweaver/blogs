@@ -21,9 +21,6 @@
 			<a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$post_info.blog_id}&amp;remove={$post_info.post_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
 		{/if}
 
-		{if $gBitSystem->isPackageActive( 'notepad' ) and $gBitUser->hasPermission( 'bit_p_notepad' )}
-			<a title="{tr}Save to notepad{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;savenotepad=1">{biticon ipackage=liberty iname="save" iexplain="save"}</a>
-		{/if}
 		{if $gBitUser->hasPermission( 'p_liberty_print' )}
 			<a href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_id}">{biticon ipackage=liberty iname="print" iexplain="print"}</a>
 		{/if}
