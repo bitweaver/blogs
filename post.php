@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.15 2006/04/11 13:03:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.16 2006/04/13 10:34:33 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -128,16 +128,6 @@ if (isset($_REQUEST["preview"])) {
 	$data = $_REQUEST['edit'];
 
 	$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
-
-	if ($blog_spellcheck == 'y') {
-		if (isset($_REQUEST["spellcheck"]) && $_REQUEST["spellcheck"] == 'on') {
-			$parsed_data = $gBitSystem->spellcheckreplace($data, $parsed_data, $language, 'blogedit');
-
-			$gBitSmarty->assign('spellcheck', 'y');
-		} else {
-			$gBitSmarty->assign('spellcheck', 'n');
-		}
-	}
 
 	// used by the preview page
 	$post_info_blog = array($gBlog->get_blog($_REQUEST['blog_id']));

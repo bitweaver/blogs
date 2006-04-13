@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.6 2006/03/01 20:16:03 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.7 2006/04/13 10:34:33 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -55,9 +55,6 @@ $formBlogFeatures = array(
 	"blogposts_comments" => array(
 		'label' => 'Blog Post Comments',
 		'note' => 'Allow the addition of comments to blog posts.',
-	),
-	"blog_spellcheck" => array(
-		'label' => 'Spellchecking',
 	),
 );
 $gBitSmarty->assign( 'formBlogFeatures',$formBlogFeatures );

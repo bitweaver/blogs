@@ -25,7 +25,6 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
 
 	$gBitSmarty->assign('home_blog', 0);
-	$gBitSmarty->assign('blog_spellcheck', 'n');
 	$gBitSmarty->assign('blog_list_order', 'created_desc');
 	$gBitSmarty->assign('blog_list_title', 'y');
 	$gBitSmarty->assign('blog_list_description', 'y');
