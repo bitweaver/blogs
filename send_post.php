@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.12 2006/04/11 13:03:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.13 2006/04/14 20:25:50 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -57,7 +57,7 @@ if ($gBitUser->object_has_one_permission($gContent->mInfo["blog_id"], 'blog')) {
 
 $gBitSmarty->assign('ownsblog', $gContent->isBlogOwner() );
 
-if ($gBitSystem->isFeatureActive( 'blogposts_comments' )) {
+if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
 	$comments_vars = array(
 		'post_id',
 		'offset',

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.7 2006/04/13 10:34:33 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.8 2006/04/14 20:25:50 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -52,7 +52,7 @@ $formBlogFeatures = array(
 		'label' => 'Rankings',
 		'note' => 'Enable the use of rankings based on page hits.',
 	),
-	"blogposts_comments" => array(
+	"blog_posts_comments" => array(
 		'label' => 'Blog Post Comments',
 		'note' => 'Allow the addition of comments to blog posts.',
 	),
@@ -67,7 +67,7 @@ if( $processForm ) {
 		simple_set_toggle( $item, BLOGS_PKG_NAME );
 	}
 
-	$gBitSystem->storeConfig("blogposts_comments", isset( $_REQUEST["blogposts_comments"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
+	$gBitSystem->storeConfig("blog_posts_comments", isset( $_REQUEST["blog_posts_comments"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_list_order", $_REQUEST["blog_list_order"], BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_list_user", $_REQUEST["blog_list_user"], BLOGS_PKG_NAME );
 	$gBitSmarty->assign('blog_list_order', $_REQUEST["blog_list_order"]);
