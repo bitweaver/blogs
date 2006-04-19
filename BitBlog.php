@@ -178,7 +178,7 @@ class BitBlog extends BitBase {
 	function add_blog_hit($blog_id) {
 		global $gBitUser, $gBitSystem;
 
-		if ( $this->verifyId( $blog_id ) && ($gBitSystem->isFeatureActive( 'count_admin_pvs' ) || !$gBitUser->isAdmin()) ){
+		if ( $this->verifyId( $blog_id ) && ($gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser->isAdmin()) ){
 			$bindvars = array( $blog_id );
 			$ownerSql = '';
 			if( $gBitUser->isValid() ) {

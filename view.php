@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.15 2006/04/11 13:03:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.16 2006/04/19 16:45:06 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -179,7 +179,7 @@ if( $gBitSystem->isPackageActive( 'notepad' ) && $gBitUser->hasPermission( 'bit_
 	}
 }
 
-if( $gBitSystem->isFeatureActive( 'user_watches' ) ) {
+if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 	if( $gBitUser->isValid() && isset( $_REQUEST['watch_event'] ) ) {
 
 		if ($_REQUEST['watch_action'] == 'add') {

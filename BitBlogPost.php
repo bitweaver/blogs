@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.26 2006/04/19 13:48:37 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.27 2006/04/19 16:45:06 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.26 2006/04/19 13:48:37 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.27 2006/04/19 16:45:06 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.26 $ $Date: 2006/04/19 13:48:37 $ $Author: squareing $
+ * @version $Revision: 1.27 $ $Date: 2006/04/19 16:45:06 $ $Author: spiderr $
  */
 
 /**
@@ -211,7 +211,7 @@ class BitBlogPost extends LibertyAttachable {
 				// let's reload to get a full mInfo hash which is needed below
 				$this->load();
 
-				if( $gBitSystem->isFeatureActive( 'user_watches' ) ) {
+				if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 					global $gBitUser;
 					if( $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {
 						foreach ($nots as $not) {

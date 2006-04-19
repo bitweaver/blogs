@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.9 2006/04/11 13:03:38 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.10 2006/04/19 16:45:08 spiderr Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -16,7 +16,7 @@
 			<a title="{tr}Edit blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="config" iexplain="edit"}</a>
 		{/if}
 
-		{if $gBitUser->isRegistered() and $gBitSystem->isFeatureActive( 'user_watches' )}
+		{if $gBitUser->isRegistered() and $gBitSystem->isFeatureActive( 'users_watches' )}
 			{if $user_watching_blog eq 'n'}
 				<a title="{tr}monitor this blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$blog_id}&amp;watch_event=blog_post&amp;watch_object={$blog_id}&amp;watch_action=add">{biticon ipackage="users" iname="watch" iexplain="monitor this blog"}</a>
 			{else}
