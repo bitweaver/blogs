@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.25 2006/03/01 20:16:03 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.26 2006/04/19 13:48:37 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.25 2006/03/01 20:16:03 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.26 2006/04/19 13:48:37 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.25 $ $Date: 2006/03/01 20:16:03 $ $Author: spiderr $
+ * @version $Revision: 1.26 $ $Date: 2006/04/19 13:48:37 $ $Author: squareing $
  */
 
 /**
@@ -234,7 +234,7 @@ class BitBlogPost extends LibertyAttachable {
 
 							$gBitSmarty->assign('mail_machine_raw', httpPrefix(). implode('/', $parts));
 							$mail_data = $gBitSmarty->fetch('bitpackage:blogs/user_watch_blog_post.tpl');
-							@mail($not['email'], tra('Blog post'). ' ' . $title, $mail_data, "From: ".$gBitSystem->getPrefence( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
+							@mail($not['email'], tra('Blog post'). ' ' . $title, $mail_data, "From: ".$gBitSystem->getPrefence( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 						}
 					}
 				}
