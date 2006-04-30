@@ -41,7 +41,7 @@
 	</div>
 
 	<div class="body"
-	    {if $gBitUser->getPreference( 'user_dbl' ) eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'p_blogs_admin' ))}
+	    {if $gBitUser->getPreference( 'users_double_click' ) eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'p_blogs_admin' ))}
 			ondblclick="location.href='{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}';"
 		{/if}
 	>
