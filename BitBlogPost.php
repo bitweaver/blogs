@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.27 2006/04/19 16:45:06 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.28 2006/05/03 12:46:26 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.27 2006/04/19 16:45:06 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.28 2006/05/03 12:46:26 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.27 $ $Date: 2006/04/19 16:45:06 $ $Author: spiderr $
+ * @version $Revision: 1.28 $ $Date: 2006/05/03 12:46:26 $ $Author: squareing $
  */
 
 /**
@@ -397,7 +397,7 @@ class BitBlogPost extends LibertyAttachable {
 		$this->prepGetList( $pListHash );
 
 		$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
-		$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
+		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 		$whereSql = '';
 		if( @$this->verifyId( $pListHash['blog_id'] ) ) {
