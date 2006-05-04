@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.16 2006/04/11 13:03:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.17 2006/05/04 18:43:22 squareing Exp $
  * @package article
  * @subpackage functions
  */
@@ -14,10 +14,11 @@ include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPackage( 'rss' );
 $gBitSystem->verifyPackage( 'blogs' );
+$gBitSystem->verifyFeature( 'blogs_rss' );
 
 // default feed info
-$rss->title = $gBitSystem->getConfig( 'title_rss_blogs', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Blogs' ) );
-$rss->description = $gBitSystem->getConfig( 'desc_rss_blogs', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );
+$rss->title = $gBitSystem->getConfig( 'blogs_rss_title', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Blogs' ) );
+$rss->description = $gBitSystem->getConfig( 'blogs_rss_description', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );
 
 // check permission to view wiki pages
 if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
@@ -29,7 +30,7 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 
 	$blogPost = new BitBlogPost();
 	$listHash['sort_mode'] = 'last_modified_desc';
-	$listHash['max_records'] = $gBitSystem->getConfig( 'max_rss_blogs', 10 );
+	$listHash['max_records'] = $gBitSystem->getConfig( 'blogs_rss_max_records', 10 );
 	$listHash['parse_data'] = TRUE;
 	if( !empty( $_REQUEST['blog_id'] ) ) {
 		$listHash['blog_id'] = $_REQUEST['blog_id'];
