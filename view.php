@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.11 2005/11/04 21:59:47 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.1.1.1.2.12 2006/06/10 09:15:43 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -173,7 +173,7 @@ $gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 
 if( $gBitSystem->isFeatureActive( 'feature_theme_control' ) ) {
 	$cat_obj_type = BITBLOG_CONTENT_TYPE_GUID;
-	$cat_objid = $gContent->mContentId;
+	$cat_objid = $gBlog->mContentId;
 	include( THEMES_PKG_PATH.'tc_inc.php' );
 }
 
