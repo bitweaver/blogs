@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.8 2006/04/11 13:03:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.9 2006/06/16 21:25:54 sylvieg Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -98,10 +98,7 @@ if (isset($_REQUEST["blog_id"]) && $_REQUEST["blog_id"] > 0) {
 
 // Now check permissions to access this page
 if (!$gBitUser->hasPermission( 'p_blogs_create' ) && ($gBitUser->mUserId != $data['user_id'] || !$gBitUser->mUserId) ) {
-	$gBitSmarty->assign('msg', tra("Permission denied you cannot create or edit blogs"));
-
-	$gBitSystem->display( 'error.tpl' );
-	die;
+	$gBitSystem->fatalPermission('p_blog_create');
 }
 
 if (isset($_REQUEST['preview'])) {
