@@ -52,7 +52,7 @@
 
 		{if $aPost.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
 			&nbsp;{$aPost.num_comments} {if $aPost.num_comments == 1} {tr}comment{/tr} {else} {tr}comments{/tr}{/if} &nbsp;|&nbsp;
-			 <a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?find={$find}&amp;blog_id={$aPost.blog_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;post_id={$aPost.post_id}&post_comment_request=1">{if $aPost.num_comments > 0}{tr}view comments{/tr}{else}{tr}add comment{/tr}{/if}</a>
+			 <a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?find={$find}&amp;blog_id={$aPost.blog_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;post_id={$aPost.post_id}&post_comment_request={if $aPost.num_comments > 0}1{else}y{/if}">{if $aPost.num_comments > 0}{tr}view comments{/tr}{else}{tr}add comment{/tr}{/if}</a>
 		{/if}
 	</div> <!-- end .footer -->
 </div> <!-- end .blog -->
