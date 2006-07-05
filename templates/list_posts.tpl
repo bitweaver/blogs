@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/list_posts.tpl,v 1.1 2005/06/19 03:57:42 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/list_posts.tpl,v 1.2 2006/07/05 18:51:32 squareing Exp $ *}
 <div class="floaticon">{bithelp}</div>  
 
 <div class="listing blogs">
@@ -11,7 +11,7 @@
 		{sectionelse}
 			<div class="norecords">{tr}No records found{/tr}</div>
 		{/section}
-	</div>
+	</div><!-- end .body -->
 
 	{pagination}
 </div>

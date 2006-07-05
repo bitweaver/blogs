@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.3 2006/01/29 16:45:06 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.4 2006/07/05 18:51:32 squareing Exp $ *}
 {if $blogPosts || $showEmpty}
 <div class="floaticon">{bithelp}</div>
 
@@ -13,7 +13,7 @@
 		{foreachelse}
 			<div class="norecords">{tr}No records found{/tr}</div>
 		{/foreach}
-	</div>
+	</div><!-- end .body -->
 
 	{pagination url="`$smarty.const.BLOGS_PKG_URL`index.php" user_id="`$gQueryUserId`"}
 
