@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.28 2006/05/03 12:46:26 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.29 2006/07/19 09:06:48 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.28 2006/05/03 12:46:26 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.29 2006/07/19 09:06:48 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.28 $ $Date: 2006/05/03 12:46:26 $ $Author: squareing $
+ * @version $Revision: 1.29 $ $Date: 2006/07/19 09:06:48 $ $Author: spiderr $
  */
 
 /**
@@ -436,8 +436,7 @@ class BitBlogPost extends LibertyAttachable {
 			$res['no_fatal'] = TRUE;
 			$accessError = $this->invokeServices( 'content_verify_access', $res, FALSE );
 			if( empty( $accessError ) ) {
-
-				$res['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.$res['avatar'] : NULL);
+				$res['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.dirname($res['avatar']).'/small.jpg' : NULL);
 				if ( $pListHash['load_num_comments'] || $pListHash['load_comments'] ) {
 					$comment = new LibertyComment();
 					$res['num_comments'] = $comment->getNumComments($res['content_id']);
