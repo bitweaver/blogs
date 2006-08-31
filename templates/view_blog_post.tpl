@@ -28,6 +28,19 @@
 	</div>
 
 	<div class="header">
+
+		<h1>
+		
+			{$post_info.blogtitle}
+		</h1>
+Previous: 
+{if $gContent_previous}
+<a href="{$gContent_previous->getDisplayUrl()}">{$gContent_previous->mInfo.title}</a> 
+{/if}
+Next: 
+{if $gContent_next}
+<a href="{$gContent_next->getDisplayUrl()}">{$gContent_next->mInfo.title}</a> 
+{/if}
 		<h1>
 			{if $post_info.use_title eq 'y'}
 				{$post_info.title|escape}

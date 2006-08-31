@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.29 2006/07/19 09:06:48 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.30 2006/08/31 10:45:42 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.29 2006/07/19 09:06:48 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.30 2006/08/31 10:45:42 jht001 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.29 $ $Date: 2006/07/19 09:06:48 $ $Author: spiderr $
+ * @version $Revision: 1.30 $ $Date: 2006/08/31 10:45:42 $ $Author: jht001 $
  */
 
 /**
@@ -404,6 +404,17 @@ class BitBlogPost extends LibertyAttachable {
 			array_push( $bindVars, (int)$pListHash['blog_id'] );
 			$whereSql .= ' AND bp.`blog_id` = ? ';
 		}
+
+		if( @$this->verifyId( $pListHash['post_id_gt'] ) ) {
+			array_push( $bindVars, (int)$pListHash['post_id_gt'] );
+			$whereSql .= ' AND bp.`post_id` > ? ';
+		}
+
+		if( @$this->verifyId( $pListHash['post_id_lt'] ) ) {
+			array_push( $bindVars, (int)$pListHash['post_id_lt'] );
+			$whereSql .= ' AND bp.`post_id` < ? ';
+		}
+
 		if( @$this->verifyId( $pListHash['user_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['user_id'] );
 			$whereSql .= ' AND lc.`user_id` = ? ';
@@ -419,6 +430,26 @@ class BitBlogPost extends LibertyAttachable {
 			$bindVars[]= $pListHash['date'];
 		}
 
+		if( !empty( $pListHash['date_start'] ) && is_numeric( $pListHash['date_start'] ) ) {
+			$whereSql .= " AND  tc.`created`>=? ";
+			$bindVars[]= $pListHash['date_start'];
+		}
+		if( !empty( $pListHash['date_end'] ) && is_numeric( $pListHash['date_end'] ) ) {
+			$whereSql .= " AND  tc.`created`<=? ";
+			$bindVars[]= $pListHash['date_end'];
+		}
+
+		$sort_mode_prefix = 'lc';
+		if ($pListHash['sort_mode'] == 'post_id_desc') {
+			$sort_mode_prefix = 'bp';
+			}
+		if ($pListHash['sort_mode'] == 'post_id_asc') {
+			$sort_mode_prefix = 'bp';
+			}
+			
+		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convert_sortmode( $pListHash['sort_mode'] ); 
+		
+
 		$query = "SELECT bp.*, lc.*, tct.*, b.`title` AS `blogtitle`, b.`description` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login` as `user_nic`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blogs` b, `".BIT_DB_PREFIX."blog_posts` bp
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
@@ -426,7 +457,7 @@ class BitBlogPost extends LibertyAttachable {
 				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`) $joinSql
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
-				WHERE b.`blog_id` = bp.`blog_id` $whereSql order by lc.".$this->mDb->convert_sortmode( $pListHash['sort_mode'] );
+				WHERE b.`blog_id` = bp.`blog_id` $whereSql order by $sort_mode";
 		$query_cant = "SELECT COUNT(bp.`post_id`) FROM `".BIT_DB_PREFIX."blog_posts` bp, `".BIT_DB_PREFIX."liberty_content` lc WHERE lc.`content_id` = bp.`content_id` $whereSql ";
 		$result = $this->mDb->query($query,$bindVars,$pListHash['max_records'],$pListHash['offset']);
 		$cant = $this->mDb->getOne($query_cant,$bindVars);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.9 2006/06/16 21:25:54 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.10 2006/08/31 10:45:42 jht001 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -148,7 +148,7 @@ if (isset($_REQUEST['save_blog'])) {
 //		}
 //	}
 
-	header ("location: ".BLOGS_PKG_URL.'post.php?blog_id='.$bid );
+	header ("location: ".BLOGS_PKG_URL.'/'.$bid );
 	die;
 }
 
