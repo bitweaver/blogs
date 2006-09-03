@@ -1,26 +1,26 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.10 2006/04/19 16:45:08 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.11 2006/09/03 20:05:05 squareing Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
 		{if $gBitUser->hasPermission( 'p_blogs_post' )}
 			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->object_has_permission($gBitUser->mUserId, $blog_id, 'bitblog', 'p_blogs_post') or $gBitUser->hasPermission( 'p_blogs_admin' ) or $public_blog eq 'y'}
-				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="post" iexplain="post"}</a>
+				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$blog_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="post"}</a>
 			{/if}
 		{/if}
 
 		{if $gBitSystem->isPackageActive( 'rss' ) && $rss_blog eq 'y'}
-			<a title="{tr}RSS feed{/tr}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$blog_id}">{biticon ipackage="rss" iname="rss" iexplain="RSS feed"}</a>
+			<a title="{tr}RSS feed{/tr}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$blog_id}">{biticon ipackage="icons" iname="network-wireless" iexplain="RSS feed"}</a>
 		{/if}
 
 		{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
-			<a title="{tr}Edit blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$blog_id}">{biticon ipackage=liberty iname="config" iexplain="edit"}</a>
+			<a title="{tr}Edit blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$blog_id}">{biticon ipackage="icons" iname="document-properties" iexplain="edit"}</a>
 		{/if}
 
 		{if $gBitUser->isRegistered() and $gBitSystem->isFeatureActive( 'users_watches' )}
 			{if $user_watching_blog eq 'n'}
-				<a title="{tr}monitor this blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$blog_id}&amp;watch_event=blog_post&amp;watch_object={$blog_id}&amp;watch_action=add">{biticon ipackage="users" iname="watch" iexplain="monitor this blog"}</a>
+				<a title="{tr}monitor this blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$blog_id}&amp;watch_event=blog_post&amp;watch_object={$blog_id}&amp;watch_action=add">{biticon ipackage="icons" iname="weather-clear" iexplain="monitor this blog"}</a>
 			{else}
-				<a title="{tr}stop monitoring this blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$blog_id}&amp;watch_event=blog_post&amp;watch_object={$blog_id}&amp;watch_action=remove">{biticon ipackage="users" iname="unwatch" iexplain="stop monitoring this blog"}</a>
+				<a title="{tr}stop monitoring this blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$blog_id}&amp;watch_event=blog_post&amp;watch_object={$blog_id}&amp;watch_action=remove">{biticon ipackage="icons" iname="weather-clear-night" iexplain="stop monitoring this blog"}</a>
 			{/if}
 		{/if}
 	</div>

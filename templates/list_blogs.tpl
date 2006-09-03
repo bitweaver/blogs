@@ -12,7 +12,7 @@
 
 		<div class="navbar">
 			<ul>
-				<li>{biticon ipackage=liberty iname=sort iexplain="sort by"}</li>
+				<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
 				{if $blog_list_title eq 'y'}
 					<li>{smartlink ititle="Title" isort="title" offset=$offset}</li>
 				{/if}
@@ -44,22 +44,22 @@
 						{if $gBitUser->hasPermission( 'p_blogs_post' )}
 							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_post' ))}
 								{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' )) or ($listpages[changes].public_blog eq 'y')}
-									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage=liberty iname="edit" iexplain="post"}</a>
+									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="post"}</a>
 								{/if}
 							{/if}
 						{/if}
 						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' ))}
 							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_create' ))}
-								<a title="{tr}edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage=liberty iname="config" iexplain="configure"}</a>
+								<a title="{tr}edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="document-properties" iexplain="configure"}</a>
 							{/if}
 						{/if}
 						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' ))}
 							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_create' ))}
-								<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$listpages[changes].blog_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
+								<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 							{/if}
 						{/if}
 						{if $gBitUser->isAdmin()}
-						    <a title="{tr}perms{/tr}" href="{$smarty.const.KERNEL_PKG_URL}object_permissions.php?objectName=blog%20{$listpages[changes].title|escape}&amp;objectType=blog&amp;permType=blogs&amp;object_id={$listpages[changes].blog_id}">{if $listpages[changes].individual eq 'y'}{biticon ipackage=liberty iname="permissions_set" iexplain="set permissions"}{else}{biticon ipackage=liberty iname="permissions" iexplain="set permissions"}{/if}</a>
+						    <a title="{tr}perms{/tr}" href="{$smarty.const.KERNEL_PKG_URL}object_permissions.php?objectName=blog%20{$listpages[changes].title|escape}&amp;objectType=blog&amp;permType=blogs&amp;object_id={$listpages[changes].blog_id}">{if $listpages[changes].individual eq 'y'}{biticon ipackage="icons" iname="emblem-readonly" iexplain="set permissions"}{else}{biticon ipackage="icons" iname="emblem-shared" iexplain="set permissions"}{/if}</a>
 						{/if}
 					</div>
 

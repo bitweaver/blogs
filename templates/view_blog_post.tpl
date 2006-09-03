@@ -17,14 +17,14 @@
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
 
 		{if ($ownsblog eq 'y') or $gBitUser->hasPermission( 'p_blogs_admin' )}
-			<a href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
-			<a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$post_info.blog_id}&amp;remove={$post_info.post_id}">{biticon ipackage=liberty iname="delete" iexplain="delete"}</a>
+			<a href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+			<a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$post_info.blog_id}&amp;remove={$post_info.post_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 		{/if}
 
 		{if $gBitUser->hasPermission( 'p_liberty_print' )}
-			<a href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_id}">{biticon ipackage=liberty iname="print" iexplain="print"}</a>
+			<a href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
 		{/if}
-		<a href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_id}">{biticon ipackage=liberty iname="mail_send" iexplain="email this post"}</a>
+		<a href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
 	</div>
 
 	<div class="header">
@@ -80,11 +80,11 @@ Next:
 
 	{if $pages > 1}
 		<div class="pagination">
-			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$first_page}">{biticon ipackage=liberty iname="nav_first" iexplain="first page"}</a>
-			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$prev_page}">{biticon ipackage=liberty iname="nav_prev" iexplain="previous page"}</a>
+			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$first_page}">{biticon ipackage="icons" iname="go-first" iexplain="first page"}</a>
+			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$prev_page}">{biticon ipackage="icons" iname="go-previous" iexplain="previous page"}</a>
 			{tr}page{/tr}:{$page}/{$pages}
-			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$next_page}">{biticon ipackage=liberty iname="nav_next" iexplain="next page"}</a>
-			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$last_page}">{biticon ipackage=liberty iname="nav_last" iexplain="last page"}</a>
+			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$next_page}">{biticon ipackage="icons" iname="go-next" iexplain="next page"}</a>
+			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$last_page}">{biticon ipackage="icons" iname="go-last" iexplain="last page"}</a>
 		</div>
 	{/if}
 

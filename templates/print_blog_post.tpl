@@ -60,8 +60,8 @@ a:hover { background-color : #deceae;  }
 &nbsp;<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?find={$find}&amp;blog_id={$post_info.blog_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;post_id={$post_info.post_id}">{tr}view comments{/tr}</a>
 {/if}
 </td><td>
-<a title="{tr}print{/tr}" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage=liberty iname="print" iexplain="Print"}</a>
-<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage=liberty iname="mail_send" iexplain="Email"}</a>
+<a title="{tr}print{/tr}" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="Print"}</a>
+<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="Email"}</a>
 </td></tr></table>
 </div>
 
