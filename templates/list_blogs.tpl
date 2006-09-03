@@ -59,7 +59,7 @@
 							{/if}
 						{/if}
 						{if $gBitUser->isAdmin()}
-						    <a title="{tr}perms{/tr}" href="{$smarty.const.KERNEL_PKG_URL}object_permissions.php?objectName=blog%20{$listpages[changes].title|escape}&amp;objectType=blog&amp;permType=blogs&amp;object_id={$listpages[changes].blog_id}">{if $listpages[changes].individual eq 'y'}{biticon ipackage=liberty iname="permissionsi_set" iexplain="set permissions"}{else}{biticon ipackage=liberty iname="permissions" iexplain="set permissions"}{/if}</a>
+						    <a title="{tr}perms{/tr}" href="{$smarty.const.KERNEL_PKG_URL}object_permissions.php?objectName=blog%20{$listpages[changes].title|escape}&amp;objectType=blog&amp;permType=blogs&amp;object_id={$listpages[changes].blog_id}">{if $listpages[changes].individual eq 'y'}{biticon ipackage=liberty iname="permissions_set" iexplain="set permissions"}{else}{biticon ipackage=liberty iname="permissions" iexplain="set permissions"}{/if}</a>
 						{/if}
 					</div>
 
