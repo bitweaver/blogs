@@ -19,8 +19,13 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 		$gBitUser->setPreference( 'p_blogs_view', TRUE );
 	}
 
-	if ($gBitUser->hasPermission( 'p_blogs_view' )) {
-		$gBitSystem->registerAppMenu( BLOGS_PKG_NAME, ucfirst( BLOGS_PKG_DIR ), BLOGS_PKG_URL.'index.php', 'bitpackage:blogs/menu_blogs.tpl', BLOGS_PKG_NAME );
+	if( $gBitUser->hasPermission( 'p_blogs_view' ) ) {
+		$menuHash = array(
+			'package_name'  => BLOGS_PKG_NAME,
+			'index_url'     => BLOGS_PKG_URL.'index.php',
+			'menu_template' => 'bitpackage:blogs/menu_blogs.tpl',
+		);
+		$gBitSystem->registerAppMenu( $menuHash );
 	}
 
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
