@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.14 2006/04/19 13:48:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.15 2006/09/17 22:51:10 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -17,13 +17,16 @@ require_once( '../bit_setup_inc.php' );
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
-$gBitSystem->verifyPermission( 'p_blogs_view' );
+$gBitSystem->verifyPermission( 'p_blogs_send_post' );
 
 if (!isset($_REQUEST["post_id"])) {
 	$gBitSystem->fatalError( 'No post indicated' );
 }
 
 include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
+// make sure this user can see the post to avoid emailing post to self to circumvent the perm
+$gContent->hasUserPermission( 'p_blogs_view', TRUE );
+
 $gBitSmarty->assign('post_info', $gContent->mInfo );
 
 //Build absolute URI for this

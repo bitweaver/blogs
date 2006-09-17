@@ -65,6 +65,7 @@ $gBitInstaller->registerUserPermissions( BLOGS_PKG_NAME, array(
 	array('p_blogs_create', 'Can create a blog', 'registered', BLOGS_PKG_NAME),
 	array('p_blogs_create_public_blog', 'Can create a public blog', 'editors', BLOGS_PKG_NAME),
 	array('p_blogs_post', 'Can post to a blog', 'registered', BLOGS_PKG_NAME),
+	array('p_blogs_send_post', 'Can email a blog post', 'registered', BLOGS_PKG_NAME),
 	array('p_blogs_admin', 'Can admin blogs', 'editors', BLOGS_PKG_NAME),
 	array('p_blogs_view', 'Can read blogs', 'basic', BLOGS_PKG_NAME)
 ) );
