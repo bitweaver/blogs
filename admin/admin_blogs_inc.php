@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.8 2006/04/14 20:25:50 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.9 2006/10/11 06:05:13 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -86,6 +86,7 @@ if( $processForm ) {
 	}
 }
 
-$blogs = $gBlog->list_blogs(0, -1, 'created_desc', '');
+$listHash['sort_mode'] = 'created_desc';
+$blogs = $gBlog->getList( $listHash );
 $gBitSmarty->assign_by_ref('blogs', $blogs["data"]);
 ?>

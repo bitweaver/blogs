@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.9 2006/04/11 13:03:38 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.10 2006/10/11 06:05:13 spiderr Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -57,11 +57,11 @@
 					{/forminput}
 				</div>
 
-				{if $gBitUser->hasPermission('p_blogs_create_public_blog')}
+				{if $gBitUser->hasPermission('p_blogs_create_is_public')}
 				<div class="row">
-					{formlabel label="Public" for="public_blog"}
+					{formlabel label="Public" for="is_public"}
 					{forminput}
-						<input type="checkbox" name="public_blog" id="public_blog" {if $public_blog eq 'y'}checked="checked"{/if} />
+						<input type="checkbox" name="is_public" id="is_public" {if $is_public eq 'y'}checked="checked"{/if} />
 						{formhelp note='Allow other user to post in this blog'}
 					{/forminput}
 				</div>

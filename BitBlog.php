@@ -14,82 +14,21 @@ define( 'BITBLOG_CONTENT_TYPE_GUID', 'bitblog' );
 /**
  * @package blogs
  */
-class BitBlog extends BitBase {
-	function BitBlog() {
-		BitBase::BitBase();
-	}
-
-	// BLOG METHODS ////
-	/*shared*/
-	function list_blogs($offset = 0, $max_records = -1, $sort_mode = 'created_desc', $find = '', $user_id = NULL, $add_sql = NULL) {
-		global $gBitSystem;
-
-		if ($find) {
-			$findesc = '%' . strtoupper( $find ) . '%';
-			$mid = " WHERE (UPPER(b.`title`) like ? or UPPER(b.`description`) like ?) ";
-			$bindvars=array($findesc,$findesc);
-			if ($user_id) {
-				$mid .= " AND b.`user_id` = ?";
-				$bindvars[] = $user_id;
-			}
-		} elseif( $user_id ) { // or a string
-			$mid = " WHERE b.`user_id` = ? ";
-			$bindvars=array( $user_id );
-		} else {
-			$mid = '';
-			$bindvars=array();
-		}
-
-		if ($add_sql) {
-			if (strlen($mid) > 1) {
-				$mid .= ' AND '.$add_sql.' ';
-			} else {
-				$mid = "WHERE $add_sql ";
-			}
-		}
-
-		$query = "SELECT b.*, uu.`login` as `user_nic`, uu.`real_name`
-			  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
-			  $mid order by b.".$this->mDb->convert_sortmode($sort_mode);
-
-		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
-
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-			if ( $gBitSystem->isPackageActive( 'categories' ) ) {
-				global $categlib;
-				$res['categs'] = $categlib->get_object_categories( BITBLOG_CONTENT_TYPE_GUID, $res['blog_id'] );
-			}
-			$res['blog_url'] = $this->getBlogUrl( $res['blog_id'] );
-			$ret[] = $res;
-		}
-		$retval = array();
-		$retval["data"] = $ret;
-		$query_cant = "SELECT COUNT(b.`blog_id`) FROM `".BIT_DB_PREFIX."blogs` b $mid";
-
-		$cant = $this->mDb->getOne($query_cant, $bindvars);
-		$retval["cant"] = $cant;
-		return $retval;
-	}
-
-	function get_user_blogs($user_id, $max_records = NULL) {
-		$ret = NULL;
-
-		if ($user_id) {
-
-			$sql = "SELECT b.*, uu.`user_id`, uu.`login` as `user_nic`, uu.`email`, uu.`real_name`
-					FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
-					WHERE b.`user_id` = ? $mid";
-
-			if ($max_records && is_numeric($max_records) && $max_records >= 0) {
-				$blogsRes = $this->mDb->query($sql, array($user_id), $max_records);
-			} else {
-				$blogsRes = $this->mDb->query($sql, array($user_id));
-			}
-			$ret = $blogsRes->getRows();
-		}
-		return $ret;
+class BitBlog extends LIbertyContent {
+	var $mBlogId;
+	
+	function BitBlog( $pBlogId, $pContentId=NULL ) {
+		$this->mBlogId = @$this->verifyId( $pBlogId ) ? $pBlogId : NULL;
+		parent::LibertyContent( $pContentId );
+		$this->registerContentType( BITBLOG_CONTENT_TYPE_GUID, array(
+			'content_description' => 'Blog',
+			'handler_class' => 'BitBlog',
+			'handler_package' => 'blogs',
+			'handler_file' => 'BitBlog.php',
+			'maintainer_url' => 'http://www.bitweaver.org'
+		) );
+		$this->mContentId = $pContentId;
+		$this->mContentTypeGuid = BITBLOG_CONTENT_TYPE_GUID;
 	}
 
 	function get_num_user_blogs($user_id) {
@@ -99,10 +38,6 @@ class BitBlog extends BitBase {
 			$ret = $this->mDb->getOne($sql, array( $user_id ));
 		}
 		return $ret;
-	}
-
-	function getContentType() {
-		return 'bitblog';
 	}
 
 	function getBlogUrl( $pBlogId ) {
@@ -119,27 +54,48 @@ class BitBlog extends BitBase {
 	}
 
 
+	/**
+	* Check if there is an article loaded
+	* @return bool TRUE on success, FALSE on failure
+	* @access public
+	**/
+	function isValid() {
+		return( $this->verifyId( $this->mBlogId ) && $this->verifyId( $this->mContentId ) );
+	}
+
+	function load() {
+		$this->mInfo = $this->getBlog( $this->mBlogId, $this->mContentId );
+		$this->mContentId = $this->getField( 'content_id' );
+	}
+
+
 	/*shared*/
-	function get_blog($blog_id) {
+	function getBlog( $pBlogId, $pContentId = NULL ) {
 		global $gBitSystem;
 		$ret = NULL;
-		if ( $this->verifyId( $blog_id ) ) {
-
-			$query = "SELECT b.*, uu.`login`, uu.`login` as `user_nic`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar
-				  	  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
+		
+		$lookupId = (!empty( $pBlogId ) ? $pBlogId : $pContentId);
+		$lookupColumn = (!empty( $pBlogId ) ? 'blog_id' : 'content_id');
+		
+		if ( BitBase::verifyId( $lookupId ) ) {
+			$query = "SELECT b.*, lc.*, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar
+				  	  FROM `".BIT_DB_PREFIX."blogs` b 
+						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
+					  	INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 			  		  WHERE b.`blog_id`= ?";
 					  // this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
 //						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 
-			$result = $this->mDb->query($query,array((int)$blog_id));
+			$result = $this->mDb->query($query,array((int)$pBlogId));
 			$ret = $result->fetchRow();
 			if ($ret) {
 				$ret['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.$res['avatar'] : NULL);
 				if ( $gBitSystem->isPackageActive( 'categories' ) ) {
 					global $categlib;
-					$ret['categs'] = $categlib->get_object_categories( BITBLOG_CONTENT_TYPE_GUID, $blog_id );
+					$ret['categs'] = $categlib->get_object_categories( BITBLOG_CONTENT_TYPE_GUID, $pBlogId );
 				}
 
 				if( empty( $ret['max_posts'] ) || !is_numeric( $ret['max_posts'] ) ) {
@@ -150,109 +106,71 @@ class BitBlog extends BitBase {
 		return $ret;
 	}
 
-	/*shared*/
-	function list_user_blogs($user_id = NULL, $include_public = false) {
-		$ret = NULL;
-		if ( $this->verifyId( $user_id ) ) {
-			$bindvars=array();
-			$bindvars[] = (int)$user_id;
-			$mid = '';
-			if ($include_public) {
-				$mid .= "OR `public_blog`=?";
-				$bindvars[]='y';
-			}
-			$query = "SELECT b.*, uu.`login` as `user_nic`, uu.`real_name`
-				  FROM `".BIT_DB_PREFIX."blogs` b INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = b.`user_id`)
-			  	  WHERE b.`user_id` = ? $mid ";
-			$result = $this->mDb->query($query,$bindvars);
-			$ret = array();
+	function verify( &$pParamHash ) {
+		global $gBitUser;
+	
+		$pParamHash['blog_store']['use_title'] = isset( $pParamHash['use_title'] ) ? 'y' : 'n';
+		$pParamHash['blog_store']['allow_comments'] = isset( $pParamHash['allow_comments'] ) ? 'y' : 'n';
+		$pParamHash['blog_store']['use_find'] = isset( $pParamHash['use_find'] ) ? 'y' : 'n';
+		$pParamHash['blog_store']['heading'] = isset( $pParamHash['heading'] ) ? $pParamHash['heading'] : NULL;
 
-			while ($res = $result->fetchRow()) {
-				$ret[] = $res;
-			}
-		}
-		return $ret;
+		$pParamHash['blog_store']['is_public'] = $gBitUser->hasPermission('p_blogs_create_is_public') ? isset( $pParamHash['public'] ) ? $pParamHash['public'] : NULL : NULL;
+		return( count( $this->mErrors ) == 0 );
 	}
 
-
-	function add_blog_hit($blog_id) {
-		global $gBitUser, $gBitSystem;
-
-		if ( $this->verifyId( $blog_id ) && ($gBitSystem->isFeatureActive( 'users_count_admin_pageviews' ) || !$gBitUser->isAdmin()) ){
-			$bindvars = array( $blog_id );
-			$ownerSql = '';
-			if( $gBitUser->isValid() ) {
-				// this is a super cheap way to keep us from 'hitting' our own blog
-				$ownerSql = ' AND `user_id` != ?';
-				array_push( $bindvars, $gBitUser->mUserId );
-			}
-			$query = "update `".BIT_DB_PREFIX."blogs` set `hits` = `hits`+1 where `blog_id`=? $ownerSql";
-			$result = $this->mDb->query($query,$bindvars);
-		}
-
-		return true;
-	}
-
-	function replace_blog($title, $description, $user_id, $public, $max_posts, $blog_id, $heading, $use_title, $use_find,
-		$allow_comments, $creation_date = NULL) {
-		global $gBitSystem, $gBitUser;
-		$now = $gBitSystem->getUTCTime();
-		if ($creation_date == NULL)
-			$creation_date = (int)$now;
-
-		$public = $gBitUser->hasPermission('p_blogs_create_public_blog') ? $public : NULL;
-
-		if ( $this->verifyId( $blog_id ) ) {
-			$query = "update `".BIT_DB_PREFIX."blogs` set `title`=? ,`description`=?,`user_id`=?,`public_blog`=?,`last_modified`=?,`max_posts`=?,`heading`=?,`use_title`=?,`use_find`=?,`allow_comments`=? where `blog_id`=?";
-
-			$result = $this->mDb->query($query,array($title,$description,$user_id,$public,$now,$max_posts,$heading,$use_title,$use_find,$allow_comments,$blog_id));
-		} else {
-			$query = "insert into `".BIT_DB_PREFIX."blogs`(`created`,`last_modified`,`title`,`description`,`user_id`,`public_blog`,`posts`,`max_posts`,`hits`,`heading`,`use_title`,`use_find`,`allow_comments`)
-                       values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-			$result = $this->mDb->query($query,array($creation_date,(int) $now,$title,$description,$user_id,$public,0,(int) $max_posts,0,$heading,$use_title,$use_find,$allow_comments));
-			$query2 = "select max(`blog_id`) from `".BIT_DB_PREFIX."blogs` where `last_modified`=?";
-			$blog_id = $this->mDb->getOne($query2,array((int) $now));
-		}
-
-		return $blog_id;
-	}
-
-	function expunge($blog_id) {
-		$ret = FALSE;
-		if ( $this->verifyId( $blog_id ) ) {
+	function store( &$pParamHash ) { //$title, $description, $user_id, $public, $max_posts, $blog_id, $heading, $use_title, $use_find,
+		global $gBitSystem;
+		if( $this->verify( $pParamHash ) && parent::store( $pParamHash ) ) {
+			$table = BIT_DB_PREFIX."blogs";
 			$this->mDb->StartTrans();
-			$query = "delete from `".BIT_DB_PREFIX."blogs` where `blog_id`=?";
-
-			$result = $this->mDb->query($query,array( (int)$blog_id) );
-			$query = "delete from `".BIT_DB_PREFIX."blog_posts` where `blog_id`=?";
-			$result = $this->mDb->query($query,array( (int)$blog_id) );
-			$this->remove_object( BITBLOG_CONTENT_TYPE_GUID, $blog_id );
-			$this->mDb->CompleteTrans();
-			$ret = true;
+			if( $this->isValid() ) {
+				$result = $this->mDb->associateUpdate( $table, $pParamHash['blog_store'], array( "blog_id" => $pParamHash['blog_id'] ) );
+			} else {
+				$pParamHash['blog_store']['content_id'] = $pParamHash['content_id'];
+				if( isset( $pParamHash['blog_id'] )&& is_numeric( $pParamHash['blog_id'] ) ) {
+					// if pParamHash['blog_id'] is set, someone is requesting a particular blog_id. Use with caution!
+					$pParamHash['blog_store']['blog_id'] = $pParamHash['blog_id'];
+				} else {
+					$pParamHash['blog_store']['blog_id'] = $this->mDb->GenID( 'blogs_blog_id_seq' );
+				}
+				$this->mBlogId = $pParamHash['blog_store']['blog_id'];
+				$result = $this->mDb->associateInsert( $table, $pParamHash['blog_store'] );
+			}
 		}
-		return $ret;
+		return( count( $this->mErrors ) == 0 );
 	}
 
-	// ported from gBitSystem - one day BitBlog will inherit from LibertyContent, until then, dupe this func...
-	function remove_object($type, $id) {
-		global $categlib;
-		if( is_object( $categlib ) ) {
-			$categlib->uncategorize_object($type, $id);
+	function expunge() {
+		$ret = FALSE;
+		if ( $this->isValid() ) {
+			$this->mDb->StartTrans();
+			
+			$query = "SELECT `content_id` from `".BIT_DB_PREFIX."blog_posts` where `blog_id`=?";
+			if( $posts = $this->mDb->getAll($query,array( (int)$this->mBlogId ) ) ) {
+				foreach( $posts as $postContentId ) {
+					$delPost = new BitBlogPost( NULL, $postContentId );
+					$delPost->load();
+					$delPost->expunge();
+				}
+			}
+			
+			$query = "DELETE from `".BIT_DB_PREFIX."blogs` where `blog_id`=?";
+			$result = $this->mDb->query( $query, array( (int)$this->mBlogId ) );
+
+			if( parent::expunge() ) {
+				$ret = TRUE;
+				$this->mDb->CompleteTrans();
+			} else {
+				$this->mDb->RollbackTrans();
+			}
+			$this->mDb->CompleteTrans();
 		}
-		// Now remove comments
-		$object = $type . $id;
-//		$query = "delete from `".BIT_DB_PREFIX."liberty_comments` where `object`=?  and `object_type`=?";
-//		$result = $this->mDb->query($query, array( $id, $type ));
-		// Remove individual permissions for this object if they exist
-		$query = "delete from `".BIT_DB_PREFIX."users_object_permissions` where `object_id`=? and `object_type`=?";
-		$result = $this->mDb->query($query,array((int)$object,$type));
-		return true;
+		return $ret;
 	}
 
 	function get_random_blog_post($blog_id = NULL, $load_comments = FALSE) {
 		$ret = NULL;
-		$bindvars = array();
+		$bindVars = array();
 
 		if ( $this->verifyId( $blog_id ) ) {
 			$sql = "SELECT `post_id` FROM `".BIT_DB_PREFIX."blog_posts` WHERE `blog_id` = ?";
@@ -269,29 +187,97 @@ class BitBlog extends BitBase {
 		return $ret;
 	}
 
+	// BLOG METHODS ////
+	function getList( &$pParamHash ) {
+		global $gBitSystem;
 
-	function get_blog_owner($blog_id) {
-		$user_id = NULL;
-		if ( $this->verifyId( $blog_id ) ) {
-			$sql = "SELECT `user_id` FROM `".BIT_DB_PREFIX."blogs` WHERE `blog_id` = ?";
-			$user_id = $this->mDb->getOne($sql, array($blog_id));
-		}
-		return $user_id;
-	}
+		LibertyContent::prepGetList( $pParamHash );
+		
+		$selectSql = '';
+		$joinSql = '';
+		$whereSql = '';
+		$bindVars = array();
+		array_push( $bindVars, $this->mContentTypeGuid );
+		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-	function get_post_owner($post_id) {
-		$user_id = NULL;
-		if ( $this->verifyId( $blog_id ) ) {
-			$sql = "SELECT lc.`user_id` FROM `".BIT_DB_PREFIX."blog_posts` bp, `".BIT_DB_PREFIX."liberty_content` lc
-					WHERE bp.`post_id`= ? AND bp.`content_id` = lc.`content_id`";
-			$user_id = $this->mDb->getOne($sql, array($post_id));
+		$find = $pParamHash['find'];
+		if ($find) {
+			$findesc = '%' . strtoupper( $find ) . '%';
+			$whereSql = " AND (UPPER(`title`) like ? or UPPER(`data`) like ?) ";
+			$bindVars=array($findesc,$findesc);
+			if( !empty( $pParamHash['user_id'] ) ) {
+				$whereSql .= " AND `user_id` = ?";
+				$bindVars[] = $pParamHash['user_id'];
+			}
+		} elseif( @$this->verifyId( $pParamHash['user_id'] ) ) {
+			$whereSql .= " AND uu.`user_id` = ? ";
+			$bindVars=array( $pParamHash['user_id'] );
+		} else {
+			$whereSql .= '';
+			$bindVars=array();
 		}
-		return $user_id;
+		
+		if( !empty( $pParamHash['is_active'] ) ) {
+			$whereSql = " AND b.`activity` IS NOT NULL";
+		}
+		
+		if( !empty( $pParamHash['is_hit'] ) ) {
+			$whereSql = " AND lch.`hits` IS NOT NULL";
+		}
+/*
+		if ($add_sql) {
+			if (strlen($mid) > 1) {
+				$mid .= ' AND '.$add_sql.' ';
+			} else {
+				$mid = "WHERE $add_sql ";
+			}
+		}
+*/  
+		if( !empty( $whereSql ) ) {
+			$whereSql = preg_replace( '/^[\s]*AND/', ' WHERE ', $whereSql );
+		}
+
+		$query = "SELECT b.*, uu.`login`, uu.`real_name`, lc.*, lch.hits $selectSql
+				  FROM `".BIT_DB_PREFIX."blogs` b 
+					  INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
+					  INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+					  $joinSql
+			  		  LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
+				  $whereSql order by ".$this->mDb->convert_sortmode($pParamHash['sort_mode']);
+
+		$result = $this->mDb->query( $query, $bindVars, $pParamHash['max_records'], $pParamHash['offset'] );
+
+		$ret = array();
+
+		while ($res = $result->fetchRow()) {
+			if ( $gBitSystem->isPackageActive( 'categories' ) ) {
+				global $categlib;
+				$res['categs'] = $categlib->get_object_categories( BITBLOG_CONTENT_TYPE_GUID, $res['blog_id'] );
+			}
+			$res['blog_url'] = $this->getBlogUrl( $res['blog_id'] );
+			// deal with the parsing
+			$parseHash['format_guid']   = $res['format_guid'];
+			$parseHash['content_id']    = $res['content_id'];
+			$parseHash['data'] 			= $res['data'];
+			$res['parsed'] = $this->parseData( $parseHash );
+			$pParamHash["data"][] = $res;
+		}
+		
+		$query_cant = "SELECT COUNT(b.`blog_id`)
+					   FROM `".BIT_DB_PREFIX."blogs` b 
+						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
+						INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+					   $whereSql";
+		$pParamHash["cant"] = $this->mDb->getOne( $query_cant, $bindVars );
+
+		LibertyContent::postGetList( $pParamHash );
+		
+		return $pParamHash;
 	}
 
 	function viewerCanPostIntoBlog() {
 		global $gBitUser;
-		return ($this->getField('user_id') == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->getField('public_blog') == 'y' );
+		return ($this->getField('user_id') == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->getField('is_public') == 'y' );
 	}
 
 	function viewerHasPermission($pPermName = NULL) {
@@ -304,7 +290,12 @@ class BitBlog extends BitBase {
 	}
 }
 
-global $gBlog;
-$gBlog = new BitBlog();
+global $gBlog, $gBitSmarty;
+$blogId = @BitBase::verifyId( $_REQUEST["blog_id"] ) ? $_REQUEST["blog_id"] : NULL;
+$gBlog = new BitBlog( $blogId );
+if( $blogId ) {
+	$gBlog->load();
+	$gBitSmarty->assign_by_ref( 'gBlog', $gBlog );
+}
 
 ?>

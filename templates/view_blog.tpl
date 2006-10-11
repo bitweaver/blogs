@@ -1,9 +1,9 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.11 2006/09/03 20:05:05 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.12 2006/10/11 06:05:13 spiderr Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
 		{if $gBitUser->hasPermission( 'p_blogs_post' )}
-			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->object_has_permission($gBitUser->mUserId, $blog_id, 'bitblog', 'p_blogs_post') or $gBitUser->hasPermission( 'p_blogs_admin' ) or $public_blog eq 'y'}
+			{if ($gBitUser->mUserId and $creator eq $gBitUser->mUserId) or $gBitUser->object_has_permission($gBitUser->mUserId, $blog_id, 'bitblog', 'p_blogs_post') or $gBitUser->hasPermission( 'p_blogs_admin' ) or $is_public eq 'y'}
 				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$blog_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="post"}</a>
 			{/if}
 		{/if}

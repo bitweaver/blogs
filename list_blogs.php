@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.8 2006/04/11 13:03:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.9 2006/10/11 06:05:12 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -20,117 +20,61 @@ $gBitSystem->verifyPackage( 'blogs' );
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
-if (isset($_REQUEST["remove"])) {
-	// Check if it is the owner
-	if( $data = $gBlog->get_blog($_REQUEST["remove"]) ) {
-		if( !empty( $_REQUEST['cancel'] ) ) {
-			// user cancelled - just continue on, doing nothing
-		} elseif( empty( $_REQUEST['confirm'] ) ) {
-			$formHash['remove'] = $_REQUEST["remove"];
-			$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$data['title'].'?', 'error' => 'This cannot be undone!' ) );
-		} else {
-
-			if ($data["user_id"] != $gBitUser->mUserId) {
-				$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot remove this blog" );
-			}
-
-			$gBlog->expunge($_REQUEST["remove"]);
-		}
+if( $gBlog->isValid() && isset($_REQUEST["remove"])) {
+	// Check if has edit perm of this blog
+	$gBlog->hasUserPermission( 'p_blog_edit', TRUE );
+	if( !empty( $_REQUEST['cancel'] ) ) {
+		// user cancelled - just continue on, doing nothing
+	} elseif( empty( $_REQUEST['confirm'] ) ) {
+		$formHash['remove'] = $_REQUEST["remove"];
+		$formHash['blog_id'] = $gBlog->mBlogId;
+		$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$gBlog->getTitle().'?', 'error' => 'This cannot be undone!' ) );
+	} else {
+		$gBlog->expunge();
 	}
 }
-
-// This script can receive the thresold
-// for the information as the number of
-// days to get in the log 1,3,4,etc
-// it will default to 1 recovering information for today
-if( empty( $_REQUEST["sort_mode"] ) ) {
-	$sort_mode = $gBitSystem->getConfig( 'blog_list_order', 'created_desc' );
-} else {
-	$sort_mode = $_REQUEST["sort_mode"];
-}
-
-$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
-
-// If offset is set use it if not then use offset =0
-// use the max_records php variable to set the limit
-// if sortMode is not set then use last_modified_desc
-if (!isset($_REQUEST["offset"])) {
-	$offset = 0;
-} else {
-	$offset = $_REQUEST["offset"];
-}
-
-if (isset($_REQUEST['page'])) {
-	$page = &$_REQUEST['page'];
-	$offset = ($page - 1) * $max_records;
-}
-
-$gBitSmarty->assign_by_ref('offset', $offset);
-
-if (isset($_REQUEST["find"])) {
-	$find = $_REQUEST["find"];
-} else {
-	$find = '';
-}
-
-$gBitSmarty->assign('find', $find);
 
 // Get a list of last changes to the Wiki database
-$listpages = $gBlog->list_blogs($offset, $max_records, $sort_mode, $find);
+$listBlogs = $gBlog->getList( $_REQUEST );
 
-for ($i = 0; $i < count($listpages["data"]); $i++) {
-	if ($gBitUser->object_has_one_permission($listpages["data"][$i]["blog_id"], 'blog')) {
-		$listpages["data"][$i]["individual"] = 'y';
+$gBitSmarty->assign( 'listInfo', $_REQUEST['listInfo'] );
+$gBitSmarty->assign( 'listpages', $listBlogs["data"] );
 
-		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'p_blogs_view')) {
-			$listpages["data"][$i]["individual_bit_p_read_blog"] = 'y';
+for ($i = 0; $i < count($listBlogs["data"]); $i++) {
+	if ($gBitUser->object_has_one_permission($listBlogs["data"][$i]["blog_id"], 'blog')) {
+		$listBlogs["data"][$i]["individual"] = 'y';
+
+		if ($gBitUser->object_has_permission($user, $listBlogs["data"][$i]["blog_id"], 'blog', 'p_blogs_view')) {
+			$listBlogs["data"][$i]["individual_bit_p_read_blog"] = 'y';
 		} else {
-			$listpages["data"][$i]["individual_bit_p_read_blog"] = 'n';
+			$listBlogs["data"][$i]["individual_bit_p_read_blog"] = 'n';
 		}
 
-		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'p_blogs_post')) {
-			$listpages["data"][$i]["individual_bit_p_blog_post"] = 'y';
+		if ($gBitUser->object_has_permission($user, $listBlogs["data"][$i]["blog_id"], 'blog', 'p_blogs_post')) {
+			$listBlogs["data"][$i]["individual_bit_p_blog_post"] = 'y';
 		} else {
-			$listpages["data"][$i]["individual_bit_p_blog_post"] = 'n';
+			$listBlogs["data"][$i]["individual_bit_p_blog_post"] = 'n';
 		}
 
-		if ($gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'p_blogs_create')) {
-			$listpages["data"][$i]["individual_bit_p_create_blogs"] = 'y';
+		if ($gBitUser->object_has_permission($user, $listBlogs["data"][$i]["blog_id"], 'blog', 'p_blogs_create')) {
+			$listBlogs["data"][$i]["individual_bit_p_create_blogs"] = 'y';
 		} else {
-			$listpages["data"][$i]["individual_bit_p_create_blogs"] = 'n';
+			$listBlogs["data"][$i]["individual_bit_p_create_blogs"] = 'n';
 		}
 
-		if ($gBitUser->isAdmin() || $gBitUser->object_has_permission($user, $listpages["data"][$i]["blog_id"], 'blog', 'p_blogs_admin'))
+		if ($gBitUser->isAdmin() || $gBitUser->object_has_permission($user, $listBlogs["data"][$i]["blog_id"], 'blog', 'p_blogs_admin'))
 			{
-			$listpages["data"][$i]["individual_bit_p_create_blogs"] = 'y';
+			$listBlogs["data"][$i]["individual_bit_p_create_blogs"] = 'y';
 
-			$listpages["data"][$i]["individual_bit_p_blog_post"] = 'y';
-			$listpages["data"][$i]["individual_bit_p_read_blog"] = 'y';
+			$listBlogs["data"][$i]["individual_bit_p_blog_post"] = 'y';
+			$listBlogs["data"][$i]["individual_bit_p_read_blog"] = 'y';
 		}
 	} else {
-		$listpages["data"][$i]["individual"] = 'n';
+		$listBlogs["data"][$i]["individual"] = 'n';
 	}
 }
 
-// If there're more records then assign next_offset
-$cant_pages = ceil($listpages["cant"] / $max_records);
-$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
-$gBitSmarty->assign('actual_page', 1 + ($offset / $max_records));
-
-if ($listpages["cant"] > ($offset + $max_records)) {
-	$gBitSmarty->assign('next_offset', $offset + $max_records);
-} else {
-	$gBitSmarty->assign('next_offset', -1);
-}
-
-// If offset is > 0 then prev_offset
-if ($offset > 0) {
-	$gBitSmarty->assign('prev_offset', $offset - $max_records);
-} else {
-	$gBitSmarty->assign('prev_offset', -1);
-}
-
-$gBitSmarty->assign_by_ref('listpages', $listpages["data"]);
+$gBitSmarty->assign_by_ref('listpages', $listBlogs["data"]);
 
 $gBitSystem->setBrowserTitle("View All Blogs");
 // Display the template

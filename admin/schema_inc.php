@@ -12,15 +12,9 @@ $tables = array(
 
 'blogs' => "
 	blog_id I4 AUTO PRIMARY,
-	user_id I4 NOTNULL,
-	created I8 NOTNULL,
-	last_modified I8 NOTNULL,
-	title C(200),
-	description X,
-	public_blog C(1),
+	is_public C(1),
 	posts I4,
 	max_posts I4,
-	hits I4,
 	activity decimal(4,2),
 	heading X,
 	use_find C(1),
@@ -63,7 +57,7 @@ $gBitInstaller->registerSchemaSequences( BLOGS_PKG_NAME, $sequences );
 // ### Default UserPermissions
 $gBitInstaller->registerUserPermissions( BLOGS_PKG_NAME, array(
 	array('p_blogs_create', 'Can create a blog', 'registered', BLOGS_PKG_NAME),
-	array('p_blogs_create_public_blog', 'Can create a public blog', 'editors', BLOGS_PKG_NAME),
+	array('p_blogs_create_is_public', 'Can create a public blog', 'editors', BLOGS_PKG_NAME),
 	array('p_blogs_post', 'Can post to a blog', 'registered', BLOGS_PKG_NAME),
 	array('p_blogs_send_post', 'Can email a blog post', 'registered', BLOGS_PKG_NAME),
 	array('p_blogs_admin', 'Can admin blogs', 'editors', BLOGS_PKG_NAME),

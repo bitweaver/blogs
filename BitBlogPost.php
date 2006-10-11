@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.30 2006/08/31 10:45:42 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.31 2006/10/11 06:05:12 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.30 2006/08/31 10:45:42 jht001 Exp $
+ * $Id: BitBlogPost.php,v 1.31 2006/10/11 06:05:12 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.30 $ $Date: 2006/08/31 10:45:42 $ $Author: jht001 $
+ * @version $Revision: 1.31 $ $Date: 2006/10/11 06:05:12 $ $Author: spiderr $
  */
 
 /**
@@ -61,11 +61,13 @@ class BitBlogPost extends LibertyAttachable {
 			$lookupId = $this->verifyId( $this->mPostId )? $this->mPostId : $this->mContentId;
 			array_push( $bindVars, $lookupId );
 
-			$query = "SELECT bp.*, lc.*, b.`title` as `blogtitle`, b.`allow_comments`,b.`allow_comments`, b.`use_title`, b.`user_id` AS `blog_user_id`, uu.`login` as `user_nic`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
+			$query = "SELECT bp.*, lc.*, blc.`title` as `blogtitle`, b.`allow_comments`,b.`allow_comments`, b.`use_title`, buu.`user_id` AS `blog_user_id`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
-				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
-				INNER JOIN `".BIT_DB_PREFIX."blogs` b ON (b.`blog_id` = bp.`blog_id`)
-				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` ) $joinSql
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` ) 
+					INNER JOIN `".BIT_DB_PREFIX."blogs` b ON (b.`blog_id` = bp.`blog_id`)
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` blc ON (blc.`content_id` = b.`content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."users_users` buu ON( uu.`user_id` = blc.`user_id` ) $joinSql
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 				WHERE bp.`$lookupColumn`=? $whereSql ";
@@ -221,7 +223,7 @@ class BitBlogPost extends LibertyAttachable {
 							$gBitSmarty->assign('mail_blogid', $this->mInfo['blog_id']);
 							$gBitSmarty->assign('mail_postid', $this->mPostId);
 							$gBitSmarty->assign('mail_date', $gBitSystem->getUTCTime());
-							$gBitSmarty->assign('mail_user', $this->mInfo['user_nic']);
+							$gBitSmarty->assign('mail_user', $this->mInfo['login']);
 							$gBitSmarty->assign('mail_data', $this->mInfo['data']);
 							$gBitSmarty->assign('mail_hash', $not['hash']);
 							$foo = parse_url($_SERVER["REQUEST_URI"]);
@@ -450,11 +452,13 @@ class BitBlogPost extends LibertyAttachable {
 		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convert_sortmode( $pListHash['sort_mode'] ); 
 		
 
-		$query = "SELECT bp.*, lc.*, tct.*, b.`title` AS `blogtitle`, b.`description` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login` as `user_nic`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
-				FROM `".BIT_DB_PREFIX."blogs` b, `".BIT_DB_PREFIX."blog_posts` bp
-				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
-				INNER JOIN `".BIT_DB_PREFIX."liberty_content_types` tct ON (lc.`content_type_guid` = tct.`content_type_guid`)
-				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`) $joinSql
+		$query = "SELECT bp.*, lc.*, blc.`title` AS `blogtitle`, blc.`data` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
+				FROM `".BIT_DB_PREFIX."blog_posts` bp
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` ) 
+					INNER JOIN `".BIT_DB_PREFIX."blogs` b ON (b.`blog_id` = bp.`blog_id`)
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` blc ON (blc.`content_id` = b.`content_id`)
+					$joinSql
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 				WHERE b.`blog_id` = bp.`blog_id` $whereSql order by $sort_mode";

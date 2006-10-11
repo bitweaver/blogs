@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.16 2006/04/19 16:45:06 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.17 2006/10/11 06:05:12 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -10,7 +10,6 @@
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
-$iPageTitle = 'test';
 /**
  * required setup
  */
@@ -78,41 +77,16 @@ if ($gBitSystem->isPackageActive( 'categories' ) && function_exists( 'categories
 	$choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
 	$gBitSmarty->assign('choosecateg',$choosecateg);
 }
-$blog_data = $gBlog->get_blog($_REQUEST["blog_id"]);
 
-if( !empty( $blog_data['blog_style'] ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
-	$gBitSystem->setStyle( $blog_data['blog_style'] );
-	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $blog_data['blog_style'], $blog_data['user_id'] );
-	$gBitSmarty->assign( 'userStyle', $blog_data['blog_style'] );
+if( $gBlog->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
+	$gBitSystem->setStyle( $gBlog->getField( 'blog_style' ) );
+	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gBlog->getField( 'blog_style' ), $gBlog->getField( 'user_id' ) );
+	$gBitSmarty->assign( 'userStyle', $gBlog->getField( 'blog_style' ) );
 }
 
-$ownsblog = ($gBitUser->mUserId == $blog_data["user_id"] ) ? 'y' : 'n';
-$gBitSmarty->assign('ownsblog', $ownsblog);
-
-if (!$blog_data) {
-	$gBitSystem->fatalError( 'Blog not found' );
-}
-
-$gBlog->add_blog_hit($_REQUEST["blog_id"]);
-$gBitSmarty->assign('blog_id', $_REQUEST["blog_id"]);
-$gBitSmarty->assign('title', $blog_data["title"]);
-$gBitSmarty->assign('heading', $blog_data["heading"]);
-$gBitSmarty->assign('use_title', $blog_data["use_title"]);
-$gBitSmarty->assign('use_find', $blog_data["use_find"]);
-$gBitSmarty->assign('allow_comments', $blog_data["allow_comments"]);
-$gBitSmarty->assign('description', $blog_data["description"]);
-$gBitSmarty->assign('created', $blog_data["created"]);
-$gBitSmarty->assign('last_modified', $blog_data["last_modified"]);
-$gBitSmarty->assign('posts', $blog_data["posts"]);
-$gBitSmarty->assign('public_blog', $blog_data["public_blog"]);
-$gBitSmarty->assign('hits', $blog_data["hits"]);
-$gBitSmarty->assign('creator', $blog_data["user_id"]);
-$gBitSmarty->assign('activity', $blog_data["activity"]);
-$gBitSmarty->assign('avatar', $blog_data["avatar"]);
-$gBitSmarty->assign_by_ref('blog_data', $blog_data);
+$gBlog->addHit();
 
 if (isset($_REQUEST["remove"])) {
-
 	$blogPost = new BitBlogPost( $_REQUEST["remove"] );
 	if( $blogPost->load() ) {
 		if( !$ownsblog && !$gBitUser->mUserId || $blogPost->mInfo["user_id"] != $gBitUser->mUserId) {
@@ -127,6 +101,7 @@ if (isset($_REQUEST["remove"])) {
 			$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to remove post '.$_REQUEST['remove'].'?' ) );
 		} else {
 			$blogPost->expunge();
+			bit_redirect( BLOGS_PKG_URL );
 		}
 	}
 }
@@ -135,9 +110,10 @@ if (isset($_REQUEST["remove"])) {
 $now = $gBitSystem->getUTCTime();
 
 $blogPost = new BitBlogPost();
+$listHash = array();
 $listHash['blog_id'] = $_REQUEST['blog_id'];
 $listHash['parse_data'] = TRUE;
-$listHash['max_records'] = $blog_data['max_posts'];
+$listHash['max_records'] = $gBlog->getField( 'max_posts' );
 $listHash['load_num_comments'] = TRUE;
 $listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
 $listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
@@ -148,21 +124,21 @@ if (!empty($_REQUEST['offset'])) {
 } else {
 	$offset = 0;
 }
-$cant_pages = ceil($blogPosts["cant"] / $blog_data["max_posts"]);
+$cant_pages = ceil($blogPosts["cant"] / $gBlog->getField( "max_posts" ));
 $gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
-$gBitSmarty->assign('actual_page', 1 + ($listHash['offset'] / $blog_data["max_posts"]));
+$gBitSmarty->assign('actual_page', 1 + ($listHash['offset'] / $gBlog->getField( "max_posts" )));
 $gBitSmarty->assign_by_ref('offset', $listHash['offset']);
 $gBitSmarty->assign_by_ref('sort_mode', $listHash['sort_mode']);
 
-if ($blogPosts["cant"] > ($listHash['offset'] + $blog_data["max_posts"])) {
-	$gBitSmarty->assign('next_offset', $offset + $blog_data["max_posts"]);
+if ($blogPosts["cant"] > ($listHash['offset'] + $gBlog->getField( "max_posts" ))) {
+	$gBitSmarty->assign('next_offset', $offset + $gBlog->getField( "max_posts" ));
 } else {
 	$gBitSmarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
 if ($listHash['offset'] > 0) {
-	$gBitSmarty->assign('prev_offset', $offset - $blog_data["max_posts"]);
+	$gBitSmarty->assign('prev_offset', $offset - $gBlog->getField( "max_posts"));
 } else {
 	$gBitSmarty->assign('prev_offset', -1);
 }
@@ -199,7 +175,6 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 	}
 }
 
-$gBitSystem->setBrowserTitle($blog_data['title']);
 // Display the template
-$gBitSystem->display( 'bitpackage:blogs/view_blog.tpl');
+$gBitSystem->display( 'bitpackage:blogs/view_blog.tpl', $gBlog->getTitle() );
 ?>

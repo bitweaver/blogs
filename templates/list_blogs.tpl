@@ -43,7 +43,7 @@
 					<div class="floaticon">
 						{if $gBitUser->hasPermission( 'p_blogs_post' )}
 							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_post' ))}
-								{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' )) or ($listpages[changes].public_blog eq 'y')}
+								{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' )) or ($listpages[changes].is_public eq 'y')}
 									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="post"}</a>
 								{/if}
 							{/if}
@@ -55,7 +55,7 @@
 						{/if}
 						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' ))}
 							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_create' ))}
-								<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
+								<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove=1&amp;blog_id={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 							{/if}
 						{/if}
 						{if $gBitUser->isAdmin()}
@@ -69,7 +69,7 @@
 					{/if}
 
 					{if $blog_list_description eq 'y'}
-						<p>{$listpages[changes].description}</p>
+						<p>{$listpages[changes].parsed}</p>
 					{/if}
 
 					<div class="date">

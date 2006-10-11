@@ -8,13 +8,18 @@ $upgrades = array(
 
 	'BWR1' => array(
 		'BWR2' => array(
-// de-tikify tables
 array( 'DATADICT' => array(
 	array( 'RENAMECOLUMN' => array(
 		'tiki_blogs' => array(
-			'`public`' => '`public_blog` C(1)',
+			'`public`' => '`is_public` C(1)',
 		),
 	)),
+	array( 'ALTER' => array(
+		'tiki_blogs' => array(
+			'content_id' => array( '`content_id`', 'I4' ), // , 'NOTNULL' ),
+		),
+	)),
+	// de-tikify tables
 	array( 'RENAMETABLE' => array(
 		'tiki_blogs' => 'blogs',
 		'tiki_blog_activity' => 'blog_activity',
@@ -24,6 +29,45 @@ array( 'DATADICT' => array(
 		"tiki_blog_posts_post_id_seq" => "blog_posts_post_id_seq",
 	)),
 )),
+
+
+// update blogs with content_id's
+array( 'PHP' => '
+	global $gBitSystem;
+	$query = "SELECT * FROM `'.BIT_DB_PREFIX.'blogs` b";
+	if( $rs = $gBitSystem->mDb->query( $query ) ) {
+		while( !$rs->EOF ) {
+			$contentHash = array();
+			$blogId = $rs->fields["blog_id"];
+			$conId = $gBitDb->GenID( "liberty_content_id_seq" );
+error_log( $conId."->".$blogId );			
+			$contentHash["content_id"] = $conId;
+			$contentHash["content_type_guid"] = BITBLOG_CONTENT_TYPE_GUID;
+			$contentHash["user_id"] = $rs->fields["user_id"];
+			$contentHash["format_guid"] = PLUGIN_GUID_TIKIWIKI;
+			$contentHash["data"] = $rs->fields["description"];
+			$contentHash["title"] = substr( $rs->fields["title"], 0, 160 );
+			$contentHash["created"] = $rs->fields["created"];
+			$contentHash["last_modified"] = $rs->fields["last_modified"];
+			$gBitSystem->mDb->associateInsert( "liberty_content", $contentHash );
+			$hitsHash = array();
+			$hitsHash["hits"] = $rs->fields["hits"];
+			$hitsHash["content_id"] = $conId;
+			$gBitSystem->mDb->associateInsert( "liberty_content_hits", $hitsHash );
+			$gBitSystem->mDb->query( "UPDATE `'.BIT_DB_PREFIX.'blogs` SET `content_id`=? WHERE `blog_id`=? ", array( $conId, $blogId ) );
+			$rs->MoveNext();
+		}
+	}
+' ),
+
+// Drop moved columns
+array( 'DATADICT' => array(
+	array( 'DROPCOLUMN' => array(
+		'blogs' => array( '`user_id`', '`description`', '`created`', '`last_modified`', '`hits`', '`title`' ),
+	)),
+)),
+
+
 		)
 	),
 
