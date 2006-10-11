@@ -16,7 +16,6 @@ $tables = array(
 	posts I4,
 	max_posts I4,
 	activity decimal(4,2),
-	heading X,
 	use_find C(1),
 	use_title C(1),
 	add_date C(1),

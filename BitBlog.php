@@ -112,13 +112,19 @@ class BitBlog extends LIbertyContent {
 		$pParamHash['blog_store']['use_title'] = isset( $pParamHash['use_title'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['allow_comments'] = isset( $pParamHash['allow_comments'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['use_find'] = isset( $pParamHash['use_find'] ) ? 'y' : 'n';
-		$pParamHash['blog_store']['heading'] = isset( $pParamHash['heading'] ) ? $pParamHash['heading'] : NULL;
 
 		$pParamHash['blog_store']['is_public'] = $gBitUser->hasPermission('p_blogs_create_is_public') ? isset( $pParamHash['public'] ) ? $pParamHash['public'] : NULL : NULL;
+
+		if (isset($_REQUEST["heading"]) && $gBitUser->hasPermission( 'bit_p_edit_templates' ) ) {
+			$heading = $_REQUEST["heading"];
+		} else {
+			$heading = '';
+		}
+
 		return( count( $this->mErrors ) == 0 );
 	}
 
-	function store( &$pParamHash ) { //$title, $description, $user_id, $public, $max_posts, $blog_id, $heading, $use_title, $use_find,
+	function store( &$pParamHash ) { 
 		global $gBitSystem;
 		if( $this->verify( $pParamHash ) && parent::store( $pParamHash ) ) {
 			$table = BIT_DB_PREFIX."blogs";

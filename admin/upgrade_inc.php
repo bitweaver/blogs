@@ -63,7 +63,7 @@ error_log( $conId."->".$blogId );
 // Drop moved columns
 array( 'DATADICT' => array(
 	array( 'DROPCOLUMN' => array(
-		'blogs' => array( '`user_id`', '`description`', '`created`', '`last_modified`', '`hits`', '`title`' ),
+		'blogs' => array( '`user_id`', '`description`', '`created`', '`last_modified`', '`hits`', '`title`', '`heading`' ),
 	)),
 )),
 

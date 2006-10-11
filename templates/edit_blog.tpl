@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.10 2006/10/11 06:05:13 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.11 2006/10/11 18:44:43 spiderr Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -14,14 +14,10 @@
 				<div class="header">
 					<h1>{$title}</h1>
 					{if $description}<h2>{$description}</h2>{/if}
-					{if strlen($heading) > 0}
-						<div class="introduction">{eval var=$heading}</div>
-					{else}
-						<div class="date">
-							{tr}Created by{/tr}: {displayname hash=$blog_data}, {$created|bit_short_datetime}<br />
-							{tr}Last modified{/tr}: {$last_modified|bit_short_datetime}
-						</div>
-					{/if}
+					<div class="date">
+						{tr}Created by{/tr}: {displayname hash=$blog_data}, {$created|bit_short_datetime}<br />
+						{tr}Last modified{/tr}: {$last_modified|bit_short_datetime}
+					</div>
 				</div>
 			</div>
 		{/if}
