@@ -14,7 +14,7 @@ define( 'BITBLOG_CONTENT_TYPE_GUID', 'bitblog' );
 /**
  * @package blogs
  */
-class BitBlog extends LIbertyContent {
+class BitBlog extends LibertyContent {
 	var $mBlogId;
 	
 	function BitBlog( $pBlogId=NULL, $pContentId=NULL ) {
