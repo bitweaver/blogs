@@ -132,7 +132,7 @@ class BitBlog extends LibertyContent {
 			if( $this->isValid() ) {
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['blog_store'], array( "blog_id" => $pParamHash['blog_id'] ) );
 			} else {
-				$pParamHash['blog_store']['content_id'] = $pParamHash['content_id'];
+				$pParamHash['blog_store']['content_id'] = $this->mContentId;
 				if( isset( $pParamHash['blog_id'] )&& is_numeric( $pParamHash['blog_id'] ) ) {
 					// if pParamHash['blog_id'] is set, someone is requesting a particular blog_id. Use with caution!
 					$pParamHash['blog_store']['blog_id'] = $pParamHash['blog_id'];
@@ -142,6 +142,7 @@ class BitBlog extends LibertyContent {
 				$this->mBlogId = $pParamHash['blog_store']['blog_id'];
 				$result = $this->mDb->associateInsert( $table, $pParamHash['blog_store'] );
 			}
+			$this->mDb->CompleteTrans();
 		}
 		return( count( $this->mErrors ) == 0 );
 	}

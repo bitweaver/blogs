@@ -12,6 +12,7 @@ $tables = array(
 
 'blogs' => "
 	blog_id I4 AUTO PRIMARY,
+	content_id I4 NOTNULL,
 	is_public C(1),
 	posts I4,
 	max_posts I4,
@@ -21,6 +22,7 @@ $tables = array(
 	add_date C(1),
 	add_poster C(1),
 	allow_comments C(1)
+	CONSTRAINT ', CONSTRAINT `blogs_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)'
 "
 
 );
