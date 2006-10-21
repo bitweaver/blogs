@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.32 2006/10/19 16:39:00 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.33 2006/10/21 18:39:57 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.32 2006/10/19 16:39:00 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.33 2006/10/21 18:39:57 lsces Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.32 $ $Date: 2006/10/19 16:39:00 $ $Author: spiderr $
+ * @version $Revision: 1.33 $ $Date: 2006/10/21 18:39:57 $ $Author: lsces $
  */
 
 /**
@@ -401,7 +401,6 @@ class BitBlogPost extends LibertyAttachable {
 		$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-		$whereSql = '';
 		if( @$this->verifyId( $pListHash['blog_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['blog_id'] );
 			$whereSql .= ' AND bp.`blog_id` = ? ';
@@ -451,7 +450,6 @@ class BitBlogPost extends LibertyAttachable {
 			
 		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convert_sortmode( $pListHash['sort_mode'] ); 
 		
-
 		$query = "SELECT bp.*, lc.*, blc.`title` AS `blogtitle`, blc.`data` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
@@ -462,7 +460,7 @@ class BitBlogPost extends LibertyAttachable {
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 				WHERE b.`blog_id` = bp.`blog_id` $whereSql order by $sort_mode";
-		$query_cant = "SELECT COUNT(bp.`post_id`) FROM `".BIT_DB_PREFIX."blog_posts` bp, `".BIT_DB_PREFIX."liberty_content` lc WHERE lc.`content_id` = bp.`content_id` $whereSql ";
+		$query_cant = "SELECT COUNT(bp.`post_id`) FROM `".BIT_DB_PREFIX."blog_posts` bp, `".BIT_DB_PREFIX."liberty_content` lc $joinSql WHERE lc.`content_id` = bp.`content_id` $whereSql ";
 		$result = $this->mDb->query($query,$bindVars,$pListHash['max_records'],$pListHash['offset']);
 		$cant = $this->mDb->getOne($query_cant,$bindVars);
 		$ret = array();
