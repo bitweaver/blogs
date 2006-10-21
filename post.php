@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.17 2006/10/11 06:05:12 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.18 2006/10/21 18:49:49 lsces Exp $
 
  * @package blogs
  * @subpackage functions
@@ -115,7 +115,7 @@ if (isset($_REQUEST["preview"])) {
 	$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
 
 	// used by the preview page
-	$post_info_blog = array($gBlog->get_blog($_REQUEST['blog_id']));
+	$post_info_blog = array($gBlog->getBlog($_REQUEST['blog_id']));
 	$post_info = array(
 		'title' => isset( $_REQUEST["title"] ) ? $_REQUEST['title'] : '',
 		'blogtitle' => isset( $post_info_blog[0]["title"] ) ? $post_info_blog[0]['title'] : '',
