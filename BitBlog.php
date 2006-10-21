@@ -218,7 +218,7 @@ class BitBlog extends LibertyContent {
 			}
 		} elseif( @$this->verifyId( $pParamHash['user_id'] ) ) {
 			$whereSql .= " AND uu.`user_id` = ? ";
-			$bindVars=array( $pParamHash['user_id'] );
+			$bindVars[] = $pParamHash['user_id'];
 		} 
 		
 		if( !empty( $pParamHash['is_active'] ) ) {
