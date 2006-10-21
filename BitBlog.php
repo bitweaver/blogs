@@ -204,7 +204,7 @@ class BitBlog extends LibertyContent {
 		$joinSql = '';
 		$whereSql = '';
 		$bindVars = array();
-		array_push( $bindVars, $this->mContentTypeGuid );
+//		array_push( $bindVars, $this->mContentTypeGuid );
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 		$find = $pParamHash['find'];
@@ -219,10 +219,7 @@ class BitBlog extends LibertyContent {
 		} elseif( @$this->verifyId( $pParamHash['user_id'] ) ) {
 			$whereSql .= " AND uu.`user_id` = ? ";
 			$bindVars=array( $pParamHash['user_id'] );
-		} else {
-			$whereSql .= '';
-			$bindVars=array();
-		}
+		} 
 		
 		if( !empty( $pParamHash['is_active'] ) ) {
 			$whereSql = " AND b.`activity` IS NOT NULL";
@@ -274,6 +271,7 @@ class BitBlog extends LibertyContent {
 					   FROM `".BIT_DB_PREFIX."blogs` b 
 						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
 						INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+					   $joinSql
 					   $whereSql";
 		$pParamHash["cant"] = $this->mDb->getOne( $query_cant, $bindVars );
 
