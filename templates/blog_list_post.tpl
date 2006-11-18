@@ -20,7 +20,7 @@
 			{if $gBitUser->hasPermission('p_blogs_send_post')}
 				<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$aPost.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
 			{/if}
-		<div>
+		</div>
 	{/if}
 
 	<div class="header">
