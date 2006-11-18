@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.14 2006/10/11 19:06:44 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.15 2006/11/18 16:16:37 spiderr Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -23,11 +23,14 @@
 				<a title="{tr}stop monitoring this blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$gBlog->mBlogId}&amp;watch_event=blog_post&amp;watch_object={$gBlog->mBlogId}&amp;watch_action=remove">{biticon ipackage="icons" iname="weather-clear-night" iexplain="stop monitoring this blog"}</a>
 			{/if}
 		{/if}
+		{if ($gBlog->hasEditPermission())}
+			<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?remove=1&amp;blog_id={$gBlog->getField('blog_id')}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
+		{/if}
 	</div>
 
 	<div class="header">
 		<h1>{$gBlog->getTitle()}</h1>
-		{if $gBlog->getField('parsed')}<h2>{$gBlog->getField('parsed')}</h2>{/if}
+		{if $gBlog->getField('parsed')}<p>{$gBlog->getField('parsed')}</p>{/if}
 		<div class="date">
 			{tr}Created by{/tr}: {displayname hash=$gBlog->mInfo}, {$gBlog->getField('created')|bit_short_datetime}<br />
 			{tr}Last modified{/tr}: {$gBlog->getField('last_modified')|bit_short_datetime}

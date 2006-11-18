@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.12 2006/11/18 15:41:22 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.13 2006/11/18 16:16:37 spiderr Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -13,7 +13,7 @@
 			<div class="preview">
 				<div class="header">
 					<h1>{$gBlog->getTitle()}</h1>
-					{if $description}<h2>{$gBlog->getField('description')}</h2>{/if}
+					{if $gBlog->getField('parsed')}<h2>{$gBlog->getField('parsed')}</h2>{/if}
 					<div class="date">
 						{tr}Created by{/tr}: {displayname hash=$blog_data}, {$gBlog->getField('created')|bit_short_datetime}<br />
 						{tr}Last modified{/tr}: {$gBlog->getField('last_modified')|bit_short_datetime}
@@ -38,9 +38,9 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="Description" for="description"}
+					{formlabel label="Description" for="edit"}
 					{forminput}
-						<textarea name="description" id="description" rows="2" cols="50">{$gBlog->getField('description')|escape}</textarea>
+						<textarea name="edit" id="edit" rows="2" cols="50">{$gBlog->getField('data')|escape}</textarea>
 						{formhelp note=''}
 					{/forminput}
 				</div>

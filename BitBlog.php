@@ -104,6 +104,10 @@ class BitBlog extends LibertyContent {
 				if( empty( $ret['max_posts'] ) || !is_numeric( $ret['max_posts'] ) ) {
 					$ret['max_posts'] = 10; // spiderr hack to hardcode fail safe
 				}
+
+				if( !empty( $ret['data'] ) ) {
+					$ret['parsed'] = $this->parseData( $ret['data'], $ret['content_type_guid'] );
+				}
 			}
 		}
 		return $ret;
@@ -112,16 +116,11 @@ class BitBlog extends LibertyContent {
 	function verify( &$pParamHash ) {
 		global $gBitUser;
 	
+		$pParamHash['blog_store']['max_posts'] = !empty( $pParamHash['max_posts'] ) && is_numeric( $pParamHash['max_posts'] ) ? $pParamHash['max_posts'] : NULL;
 		$pParamHash['blog_store']['use_title'] = isset( $pParamHash['use_title'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['allow_comments'] = isset( $pParamHash['allow_comments'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['use_find'] = isset( $pParamHash['use_find'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['is_public'] = $gBitUser->hasPermission('p_blogs_create_is_public') && isset( $pParamHash['public'] ) ? $pParamHash['public'] : NULL;
-
-		if (isset($_REQUEST["heading"]) && $gBitUser->hasPermission( 'bit_p_edit_templates' ) ) {
-			$heading = $_REQUEST["heading"];
-		} else {
-			$heading = '';
-		}
 
 		return( count( $this->mErrors ) == 0 );
 	}
