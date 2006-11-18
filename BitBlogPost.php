@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.36 2006/11/18 15:41:21 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.37 2006/11/18 17:07:25 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.36 2006/11/18 15:41:21 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.37 2006/11/18 17:07:25 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.36 $ $Date: 2006/11/18 15:41:21 $ $Author: spiderr $
+ * @version $Revision: 1.37 $ $Date: 2006/11/18 17:07:25 $ $Author: spiderr $
  */
 
 /**
@@ -206,7 +206,7 @@ class BitBlogPost extends LibertyAttachable {
 				// Update post with trackbacks successfully sent
 				$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_from`=?, `trackbacks_to` = ? where `post_id`=?";
 				$this->mDb->query($query,array(serialize(array()),$trackbacks,(int) $pParamHash['post_id']));
-				$query = "update `".BIT_DB_PREFIX."blogs` set `posts`=`posts`+1 where `blog_id`=?";
+				$query = "UPDATE `".BIT_DB_PREFIX."blogs` set `posts`=`posts`+1 where `blog_id`=?";
 				$result = $this->mDb->query($query,array((int)$pParamHash['blog_id']));
 
 				// let's reload to get a full mInfo hash which is needed below
@@ -269,7 +269,7 @@ class BitBlogPost extends LibertyAttachable {
 			$query = "delete from `".BIT_DB_PREFIX."blog_posts` where `post_id`=?";
 			$result = $this->mDb->query( $query, array( (int) $this->mPostId ) );
 
-			$query = "update `".BIT_DB_PREFIX."blogs` set `posts`=`posts`-1 where `blog_id`=?";
+			$query = "UPDATE `".BIT_DB_PREFIX."blogs` set `posts`=`posts`-1 where `blog_id`=?";
 			$result = $this->mDb->query( $query, array( (int)$this->mInfo['blog_id'] ) );
 			// Do this last so foreign keys won't complain (not the we have them... yet ;-)
 			LibertyAttachable::expunge();

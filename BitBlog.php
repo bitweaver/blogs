@@ -85,7 +85,7 @@ class BitBlog extends LibertyContent {
 		$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 		if ( BitBase::verifyId( $lookupId ) ) {
-			$query = "SELECT b.*, lc.*, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
+			$query = "SELECT b.*, lc.*, lch.*, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				  	  FROM `".BIT_DB_PREFIX."blogs` b 
 						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
 					  	INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
@@ -136,6 +136,7 @@ class BitBlog extends LibertyContent {
 			$table = BIT_DB_PREFIX."blogs";
 			$this->mDb->StartTrans();
 			if( $this->isValid() ) {
+				$pParamHash['blog_store']['posts'] = $this->mDb->getOne( "SELECT COUNT(`blog_id`) FROM `".BIT_DB_PREFIX."blog_posts` WHERE blog_id=?", array( $pParamHash['blog_id'] ) );
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['blog_store'], array( "blog_id" => $pParamHash['blog_id'] ) );
 			} else {
 				$pParamHash['blog_store']['content_id'] = $this->mContentId;

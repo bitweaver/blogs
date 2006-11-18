@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.19 2006/11/18 15:41:21 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.20 2006/11/18 17:07:25 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -73,9 +73,6 @@ if( count($blogs) == 0 ) {
 	}
 
 } else {
-	if ($gBitSystem->getConfig('package_quicktags','n') == 'y') {
-	  include_once( QUICKTAGS_PKG_PATH.'quicktags_inc.php' );
-	}
 	$mid = 'bitpackage:blogs/blog_post.tpl';
 }
 
@@ -205,7 +202,7 @@ $sameurl_elements = array(
 );
 
 $gBitSmarty->assign_by_ref('blogs', $blogs);
-$gBitSmarty->assign('blog_id', $blog_id);
+$gBitSmarty->assign('blog_id', $_REQUEST['blog_id'] );
 
 $gBitSystem->setBrowserTitle("Create Blog Post");
 // Display the Index Template

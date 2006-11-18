@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.13 2006/04/08 07:54:40 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.14 2006/11/18 17:07:26 spiderr Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -18,18 +18,17 @@
 			<input type="hidden" name="blog_id" value="{$blog_id|escape}" />
 			<input type="hidden" name="rows" value="{$rows}"/>
 			<input type="hidden" name="cols" value="{$cols}"/>
-			<input type="hidden" name="MAX_FILE_SIZE" value="1000000000" />
 
 			{jstabs}
 				{jstab title="Create Blog Post"}
 					{legend legend="Post to a Blog"}
-						{if $blogs}
+						{if $blogs.data}
 							<div class="row">
 								{formlabel label="Blog" for="blog_id"}
 								{forminput}
 									<select name="blog_id" id="blog_id">
-										{section name=ix loop=$blogs}
-											<option value="{$blogs[ix].blog_id|escape}" {if $blogs[ix].blog_id eq $blog_id}selected="selected"{/if}>{$blogs[ix].title|escape}</option>
+										{section name=ix loop=$blogs.data}
+											<option value="{$blogs.data[ix].blog_id|escape}" {if $blogs.data[ix].blog_id eq $blog_id}selected="selected"{/if}>{$blogs.data[ix].title|escape}</option>
 										{/section}
 									</select>
 								{/forminput}

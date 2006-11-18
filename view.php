@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.18 2006/11/18 16:34:28 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.19 2006/11/18 17:07:25 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -66,28 +66,13 @@ if ($gBitUser->object_has_one_permission( $_REQUEST["blog_id"], $gBlog->getConte
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
-if ($gBitSystem->isPackageActive( 'categories' ) && function_exists( 'categories_display' ) ) {
-	$gBlog->mContentId = $_REQUEST["blog_id"];
-	categories_display( $gBlog );
-	if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
-		$categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
-	} elseif (isset($_REQUEST['delcategs']) and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
-		$categlib->uncategorize('blogpost',$_REQUEST['post_id']);
-	}
-	$categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
-	$gBitSmarty->assign('categs',$categs['data']);
-	$gBitSmarty->assign('page','view.php');
-	$choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
-	$gBitSmarty->assign('choosecateg',$choosecateg);
-}
-
 if( $gBlog->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
 	$gBitSystem->setStyle( $gBlog->getField( 'blog_style' ) );
 	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gBlog->getField( 'blog_style' ), $gBlog->getField( 'user_id' ) );
 	$gBitSmarty->assign( 'userStyle', $gBlog->getField( 'blog_style' ) );
 }
 
-if( !$gBlog->hasAdminPermission() ) {
+if( !$gBlog->hasEditPermission() ) {
 	$gBlog->addHit();
 }
 
@@ -96,7 +81,7 @@ if( !$gBlog->hasAdminPermission() ) {
 if (isset($_REQUEST["remove"])) {
 	$blogPost = new BitBlogPost( $_REQUEST["remove"] );
 	if( $blogPost->load() ) {
-		if( !$ownsblog && !$gBitUser->mUserId || $blogPost->mInfo["user_id"] != $gBitUser->mUserId) {
+		if( !$blogPost->hasEditPermission() ) {
 			$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot remove this post" );
 		}
 
