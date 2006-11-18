@@ -101,15 +101,9 @@ class BitBlog extends LibertyContent {
 			$ret = $result->fetchRow();
 			if ($ret) {
 				$ret['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.$res['avatar'] : NULL);
-				if ( $gBitSystem->isPackageActive( 'categories' ) ) {
-					global $categlib;
-					$ret['categs'] = $categlib->get_object_categories( BITBLOG_CONTENT_TYPE_GUID, $pBlogId );
-				}
-
 				if( empty( $ret['max_posts'] ) || !is_numeric( $ret['max_posts'] ) ) {
 					$ret['max_posts'] = 10; // spiderr hack to hardcode fail safe
 				}
-
 				if( !empty( $ret['data'] ) ) {
 					$ret['parsed'] = $this->parseData( $ret['data'], $ret['content_type_guid'] );
 				}
@@ -290,6 +284,15 @@ class BitBlog extends LibertyContent {
 		return ($this->getField('user_id') == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->getField('is_public') == 'y' );
 	}
 
+	function hasPostPermission() {
+		$ret = FALSE;
+		if( $this->isValid() ) {
+			// for now just check edit permission, however eventually we'll want to separate this notion so blog editors and posters can be distinguished
+			$ret = $this->hasEditPermission();
+		}
+		return $ret;
+	}
+
 	function viewerHasPermission($pPermName = NULL) {
 		global $gBitUser;
 		$ret = FALSE;
@@ -305,7 +308,7 @@ $blogId = @BitBase::verifyId( $_REQUEST["blog_id"] ) ? $_REQUEST["blog_id"] : NU
 $gBlog = new BitBlog( $blogId );
 if( $blogId ) {
 	$gBlog->load();
-	$gBitSmarty->assign_by_ref( 'gBlog', $gBlog );
 }
+$gBitSmarty->assign_by_ref( 'gBlog', $gBlog );
 
 ?>

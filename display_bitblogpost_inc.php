@@ -151,8 +151,6 @@ $gBitSystem->verifyPermission( 'p_blogs_view' );
 	die;
 }*/
 
-$gBitSmarty->assign('ownsblog', ( $gBitUser->isValid() && $gBitUser->mUserId == $gContent->mInfo["user_id"] ) ? 'y' : 'n' );
-
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
 	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
 	$commentsParentId = $gContent->mInfo['content_id'];

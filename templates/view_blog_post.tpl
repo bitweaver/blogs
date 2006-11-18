@@ -16,7 +16,7 @@
 	<div class="floaticon">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
 
-		{if ($ownsblog eq 'y') or $gBitUser->hasPermission( 'p_blogs_admin' )}
+		{if $gBlog->hasPostPermission()}
 			<a href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 			<a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$post_info.blog_id}&amp;remove={$post_info.post_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 		{/if}

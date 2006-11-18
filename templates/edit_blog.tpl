@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.14 2006/11/18 16:34:28 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.15 2006/11/18 21:43:16 spiderr Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -39,10 +39,17 @@
 							{/forminput}
 						</div>
 
+						{if $gBitSystem->isPackageActive( 'smileys' )}
+							{include file="bitpackage:smileys/smileys_full.tpl"}
+						{/if}
+
+						{if $gBitSystem->isPackageActive( 'quicktags' )}
+							{include file="bitpackage:quicktags/quicktags_full.tpl"}
+						{/if}
+
 						<div class="row">
-							{formlabel label="Description" for="edit"}
 							{forminput}
-								<textarea name="edit" id="edit" rows="2" cols="50">{$gBlog->getField('data')|escape}</textarea>
+								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:5}" cols="50">{$gBlog->getField('data')|escape}</textarea>
 								{formhelp note=''}
 							{/forminput}
 						</div>

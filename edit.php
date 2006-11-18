@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.15 2006/11/18 16:34:28 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.16 2006/11/18 21:43:16 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -40,6 +40,9 @@ if( $gBlog->isValid() ) {
 if (!$gBitUser->hasPermission( 'p_blogs_create' ) && ($gBitUser->mUserId != $data['user_id'] || !$gBitUser->mUserId) ) {
 	$gBitSystem->fatalPermission('p_blog_create');
 }
+
+// WYSIWYG and Quicktag variable
+$gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
 if (isset($_REQUEST['preview'])) {
 	$gBitSmarty->assign('title', $_REQUEST["title"]);

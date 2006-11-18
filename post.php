@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.20 2006/11/18 17:07:25 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.21 2006/11/18 21:43:16 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -45,22 +45,20 @@ if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
 	}
 } else {
 	if ( $gBlog->isValid() ) {
-		//if (($blogInfo['user_id'] != $gBitUser->mUserId && $blogInfo['is_public'] != 'y') && !$gBlog->viewerCanPostIntoBlog()) {
-		if( !$gBlog->viewerCanPostIntoBlog() ) {
-			$gBitSystem->fatalError( tra("You cannot post into this blog") );
+		if( $gBlog->hasPostPermission() ) {
+			$blogs['data'][] = $gBlog->mInfo;
 		} else {
-			$listHash = array();
-			$listHash['user_id'] = $gBitUser->mUserId;
-			$blogs = $gBlog->getList( $listHash );
+			$gBitSystem->fatalError( tra("You cannot post into this blog") );
 		}
 	} else {
-		$gBitSmarty->assign('msg', tra("The given blog does not exist"));
-		$mid = 'error.tpl';
+		$listHash = array();
+		$listHash['user_id'] = $gBitUser->mUserId;
+		$blogs = $gBlog->getList( $listHash );
 	}
 }
 
 if( empty( $_REQUEST['blog_id'] ) && count($blogs) >  0 ) {
-	$blog_id = $blogs[0]['blog_id'];	// Default to the first blog returned that this user owns
+	$_REQUEST['blog_id'] = $blogs['data'][0]['blog_id'];	// Default to the first blog returned that this user owns
 }
 
 if( count($blogs) == 0 ) {
@@ -201,7 +199,7 @@ $sameurl_elements = array(
 	'post_id'
 );
 
-$gBitSmarty->assign_by_ref('blogs', $blogs);
+$gBitSmarty->assign_by_ref('blogs', $blogs['data']);
 $gBitSmarty->assign('blog_id', $_REQUEST['blog_id'] );
 
 $gBitSystem->setBrowserTitle("Create Blog Post");
