@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.35 2006/10/21 19:41:14 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.36 2006/11/18 15:41:21 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.35 2006/10/21 19:41:14 lsces Exp $
+ * $Id: BitBlogPost.php,v 1.36 2006/11/18 15:41:21 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.35 $ $Date: 2006/10/21 19:41:14 $ $Author: lsces $
+ * @version $Revision: 1.36 $ $Date: 2006/11/18 15:41:21 $ $Author: spiderr $
  */
 
 /**
@@ -76,7 +76,7 @@ class BitBlogPost extends LibertyAttachable {
 			if( $this->mInfo = $this->mDb->getRow( $query, $bindVars ) ) {
 				$this->mPostId = $this->mInfo['post_id'];
 				$this->mContentId = $this->mInfo['content_id'];
-				$this->mInfo['blog_url'] = BitBlog::getBlogUrl( $this->mInfo['blog_id'] );
+				$this->mInfo['blog_url'] = BitBlog::getDisplayUrl( $this->mInfo['blog_id'] );
 				$this->mInfo['title'] = $this->getTitle();
 
 				if( $pLoadComments ) {
@@ -482,7 +482,7 @@ class BitBlogPost extends LibertyAttachable {
 
 				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
 				$res['display_url'] = $res['post_url'];
-				$res['blog_url'] = BitBlog::getBlogUrl( $res['blog_id'] );
+				$res['blog_url'] = BitBlog::getDisplayUrl( $res['blog_id'] );
 
 				if($res['trackbacks_from']!=null)
 					$res['trackbacks_from'] = unserialize($res['trackbacks_from']);
@@ -516,7 +516,7 @@ class BitBlogPost extends LibertyAttachable {
 				if( !empty( $accessError['access_control'] ) ) {
 					$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
 					$res['display_url'] = $res['post_url'];
-					$res['blog_url'] = BitBlog::getBlogUrl( $res['blog_id'] );
+					$res['blog_url'] = BitBlog::getDisplayUrl( $res['blog_id'] );
 					$res["parsed_data"] = $accessError['access_control'];
 					$ret[] = $res;
 				}

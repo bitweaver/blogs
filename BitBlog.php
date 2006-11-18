@@ -40,10 +40,13 @@ class BitBlog extends LibertyContent {
 		return $ret;
 	}
 
-	function getBlogUrl( $pBlogId ) {
+	function getDisplayUrl( $pBlogId=NULL ) {
 		global $gBitSystem;
 		$ret = NULL;
-		if ( $this->verifyId( $pBlogId ) ) {
+		if( empty( $pBlogId ) && !empty( $this ) ) {
+			$pBlogId = $this->mBlogId;
+		}
+		if ( BitBase::verifyId( $pBlogId ) ) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
 				$ret = BLOGS_PKG_URL.$pBlogId;
 			} else {
@@ -112,8 +115,7 @@ class BitBlog extends LibertyContent {
 		$pParamHash['blog_store']['use_title'] = isset( $pParamHash['use_title'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['allow_comments'] = isset( $pParamHash['allow_comments'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['use_find'] = isset( $pParamHash['use_find'] ) ? 'y' : 'n';
-
-		$pParamHash['blog_store']['is_public'] = $gBitUser->hasPermission('p_blogs_create_is_public') ? isset( $pParamHash['public'] ) ? $pParamHash['public'] : NULL : NULL;
+		$pParamHash['blog_store']['is_public'] = $gBitUser->hasPermission('p_blogs_create_is_public') && isset( $pParamHash['public'] ) ? $pParamHash['public'] : NULL;
 
 		if (isset($_REQUEST["heading"]) && $gBitUser->hasPermission( 'bit_p_edit_templates' ) ) {
 			$heading = $_REQUEST["heading"];
@@ -258,7 +260,7 @@ class BitBlog extends LibertyContent {
 				global $categlib;
 				$res['categs'] = $categlib->get_object_categories( BITBLOG_CONTENT_TYPE_GUID, $res['blog_id'] );
 			}
-			$res['blog_url'] = $this->getBlogUrl( $res['blog_id'] );
+			$res['blog_url'] = $this->getDisplayUrl( $res['blog_id'] );
 			// deal with the parsing
 			$parseHash['format_guid']   = $res['format_guid'];
 			$parseHash['content_id']    = $res['content_id'];

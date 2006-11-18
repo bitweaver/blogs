@@ -1,22 +1,22 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.11 2006/10/11 18:44:43 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.12 2006/11/18 15:41:22 spiderr Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
 
 <div class="edit blogs">
 	<div class="header">
-		<h1>{if $blog_id}{tr}Edit Blog{/tr}{else}{tr}Create Blog{/tr}{/if}</h1>
+		<h1>{if $gBlog->isValid()}{tr}Edit Blog{/tr}{else}{tr}Create Blog{/tr}{/if}</h1>
 	</div>
 
 	<div class="body">
-		{if strlen($title) > 0}
+		{if $smarty.request.preview}
 			<div class="preview">
 				<div class="header">
-					<h1>{$title}</h1>
-					{if $description}<h2>{$description}</h2>{/if}
+					<h1>{$gBlog->getTitle()}</h1>
+					{if $description}<h2>{$gBlog->getField('description')}</h2>{/if}
 					<div class="date">
-						{tr}Created by{/tr}: {displayname hash=$blog_data}, {$created|bit_short_datetime}<br />
-						{tr}Last modified{/tr}: {$last_modified|bit_short_datetime}
+						{tr}Created by{/tr}: {displayname hash=$blog_data}, {$gBlog->getField('created')|bit_short_datetime}<br />
+						{tr}Last modified{/tr}: {$gBlog->getField('last_modified')|bit_short_datetime}
 					</div>
 				</div>
 			</div>
@@ -28,19 +28,19 @@
 
 		{form ipackage="blogs" ifile="edit.php"}
 			{legend legend="Blog Settings"}
-				<input type="hidden" name="blog_id" value="{$blog_id|escape}" />
+				<input type="hidden" name="blog_id" value="{$gBlog->getField('blog_id')}" />
 				<div class="row">
 					{formfeedback warning=$warning}
 					{formlabel label="Title" for="title"}
 					{forminput}
-						<input type="text" name="title" id="title" value="{if $title}{$title|escape}{else}{displayname hash=$gBitUser->mInfo nolink=FALSE}'s Blog{/if}" />
+						<input type="text" name="title" id="title" value="{if $gBlog->getTitle()}{$gBlog->getTitle()|escape}{else}{displayname hash=$gBitUser->mInfo nolink=FALSE}'s Blog{/if}" />
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Description" for="description"}
 					{forminput}
-						<textarea name="description" id="description" rows="2" cols="50">{$description|escape}</textarea>
+						<textarea name="description" id="description" rows="2" cols="50">{$gBlog->getField('description')|escape}</textarea>
 						{formhelp note=''}
 					{/forminput}
 				</div>
@@ -48,7 +48,7 @@
 				<div class="row">
 					{formlabel label="Number of posts to show" for="max_posts"}
 					{forminput}
-						<input type="text" name="max_posts" id="max_posts" value="{$max_posts|escape|default:10}" />
+						<input type="text" name="max_posts" id="max_posts" value="{$gBlog->getField('max_posts')|escape|default:10}" />
 						{formhelp note='Enter the number of blog posts you wish to display when viewing this blog.'}
 					{/forminput}
 				</div>

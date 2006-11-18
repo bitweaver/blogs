@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.18 2006/10/21 18:49:49 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.19 2006/11/18 15:41:21 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -54,7 +54,8 @@ if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
 			$blogs = $gBlog->getList( $listHash );
 		}
 	} else {
-		$gBitSystem->fatalError( tra("The given blog does not exist") );
+		$gBitSmarty->assign('msg', tra("The given blog does not exist"));
+		$mid = 'error.tpl';
 	}
 }
 
