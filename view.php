@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.17 2006/10/11 06:05:12 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.18 2006/11/18 16:34:28 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -19,6 +19,9 @@ if ($gBitSystem->isPackageActive( 'categories' )) {
   include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 }
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+
+$displayHash = array( 'perm_name' => 'p_blogs_view' );
+$gBlog->invokeServices( 'content_display_function', $displayHash );
 
 $gBitSystem->verifyPackage( 'blogs' );
 $gBitSmarty->assign('showBlogTitle', 'y');
@@ -84,7 +87,11 @@ if( $gBlog->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes') =
 	$gBitSmarty->assign( 'userStyle', $gBlog->getField( 'blog_style' ) );
 }
 
-$gBlog->addHit();
+if( !$gBlog->hasAdminPermission() ) {
+	$gBlog->addHit();
+}
+
+
 
 if (isset($_REQUEST["remove"])) {
 	$blogPost = new BitBlogPost( $_REQUEST["remove"] );

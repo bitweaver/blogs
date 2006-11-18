@@ -80,15 +80,20 @@ class BitBlog extends LibertyContent {
 		$lookupId = (!empty( $pBlogId ) ? $pBlogId : $pContentId);
 		$lookupColumn = (!empty( $pBlogId ) ? 'blog_id' : 'content_id');
 		
+		$bindVars = array( (int)$pBlogId ); 
+		$selectSql = ''; $joinSql = ''; $whereSql = '';
+		$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
+
 		if ( BitBase::verifyId( $lookupId ) ) {
-			$query = "SELECT b.*, lc.*, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar
+			$query = "SELECT b.*, lc.*, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				  	  FROM `".BIT_DB_PREFIX."blogs` b 
 						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
 					  	INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+						$joinSql
 			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
-			  		  WHERE b.`blog_id`= ?";
+			  		  WHERE b.`blog_id`= ? $whereSql";
 					  // this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
 //						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 
@@ -201,9 +206,7 @@ class BitBlog extends LibertyContent {
 
 		LibertyContent::prepGetList( $pParamHash );
 		
-		$selectSql = '';
-		$joinSql = '';
-		$whereSql = '';
+		$selectSql = ''; $joinSql = ''; $whereSql = '';
 		$bindVars = array();
 //		array_push( $bindVars, $this->mContentTypeGuid );
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );

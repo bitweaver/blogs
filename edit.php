@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.14 2006/11/18 16:16:37 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.15 2006/11/18 16:34:28 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -62,7 +62,7 @@ if (isset($_REQUEST['save_blog'])) {
 	}
 }
 
-$gBitSystem->setBrowserTitle( tra( 'Edit Blog Post' ).' - '.$gBlog->getTitle() );
+$gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gBlog->getTitle() );
 // Display the Index Template
 $gBitSmarty->assign('show_page_bar', 'n');
 $gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl');
