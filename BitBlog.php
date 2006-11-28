@@ -80,12 +80,12 @@ class BitBlog extends LibertyContent {
 		$lookupId = (!empty( $pBlogId ) ? $pBlogId : $pContentId);
 		$lookupColumn = (!empty( $pBlogId ) ? 'blog_id' : 'content_id');
 		
-		$bindVars = array( (int)$pBlogId ); 
+		$bindVars = array( (int)$lookupId ); 
 		$selectSql = ''; $joinSql = ''; $whereSql = '';
 		$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 		if ( BitBase::verifyId( $lookupId ) ) {
-			$query = "SELECT b.*, lc.*, lch.*, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
+			$query = "SELECT b.*, lc.*, lch.`hits`, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				  	  FROM `".BIT_DB_PREFIX."blogs` b 
 						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
 					  	INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
@@ -93,12 +93,14 @@ class BitBlog extends LibertyContent {
 			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
-			  		  WHERE b.`blog_id`= ? $whereSql";
+			  		  WHERE b.`$lookupColumn`= ? $whereSql";
 					  // this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
 //						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 
-			$result = $this->mDb->query($query,array((int)$pBlogId));
+
+			$result = $this->mDb->query($query,$bindVars);
 			$ret = $result->fetchRow();
+
 			if ($ret) {
 				$ret['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.$res['avatar'] : NULL);
 				if( empty( $ret['max_posts'] ) || !is_numeric( $ret['max_posts'] ) ) {
@@ -251,6 +253,9 @@ class BitBlog extends LibertyContent {
 		$result = $this->mDb->query( $query, $bindVars, $pParamHash['max_records'], $pParamHash['offset'] );
 
 		$ret = array();
+
+		// Return a data array, even if empty
+		$pParamHash["data"] = array();
 
 		while ($res = $result->fetchRow()) {
 			if ( $gBitSystem->isPackageActive( 'categories' ) ) {
