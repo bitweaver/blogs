@@ -64,14 +64,14 @@ Next:
 			{$parsed_data}
 			<p>
 				{displayname hash=$post_info}<br />
-				{tr}in{/tr} <a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$post_info.blog_id}">{$post_info.blogtitle}</a><br />
+				{tr}in{/tr} <a href="{$post_info.blog_url}">{$post_info.blogtitle}</a><br />
 				{tr}Posted at{/tr} {$post_info.created|bit_long_time}
 			</p>
 		</div> <!-- end .content -->
 	</div> <!-- end .body -->
 
 	<div class="footer">
-		<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?post_id={$post_id}">{tr}Permalink{/tr}</a>
+		<a href="{$post_info.url}">{tr}Permalink{/tr}</a>
 		{tr}referenced by{/tr} {$post_info.trackbacks_from_count} {tr}posts{/tr} | {tr}references{/tr} {$post_info.trackbacks_to_count} {tr}posts{/tr}
 		{if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
 			| {$post_info.num_comments} {tr}comments{/tr}

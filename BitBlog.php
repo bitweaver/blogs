@@ -47,7 +47,10 @@ class BitBlog extends LibertyContent {
 			$pBlogId = $this->mBlogId;
 		}
 		if ( BitBase::verifyId( $pBlogId ) ) {
-			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
+			if( $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
+				$ret = BLOGS_PKG_URL.'view/'.$pBlogId;
+			} 
+			else if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
 				$ret = BLOGS_PKG_URL.$pBlogId;
 			} else {
 				$ret = BLOGS_PKG_URL.'view.php?blog_id='.$pBlogId;
