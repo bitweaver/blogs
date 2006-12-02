@@ -12,6 +12,13 @@ $registerHash = array(
 );
 $gBitSystem->registerPackage( $registerHash );
 
+/* Simple function to fetch and set all config values. */
+function assignConfigs($x) {
+	global $gBitSmarty, $gBitSystem;
+	foreach ($x as $key)
+		$gBitSmarty->assign($key, $gBitSystem->getConfig($key));
+}
+
 if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 	if( $gBitUser->hasPermission( 'p_blogs_admin' ) ) {
 		$gBitUser->setPreference( 'p_blogs_create', TRUE );
@@ -30,18 +37,20 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
 
-	$gBitSmarty->assign('home_blog', 0);
-	$gBitSmarty->assign('blog_list_order', 'created_desc');
-	$gBitSmarty->assign('blog_list_title', 'y');
-	$gBitSmarty->assign('blog_list_description', 'y');
-	$gBitSmarty->assign('blog_list_created', 'y');
-	$gBitSmarty->assign('blog_list_lastmodif', 'y');
-	$gBitSmarty->assign('blog_list_user', 'y');
-	$gBitSmarty->assign('blog_list_posts', 'y');
-	$gBitSmarty->assign('blog_list_visits', 'y');
-	$gBitSmarty->assign('blog_list_activity', 'y');
-	$gBitSmarty->assign('blog_list_user', 'text');
+	$prefs = array(
+					'home_blog',
+					'blog_list_order',
+					'blog_list_title',
+					'blog_list_description',
+					'blog_list_created',
+					'blog_list_lastmodif',
+					'blog_list_user',
+					'blog_list_posts',
+					'blog_list_visits',
+					'blog_list_activity',
+					'blog_list_user_as',
+				);
+	assignConfigs($prefs);
 
 }
-
 ?>

@@ -77,6 +77,7 @@ $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
 	array( BLOGS_PKG_NAME, 'blog_parent_categ',0),
 	array( BLOGS_PKG_NAME, 'blog_posts_comments','n'),
 	array( BLOGS_PKG_NAME, 'blog_rankings','y'),
+	array( BLOGS_PKG_NAME, 'blog_list_user_as', 'text'),
 ) );
 if(defined('RSS_PKG_NAME')) {
 	$gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(

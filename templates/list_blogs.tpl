@@ -74,9 +74,9 @@
 
 					<div class="date">
 						{if $blog_list_user eq 'y'}
-							{if $blog_list_user eq 'link'}
+							{if $blog_list_user_as eq 'link'}
 								{tr}Created by {$listpages[changes].user|userlink}{/tr}
-							{elseif $blog_list_user eq 'avatar'}
+							{elseif $blog_list_user_as eq 'avatar'}
 								{$listpages[changes].user|avatarize}
 							{else}
 								{tr}Created by {$listpages[changes].user}{/tr}

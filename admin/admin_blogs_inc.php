@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.9 2006/10/11 06:05:13 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.10 2006/12/02 01:46:18 nickpalmer Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -69,9 +69,9 @@ if( $processForm ) {
 
 	$gBitSystem->storeConfig("blog_posts_comments", isset( $_REQUEST["blog_posts_comments"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_list_order", $_REQUEST["blog_list_order"], BLOGS_PKG_NAME );
-	$gBitSystem->storeConfig("blog_list_user", $_REQUEST["blog_list_user"], BLOGS_PKG_NAME );
+	$gBitSystem->storeConfig("blog_list_user_as", $_REQUEST["blog_list_user_as"], BLOGS_PKG_NAME );
 	$gBitSmarty->assign('blog_list_order', $_REQUEST["blog_list_order"]);
-	$gBitSmarty->assign('blog_list_user', $_REQUEST['blog_list_user']);
+	$gBitSmarty->assign('blog_list_user_as', $_REQUEST['blog_list_user_as']);
 
 	if ($gBitSystem->isPackageActive( 'categories' )) {
 		if (isset($_REQUEST["blog_categ"]) && $_REQUEST["blog_categ"] == "on") {

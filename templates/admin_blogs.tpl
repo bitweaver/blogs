@@ -9,7 +9,7 @@
 					{forminput}
 						<select name="homeBlog" id="homeBlog">
 							{section name=ix loop=$blogs}
-								<option value="{$blogs[ix].blog_id|escape}" {if $blogs[ix].blog_id eq $home_blog}selected="selected"{/if}>{$blogs[ix].title|escape|truncate:20:"...":true}</option>
+								<option value="{$blogs[ix].blog_id|escape}" {if $blogs[ix].blog_id eq $home_blog}selected="selected"{/if}>{$blogs[ix].title|escape html|truncate:20:"...":true}</option>
 							{sectionelse}
 								<option>{tr}No records found{/tr}</option>
 							{/section}
@@ -54,10 +54,10 @@
 				<div class="row">
 					{formlabel label="Display user as" for="blog_list_user_as"}
 					{forminput}
-						<select name="blog_list_user" id="blog_list_user_as">
-							<option value="text" {if $blog_list_user eq 'text'}selected="selected"{/if}>{tr}Plain text{/tr}</option>
-							<option value="link" {if $blog_list_user eq 'link'}selected="selected"{/if}>{tr}Link to user information{/tr}</option>
-							<option value="avatar" {if $blog_list_user eq 'avatar'}selected="selected"{/if}>{tr}User avatar{/tr}</option>
+						<select name="blog_list_user_as" id="blog_list_user_as">
+							<option value="text" {if $blog_list_user_as eq 'text'}selected="selected"{/if}>{tr}Plain text{/tr}</option>
+							<option value="link" {if $blog_list_user_as eq 'link'}selected="selected"{/if}>{tr}Link to user information{/tr}</option>
+							<option value="avatar" {if $blog_list_user_as eq 'avatar'}selected="selected"{/if}>{tr}User avatar{/tr}</option>
 						</select>
 						{formhelp note="Decide how blog post author information is displayed."}
 					{/forminput}
