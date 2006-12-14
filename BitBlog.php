@@ -72,6 +72,7 @@ class BitBlog extends LibertyContent {
 	function load() {
 		$this->mInfo = $this->getBlog( $this->mBlogId, $this->mContentId );
 		$this->mContentId = $this->getField( 'content_id' );
+		$this->mBlogId = $this->getField('blog_id');
 	}
 
 
@@ -311,12 +312,6 @@ class BitBlog extends LibertyContent {
 	}
 }
 
-global $gBlog, $gBitSmarty;
-$blogId = @BitBase::verifyId( $_REQUEST["blog_id"] ) ? $_REQUEST["blog_id"] : NULL;
-$gBlog = new BitBlog( $blogId );
-if( $blogId ) {
-	$gBlog->load();
-}
-$gBitSmarty->assign_by_ref( 'gBlog', $gBlog );
+require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 ?>

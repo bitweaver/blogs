@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.21 2006/11/18 21:43:16 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.22 2006/12/14 20:22:07 nickpalmer Exp $
 
  * @package blogs
  * @subpackage functions
@@ -33,8 +33,7 @@ if (isset($_REQUEST['wysiwyg']) && $_REQUEST['wysiwyg'] == 'y') {
 if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
 	$listHash = array();
 	$listHash['sort_mode'] = 'created_desc';
-	$blogs_temp = $gBlog->getList( $listHash );
-	$blogs = $blogs_temp['data'];
+	$blogs = $gBlog->getList( $listHash );
 	// Get blogs the admin owns
 	$listHash = array();
 	$listHash['user_id'] = $gBitUser->mUserId;

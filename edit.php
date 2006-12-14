@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.16 2006/11/18 21:43:16 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.17 2006/12/14 20:22:06 nickpalmer Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -54,6 +54,10 @@ if (isset($_REQUEST['preview'])) {
 	$gBitSmarty->assign('allow_comments', isset($_REQUEST["allow_comments"]) ? 'y' : 'n');
 	$gBitSmarty->assign('max_posts', $_REQUEST["max_posts"]);
 	$gBitSmarty->assign('heading', $heading);
+	$gBlog->invokeServices('content_preview_function');	
+}
+else {
+	$gBlog->invokeServices('content_edit_function');
 }
 
 if (isset($_REQUEST['save_blog'])) {
@@ -68,6 +72,8 @@ if (isset($_REQUEST['save_blog'])) {
 $gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gBlog->getTitle() );
 // Display the Index Template
 $gBitSmarty->assign('show_page_bar', 'n');
+// Let services work on blogs
+$gBitSmarty->assign_by_ref('gContent', $gBlog);
 $gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl');
 
 ?>
