@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.37 2006/11/18 17:07:25 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.38 2006/12/22 23:29:54 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.37 2006/11/18 17:07:25 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.38 2006/12/22 23:29:54 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.37 $ $Date: 2006/11/18 17:07:25 $ $Author: spiderr $
+ * @version $Revision: 1.38 $ $Date: 2006/12/22 23:29:54 $ $Author: spiderr $
  */
 
 /**
@@ -421,7 +421,7 @@ class BitBlogPost extends LibertyAttachable {
 		}
 		if( $pListHash['find'] ) {
 			$findesc = '%' . strtoupper( $pListHash['find'] ) . '%';
- 			$whereSql .= "AND (UPPER(`data`) like ?) ";
+ 			$whereSql .= "AND (UPPER(lc.`data`) like ?) ";
 			$bindVars[] =$findesc;
 		}
 

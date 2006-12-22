@@ -212,26 +212,22 @@ class BitBlog extends LibertyContent {
 //		array_push( $bindVars, $this->mContentTypeGuid );
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-		$find = $pParamHash['find'];
-		if ($find) {
-			$findesc = '%' . strtoupper( $find ) . '%';
-			$whereSql = " AND (UPPER(`title`) like ? or UPPER(`data`) like ?) ";
+		if( !empty( $pParamHash['find'] ) ) {
+			$findesc = '%' . strtoupper( $pParamHash['find'] ) . '%';
+			$whereSql .= " AND (UPPER(lc.`title`) like ? or UPPER(lc.`data`) like ?) ";
 			$bindVars=array($findesc,$findesc);
-			if( !empty( $pParamHash['user_id'] ) ) {
-				$whereSql .= " AND `user_id` = ?";
-				$bindVars[] = $pParamHash['user_id'];
-			}
-		} elseif( @$this->verifyId( $pParamHash['user_id'] ) ) {
+		}
+		if( @$this->verifyId( $pParamHash['user_id'] ) ) {
 			$whereSql .= " AND uu.`user_id` = ? ";
 			$bindVars[] = $pParamHash['user_id'];
 		} 
 		
 		if( !empty( $pParamHash['is_active'] ) ) {
-			$whereSql = " AND b.`activity` IS NOT NULL";
+			$whereSql .= " AND b.`activity` IS NOT NULL";
 		}
 		
 		if( !empty( $pParamHash['is_hit'] ) ) {
-			$whereSql = " AND lch.`hits` IS NOT NULL";
+			$whereSql .= " AND lch.`hits` IS NOT NULL";
 		}
 /*
 		if ($add_sql) {
