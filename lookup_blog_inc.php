@@ -1,6 +1,5 @@
 <?php
-global $gContent, $gBitSmarty;
-
+global $gContent, $gBitSmarty, $gBlog;
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 
 // if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
