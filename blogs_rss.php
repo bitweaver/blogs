@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.17 2006/05/04 18:43:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.18 2007/01/01 12:53:27 squareing Exp $
  * @package article
  * @subpackage functions
  */
@@ -9,12 +9,13 @@
  * Initialization
  */
 require_once( "../bit_setup_inc.php" );
-require_once( RSS_PKG_PATH."rss_inc.php" );
-include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPackage( 'rss' );
 $gBitSystem->verifyPackage( 'blogs' );
 $gBitSystem->verifyFeature( 'blogs_rss' );
+
+require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
+require_once( RSS_PKG_PATH."rss_inc.php" );
 
 // default feed info
 $rss->title = $gBitSystem->getConfig( 'blogs_rss_title', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Blogs' ) );
