@@ -29,7 +29,7 @@
 		{/if}
 
 		<div class="date">
-			{if $showBlogTitle}{displayname hash=$aPost} {tr}in{/tr} <a href="{$aPost.blog_url}">{$aPost.blogtitle}</a>{/if}<br />
+			{if $showBlogTitle}{displayname hash=$aPost} {tr}in{/tr} <a href="{$aPost.blog_url}">{$aPost.blogtitle|escape}</a>{/if}<br />
 			{$aPost.created|bit_long_date}
 		</div>
 	</div>

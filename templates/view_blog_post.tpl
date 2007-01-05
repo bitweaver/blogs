@@ -30,17 +30,23 @@
 	<div class="header">
 
 		<h1>
-		
-			{$post_info.blogtitle}
+			{$post_info.blogtitle|escape}
 		</h1>
-Previous: 
-{if $gContent_previous}
-<a href="{$gContent_previous->getDisplayUrl()}">{$gContent_previous->mInfo.title}</a> 
-{/if}
-Next: 
-{if $gContent_next}
-<a href="{$gContent_next->getDisplayUrl()}">{$gContent_next->mInfo.title}</a> 
-{/if}
+
+		<div class="navigation">
+			{if $gContent_previous}
+				<span class="left">
+					Previous: <a href="{$gContent_previous->getDisplayUrl()}">{$gContent_previous->mInfo.title|escape}</a> 
+				</span>
+			{/if}
+
+			{if $gContent_next}
+				<span class="right">
+					Next: <a href="{$gContent_next->getDisplayUrl()}">{$gContent_next->mInfo.title|escape}</a> 
+				</span>
+			{/if}
+		</div>
+
 		<h1>
 			{if $post_info.use_title eq 'y'}
 				{$post_info.title|escape}
@@ -48,6 +54,7 @@ Next:
 				{$post_info.created|bit_long_date}
 			{/if}
 		</h1>
+
 		<div class="date">
 			{$post_info.created|bit_long_date}
 		</div>
