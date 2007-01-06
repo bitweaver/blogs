@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.22 2006/12/14 20:22:07 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.23 2007/01/06 17:51:17 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -60,7 +60,7 @@ if( empty( $_REQUEST['blog_id'] ) && count($blogs) >  0 ) {
 	$_REQUEST['blog_id'] = $blogs['data'][0]['blog_id'];	// Default to the first blog returned that this user owns
 }
 
-if( count($blogs) == 0 ) {
+if( empty( $blogs['data'] ) ) {
 	if( $gBitUser->hasPermission( 'p_blogs_create' )) {
 		$mid = 'bitpackage:blogs/edit_blog.tpl';
 		$gBitSmarty->assign('warning', tra("Before you can post, you first need to create a blog that will hold your posts."));
