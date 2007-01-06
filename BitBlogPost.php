@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.38 2006/12/22 23:29:54 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.39 2007/01/06 09:46:10 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.38 2006/12/22 23:29:54 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.39 2007/01/06 09:46:10 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.38 $ $Date: 2006/12/22 23:29:54 $ $Author: spiderr $
+ * @version $Revision: 1.39 $ $Date: 2007/01/06 09:46:10 $ $Author: squareing $
  */
 
 /**
@@ -447,7 +447,7 @@ class BitBlogPost extends LibertyAttachable {
 			$sort_mode_prefix = 'bp';
 			}
 			
-		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convert_sortmode( $pListHash['sort_mode'] ); 
+		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] ); 
 		
 		$query = "SELECT bp.*, lc.*, blc.`title` AS `blogtitle`, blc.`data` AS `blogdescription`, b.`allow_comments`, uu.`email`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp

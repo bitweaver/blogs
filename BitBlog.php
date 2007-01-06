@@ -248,7 +248,7 @@ class BitBlog extends LibertyContent {
 					  INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
 					  $joinSql
 			  		  LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
-				  $whereSql order by ".$this->mDb->convert_sortmode($pParamHash['sort_mode']);
+				  $whereSql order by ".$this->mDb->convertSortmode($pParamHash['sort_mode']);
 
 		$result = $this->mDb->query( $query, $bindVars, $pParamHash['max_records'], $pParamHash['offset'] );
 
