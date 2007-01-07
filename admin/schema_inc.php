@@ -81,8 +81,8 @@ $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
 ) );
 if(defined('RSS_PKG_NAME')) {
 	$gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
-		array( RSS_PKG_NAME, 'rss_'.BLOGS_PKG_NAME, 'y'),
-	) );
+		array( RSS_PKG_NAME, BLOGS_PKG_NAME.'_rss', 'y'),
+	));
 }
 
 ?>

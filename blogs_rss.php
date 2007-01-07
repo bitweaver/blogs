@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.18 2007/01/01 12:53:27 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.19 2007/01/07 10:48:30 squareing Exp $
  * @package article
  * @subpackage functions
  */
@@ -27,7 +27,7 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 } else {
 	// check if we want to use the cache file
 	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.BLOGS_PKG_NAME.( !empty( $_REQUEST['blog_id'] ) ? "_".$_REQUEST['blog_id'] : "" ).'_'.$rss_version_name.'.xml';
-	$rss->useCached( $rss_version_name, $cacheFile ); // use cached version if age < 1 hour
+	$rss->useCached( $rss_version_name, $cacheFile, $gBitSystem->getConfig( 'rssfeed_cache_time' ));
 
 	$blogPost = new BitBlogPost();
 	$listHash['sort_mode'] = 'last_modified_desc';
