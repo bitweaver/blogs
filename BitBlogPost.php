@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.39 2007/01/06 09:46:10 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.40 2007/01/30 23:09:27 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.39 2007/01/06 09:46:10 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.40 2007/01/30 23:09:27 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.39 $ $Date: 2007/01/06 09:46:10 $ $Author: squareing $
+ * @version $Revision: 1.40 $ $Date: 2007/01/30 23:09:27 $ $Author: spiderr $
  */
 
 /**
@@ -66,7 +66,7 @@ class BitBlogPost extends LibertyAttachable {
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` ) 
 					INNER JOIN `".BIT_DB_PREFIX."blogs` b ON (b.`blog_id` = bp.`blog_id`)
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` blc ON (blc.`content_id` = b.`content_id`)
-					INNER JOIN `".BIT_DB_PREFIX."users_users` buu ON( uu.`user_id` = blc.`user_id` ) $joinSql
+					INNER JOIN `".BIT_DB_PREFIX."users_users` buu ON( buu.`user_id` = blc.`user_id` ) $joinSql
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 				WHERE bp.`$lookupColumn`=? $whereSql ";

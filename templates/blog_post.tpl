@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.15 2006/11/18 21:43:16 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.16 2007/01/30 23:09:27 spiderr Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -27,7 +27,7 @@
 							{forminput}
 								<select name="blog_id" id="blog_id">
 									{section name=ix loop=$blogs}
-										<option value="{$blogs[ix].blog_id|escape}" {if $blogs[ix].blog_id eq $selectedBlog}selected="selected"{/if}>{$blogs[ix].title|escape}</option>
+										<option value="{$blogs[ix].blog_id|escape}" {if $blogs[ix].blog_id eq $blog_id}selected="selected"{/if}>{$blogs[ix].title|escape}</option>
 									{/section}
 								</select>
 							{/forminput}

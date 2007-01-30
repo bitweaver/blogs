@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_active_blogs.php,v 1.7 2006/10/11 06:05:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_active_blogs.php,v 1.8 2007/01/30 23:09:27 spiderr Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -20,5 +20,7 @@ $listHash['sort_mode'] = 'activity_desc';
 $listHash['user_id'] = $gQueryUserId;
 $listHash['is_active'] = TRUE;
 $ranking = $gBlog->getList( $listHash );
-$gBitSmarty->assign('modTopActiveBlogs', $ranking["data"]);
+if( !empty( $ranking['data'] ) ) {
+	$gBitSmarty->assign('modTopActiveBlogs', $ranking["data"]);
+}
 ?>

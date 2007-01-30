@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_created_blogs.php,v 1.4 2006/10/11 06:05:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_created_blogs.php,v 1.5 2007/01/30 23:09:27 spiderr Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -16,6 +16,7 @@ $listHash['max_records'] = $module_rows;
 $listHash['sort_mode'] = 'created_desc';
 $listHash['user_id'] = $gQueryUserId;
 $ranking = $gBlog->getList( $listHash );
-
-$gBitSmarty->assign('modLastCreatedBlogs', $ranking["data"]);
+if( !empty( $ranking['data'] ) ) {
+	$gBitSmarty->assign('modLastCreatedBlogs', $ranking["data"]);
+}
 ?>
