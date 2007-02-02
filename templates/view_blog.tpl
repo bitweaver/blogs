@@ -1,10 +1,10 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.15 2006/11/18 16:16:37 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.16 2007/02/02 20:24:03 nickpalmer Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
 		{if $gBitUser->hasPermission( 'p_blogs_post' )}
 			{if $gBlog->hasEditPermission() or $gBlog->getField('is_public') eq 'y'}
-				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$gBlog->mBlogId}">{biticon ipackage="icons" iname="mail-forward" iexplain="post"}</a>
+				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$gBlog->mBlogId}">{biticon ipackage="icons" iname="document-save" iexplain="post"}</a>
 			{/if}
 		{/if}
 
