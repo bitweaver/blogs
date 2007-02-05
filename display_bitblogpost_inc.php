@@ -7,7 +7,6 @@
 /**
  * required setup
  */
-
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
 if (!isset($gContent->mPostId)) {

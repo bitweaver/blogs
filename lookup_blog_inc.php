@@ -1,4 +1,12 @@
 <?php
+/**
+ * @package blogs
+ * @subpackage functions
+ */
+
+/**
+ * required setup
+ */
 global $gContent, $gBitSmarty, $gBlog;
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 

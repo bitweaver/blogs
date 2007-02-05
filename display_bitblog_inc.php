@@ -2,12 +2,15 @@
 /**
  * @package blogs
  * @subpackage functions
+ * 
+ * Copyright (c) 2004-2006, bitweaver.org
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
  */
 
-// Copyright (c) 2004-2006, bitweaver.org
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-
+/**
+ * required setup
+ */
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
 $displayHash = array( 'perm_name' => 'p_blogs_view' );
