@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.24 2007/02/05 05:31:37 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.25 2007/02/05 05:33:16 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -89,7 +89,6 @@ if (isset($_REQUEST['remove_image'])) {
 // If the post_id is passed then get the article data
 if( isset($_REQUEST["post_id"]) && BitBase::verifyId( $_REQUEST["post_id"] ) ) {
 	$gContent->load();
-vd( $gContent->mInfo );
 	if( $gContent->mInfo["user_id"] != $gBitUser->mUserId || !$gBitUser->isValid() ) {
 		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
 	}
