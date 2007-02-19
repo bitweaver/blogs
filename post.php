@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.25 2007/02/05 05:33:16 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.26 2007/02/19 23:33:31 nickpalmer Exp $
 
  * @package blogs
  * @subpackage functions
@@ -199,7 +199,8 @@ $sameurl_elements = array(
 
 $gBitSmarty->assign_by_ref('blogs', $blogs['data']);
 $gBitSmarty->assign('blog_id', $_REQUEST['blog_id'] );
-
+// Need ajax for attachment browser
+$gBitSmarty->assign('loadAjax', true);
 $gBitSystem->setBrowserTitle("Create Blog Post");
 // Display the Index Template
 $gBitSystem->display( $mid );

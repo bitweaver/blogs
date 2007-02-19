@@ -37,6 +37,16 @@
 					</div>
 				{/foreach}
 
+				{foreach from=$formBlogInputs key=item item=output}
+					<div class="row">
+						{formlabel label=`$output.label` for=$item}
+						{forminput}
+							<input type="text" name="$item" value="{$gBitSystem->getConfig($item, 3)}" id={$item} />
+							{formhelp note=`$output.note` page=`$output.page`}
+						{/forminput}
+					</div>
+				{/foreach}
+
 				<div class="row">
 					{formlabel label="Default ordering for blog listing" for="blog_list_order"}
 					{forminput}

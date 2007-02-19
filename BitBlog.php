@@ -139,6 +139,7 @@ class BitBlog extends LibertyContent {
 				$pParamHash['blog_store']['posts'] = $this->mDb->getOne( "SELECT COUNT(`blog_id`) FROM `".BIT_DB_PREFIX."blog_posts` WHERE blog_id=?", array( $pParamHash['blog_id'] ) );
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['blog_store'], array( "blog_id" => $pParamHash['blog_id'] ) );
 			} else {
+				$pParamHash['blog_store']['posts'] = 0;
 				$pParamHash['blog_store']['content_id'] = $this->mContentId;
 				if( isset( $pParamHash['blog_id'] )&& is_numeric( $pParamHash['blog_id'] ) ) {
 					// if pParamHash['blog_id'] is set, someone is requesting a particular blog_id. Use with caution!
@@ -212,11 +213,18 @@ class BitBlog extends LibertyContent {
 //		array_push( $bindVars, $this->mContentTypeGuid );
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-		if( !empty( $pParamHash['find'] ) ) {
-			$findesc = '%' . strtoupper( $pParamHash['find'] ) . '%';
-			$whereSql .= " AND (UPPER(lc.`title`) like ? or UPPER(lc.`data`) like ?) ";
-			$bindVars=array($findesc,$findesc);
-		}
+		// You can use a title or an array of blog_id 
+		if (!empty($pParamHash['find'])) {
+			if (is_array($find)) {
+				$whereSql .= " AND b.`blog_id` IN ( ".implode( ',',array_fill( 0,count( $pParamHash['find'] ),'?' ) ).") ";
+				$bindVars = array_merge($bindVars, $pParamHash['find']);
+			}
+			else {
+				$findesc = '%' . strtoupper( $pParamHash['find'] ) . '%';
+				$whereSql = " AND (UPPER(lc.`title`) like ? or UPPER(lc`data`) like ?) ";
+				$bindVars=array($findesc,$findesc);
+			}
+		} 
 		if( @$this->verifyId( $pParamHash['user_id'] ) ) {
 			$whereSql .= " AND uu.`user_id` = ? ";
 			$bindVars[] = $pParamHash['user_id'];

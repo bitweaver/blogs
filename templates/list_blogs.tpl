@@ -31,9 +31,11 @@
 				{if $blog_list_visits eq 'y'}
 					<li>{smartlink ititle="Visits" isort="hits" iorder=desc offset=$offset}</li>
 				{/if}
+{* TODO: Add back once activity is implemented
 				{if $blog_list_activity eq 'y'}
 					<li>{smartlink ititle="Activity" isort="activity" iorder=desc offset=$offset}</li>
 				{/if}
+*}
 			</ul>
 		</div>
 
@@ -102,9 +104,11 @@
 							{tr}Visits{/tr}: {$listpages[changes].hits}&nbsp;&bull;&nbsp;
 						{/if}
 						
+{* TODO: add back once activity is implemented
 						{if $blog_list_activity eq 'y'}
 							{tr}Activity{/tr}: {$listpages[changes].activity|default:0}
 						{/if}
+*}
 					</div>
 
 					<div class="clear"></div>

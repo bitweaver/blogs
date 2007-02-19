@@ -8,6 +8,9 @@ $tables = array(
 	blog_id I4 NOTNULL,
 	trackbacks_to X,
 	trackbacks_from X
+	CONTRAINT '
+		, CONSTRAINT `blog_posts_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)
+		, CONSTRAINT `blog_posts_blog_ref` FOREIGN KEY(`blog_id`) REFERENCES `".BIT_DB_PREFIX."blogs` (`blog_id`)'
 ",
 
 'blogs' => "

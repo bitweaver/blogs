@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.8 2006/04/11 13:03:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.9 2007/02/19 23:33:31 nickpalmer Exp $
 
  * @package blogs
  * @subpackage functions
@@ -22,19 +22,24 @@ $gBitSystem->verifyFeature( 'blog_rankings' );
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
+require_once( BLOGS_PKG_PATH . 'BitBlog.php' );
+require_once( BLOGS_PKG_PATH . 'BitBlogPost.php' );
+
 $allrankings = array(
 	array(
-	'name' => tra('Top visited blogs'),
+	'name' => tra('Most visited blogs'),
 	'value' => 'blog_ranking_top_blogs'
 ),
 	array(
 	'name' => tra('Last posts'),
 	'value' => 'blog_ranking_last_posts'
 ),
+	/* TODO reenable once we have activity implemented
 	array(
-	'name' => tra('Top active blogs'),
+	'name' => tra('Most active blogs'),
 	'value' => 'blog_ranking_top_active_blogs'
 )
+	*/
 );
 
 $gBitSmarty->assign('allrankings', $allrankings);
@@ -59,86 +64,87 @@ $gBitSmarty->assign_by_ref('limit', $limit);
 // Rankings:
 // Top Pages
 // Last pages
-// Top Authors
+// Top Authors -- Would be nice.
 $rankings = array();
 
-$rk = $which($limit);
-$rank["data"] = $rk["data"];
-$rank["title"] = $rk["title"];
-$rank["y"] = $rk["y"];
-$rankings[] = $rank;
+$rankings = $which($limit);
 
 $gBitSmarty->assign_by_ref('rankings', $rankings);
 $gBitSmarty->assign('rpage', 'rankings.php');
 
-
 // Display the template
-$gBitSystem->display( 'bitpackage:blogs/ranking.tpl');
+$gBitSystem->display( 'bitpackage:blogs/ranking.tpl', tra($rankings['title']));
 
 // =============================== some ranking functions - as soon as blogs are part of LibertyContent, we can use LibertyContent::getContentRanking()
 function blog_ranking_top_blogs($limit) {
 	global $gBitSystem;
-	$query = "select * from `".BIT_DB_PREFIX."blogs` order by `hits` desc";
-
-	$result = $gBitSystem->mDb->query($query,array(),$limit,0);
-	$ret = array();
-
-	while ($res = $result->fetchRow()) {
-		$aux["name"] = $res["title"];
-
-		$aux["hits"] = $res["hits"];
-		$aux["href"] = BLOGS_PKG_URL.'view.php?blog_id=' . $res["blog_id"];
-		$ret[] = $aux;
+	$list_hash['sort_mode'] = 'lch.hits_desc';
+	$list_hash['max_records'] = $limit;
+	$b = new BitBlog();
+	$list = $b->getList($list_hash);
+	$query = "select p.*, lc.* FROM `".BIT_DB_PREFIX."blog_posts` p LEFT JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (p.`content_id` = lc.`content_id`) WHERE p.blog_id = ? ORDER BY p.post_id desc";
+	foreach($list['data'] as $key => $blog) {
+		$result = $gBitSystem->mDb->query($query, array($blog['blog_id']), $gBitSystem->getConfig('blogs_top_post_count', 3));
+		
+		while ($ret = $result->fetchRow()) {
+			$ret['display_url'] = BitBlogPost::getDisplayUrl($ret['content_id']);
+			$list['data'][$key]['post_array'][] = $ret;
+		}
 	}
-
-	$retval["data"] = $ret;
-	$retval["title"] = tra("Most visited blogs");
-	$retval["y"] = tra("Visits");
-	return $retval;
+	$list['title'] = tra("Most Visited Blogs");
+	return $list;
 }
 
+/** TODO: This should be changed when we start using activity in the blog.
+          We should check TW 1.9 for code for that field in the blog. */
 function blog_ranking_top_active_blogs($limit) {
 	global $gBitSystem;
-	$query = "select * from `".BIT_DB_PREFIX."blogs` order by `activity` desc";
-
-	$result = $gBitSystem->mDb->query($query,array(),$limit,0);
-	$ret = array();
-
-	while ($res = $result->fetchRow()) {
-		$aux["name"] = $res["title"];
-
-		$aux["hits"] = $res["activity"];
-		$aux["href"] = BLOGS_PKG_URL.'view.php?blog_id=' . $res["blog_id"];
-		$ret[] = $aux;
+	$list_hash['sort_mode'] = 'b.activity';
+	$list_hash['max_records'] = $limit;
+	$b = new BitBlog();
+	$list = $b->getList($list_hash);
+	$query = "select p.*, lc.* FROM `".BIT_DB_PREFIX."blog_posts` p LEFT JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (p.`content_id` = lc.`content_id`) WHERE p.blog_id = ? ORDER BY p.post_id desc";
+	foreach($list['data'] as $key => $blog) {
+		$result = $gBitSystem->mDb->query($query, array($blog['blog_id']), $gBitSystem->getConfig('blogs_top_post_count', 3));
+		
+		while ($ret = $result->fetchRow()) {
+			$ret['display_url'] = BitBlogPost::getDisplayUrl($ret['content_id']);
+			$list['data'][$key]['post_array'][] = $ret;
+		}
 	}
-
-	$retval["data"] = $ret;
-	$retval["title"] = tra("Most active blogs");
-	$retval["y"] = tra("Activity");
-	return $retval;
+	$list['title'] = tra("Most Visited Blogs");
+	return $list;
 }
 
 function blog_ranking_last_posts($limit) {
 	global $gBitSystem;
-	$query = "select * from `".BIT_DB_PREFIX."blog_posts` order by `post_id` desc";
-
-	$result = $gBitSystem->mDb->query($query,array(),$limit,0);
-	$ret = array();
-
-	while ($res = $result->fetchRow()) {
-		$q = "select title, created from `".BIT_DB_PREFIX."blogs` where `blog_id`=";
-		$q.= $res["blog_id"];
-		$result2 = $gBitSystem->mDb->query($q,array(),$limit,0);
-		$res2 = $result2->fetchRow();
-		$aux["name"] = $res2["title"];
-		$aux["hits"] = $gBitSystem->get_long_datetime($res2["created"]);
-		$aux["href"] = BLOGS_PKG_URL.'view.php?blog_id=' . $res["blog_id"];
-		$ret[] = $aux;
+	$list_hash['max_records'] = $limit;
+	$list_hash['sort_mode'] = 'created_desc';
+	$list_hash['max_records'] = $limit;
+	$bp = new BitBlogPost();
+	$posts = $bp->getList($list_hash);
+	// Extract blog_ids to load the blogs.
+	foreach( $posts['data'] as $key => $post) {
+		$blog_ids[$post['blog_id']] = $post['blog_id'];
 	}
-
-	$retval["data"] = $ret;
-	$retval["title"] = tra("Blogs last posts");
-	$retval["y"] = tra("Post date");
-	return $retval;
+	if (!empty($blog_ids)) {
+	  $b = new BitBlog();
+	  $blog_hash['sort_mode'] = 'lch.hits_desc';
+	  $blog_hash['find'] = $blog_ids;
+	  $blogs = $b->getList($blog_hash);
+	  vd($blogs);
+	  $list['data'] = array();
+	  // Reorganize blogs by id
+	  foreach($blogs['data'] as $key => $blog) {
+	    $list['data'][$blog['blog_id']] = $blog;
+	  }
+	  // And merge in posts
+	  foreach($posts['data'] as $key => $post) {
+	    $post['post_url'] = $bp->getDisplayUrl($post['content_id']);
+	    $list['data'][$post['blog_id']]['post_array'][] = $post;
+	  }
+	}
+	$list['title'] = 'Last Posts';
+	return $list;
 }
 ?>

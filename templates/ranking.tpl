@@ -34,20 +34,24 @@
 				<input type="submit" name="selrank" value="{tr}Apply settings{/tr}" />
 			</div>
 		{/form}
-
-		{section name=ix loop=$rankings}
-			<h2>{$rankings[ix].title|escape}&nbsp;&nbsp;&nbsp; <small>[{$rankings[ix].y}]</small></h2>
-			<ol>
-				{section name=xi loop=$rankings[ix].data}
-					<li class="{cycle values="even,odd"}">
-						<a href="{$rankings[ix].data[xi].href}">{$rankings[ix].data[xi].name}</a>&nbsp;&nbsp;&nbsp; 
-						<small>[{$rankings[ix].data[xi].hits|default:"0"}]</small>
-					</li>
-				{sectionelse}
-					<li>{tr}No records found{/tr}</li>
-				{/section}
-			</ol>
-		{/section}
+		
+		<h1>{$rankings.title}</h2>
+		
+		{foreach from=$rankings.data item=blog}
+			<ul>
+				<li class="{cycle value="even,odd"}"><h2><a title="{$blog.title}" href="{$blog.blog_url}">{$blog.title}</a> (Hits: {$blog.hits|default:0}) (Posts: {$blog.posts|default:0})</h2>
+				{if $blog.post_array}
+					<ul>
+						{foreach from=$blog.post_array item=post}
+							<li class="{cycle value="even,odd"}"><a title="{$post.title}" href="{$post.display_url}">{$post.title}</a> [{$post.created|bit_short_date}]</li>
+						{/foreach}
+					</ul>
+				{/if
+				</li>}
+			</ul>
+		{foreachelse}
+			{tr}No Blogs Found.{/tr}
+		{/foreach}
 	</div><!-- end .body -->
 </div><!-- end .ranking -->
 {/strip}

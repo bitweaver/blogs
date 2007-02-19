@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.10 2006/12/02 01:46:18 nickpalmer Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.11 2007/02/19 23:33:31 nickpalmer Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -40,10 +40,12 @@ $formBlogLists = array(
 		'label' => 'Visits',
 		'note' => 'Number of times a given blog has been visited.',
 	),
+	/* TODO: Add back once activity is implemented
 	"blog_list_activity" => array(
 		'label' => 'Activity',
 		'note' => 'This number is an indication of how active a given blog is. The number is calculated based on god knows what...',
 	),
+	*/
 );
 $gBitSmarty->assign( 'formBlogLists',$formBlogLists );
 
@@ -59,6 +61,14 @@ $formBlogFeatures = array(
 );
 $gBitSmarty->assign( 'formBlogFeatures',$formBlogFeatures );
 
+$formBlogInputs = array(
+	"blog_top_post_count" => array(
+		'label' => 'Top Post Count',
+		'note' => 'How many posts per blog in the rankings should be shown.',
+	),
+);
+$gBitSmarty->assign( 'formBlogInputs', $formBlogInputs );
+
 $processForm = set_tab();
 
 if( $processForm ) {
@@ -67,6 +77,8 @@ if( $processForm ) {
 		simple_set_toggle( $item, BLOGS_PKG_NAME );
 	}
 
+	// Lazy error handling to ensure numeric. TODO: Fix.
+	$gBitSystem->storeConfig("blog_top_post_count", (isset( $_REQUEST["blog_top_post_count"]) && is_numeric($_REQUEST["blog_top_post_count"])) ? $_REQUEST["blog_top_post_count"] : "3");
 	$gBitSystem->storeConfig("blog_posts_comments", isset( $_REQUEST["blog_posts_comments"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_list_order", $_REQUEST["blog_list_order"], BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_list_user_as", $_REQUEST["blog_list_user_as"], BLOGS_PKG_NAME );
