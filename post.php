@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.26 2007/02/19 23:33:31 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.27 2007/02/28 22:19:45 nickpalmer Exp $
 
  * @package blogs
  * @subpackage functions
@@ -56,7 +56,7 @@ if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
 	}
 }
 
-if( empty( $_REQUEST['blog_id'] ) && count($blogs) >  0 ) {
+if( empty( $_REQUEST['blog_id'] ) && count($blogs) >  0 && count($blogs['data']) > 0) {
 	$_REQUEST['blog_id'] = $blogs['data'][0]['blog_id'];	// Default to the first blog returned that this user owns
 }
 
@@ -198,7 +198,9 @@ $sameurl_elements = array(
 );
 
 $gBitSmarty->assign_by_ref('blogs', $blogs['data']);
-$gBitSmarty->assign('blog_id', $_REQUEST['blog_id'] );
+if (isset($_REQUEST['blog_id'])) {
+	$gBitSmarty->assign('blog_id', $_REQUEST['blog_id'] );
+}
 // Need ajax for attachment browser
 $gBitSmarty->assign('loadAjax', true);
 $gBitSystem->setBrowserTitle("Create Blog Post");
