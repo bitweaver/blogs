@@ -83,7 +83,6 @@
 							{if $blog_categ eq 'y'}checked="checked"{/if} />
 					{/forminput}
 				</div>
-				*}
 				
 				<div class="row">
 					{formlabel label="Choose a parent category for blogs" for="blog_parent_categ"}
@@ -96,7 +95,8 @@
 						</select>
 					{/forminput}
 				</div>
-{*				{/if}*}
+				{/if}				
+				*}
 
 				<div class="row submit">
 					<input type="submit" name="featuresTabSubmit" value="{tr}Change preferences{/tr}" />
