@@ -38,7 +38,11 @@
 		<div class="content">
 			{if $aPost.avatar}<img src="{$aPost.avatar}" class="avatar" />{/if}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$aPost}
-			{$aPost.parsed_data}
+			{if $showDescriptionsOnly}
+				{$aPost.parsed_description}
+			{else}
+				{$aPost.parsed_data}
+			{/if}			
 			<p>{tr}Posted on {$aPost.created|bit_long_datetime}{/tr}</p>
 		</div> <!-- end .content -->
 
@@ -47,8 +51,15 @@
 		{/if}
 	</div> <!-- end .body -->
 
-	<div class="footer">
+	<div class="footer">			
 		<a href="{$aPost.post_url}">{tr}Permalink{/tr}</a>
+		{assign var=spacer value=TRUE}
+
+		{if $showDescriptionsOnly and $aPost.has_more}
+			{if $spacer}&nbsp; &bull; &nbsp;{/if}
+			{assign var=spacer value=TRUE}
+			<a class="more" href="{$aPost.display_url}">{tr}Read More&hellip;{/tr}</a>
+		{/if}
 
 		{if $aPost.trackbacks_from_count}({tr}referenced by{/tr}: {$aPost.trackbacks_from_count} {tr}posts{/tr} / {tr}references{/tr}: {$aPost.trackbacks_to_count} {tr}posts{/tr}){/if}
 

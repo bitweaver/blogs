@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.27 2007/02/28 22:19:45 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.28 2007/03/01 22:25:23 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -92,7 +92,7 @@ if( isset($_REQUEST["post_id"]) && BitBase::verifyId( $_REQUEST["post_id"] ) ) {
 	if( $gContent->mInfo["user_id"] != $gBitUser->mUserId || !$gBitUser->isValid() ) {
 		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
 	}
-
+	$gBitSmarty->assign('raw', $gContent->mInfo["raw"]);
 	$gBitSmarty->assign('data', $gContent->mInfo["data"]);
 	$gBitSmarty->assign('title', $gContent->mInfo["title"]);
 	$gBitSmarty->assign('trackbacks_to', $gContent->mInfo["trackbacks_to"]);

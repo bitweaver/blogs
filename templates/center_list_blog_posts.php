@@ -117,5 +117,7 @@ $gBitSmarty->assign_by_ref('gQueryUserId', $listHash['user_id']);
 $gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 //print_r($blogPosts["data"]);
 
+$gBitSmarty->assign('descriptionLength', $gBitSystem->getConfig( 'blog_posts_description_length', 500 ) );
+$gBitSmarty->assign('showDescriptionsOnly', TRUE);
 
 ?>

@@ -155,6 +155,7 @@ array( 'QUERY' =>
 	// Update Blog Post comments - we have no Blog level comments in BWR1
 	"UPDATE `".BIT_DB_PREFIX."tiki_comments` SET `objectType`='".BITBLOGPOST_CONTENT_TYPE_GUID."' WHERE `objectType`='post'",
 	"UPDATE `".BIT_DB_PREFIX."tiki_comments` SET `parent_id`=(SELECT `content_id` FROM `".BIT_DB_PREFIX."tiki_blog_posts` WHERE `post_id`=`".BIT_DB_PREFIX."tiki_comments`.`object`) WHERE `parent_id`=0 AND `objectType`='".BITBLOGPOST_CONTENT_TYPE_GUID."'",
+	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences`( `name`, `value`, `package` ) VALUES( 'blog_posts_description_length', '500', '".ARTICLES_PKG_NAME."' )",	
 	),
 )),
 
