@@ -96,7 +96,7 @@
 						</select>
 					{/forminput}
 				</div>
-				{/if}
+{*				{/if}*}
 
 				<div class="row submit">
 					<input type="submit" name="featuresTabSubmit" value="{tr}Change preferences{/tr}" />
