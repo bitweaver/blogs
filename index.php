@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/index.php,v 1.5 2006/04/11 13:03:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/index.php,v 1.6 2007/03/01 16:07:24 wjames5 Exp $
 
  * @package blogss
  * @subpackage functions
@@ -14,13 +14,18 @@
  */
 require_once( '../bit_setup_inc.php' );
 
+//"DEPRECATED - Slated for removal
+/*
 if (defined("CATEGORIES_PKG_PATH")) {
   include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 }
+*/
 
 $gBitSystem->verifyPackage( 'blogs' );
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
+//"DEPRECATED - Slated for removal
+/*
 if ($gBitSystem->isPackageActive( 'categories' )) {
 	if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
 		$categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
@@ -34,6 +39,7 @@ if ($gBitSystem->isPackageActive( 'categories' )) {
 	$choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
 	$gBitSmarty->assign('choosecateg',$choosecateg);
 }
+*/
 
 $gBitSmarty->assign( 'showEmpty', TRUE );
 $gDefaultCenter = 'bitpackage:blogs/center_list_blog_posts.tpl';

@@ -73,6 +73,8 @@
 					{/forminput}
 				</div>
 
+				{* "DEPRECATED - Slated for removal *}
+				{*
 				{if $gBitSystem->isPackageActive( 'categories' )}
 				<div class="row">
 					{formlabel label="Use a category for posts" for="blog_categ"}
@@ -81,7 +83,8 @@
 							{if $blog_categ eq 'y'}checked="checked"{/if} />
 					{/forminput}
 				</div>
-
+				*}
+				
 				<div class="row">
 					{formlabel label="Choose a parent category for blogs" for="blog_parent_categ"}
 					{forminput}

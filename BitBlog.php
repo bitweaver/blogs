@@ -266,10 +266,13 @@ class BitBlog extends LibertyContent {
 		$pParamHash["data"] = array();
 
 		while ($res = $result->fetchRow()) {
+			//"DEPRECATED - Slated for removal
+			/*
 			if ( $gBitSystem->isPackageActive( 'categories' ) ) {
 				global $categlib;
 				$res['categs'] = $categlib->get_object_categories( BITBLOG_CONTENT_TYPE_GUID, $res['blog_id'] );
 			}
+			*/
 			$res['blog_url'] = $this->getDisplayUrl( $res['blog_id'] );
 			// deal with the parsing
 			$parseHash['format_guid']   = $res['format_guid'];

@@ -1,27 +1,38 @@
 <?php
-
-global $gBitSmarty, $gBlog, $gBitSystem, $categlib, $_REQUEST, $max_records, $gQueryUserId, $package_categories;
+//"DEPRECATED - Slated for removal
+/*
+global $categlib, $package_categories;
+*/
+global $gBitSmarty, $gBlog, $gBitSystem, $_REQUEST, $max_records, $gQueryUserId;
 $postRecords = ( $module_rows ? $module_rows : $max_records );
 
+//"DEPRECATED - Slated for removal
+/*
 if (defined("CATEGORIES_PKG_PATH")) {
 	include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
 }
+*/
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );
 
+//"DEPRECATED - Slated for removal
+/*
 if ($gBitSystem->isPackageActive( 'vvcat' )) {
 	if (isset($_REQUEST['addcateg']) and $_REQUEST['addcateg'] and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
 		$categlib->categorize_blog_post($_REQUEST['post_id'],$_REQUEST['addcateg'],true);
 	} elseif (isset($_REQUEST['delcategs']) and isset($_REQUEST['post_id']) and $_REQUEST['post_id']) {
 		$categlib->uncategorize('blogpost',$_REQUEST['post_id']);
 	}
-	$categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
 
+	$categs = $categlib->list_all_categories(0, -1, 'name_asc', '', '', 0);
 	$gBitSmarty->assign('categs',$categs['data']);
+	
 	$gBitSmarty->assign('page','view.php');
+
 	$choosecateg = str_replace('"',"'",$gBitSmarty->fetch('bitpackage:blogs/popup_categs.tpl'));
 	$gBitSmarty->assign('choosecateg',$choosecateg);
 }
+*/	
 
 if ( empty( $_REQUEST["sort_mode"] ) ) {
 	$sort_mode = 'created_desc';

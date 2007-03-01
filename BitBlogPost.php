@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.40 2007/01/30 23:09:27 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.41 2007/03/01 16:07:24 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.40 2007/01/30 23:09:27 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.41 2007/03/01 16:07:24 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.40 $ $Date: 2007/01/30 23:09:27 $ $Author: spiderr $
+ * @version $Revision: 1.41 $ $Date: 2007/03/01 16:07:24 $ $Author: wjames5 $
  */
 
 /**
@@ -95,10 +95,13 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mInfo['trackbacks_from_count'] = count(array_keys(unserialize($this->mInfo['trackbacks_from'])));
 				$this->mInfo['trackbacks_from'] = unserialize($this->mInfo['trackbacks_from']);
 				$this->mInfo['trackbacks_to'] = unserialize($this->mInfo['trackbacks_to']);
+				//"DEPRECATED - Slated for removal
+				/*
 				if ( $gBitSystem->isPackageActive( 'categories' ) ) {
 					global $categlib;
 					$this->mInfo['categs'] = $categlib->get_object_categories( BITBLOGPOST_CONTENT_TYPE_GUID, $this->mContentId );
 				}
+				*/			
 				$this->mInfo['trackbacks_to_count'] = count($this->mInfo['trackbacks_to']);
 				LibertyAttachable::load();
 				if( $this->mStorage ) {
@@ -501,12 +504,15 @@ class BitBlogPost extends LibertyAttachable {
 				$res['trackbacks_to_count'] = count($res['trackbacks_to']);
 				$res['pages'] = $this->getNumberOfPages( $res['data'] );
 
+				//"DEPRECATED - Slated for removal
+				/*
 				if ( $gBitSystem->isPackageActive( 'categories' ) ) {
 					global $categlib;
 					require_once( CATEGORIES_PKG_PATH.'categ_lib.php' );
 					$res['categs'] = $categlib->get_object_categories( BITBLOGPOST_CONTENT_TYPE_GUID, $res["content_id"] );
 				}
-
+				*/
+				
 				if( $pListHash['parse_data'] ) {
 					$res["parsed_data"] = $this->parseData( $res );
 				}
