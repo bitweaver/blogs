@@ -18,6 +18,10 @@ array( 'DATADICT' => array(
 		'tiki_blogs' => array(
 			'content_id' => array( '`content_id`', 'I4' ), // , 'NOTNULL' ),
 		),
+		'tiki_blog_posts' => array(
+			'publish_date' => array( '`publish_date`', 'I4' ),
+			'expire_date' => array( '`expire_date`', 'I4' ),
+		),
 	)),
 	// de-tikify tables
 	array( 'RENAMETABLE' => array(

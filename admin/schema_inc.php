@@ -6,6 +6,8 @@ $tables = array(
 	post_id I4 PRIMARY,
 	content_id I4 NOTNULL,
 	blog_id I4 NOTNULL,
+	publish_date I4,
+	expire_date I4,
 	trackbacks_to X,
 	trackbacks_from X
 	CONTRAINT '
