@@ -48,6 +48,14 @@
 				{/foreach}
 
 				<div class="row">
+					{formlabel label="Blog Posts Description Length" for="blog-posts-descrlength"}
+					{forminput}
+						<input size="5" type="text" name="blog_posts_description_length" id="blog-posts-descrlength" value="{$gBitSystem->getConfig('blog_posts_description_length')|escape}" /> {tr}characters{/tr}
+						{formhelp note="Number of characters displayed on the blog posts main page before splitting the blog post into a heading and body.<br />Changing this value might influence existing blog posts."}
+					{/forminput}
+				</div>
+
+				<div class="row">
 					{formlabel label="Default ordering for blog listing" for="blog_list_order"}
 					{forminput}
 						<select name="blog_list_order" id="blog_list_order">
