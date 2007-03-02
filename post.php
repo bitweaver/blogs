@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.29 2007/03/02 21:34:25 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.30 2007/03/02 23:26:28 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -98,6 +98,7 @@ if( isset($_REQUEST["post_id"]) && BitBase::verifyId( $_REQUEST["post_id"] ) ) {
 	$gBitSmarty->assign('trackbacks_to', $gContent->mInfo["trackbacks_to"]);
 	$gBitSmarty->assign('created', $gContent->mInfo["created"]);
 	$gBitSmarty->assign('parsed_data', $gContent->parseData() );
+	$gBitSmarty->assign('post_info', $gContent->mInfo );
 } else {
 	// Avoid undefined trackbacks_to smarty var in the case of 'preview'
 	$gBitSmarty->assign('trackbacks_to', NULL);

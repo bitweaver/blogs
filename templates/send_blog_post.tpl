@@ -5,7 +5,7 @@
 <rdf:Description
     rdf:about="{$uri}"
     dc:identifer="{$uri}"
-    dc:title="{if $blog_data.use_title eq 'y'}{$post_info.title|escape} {tr}posted by{/tr} {$post_info.user} on {$post_info.created|bit_short_datetime}{else}{$post_info.created|bit_short_datetime}{tr}posted by{/tr} {$post_info.user}{/if}"
+    dc:title="{if $blog_data.use_title eq 'y'}{$post_info.title|escape} {tr}posted by{/tr} {$post_info.user} on {$post_info.publish_date|default:$post_info.created|bit_short_datetime}{else}{$post_info.publish_date|default:$post_info.created|bit_short_datetime}{tr}posted by{/tr} {$post_info.user}{/if}"
     trackback:ping="{$uri2}" />
 </rdf:RDF>
 -->

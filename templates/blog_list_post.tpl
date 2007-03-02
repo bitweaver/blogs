@@ -30,7 +30,7 @@
 
 		<div class="date">
 			{if $showBlogTitle}{displayname hash=$aPost} {tr}in{/tr} <a href="{$aPost.blog_url}">{$aPost.blogtitle|escape}</a>{/if}<br />
-			{$aPost.created|bit_long_date}
+			{$aPost.publish_date|default:$aPost.created|bit_long_date}
 		</div>
 	</div>
 
@@ -43,7 +43,7 @@
 			{else}
 				{$aPost.parsed_data}
 			{/if}			
-			<p>{tr}Posted on {$aPost.created|bit_long_datetime}{/tr}</p>
+			<p>{tr}Posted on {$aPost.publish_date|default:$aPost.created|bit_long_datetime}{/tr}</p>
 		</div> <!-- end .content -->
 
 		{if $aPost.pages > 1}

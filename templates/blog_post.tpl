@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.17 2007/03/01 22:25:23 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.18 2007/03/02 23:26:28 wjames5 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -79,7 +79,29 @@
 				{/jstab}
 
 				{jstab title="Advanced Options"}
-					{legend legend="Advanced Options"}
+					{legend legend="Publication and Expiration Dates"}
+						<div class="row">
+							<input type="hidden" name="publishDateInput" value="1" />
+							{formlabel label="Publish Date" for=""}
+							{forminput}
+								{html_select_date prefix="publish_" time=$post_info.publish_date start_year="-5" end_year="+10"} {tr}at{/tr}&nbsp;
+								<span dir="ltr">{html_select_time prefix="publish_" time=$post_info.publish_date display_seconds=false}&nbsp;{$siteTimeZone}</span>
+								{formhelp note="This post will not be displayed <strong>before</strong> this date."}
+							{/forminput}
+						</div>
+
+						<div class="row">
+							<input type="hidden" name="expireDateInput" value="1" />
+							{formlabel label="Expiration Date" for=""}
+							{forminput}
+								{html_select_date prefix="expire_" time=$post_info.expire_date start_year="-5" end_year="+10"} {tr}at{/tr}&nbsp;
+								<span dir="ltr">{html_select_time prefix="expire_" time=$post_info.expire_date display_seconds=false}&nbsp;{$siteTimeZone}</span>
+								{formhelp note="If this date is set after the publish date, this post will not be displayed <strong>after</strong> the expiration date."}
+							{/forminput}
+						</div>
+					{/legend}
+					
+					{legend legend="Trackbacks"}
 						<div class="row">
 							{formlabel label="Send trackback pings" for="trackback"}
 							{forminput}

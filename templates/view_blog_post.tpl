@@ -5,7 +5,7 @@
 <rdf:Description
     rdf:about="{$uri}"
     dc:identifer="{$uri}"
-    dc:title="{if $post_info.use_title eq 'y'}{$post_info.title|escape} {tr}posted by{/tr} {$post_info.user} on {$post_info.created|bit_short_datetime}{else}{$post_info.created|bit_short_datetime} {tr}posted by{/tr} {$post_info.user}{/if}"
+    dc:title="{if $post_info.use_title eq 'y'}{$post_info.title|escape} {tr}posted by{/tr} {$post_info.user} on {$post_info.publish_date|default:$post_info.created|bit_short_datetime}{else}{$post_info.publish_date|default:$post_info.created|bit_short_datetime} {tr}posted by{/tr} {$post_info.user}{/if}"
     trackback:ping="{$uri2}" />
 </rdf:RDF>
 -->
@@ -51,12 +51,12 @@
 			{if $post_info.use_title eq 'y'}
 				{$post_info.title|escape}
 			{else}
-				{$post_info.created|bit_long_date}
+				{$post_info.publish_date|default:$post_info.created|bit_long_date}
 			{/if}
 		</h1>
 
 		<div class="date">
-			{$post_info.created|bit_long_date}
+			{$post_info.publish_date|default:$post_info.created|bit_long_date}
 		</div>
 	</div>
 
@@ -72,7 +72,7 @@
 			<p>
 				{displayname hash=$post_info}<br />
 				{tr}in{/tr} <a href="{$post_info.blog_url}">{$post_info.blogtitle}</a><br />
-				{tr}Posted at{/tr} {$post_info.created|bit_long_time}
+				{tr}Posted at{/tr} {$post_info.publish_date|default:$post_info.created|bit_long_time}
 			</p>
 		</div> <!-- end .content -->
 	</div> <!-- end .body -->
