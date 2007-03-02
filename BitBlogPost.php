@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.43 2007/03/02 17:50:32 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.44 2007/03/02 21:34:25 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.43 2007/03/02 17:50:32 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.44 2007/03/02 21:34:25 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.43 $ $Date: 2007/03/02 17:50:32 $ $Author: wjames5 $
+ * @version $Revision: 1.44 $ $Date: 2007/03/02 21:34:25 $ $Author: wjames5 $
  */
 
 /**
@@ -47,6 +47,7 @@ class BitBlogPost extends LibertyAttachable {
 		) );
 		$this->mPostId = (int)$pPostId;
 		$this->mContentId = (int)$pContentId;
+		$this->mContentTypeGuid = BITBLOGPOST_CONTENT_TYPE_GUID;
 	}
 
 	/**
@@ -140,23 +141,91 @@ class BitBlogPost extends LibertyAttachable {
 
 		return $ret;
 	}
-
+	
 	/**
-	 * Verify that the store hash is valid and complete missing values
-	 */
+	* Make sure the data is safe to store
+	* @param pParamHash be sure to pass by reference in case we need to make modifcations to the hash
+	* This function is responsible for data integrity and validation before any operations are performed with the $pParamHash
+	* NOTE: This is a PRIVATE METHOD!!!! do not call outside this class, under penalty of death!
+	*
+	* @param array pParams reference to hash of values that will be used to store the page, they will be modified where necessary
+	*
+	* @return bool TRUE on success, FALSE if verify failed. If FALSE, $this->mErrors will have reason why
+	*
+	* @access private
+	**/
 	function verify( &$pParamHash ) {
-		global $gBitUser;
-		if( @$this->verifyId( $pParamHash['post_id'] ) && empty( $this->mContentId ) && empty( $pParamHash['content_id'] ) ) {
-			$this->mPostId = $pParamHash['post_id'];
+		global $gBitUser, $gBitSystem;
+
+		// make sure we're all loaded up of we have a mPostId
+		if( $this->verifyId( $this->mPostId ) && empty( $this->mInfo ) ) {
 			$this->load();
 		}
-		if (empty($pParamHash['user_id'])) {
-			$pParamHash['user_id'] = $gBitUser->mUserId;
-		}
-		$pParamHash['content_type_guid'] = BITBLOGPOST_CONTENT_TYPE_GUID;
-		return( count( $this->mErrors ) == 0 );
-	}
 
+		if( @$this->verifyId( $this->mInfo['content_id'] ) ) {
+			$pParamHash['content_id'] = $this->mInfo['content_id'];
+		}
+
+		// It is possible a derived class set this to something different
+		if( @$this->verifyId( $pParamHash['content_type_guid'] ) ) {
+			$pParamHash['content_type_guid'] = $this->mContentTypeGuid;
+		}
+
+		if( @$this->verifyId( $pParamHash['content_id'] ) ) {
+			$pParamHash['post_store']['content_id'] = $pParamHash['content_id'];
+		}
+		
+		if( @$this->verifyId( $pParamHash['blog_id'] ) ) {
+			$pParamHash['post_store']['blog_id'] = $pParamHash['blog_id'];
+		}
+
+		if( !empty( $pParamHash['data'] ) ) {
+			$pParamHash['edit'] = $pParamHash['data'];
+		}
+
+		// check for name issues, first truncate length if too long
+		if( !empty( $pParamHash['title'] ) ) {
+			if( empty( $this->mPostId ) ) {
+				if( empty( $pParamHash['title'] ) ) {
+					$this->mErrors['title'] = 'You must enter a title for this blog post.';
+				} else {
+					$pParamHash['content_store']['title'] = substr( $pParamHash['title'], 0, 160 );
+				}
+			} else {
+				$pParamHash['content_store']['title'] =( isset( $pParamHash['title'] ) )? substr( $pParamHash['title'], 0, 160 ): '';
+			}
+		} else if( empty( $pParamHash['title'] ) ) {
+			// no name specified
+			$this->mErrors['title'] = 'You must enter a title for this blog post';
+		}
+
+		if( !empty( $pParamHash['publish_Month'] ) ) {
+			$dateString = $pParamHash['publish_Year'].'-'.$pParamHash['publish_Month'].'-'.$pParamHash['publish_Day'].' '.$pParamHash['publish_Hour'].':'.$pParamHash['publish_Minute'];
+			//$timestamp = strtotime( $dateString );
+			$timestamp = $gBitSystem->mServerTimestamp->getUTCFromDisplayDate( strtotime( $dateString ) );
+			if( $timestamp !== -1 ) {
+				$pParamHash['publish_date'] = $timestamp;
+			}
+		}
+		if( !empty( $pParamHash['publish_date'] ) ) {
+			$pParamHash['post_store']['publish_date'] = $pParamHash['publish_date'];
+		}
+
+		if( !empty( $pParamHash['expire_Month'] ) ) {
+			$dateString = $pParamHash['expire_Year'].'-'.$pParamHash['expire_Month'].'-'.$pParamHash['expire_Day'].' '.$pParamHash['expire_Hour'].':'.$pParamHash['expire_Minute'];
+			//$timestamp = strtotime( $dateString );
+			$timestamp = $gBitSystem->mServerTimestamp->getUTCFromDisplayDate( strtotime( $dateString ) );
+			if( $timestamp !== -1 ) {
+				$pParamHash['expire_date'] = $timestamp;
+			}
+		}
+		if( !empty( $pParamHash['expire_date'] ) ) {
+			$pParamHash['post_store']['expire_date'] = $pParamHash['expire_date'];
+		}
+
+		return( count( $this->mErrors )== 0 );
+	}
+	
 	/**
 	 * Check that the class has a valid blog loaded
 	 */
@@ -178,49 +247,47 @@ class BitBlogPost extends LibertyAttachable {
 		}
 		return $ret;
 	}
-
+	
 	/**
 	 * Store a Blog Post
 	 */
 	function store( &$pParamHash ) {
-		global $gBlog, $gBitSystem;
-		$pParamHash['upload']['thumbnail'] = TRUE;
+		global $gBitSystem;
+		if( $this->verify( $pParamHash )&& LibertyAttachable::store( $pParamHash ) ) {
+			$table = BIT_DB_PREFIX."blog_posts";
+			$this->mDb->StartTrans();
 
-		$this->mDb->StartTrans();
-		if( $this->verify( $pParamHash ) && LibertyAttachable::store( $pParamHash ) ) {
- 			if( @$this->verifyId( $pParamHash['attachment_id'] ) ) {
-				// we just shoved an attachment onto the blog so we will concat the new link for usability.
-				// THis is a bit hackish to do here. I imagine we will allow for this down in Liberty eventually,
-				// but right now there is a chicken-n-egg situation storing 'data' before the attachments. - spiderr
-				$pParamHash['edit'] .= '{ATTACHMENT(id=>'.$pParamHash['attachment_id'].')}{ATTACHMENT}';
-				LibertyContent::store( $pParamHash );
-			}
-			if (empty($pParamHash['post_id'])) {
-				global $gBitSmarty, $gBitSystem;
-				$tracks = serialize(explode(',', $pParamHash['trackback']));
-				$pParamHash['edit'] = strip_tags($pParamHash['edit'], '<a><b><i><h1><h2><h3><h4><h5><h6><ul><li><ol><br><p><table><tr><td><img><pre>');
-				$now = $gBitSystem->getUTCTime();
-				if (empty($pParamHash['post_date']))
-					$pParamHash['post_date'] = (int)$now;
-				$pParamHash['post_id'] = $this->mDb->GenID('blog_posts_post_id_seq');
+			// Send trackbacks recovering only successful trackbacks
+			$trackbacks = serialize( $this->sendTrackbacks( $pParamHash['trackback'] ) );
+			
+			if( $this->isValid() ) {
+				$locId = array( "post_id" => $pParamHash['post_id'] );
+				$result = $this->mDb->associateUpdate( $table, $pParamHash['post_store'], $locId );
+			} else {
+				$pParamHash['post_store']['content_id'] = $pParamHash['content_id'];
+				if( @$this->verifyId( $pParamHash['post_id'] ) ) {
+					// if pParamHash['post_id'] is set, someone is requesting a particular post_id. Use with caution!
+					$pParamHash['post_store']['post_id'] = $pParamHash['post_id'];
+				} else {
+					$pParamHash['post_store']['post_id'] = $this->mDb->GenID( 'blog_posts_post_id_seq' );
+				}
+				$this->mPostId = $pParamHash['post_store']['post_id'];
+				//store the new post and if ok update the posts count in the correct blog
+				if ( $result = $this->mDb->associateInsert( $table, $pParamHash['post_store'] ) ){	
+					//can associateUpdate be used here with this incriment requirement? -wjames5				
+					$query = "UPDATE `".BIT_DB_PREFIX."blogs` set `posts`=`posts`+1 where `blog_id`=?";
+					$result = $this->mDb->query($query,array((int)$pParamHash['blog_id']));
+				}
 
-				$query = "insert into `".BIT_DB_PREFIX."blog_posts`(`blog_id`, `post_id`, `content_id`, `trackbacks_from`,`trackbacks_to`) values(?,?,?,?,?)";
-				$result = $this->mDb->query($query,array($pParamHash['blog_id'],$pParamHash['post_id'],$pParamHash['content_store']['content_id'],serialize(array()),serialize(array())));
-				$this->mPostId = $pParamHash['post_id'];
-
-				// Send trackbacks recovering only successful trackbacks
-				$trackbacks = serialize( $this->sendTrackbacks( $pParamHash['trackback'] ) );
 				// Update post with trackbacks successfully sent
+				// Can this be moved below into similar function below? -wjames5
 				$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_from`=?, `trackbacks_to` = ? where `post_id`=?";
-				$this->mDb->query($query,array(serialize(array()),$trackbacks,(int) $pParamHash['post_id']));
-				$query = "UPDATE `".BIT_DB_PREFIX."blogs` set `posts`=`posts`+1 where `blog_id`=?";
-				$result = $this->mDb->query($query,array((int)$pParamHash['blog_id']));
+				$this->mDb->query($query,array(serialize(array()), $trackbacks, (int) $pParamHash['post_id']));
 
 				// let's reload to get a full mInfo hash which is needed below
 				$this->load();
-
 				if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
-					global $gBitUser;
+					global $gBitUser, $gBitSmarty;
 					if( $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {
 						foreach ($nots as $not) {
 							$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
@@ -247,17 +314,18 @@ class BitBlogPost extends LibertyAttachable {
 					}
 				}
 			}
-
+			
+			//is this nearly identical to the above and can they be consolodated? -wjames5
 			if( !empty( $pParamHash['trackbacks'] ) ) {
-				$trackbacks = serialize($gBlog->send_trackbacks($post_id, $trackbacks));
 				$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_to`=? where `post_id`=?";
-				$result = $this->mDb->query($query,array($trackbacks,$user_id,$post_id));
+				$result = $this->mDb->query($query,array($trackbacks, $user_id, $post_id));
 			}
-		}
-		$this->mDb->CompleteTrans();
-		return( count( $this->mErrors ) == 0 );
-	}
 
+			$this->mDb->CompleteTrans();
+			$this->load();
+		}
+		return ( count( $this->mErrors ) == 0 );
+	}
 
 	/**
 	 * Remove complete blog post set and any comments

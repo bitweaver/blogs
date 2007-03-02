@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.28 2007/03/01 22:25:23 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.29 2007/03/02 21:34:25 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -152,7 +152,7 @@ if (isset($_REQUEST["preview"])) {
 	}
 
 	if( $gContent->store( $_REQUEST ) ) {
-		$postid = $_REQUEST['post_id'];
+		$postid = $gContent->mPostId;
 		$gBitSmarty->assign('post_id', $gContent->mPostId);
 
 		if (isset($_REQUEST['save_post_exit'])) {
