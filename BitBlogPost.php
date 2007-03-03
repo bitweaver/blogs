@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.44 2007/03/02 21:34:25 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.45 2007/03/03 06:33:18 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.44 2007/03/02 21:34:25 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.45 2007/03/03 06:33:18 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.44 $ $Date: 2007/03/02 21:34:25 $ $Author: wjames5 $
+ * @version $Revision: 1.45 $ $Date: 2007/03/03 06:33:18 $ $Author: wjames5 $
  */
 
 /**
@@ -281,6 +281,7 @@ class BitBlogPost extends LibertyAttachable {
 
 				// Update post with trackbacks successfully sent
 				// Can this be moved below into similar function below? -wjames5
+				// this throws an error on site population because post_id is not defined in pParamHash - wjames5
 				$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_from`=?, `trackbacks_to` = ? where `post_id`=?";
 				$this->mDb->query($query,array(serialize(array()), $trackbacks, (int) $pParamHash['post_id']));
 
@@ -512,6 +513,17 @@ class BitBlogPost extends LibertyAttachable {
 		if( !empty( $pListHash['date_end'] ) && is_numeric( $pListHash['date_end'] ) ) {
 			$whereSql .= " AND  tc.`created`<=? ";
 			$bindVars[]= $pListHash['date_end'];
+		}
+
+		// determine if future and expired posts are viewable
+		$timestamp = $gBitSystem->getUTCTime();
+		if( !$gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
+			$whereSql .= " AND ( bp.`publish_date` <= ? OR bp.`publish_date` IS NULL)";
+			$bindVars[] = ( int )$timestamp;
+		}
+		if( !$gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
+			$whereSql .= " AND ( bp.`expire_date` >= ? OR bp.`expire_date` <= bp.`publish_date` OR bp.`expire_date` IS NULL )";
+			$bindVars[] = ( int )$timestamp;
 		}
 
 		$sort_mode_prefix = 'lc';

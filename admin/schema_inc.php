@@ -64,7 +64,9 @@ $gBitInstaller->registerUserPermissions( BLOGS_PKG_NAME, array(
 	array('p_blogs_post', 'Can post to a blog', 'registered', BLOGS_PKG_NAME),
 	array('p_blogs_send_post', 'Can email a blog post', 'registered', BLOGS_PKG_NAME),
 	array('p_blogs_admin', 'Can admin blogs', 'editors', BLOGS_PKG_NAME),
-	array('p_blogs_view', 'Can read blogs', 'basic', BLOGS_PKG_NAME)
+	array('p_blogs_view', 'Can read blogs', 'basic', BLOGS_PKG_NAME),
+	array('p_blog_posts_read_future', 'Can view future dated posts', 'editors', BLOGS_PKG_NAME),
+	array('p_blog_posts_read_expired', 'Can view expired posts', 'editors', BLOGS_PKG_NAME)
 ) );
 
 // ### Default Preferences
