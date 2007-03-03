@@ -162,8 +162,8 @@ array( 'QUERY' =>
 	// Update preferences
 	"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences`( `name`, `value`, `package` ) VALUES( 'blog_posts_description_length', '500', '".BLOGS_PKG_NAME."' )",
 	// Update permissions for viewing future and expired posts
-	"INSERT INTO `".BIT_DB_PREFIX."users_permissions`( `perm_name`,`perm_desc`, `level`, `package` ) VALUES( 'p_blog_posts_read_future', 'Can view future dated posts', 'editors', ".BLOGS_PKG_NAME." )",
-	"INSERT INTO `".BIT_DB_PREFIX."users_permissions`( `perm_name`,`perm_desc`, `level`, `package` ) VALUES( 'p_blog_posts_read_expired', 'Can view expired posts', 'editors', ".BLOGS_PKG_NAME." )",
+	"INSERT INTO `".BIT_DB_PREFIX."users_permissions`( `perm_name`,`perm_desc`, `perm_level`, `package` ) VALUES( 'p_blog_posts_read_future', 'Can view future dated posts', 'editors', ".BLOGS_PKG_NAME." )",
+	"INSERT INTO `".BIT_DB_PREFIX."users_permissions`( `perm_name`,`perm_desc`, `perm_level`, `package` ) VALUES( 'p_blog_posts_read_expired', 'Can view expired posts', 'editors', ".BLOGS_PKG_NAME." )",
 	),
 )),
 
