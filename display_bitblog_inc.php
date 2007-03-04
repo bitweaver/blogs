@@ -126,6 +126,8 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 	}
 }
 
+$gBitSmarty->assign('descriptionLength', $gBitSystem->getConfig( 'blog_posts_description_length', 500 ) );
+$gBitSmarty->assign('showDescriptionsOnly', TRUE);
 // Display the template
 $gBitSystem->display( 'bitpackage:blogs/view_blog.tpl', $gBlog->getTitle() );
 
