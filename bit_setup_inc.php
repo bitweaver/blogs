@@ -9,6 +9,7 @@ $registerHash = array(
 	'package_name' => 'blogs',
 	'package_path' => dirname( __FILE__ ).'/',
 	'homeable' => TRUE,
+	'service' => LIBERTY_SERVICE_BLOGS,
 );
 $gBitSystem->registerPackage( $registerHash );
 
@@ -52,5 +53,10 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 				);
 	assignConfigs($prefs);
 
+	require_once( 'BitBlog.php' );
+	
+	$gLibertySystem->registerService( LIBERTY_SERVICE_BLOGS, BLOGS_PKG_NAME, array(
+		'users_register_function' => 'blogs_users_register',
+	) );
 }
 ?>

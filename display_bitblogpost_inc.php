@@ -116,6 +116,7 @@ $gBitSmarty->assign('last_page', $pages);
 $gBitSmarty->assign('page', $_REQUEST['page']);
 
 $gBitSmarty->assign('parsed_data', $parsed_data);
+$gBitSmarty->assign('post_info', $gContent->mInfo );
 
 $gBitSmarty->assign('individual', 'n');
 

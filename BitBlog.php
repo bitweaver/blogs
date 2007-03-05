@@ -131,6 +131,7 @@ class BitBlog extends LibertyContent {
 	}
 
 	function store( &$pParamHash ) { 
+	vd($pParamHash);
 		global $gBitSystem;
 		if( $this->verify( $pParamHash ) && parent::store( $pParamHash ) ) {
 			$table = BIT_DB_PREFIX."blogs";
@@ -320,5 +321,29 @@ class BitBlog extends LibertyContent {
 }
 
 require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
+
+/********* SERVICE FUNCTIONS *********/
+
+
+function blogs_users_register( &$pObject ) {
+	global $gBitSystem, $gBitUser;
+	$errors = NULL;
+	// If a content access system is active, let's call it
+	if( $gBitSystem->isPackageActive( 'blogs' ) && $gBitSystem->isFeatureActive('blog_autogen_user_blog') ) {
+		//force blog values
+		$newHash['user_id'] = $pObject->mInfo['user_id'];
+		$newHash['title'] = $pObject->mInfo['login'] . "'s Diary";
+		$newHash['max_posts'] = 10;
+		$newHash['use_title'] = 'on';
+		$newHash['allow_comments'] = 'on';
+		$newHash['use_find'] = 'on';
+		$newHash['save_blog'] = 'save';		
+		$blog = new BitBlog();
+		if ( !$blog->store( $newHash ) ) {
+			$errors=$blog->mErrors;
+		}
+	}
+	return( $errors );
+}
 
 ?>
