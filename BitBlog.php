@@ -130,8 +130,7 @@ class BitBlog extends LibertyContent {
 		return( count( $this->mErrors ) == 0 );
 	}
 
-	function store( &$pParamHash ) { 
-	vd($pParamHash);
+	function store( &$pParamHash ) {
 		global $gBitSystem;
 		if( $this->verify( $pParamHash ) && parent::store( $pParamHash ) ) {
 			$table = BIT_DB_PREFIX."blogs";
