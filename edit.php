@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.17 2006/12/14 20:22:06 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.18 2007/03/16 21:28:40 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -31,6 +31,8 @@ if (!isset($last_modified)) {
 $gBitSmarty->assign_by_ref('heading', $heading);
 
 if( $gBlog->isValid() ) {
+	$gContent = &$gContent; // make a reference so services work correctly
+	$_REQUEST['content_id'] = $gBlog->mContentId;
 	if( !$gBlog->hasEditPermission() ) {
 		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
 	}
@@ -73,6 +75,10 @@ $gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gBlog->getTitle() );
 // Display the Index Template
 $gBitSmarty->assign('show_page_bar', 'n');
 // Let services work on blogs
+if( $gBitUser->hasPermission( 'p_liberty_assign_content_perms' ) ) {
+	require_once( LIBERTY_PKG_PATH.'content_permissions_inc.php' );
+}
+
 $gBitSmarty->assign_by_ref('gContent', $gBlog);
 $gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl');
 
