@@ -49,31 +49,28 @@ if (!isset($gContent->mPostId)) {
 
 $gBitSystem->verifyPackage( 'blogs' );
 
-$displayHash = array( 'perm_name' => 'p_wiki_view_page' );
+$gBitSystem->verifyPermission( 'p_blogs_view' );
+
+// Check permissions to access this page
+if( !$gContent->isValid() ) {
+	$gBitSystem->fatalError( 'Post cannot be found' );
+}
+
+$displayHash = array( 'perm_name' => 'p_blogs_view' );
 $gContent->invokeServices( 'content_display_function', $displayHash );
-
-if (!isset($gContent->mPostId) && $post_id) {
-	$gContent->mPostId = $gContent->mInfo['blog_id'];
-}
-$gBitSmarty->assign('post_info', $gContent->mInfo );
 $gBitSmarty->assign('post_id', $gContent->mPostId);
-$_REQUEST["blog_id"] = $gContent->mInfo["blog_id"];
 
-$gBitSmarty->assign('blog_id', $_REQUEST["blog_id"]);
-
-if( !empty( $gContent->mInfo['blog_style'] ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
-	$gBitSystem->setStyle( $gContent->mInfo['blog_style'] );
-	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gContent->mInfo['blog_style'], $gContent->mInfo['user_id'] );
-	$gBitSmarty->assign( 'userStyle', $gContent->mInfo['blog_style'] );
-}
 
 //Build absolute URI for this
 $parts = parse_url($_SERVER['REQUEST_URI']);
+/* DEPRECATED - these prolly need to be a larger array of any blog_ids 
 $uri = httpPrefix(). $parts['path'] . '?blog_id=' . $gContent->mInfo['blog_id'] . '&post_id=' . $gContent->mPostId;
 $uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['blog_id'] . '/' . $gContent->mPostId;
 $gBitSmarty->assign('uri', $uri);
 $gBitSmarty->assign('uri2', $uri2);
+*/
 
+/* MOVE THIS - this looks like it should be part of browsing a blog not a post -wjames5
 if (!isset($_REQUEST['offset']))
 	$_REQUEST['offset'] = 0;
 
@@ -89,67 +86,40 @@ $gBitSmarty->assign('find', $_REQUEST["find"]);
 $offset = $_REQUEST["offset"];
 $sort_mode = $_REQUEST["sort_mode"];
 $find = $_REQUEST["find"];
+*/
 
 $parsed_data = $gContent->parseData();
-
-if (!isset($_REQUEST['page']))
-	$_REQUEST['page'] = 1;
-
-$pages = $gContent->getNumberOfPages($parsed_data);
-$parsed_data = $gContent->getPage($parsed_data, $_REQUEST['page']);
-$gBitSmarty->assign('pages', $pages);
-
-if ($pages > $_REQUEST['page']) {
-	$gBitSmarty->assign('next_page', $_REQUEST['page'] + 1);
-} else {
-	$gBitSmarty->assign('next_page', $_REQUEST['page']);
-}
-
-if ($_REQUEST['page'] > 1) {
-	$gBitSmarty->assign('prev_page', $_REQUEST['page'] - 1);
-} else {
-	$gBitSmarty->assign('prev_page', 1);
-}
-
-$gBitSmarty->assign('first_page', 1);
-$gBitSmarty->assign('last_page', $pages);
-$gBitSmarty->assign('page', $_REQUEST['page']);
-
 $gBitSmarty->assign('parsed_data', $parsed_data);
 $gBitSmarty->assign('post_info', $gContent->mInfo );
 
-$gBitSmarty->assign('individual', 'n');
+// THIS CAN PROLLY GO -wjames5
+// $gBitSmarty->assign('individual', 'n');
 
-if ($gBitUser->object_has_one_permission($_REQUEST["blog_id"], 'blog')) {
-	$gBitSmarty->assign('individual', 'y');
-
-	if (!$gBitUser->isAdmin()) {
-		// Now get all the permissions that are set for this type of permissions 'image gallery'
-		$perms = $gBitUser->getPermissions('', 'blogs');
-
-		foreach ($perms["data"] as $perm) {
-			$perm_name = $perm["perm_name"];
-
-			if ($gBitUser->object_has_permission($user, $_REQUEST["blog_id"], 'blog', $perm_name)) {
-				$$perm_name = 'y';
-
-				$gBitSmarty->assign("$perm_name", 'y');
-			} else {
-				$$perm_name = 'n';
-
-				$gBitSmarty->assign("$perm_name", 'n');
+if ( isset($_REQUEST["blog_content_id"]) || isset($_REQUEST["blog_id"]) ) {
+	$blogId = $_REQUEST["blog_id"] ? $_REQUEST["blog_id"] : $_REQUEST["blog_content_id"];
+	if ($gBitUser->object_has_one_permission($blogId, 'blog')) {
+		$gBitSmarty->assign('individual', 'y');
+	
+		if (!$gBitUser->isAdmin()) {
+			// Now get all the permissions that are set for this type of permissions 'blogs'
+			$perms = $gBitUser->getPermissions('', 'blogs');
+	
+			foreach ($perms["data"] as $perm) {
+				$perm_name = $perm["perm_name"];
+	
+				if ($gBitUser->object_has_permission($user, $blogId, 'blog', $perm_name)) {
+					$$perm_name = 'y';
+	
+					$gBitSmarty->assign("$perm_name", 'y');
+				} else {
+					$$perm_name = 'n';
+	
+					$gBitSmarty->assign("$perm_name", 'n');
+				}
 			}
 		}
 	}
 }
-
-$gBitSystem->verifyPermission( 'p_blogs_view' );
-/*if (!$gBitUser->hasPermission( 'p_blogs_view' )) {
-	$gBitSmarty->assign('msg', tra("Permission denied you can not view this section"));
-
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}*/
 
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
 	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
@@ -157,7 +127,8 @@ if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
 	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
 }
 
-$gBitSystem->setBrowserTitle($gContent->mInfo['title'].' - '.$gContent->mInfo['blogtitle']);
+$extendedTitle = isset($gContent->mInfo['blogtitle']) ? ' - '.$gContent->mInfo['blogtitle'] : NULL;
+$gBitSystem->setBrowserTitle($gContent->mInfo['title'].$extendedTitle);
 // Display the template
 $gBitSystem->display( 'bitpackage:blogs/view_blog_post.tpl');
 

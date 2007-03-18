@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.17 2007/02/19 23:33:31 nickpalmer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.18 2007/03/18 18:49:59 wjames5 Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -38,7 +38,7 @@
 	</div>
 
 	<div class="footer">
-		{$gBlog->getField('posts',0)} {tr}posts{/tr} | {$gBlog->getField('hits',0)} {tr}visits{/tr} {* TODO: Add back once activity is supported | {tr}Activity{/tr} {$gBlog->getField('activity',0)|string_format:"%.2f"} *}
+		{$gBlog->getField('postscant',0)} {tr}posts{/tr} | {$gBlog->getField('hits',0)} {tr}visits{/tr} {* TODO: Add back once activity is supported | {tr}Activity{/tr} {$gBlog->getField('activity',0)|string_format:"%.2f"} *}
 	</div>
 
 	{if $gBlog->getField('use_find') eq 'y'}

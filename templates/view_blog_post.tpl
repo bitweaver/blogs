@@ -15,16 +15,20 @@
 <div class="display blogs">
 	<div class="floaticon">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
-
-		{if $gBlog->hasPostPermission()}
-			<a href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
-			<a href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$post_info.blog_id}&amp;remove={$post_info.post_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
+		{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
+				{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
+					<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?user_id={$post_info.user_id}">{biticon ipackage="icons" iname="network-wireless" iexplain="rss feed"}</a>
+				{/if}
+				{if $gBitUser->hasPermission( 'p_blogs_admin' )}
+					<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+					<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;remove_post_id={$post_info.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
+				{/if}
+	
+				<a title="{tr}print{/tr}" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
+				{if $gBitUser->hasPermission('p_blogs_send_post')}
+					<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
+				{/if}
 		{/if}
-
-		{if $gBitUser->hasPermission( 'p_liberty_print' )}
-			<a href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
-		{/if}
-		<a href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
 	</div>
 
 	<div class="header">
@@ -56,7 +60,15 @@
 		</h1>
 
 		<div class="date">
-			{$post_info.publish_date|default:$post_info.created|bit_long_date}
+			{tr}Posted by{/tr} {displayname hash=$post_info}<br />
+			{tr}Posted on{/tr} {$post_info.publish_date|default:$post_info.created|bit_long_date}<br/>			
+			{if count($post_info.blogs) > 0}
+				{tr}Posted to{/tr}
+				{section name=blogs loop=$post_info.blogs}
+					<a href="{$post_info.blogs[blogs].blog_url}">{$post_info.blogs[blogs].title}</a> 
+				{/section}
+			<br />
+			{/if}	
 		</div>
 	</div>
 
@@ -69,11 +81,6 @@
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$post_info}
 
 			{$parsed_data}
-			<p>
-				{displayname hash=$post_info}<br />
-				{tr}in{/tr} <a href="{$post_info.blog_url}">{$post_info.blogtitle}</a><br />
-				{tr}Posted at{/tr} {$post_info.publish_date|default:$post_info.created|bit_long_time}
-			</p>
 		</div> <!-- end .content -->
 	</div> <!-- end .body -->
 

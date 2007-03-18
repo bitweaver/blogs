@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.10 2006/11/18 16:16:37 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.11 2007/03/18 18:49:58 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -13,6 +13,7 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
+require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
@@ -37,7 +38,6 @@ if( $gBlog->isValid() && isset($_REQUEST["remove"])) {
 
 // Get a list of last changes to the Wiki database
 $listBlogs = $gBlog->getList( $_REQUEST );
-
 $gBitSmarty->assign( 'listInfo', $_REQUEST['listInfo'] );
 $gBitSmarty->assign( 'listpages', $listBlogs["data"] );
 

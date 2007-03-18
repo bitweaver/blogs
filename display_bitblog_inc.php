@@ -12,6 +12,7 @@
  * required setup
  */
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
+require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 $displayHash = array( 'perm_name' => 'p_blogs_view' );
 $gBlog->invokeServices( 'content_display_function', $displayHash );
@@ -69,7 +70,7 @@ if( !$gBlog->hasEditPermission() ) {
 }
 
 
-
+/* MOVED TO POST
 if (isset($_REQUEST["remove"])) {
 	$blogPost = new BitBlogPost( $_REQUEST["remove"] );
 	if( $blogPost->load() ) {
@@ -89,6 +90,7 @@ if (isset($_REQUEST["remove"])) {
 		}
 	}
 }
+*/
 
 
 $now = $gBitSystem->getUTCTime();

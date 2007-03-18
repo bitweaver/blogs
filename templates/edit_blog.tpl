@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.15 2006/11/18 21:43:16 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.16 2007/03/18 18:49:59 wjames5 Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -62,6 +62,7 @@
 							{/forminput}
 						</div>
 
+{* DEPRECATED - Slated for removal  -wjames5
 						{if $gBitUser->hasPermission('p_blogs_create_is_public')}
 						<div class="row">
 							{formlabel label="Public" for="is_public"}
@@ -71,6 +72,7 @@
 							{/forminput}
 						</div>
 						{/if}
+*}
 
 						<div class="row">
 							{formlabel label="Use titles in blog posts" for="use_title"}

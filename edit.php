@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.18 2007/03/16 21:28:40 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.19 2007/03/18 18:49:58 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -17,6 +17,7 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
+require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );

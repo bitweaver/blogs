@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.30 2007/03/02 23:26:28 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.31 2007/03/18 18:49:58 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -14,8 +14,7 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
-
-include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 $gBitSystem->verifyPackage( 'blogs' );
 
@@ -38,10 +37,12 @@ if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
 	$listHash = array();
 	$listHash['user_id'] = $gBitUser->mUserId;
 	$adminBlogs = $gBlog->getList( $listHash );
+	/* DEPRECATED - no more default blog posting -wjame5
 	if( !empty( $adminBlogs['data'] ) ) {
 		// Use one of these as the default blog to post into			
-		$blog_id = $adminBlogs['data'][0]['blog_id'];
+		$blog_id = $adminBlogs['data'][0]['content_id'];
 	}
+	*/
 } else {
 	if ( $gBlog->isValid() ) {
 		if( $gBlog->hasPostPermission() ) {
@@ -56,10 +57,18 @@ if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
 	}
 }
 
-if( empty( $_REQUEST['blog_id'] ) && count($blogs) >  0 && count($blogs['data']) > 0) {
-	$_REQUEST['blog_id'] = $blogs['data'][0]['blog_id'];	// Default to the first blog returned that this user owns
+/* DEPRECATED - no more default blog posting -wjame5
+if( empty( $_REQUEST['blog_content_id'] ) && count($blogs) >  0 && count($blogs['data']) > 0) {
+	$_REQUEST['blog_content_id'] = $blogs['data'][0]['content_id'];	// Default to the first blog returned that this user owns
 }
+*/
 
+/* DEPRICATED - Slated for removal
+ * 
+ * We used to require that you have a blog that you can post to
+ * this forced user to create a blog
+ */
+/*
 if( empty( $blogs['data'] ) ) {
 	if( $gBitUser->hasPermission( 'p_blogs_create' )) {
 		$mid = 'bitpackage:blogs/edit_blog.tpl';
@@ -72,21 +81,54 @@ if( empty( $blogs['data'] ) ) {
 } else {
 	$mid = 'bitpackage:blogs/blog_post.tpl';
 }
+*/
+$mid = 'bitpackage:blogs/blog_post.tpl';
+
 
 $gBitSmarty->assign('data', '');
 $gBitSmarty->assign('created', $gBitSystem->getUTCTime());
 
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 
+
+// nuke post if requested
+if( !empty( $_REQUEST['action'] ) ) {
+	if( $_REQUEST['action'] == 'remove' && !empty( $_REQUEST['remove_post_id'] ) ) {
+		$tmpPost = new BitBlogPost( $_REQUEST['remove_post_id'] );
+		$tmpPost->load();
+		if( !$gContent->hasEditPermission() ) {
+			$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot remove this post" );
+		}
+		if( isset( $_REQUEST["confirm"] ) ) {
+			if( $tmpPost->expunge() ) {
+				header( "Location: ".BLOGS_PKG_URL.'index.php?status_id='.( !empty( $_REQUEST['status_id'] ) ? $_REQUEST['status_id'] : '' ) );
+				die;
+			} else {
+				$feedback['error'] = $tmpPost->mErrors;
+			}
+		}
+		$gBitSystem->setBrowserTitle( 'Confirm removal of '.$tmpPost->mInfo['title'] );		
+		$formHash['remove'] = TRUE;
+		$formHash['action'] = 'remove';
+		$formHash['status_id'] = ( !empty( $_REQUEST['status_id'] ) ? $_REQUEST['status_id'] : '' );
+		$formHash['remove_post_id'] = $_REQUEST['remove_post_id'];
+		$msgHash = array(
+			'label' => 'Remove Blog Post',
+			'confirm_item' => $tmpPost->mInfo['title'],
+			'warning' => 'This will remove the above blog post. This cannot be undone.',
+		);
+		$gBitSystem->confirmDialog( $formHash, $msgHash );
+	}
+}
+
+
 $gContent->invokeServices( 'content_edit_function' );
 
-
 if (isset($_REQUEST['remove_image'])) {
-
 	$gContent->expungeAttachment( $_REQUEST['remove_image'] );
 }
 
-// If the post_id is passed then get the article data
+// If the post_id is passed then get the post data
 if( isset($_REQUEST["post_id"]) && BitBase::verifyId( $_REQUEST["post_id"] ) ) {
 	$gContent->load();
 	if( $gContent->mInfo["user_id"] != $gBitUser->mUserId || !$gBitUser->isValid() ) {
@@ -125,14 +167,15 @@ if (isset($_REQUEST["preview"])) {
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
 	$gBitSmarty->assign('individual', 'n');
 
-	if ($gBitUser->object_has_one_permission($_REQUEST["blog_id"], 'blog')) {
+	/* This check needs to breakup blog_content_id when an array -wjames5
+	if ($gBitUser->object_has_one_permission($_REQUEST["blog_content_id"], 'blog')) {
 		$gBitSmarty->assign('individual', 'y');
 
 		if (!$gBitUser->isAdmin()) {
 			// Now get all the permissions that are set for this content type
 			$perms = $gBitUser->getPermissions('', 'blogs');
 			foreach( array_keys( $perms ) as $permName ) {
-				if ($gBitUser->object_has_permission( $user, $_REQUEST["blog_id"], 'blog', $permName ) ) {
+				if ($gBitUser->object_has_permission( $user, $_REQUEST["blog_content_id"], 'blog', $permName ) ) {
 					$$permName = 'y';
 					$gBitSmarty->assign( $permName, 'y');
 				} else {
@@ -142,7 +185,8 @@ if (isset($_REQUEST["preview"])) {
 			}
 		}
 	}
-
+	*/
+	
 	$title = isset($_REQUEST['title']) ? $_REQUEST['title'] : '';
 
 	if( !isset( $_REQUEST['trackback'] ) ) { $_REQUEST['trackback'] = ''; }
@@ -199,8 +243,8 @@ $sameurl_elements = array(
 );
 
 $gBitSmarty->assign_by_ref('blogs', $blogs['data']);
-if (isset($_REQUEST['blog_id'])) {
-	$gBitSmarty->assign('blog_id', $_REQUEST['blog_id'] );
+if (isset($_REQUEST['blog_content_id'])) {
+	$gBitSmarty->assign('blog_content_id', $_REQUEST['blog_content_id'] );
 }
 // Need ajax for attachment browser
 $gBitSmarty->assign('loadAjax', true);

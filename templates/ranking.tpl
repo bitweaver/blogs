@@ -39,7 +39,7 @@
 		
 		{foreach from=$rankings.data item=blog}
 			<ul>
-				<li class="{cycle value="even,odd"}"><h2><a title="{$blog.title}" href="{$blog.blog_url}">{$blog.title}</a> (Hits: {$blog.hits|default:0}) (Posts: {$blog.posts|default:0})</h2>
+				<li class="{cycle value="even,odd"}"><h2><a title="{$blog.title}" href="{$blog.blog_url}">{$blog.title}</a> (Hits: {$blog.hits|default:0}) (Posts: {$blog.postscant|default:0} )</h2>
 				{if $blog.post_array}
 					<ul>
 						{foreach from=$blog.post_array item=post}

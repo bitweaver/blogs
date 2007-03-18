@@ -72,9 +72,10 @@ $listHash['parse_data'] = TRUE;
 $listHash['load_comments'] = TRUE;
 $listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
 $listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
+$listHash['login'] = (!empty($_REQUEST['user']) ? $_REQUEST['user'] : NULL);
 
-if( @BitBase::verifyId( $module_params['blog_id'] ) ) {
-	$listHash['blog_id'] = $module_params['blog_id'];
+if( @BitBase::verifyId( $module_params['blog_content_id'] ) ) {
+	$listHash['blog_content_id'] = $module_params['blog_content_id'];
 }
 if( @BitBase::verifyId( $module_params['user_id'] ) ) {
 	$listHash['user_id'] = $module_params['user_id'];
@@ -95,6 +96,7 @@ if( empty( $gContent ) ) {
 	$gBitSmarty->assign_by_ref( 'gContent', $blogPost );
 }
 $blogPosts = $blogPost->getList( $listHash );
+$gBitSmarty->assign( 'listInfo', $blogPosts['listInfo'] );
 
 // If there're more records then assign next_offset
 $cant_pages = ceil($blogPosts["cant"] / $postRecords);
@@ -113,6 +115,7 @@ if ($offset > 0) {
 } else {
 	$gBitSmarty->assign('prev_offset', -1);
 }
+
 $gBitSmarty->assign_by_ref('gQueryUserId', $listHash['user_id']);
 $gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
 //print_r($blogPosts["data"]);

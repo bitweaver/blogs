@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/index.php,v 1.6 2007/03/01 16:07:24 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/index.php,v 1.7 2007/03/18 18:49:58 wjames5 Exp $
 
  * @package blogss
  * @subpackage functions
@@ -13,6 +13,7 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
+require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 //"DEPRECATED - Slated for removal
 /*

@@ -4,17 +4,44 @@
  * @subpackage functions
  */
 
-	global $gContent, $gBitSmarty;
-
+	global $gContent; //, $gBitSmarty;
+	require_once( BLOGS_PKG_PATH.'BitBlogPost.php');
+	require_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
+	
 	if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {
-		$postId = !empty( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : NULL;
-		$conId = !empty( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL;
-		$gContent = new BitBlogPost( $postId, $conId );
-		$gContent->load();
-		$comments_return_url = $_SERVER['PHP_SELF']."?post_id=$postId";
+		// if blog_id supplied, use that
+		if( @BitBase::verifyId( $_REQUEST['post_id'] ) ) {
+			$gContent = new BitBlogPost( $_REQUEST['post_id'] );
+			$gContent->load();
+		} elseif( @BitBase::verifyId( $_REQUEST['content_id'] ) ) {
+			$gContent = new BitBlogPost( NULL, $_REQUEST['content_id'] );
+			$gContent->load();
+		} else {
+			$gContent = new BitBlogPost();
+		}
+	
 		$gBitSmarty->assign_by_ref( 'gContent', $gContent );
 	}
 
+
+
+
+/* OLD WAY OF WRITING THE ABOVE - DELETE - wjames5
+if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {
+	$postId = !empty( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : NULL;
+	$conId = !empty( $_REQUEST['content_id'] ) ? $_REQUEST['content_id'] : NULL;
+	$gContent = new BitBlogPost( $postId, $conId );
+	$gContent->load();
+	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=$postId";
+	$gBitSmarty->assign_by_ref( 'gContent', $gContent );
+}
+*/
+
+
+
+
+// MOVE THIS TO display_bitblogpost_inc.php -wjames5
+/*
 global $gContent_previous;
 
 if (!empty( $gContent) && !empty( $gContent->mInfo['blog_id'] ) ) {
@@ -88,9 +115,9 @@ if (!empty( $gContent) && !empty( $gContent->mInfo['blog_id'] ) ) {
 
 	#	echo "gContent_next=" . serialize($gContent_next);
 #		echo "Next title=" . $blogpost['title'];
-		}
-
-	$gBitSmarty->assign_by_ref( 'gContent_next', $gContent_next );
 	}
 
+	$gBitSmarty->assign_by_ref( 'gContent_next', $gContent_next );
+}
+*/
 ?>

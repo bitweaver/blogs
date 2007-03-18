@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.18 2007/03/02 23:26:28 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.19 2007/03/18 18:49:59 wjames5 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -21,18 +21,21 @@
 
 			{jstabs}
 				{jstab title="Create Blog Post"}
-					{legend legend="Post to a Blog"}
-						<div class="row">
-							{formlabel label="Blog" for="blog_id"}
-							{forminput}
-								<select name="blog_id" id="blog_id">
-									{section name=ix loop=$blogs}
-										<option value="{$blogs[ix].blog_id|escape}" {if $blogs[ix].blog_id eq $blog_id}selected="selected"{/if}>{$blogs[ix].title|escape}</option>
-									{/section}
-								</select>
-							{/forminput}
-						</div>
-
+					{legend legend="Post"}
+						{if $blogs}
+							<div class="row">
+								{formlabel label="Blogs" for="blog_id"}
+								{forminput}
+									<select multiple name="blog_content_id[]" id="blog_content_id">
+										{section name=ix loop=$blogs}
+											<option value="{$blogs[ix].content_id|escape}" {if $blogs[ix].content_id eq $content_id}selected="selected"{/if}>{$blogs[ix].title|escape}</option>
+										{/section}
+									</select>
+									{formhelp note="You can cross post to any and all of the blogs listed above.<br />To select multiple blogs hold option + shift and then click the blogs you wish to cross post to."}
+								{/forminput}
+							</div>
+						{/if}
+						
 						{if !$blog_data.use_title OR $blog_data.use_title eq 'y'}
 							<div class="row">
 								{formlabel label="Title" for="title"}
@@ -55,7 +58,7 @@
 
 						<div class="row">
 							{forminput}
-								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$raw|escape:html}</textarea>
+								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$data|escape:html}</textarea>
 							{/forminput}
 						</div>
 

@@ -104,7 +104,7 @@ class BitBlog extends LibertyContent {
 
 			$result = $this->mDb->query($query,$bindVars);
 			$ret = $result->fetchRow();
-
+			$ret['postscant'] = $this->getPostsCount( $ret['content_id'] );
 			if ($ret) {
 				$ret['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.$res['avatar'] : NULL);
 				if( empty( $ret['max_posts'] ) || !is_numeric( $ret['max_posts'] ) ) {
@@ -125,7 +125,8 @@ class BitBlog extends LibertyContent {
 		$pParamHash['blog_store']['use_title'] = isset( $pParamHash['use_title'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['allow_comments'] = isset( $pParamHash['allow_comments'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['use_find'] = isset( $pParamHash['use_find'] ) ? 'y' : 'n';
-		$pParamHash['blog_store']['is_public'] = $gBitUser->hasPermission('p_blogs_create_is_public') && isset( $pParamHash['public'] ) ? $pParamHash['public'] : NULL;
+		// DEPRECATED - Slated for removal  -wjames5
+		//$pParamHash['blog_store']['is_public'] = $gBitUser->hasPermission('p_blogs_create_is_public') && isset( $pParamHash['public'] ) ? $pParamHash['public'] : NULL;
 
 		return( count( $this->mErrors ) == 0 );
 	}
@@ -136,10 +137,12 @@ class BitBlog extends LibertyContent {
 			$table = BIT_DB_PREFIX."blogs";
 			$this->mDb->StartTrans();
 			if( $this->isValid() ) {
-				$pParamHash['blog_store']['posts'] = $this->mDb->getOne( "SELECT COUNT(`blog_id`) FROM `".BIT_DB_PREFIX."blog_posts` WHERE blog_id=?", array( $pParamHash['blog_id'] ) );
+				// DEPRECATED - this looks stupid -wjames5		
+				//$pParamHash['blog_store']['posts'] = $this->mDb->getOne( "SELECT COUNT(`blog_id`) FROM `".BIT_DB_PREFIX."blog_posts` WHERE blog_id=?", array( $pParamHash['blog_id'] ) );
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['blog_store'], array( "blog_id" => $pParamHash['blog_id'] ) );
 			} else {
-				$pParamHash['blog_store']['posts'] = 0;
+				// DEPRECATED - this looks stupid -wjames5		
+				//$pParamHash['blog_store']['posts'] = 0;
 				$pParamHash['blog_store']['content_id'] = $this->mContentId;
 				if( isset( $pParamHash['blog_id'] )&& is_numeric( $pParamHash['blog_id'] ) ) {
 					// if pParamHash['blog_id'] is set, someone is requesting a particular blog_id. Use with caution!
@@ -159,18 +162,13 @@ class BitBlog extends LibertyContent {
 		$ret = FALSE;
 		if ( $this->isValid() ) {
 			$this->mDb->StartTrans();
-			
-			$query = "SELECT `content_id` from `".BIT_DB_PREFIX."blog_posts` where `blog_id`=?";
-			if( $posts = $this->mDb->getAll($query,array( (int)$this->mBlogId ) ) ) {
-				foreach( $posts as $postContentId ) {
-					$delPost = new BitBlogPost( NULL, $postContentId );
-					$delPost->load();
-					$delPost->expunge();
-				}
-			}
-			
-			$query = "DELETE from `".BIT_DB_PREFIX."blogs` where `blog_id`=?";
-			$result = $this->mDb->query( $query, array( (int)$this->mBlogId ) );
+
+			$query = "DELETE from `".BIT_DB_PREFIX."blogs` where `content_id`=?";
+			$result = $this->mDb->query( $query, array( (int)$this->mContentId ) );
+
+			// remove all references in blogs_posts_map where post_content_id = content_id
+			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id` = ?";			
+			$result = $this->mDb->query( $query_map, array( $this->mContentId ) );
 
 			if( parent::expunge() ) {
 				$ret = TRUE;
@@ -274,6 +272,8 @@ class BitBlog extends LibertyContent {
 			}
 			*/
 			$res['blog_url'] = $this->getDisplayUrl( $res['blog_id'] );
+			//get count of post in each blog
+			$res['postscant'] = $this->getPostsCount( $res['content_id'] );
 			// deal with the parsing
 			$parseHash['format_guid']   = $res['format_guid'];
 			$parseHash['content_id']    = $res['content_id'];
@@ -295,6 +295,23 @@ class BitBlog extends LibertyContent {
 		return $pParamHash;
 	}
 
+	function getPostsCount($pBlogContentId){
+		global $gBitSystem;
+		$ret = NULL;
+		if( @$this->verifyId( $pBlogContentId ) ) {
+			$bindVars = array((int)$pBlogContentId);
+			$query = "SELECT COUNT(*) 
+				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm 
+				WHERE bpm.blog_content_id = ?";
+	
+			$ret = $this->mDb->getOne( $query, $bindVars );
+		} else {
+			$this->mErrors['content_id'] = "Invalid blog content id.";
+		}
+		return $ret;
+	}
+	
+	//This doesnt even appear to be used in blogs before this refactoring -wjames5
 	function viewerCanPostIntoBlog() {
 		global $gBitUser;
 		return ($this->getField('user_id') == $gBitUser->mUserId || $gBitUser->isAdmin() || $this->getField('is_public') == 'y' );
@@ -319,15 +336,14 @@ class BitBlog extends LibertyContent {
 	}
 }
 
-require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 /********* SERVICE FUNCTIONS *********/
-
 
 function blogs_users_register( &$pObject ) {
 	global $gBitSystem, $gBitUser;
 	$errors = NULL;
 	// If a content access system is active, let's call it
+	/*
 	if( $gBitSystem->isPackageActive( 'blogs' ) && $gBitSystem->isFeatureActive('blog_autogen_user_blog') ) {
 		//force blog values
 		$newHash['user_id'] = $pObject->mInfo['user_id'];
@@ -342,6 +358,7 @@ function blogs_users_register( &$pObject ) {
 			$errors=$blog->mErrors;
 		}
 	}
+	*/
 	return( $errors );
 }
 

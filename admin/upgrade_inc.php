@@ -14,6 +14,16 @@ array( 'DATADICT' => array(
 			'`public`' => '`is_public` C(1)',
 		),
 	)),
+	array( 'CREATE' => array (
+		'blogs_posts_map' => "
+			post_content_id I4 NOT NULL,
+			blog_content_id I4 NOT NULL,
+			date_added I4
+			CONSTRAINT '
+				, CONSTRAINT `blogs_posts_map_post_ref` FOREIGN KEY (`post_content_id`) REFERENCES `".BIT_DB_PREFIX."blog_posts` (`content_id`)
+				, CONSTRAINT `blogs_posts_map_blog_ref` FOREIGN KEY (`blog_content_id`) REFERENCES `".BIT_DB_PREFIX."blogs` (`content_id`)'
+		",
+	)),		
 	array( 'ALTER' => array(
 		'tiki_blogs' => array(
 			'content_id' => array( '`content_id`', 'I4' ), // , 'NOTNULL' ),
@@ -35,7 +45,8 @@ array( 'DATADICT' => array(
 )),
 
 
-// update blogs with content_id's
+// query: update blogs with content_id's
+// query2: map blog_posts blog_ids to new table blogs_posts_map
 array( 'PHP' => '
 	global $gBitSystem;
 	$query = "SELECT * FROM `'.BIT_DB_PREFIX.'blogs` b";
@@ -61,13 +72,16 @@ error_log( $conId."->".$blogId );
 			$gBitSystem->mDb->query( "UPDATE `'.BIT_DB_PREFIX.'blogs` SET `content_id`=? WHERE `blog_id`=? ", array( $conId, $blogId ) );
 			$rs->MoveNext();
 		}
-	}
+	}		
+	$query2 = "INSERT INTO `'.BIT_DB_PREFIX.'blog_posts_map` (`post_content_id`,`blog_content_id`,`date_added`) (SELECT blp.`content_id`, blc.`content_id`, blp.`created` FROM `'.BIT_DB_PREFIX.'blogs_posts` blp INNER JOIN `'.BIT_DB_PREFIX.'blogs` bl ON(blp.`blod_id`=bl.`blog_id`) INNER JOIN `'.BIT_DB_PREFIX.'liberty_content1` blc ON(bl.`content_id`=blc.`content_id`);"	
+	$gBitSystem->mDb->query( $query2 );
 ' ),
 
 // Drop moved columns
 array( 'DATADICT' => array(
 	array( 'DROPCOLUMN' => array(
-		'blogs' => array( '`user_id`', '`description`', '`created`', '`last_modified`', '`hits`', '`title`', '`heading`' ),
+		'blogs' => array( '`user_id`', '`description`', '`created`', '`last_modified`', '`hits`', '`title`', '`heading`', '`posts`' ),
+		'blog_posts' => array ( '`blog_id`' ),
 	)),
 )),
 
@@ -100,7 +114,6 @@ array( 'RENAMECOLUMN' => array(
 						   '`lastModif`' => '`last_modified` I8',
 						   '`maxPosts`' => '`max_posts` I4' ),
 )),
-
 
 array( 'ALTER' => array(
 	'tiki_blog_posts' => array(

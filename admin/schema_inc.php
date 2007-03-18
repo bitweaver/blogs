@@ -5,21 +5,18 @@ $tables = array(
 'blog_posts' => "
 	post_id I4 PRIMARY,
 	content_id I4 NOTNULL,
-	blog_id I4 NOTNULL,
 	publish_date I4,
 	expire_date I4,
 	trackbacks_to X,
 	trackbacks_from X
-	CONTRAINT '
-		, CONSTRAINT `blog_posts_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)
-		, CONSTRAINT `blog_posts_blog_ref` FOREIGN KEY(`blog_id`) REFERENCES `".BIT_DB_PREFIX."blogs` (`blog_id`)'
+	CONSTRAINT '
+		, CONSTRAINT `blog_posts_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)'
 ",
 
 'blogs' => "
 	blog_id I4 AUTO PRIMARY,
 	content_id I4 NOTNULL,
 	is_public C(1),
-	posts I4,
 	max_posts I4,
 	activity decimal(4,2),
 	use_find C(1),
@@ -28,7 +25,16 @@ $tables = array(
 	add_poster C(1),
 	allow_comments C(1)
 	CONSTRAINT ', CONSTRAINT `blogs_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)'
-"
+",
+
+'blogs_posts_map' => "
+	post_content_id I4 NOT NULL,
+	blog_content_id I4 NOT NULL,
+	date_added I4
+	CONSTRAINT '
+		, CONSTRAINT `blogs_posts_map_post_ref` FOREIGN KEY (`post_content_id`) REFERENCES `".BIT_DB_PREFIX."blog_posts` (`content_id`)
+		, CONSTRAINT `blogs_posts_map_blog_ref` FOREIGN KEY (`blog_content_id`) REFERENCES `".BIT_DB_PREFIX."blogs` (`content_id`)'
+",
 
 );
 
@@ -86,8 +92,22 @@ $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
 	array( BLOGS_PKG_NAME, 'blog_rankings','y'),
 	array( BLOGS_PKG_NAME, 'blog_list_user_as', 'text'),
 	array( BLOGS_PKG_NAME, 'blog_posts_description_length', '500'),
-	array( BLOGS_PKG_NAME, 'blog_autogen_user_blog','n'),
+	//array( BLOGS_PKG_NAME, 'blog_autogen_user_blog','n'),
 ) );
+
+// ### User Preferences Set In This Package
+/* These are mentioned here for reference to understand how the package works
+ * They are not to be configured here!
+ *
+ * user_blog_posts_use_title, default y			lets the user toggle to use a typed title for their posts or automatically use a date
+ * user_blog_posts_allow_comments, default y	lets a user toggle comments on their blog posts
+ * user_blog_description_inc, default n			lets a user include their personal page at the top of their blog
+ *
+ * @todo need an admin pref to override allow_comments option 
+ * @todo need an admin pref to override description option 
+ *
+ */
+
 if(defined('RSS_PKG_NAME')) {
 	$gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
 		array( RSS_PKG_NAME, BLOGS_PKG_NAME.'_rss', 'y'),

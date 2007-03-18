@@ -25,9 +25,11 @@
 				{if $blog_list_user eq 'y'}
 					<li>{smartlink ititle="Creator" isort="user" offset=$offset}</li>
 				{/if}
+{* DEPRECATED - need an alt since posts col is being eliminated - need way to sort on postscant -wjames5
 				{if $blog_list_posts eq 'y'}
 					<li>{smartlink ititle="Posts" isort="posts" iorder=desc offset=$offset}</li>
 				{/if}
+*}
 				{if $blog_list_visits eq 'y'}
 					<li>{smartlink ititle="Visits" isort="hits" iorder=desc offset=$offset}</li>
 				{/if}
@@ -97,7 +99,7 @@
 
 					<div class="footer">
 						{if $blog_list_posts eq 'y'}
-							{tr}Posts{/tr}: {$listpages[changes].posts}&nbsp;&bull;&nbsp;
+							{tr}Posts{/tr}: {$listpages[changes].postscant}&nbsp;&bull;&nbsp;
 						{/if}
 						
 						{if $blog_list_visits eq 'y'}
@@ -112,7 +114,6 @@
 					</div>
 
 					<div class="clear"></div>
-				<li>
 			{sectionelse}
 				<li class="item norecords">
 					{tr}No records found{/tr}
