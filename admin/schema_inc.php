@@ -28,8 +28,8 @@ $tables = array(
 ",
 
 'blogs_posts_map' => "
-	post_content_id I4 NOT NULL,
-	blog_content_id I4 NOT NULL,
+	post_content_id I4 NOTNULL,
+	blog_content_id I4 NOTNULL,
 	date_added I4
 	CONSTRAINT '
 		, CONSTRAINT `blogs_posts_map_post_ref` FOREIGN KEY (`post_content_id`) REFERENCES `".BIT_DB_PREFIX."blog_posts` (`content_id`)
@@ -52,6 +52,8 @@ $gBitInstaller->registerPackageInfo( BLOGS_PKG_NAME, array(
 // ### Indexes
 $indices = array (
 	'blog_posts_blog_id_idx' => array( 'table' => 'blog_posts', 'cols' => 'blog_id', 'opts' => NULL ),
+	'blogs_content_id_idx' => array( 'table' => 'blogs', 'cols' => 'content_id', 'opts' => array( 'UNIQUE' ) ),
+	'blog_posts_content_id_idx' => array( 'table' => 'blog_posts', 'cols' => 'content_id', 'opts' => array( 'UNIQUE' ) ),
 );
 // TODO - SPIDERR - following seems to cause time _decrease_ cause bigint on postgres. need more investigation
 //	'blog_posts_created_idx' => array( 'table' => 'blog_posts', 'cols' => 'created', 'opts' => NULL ),
