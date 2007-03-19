@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.16 2007/03/18 18:49:59 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.17 2007/03/19 00:34:28 spiderr Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -20,10 +20,6 @@
 					</div>
 				</div>
 			</div>
-		{/if}
-
-		{if $individual eq 'y'}
-			{formfeedback warning="<a href='`$smarty.const.KERNEL_PKG_URL`object_permissions.php?objectName=blog%20`$title`&amp;object_type=blog&amp;permType=blogs&amp;object_id=`$blog_id`'>There are individual permissions set for this blog</a>" position="top"}
 		{/if}
 
 		{form ipackage="blogs" ifile="edit.php"}

@@ -248,7 +248,7 @@ class BitBlog extends LibertyContent {
 			$whereSql = preg_replace( '/^[\s]*AND/', ' WHERE ', $whereSql );
 		}
 
-		$query = "SELECT b.*, uu.`login`, uu.`real_name`, lc.*, lch.hits $selectSql
+		$query = "SELECT b.`content_id` AS `hash_key`, b.*, uu.`login`, uu.`real_name`, lc.*, lch.hits $selectSql
 				  FROM `".BIT_DB_PREFIX."blogs` b 
 					  INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
 					  INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
@@ -256,30 +256,22 @@ class BitBlog extends LibertyContent {
 			  		  LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 				  $whereSql order by ".$this->mDb->convertSortmode($pParamHash['sort_mode']);
 
-		$result = $this->mDb->query( $query, $bindVars, $pParamHash['max_records'], $pParamHash['offset'] );
-
 		$ret = array();
 
 		// Return a data array, even if empty
 		$pParamHash["data"] = array();
 
-		while ($res = $result->fetchRow()) {
-			//"DEPRECATED - Slated for removal
-			/*
-			if ( $gBitSystem->isPackageActive( 'categories' ) ) {
-				global $categlib;
-				$res['categs'] = $categlib->get_object_categories( BITBLOG_CONTENT_TYPE_GUID, $res['blog_id'] );
+		if( $ret = $this->mDb->getAssoc( $query, $bindVars, $pParamHash['max_records'], $pParamHash['offset'] ) ) {
+			foreach( array_keys( $ret ) as $blogContentId ) {
+				$ret[$blogContentId]['blog_url'] = $this->getDisplayUrl( $ret[$blogContentId]['blog_id'] );
+				//get count of post in each blog
+				$ret[$blogContentId]['postscant'] = $this->getPostsCount( $ret[$blogContentId]['content_id'] );
+				// deal with the parsing
+				$parseHash['format_guid']   = $ret[$blogContentId]['format_guid'];
+				$parseHash['content_id']    = $ret[$blogContentId]['content_id'];
+				$parseHash['data'] 			= $ret[$blogContentId]['data'];
+				$ret[$blogContentId]['parsed'] = $this->parseData( $parseHash );
 			}
-			*/
-			$res['blog_url'] = $this->getDisplayUrl( $res['blog_id'] );
-			//get count of post in each blog
-			$res['postscant'] = $this->getPostsCount( $res['content_id'] );
-			// deal with the parsing
-			$parseHash['format_guid']   = $res['format_guid'];
-			$parseHash['content_id']    = $res['content_id'];
-			$parseHash['data'] 			= $res['data'];
-			$res['parsed'] = $this->parseData( $parseHash );
-			$pParamHash["data"][] = $res;
 		}
 		
 		$query_cant = "SELECT COUNT(b.`blog_id`)
@@ -292,7 +284,7 @@ class BitBlog extends LibertyContent {
 
 		LibertyContent::postGetList( $pParamHash );
 		
-		return $pParamHash;
+		return $ret;
 	}
 
 	function getPostsCount($pBlogContentId){

@@ -42,83 +42,65 @@
 		</div>
 
 		<ul class="clear data">
-			{section name=changes loop=$listpages}
+			{foreach from=$blogsList item=listBlog key=blogContentId}
 				<li class="item {cycle values='odd,even'}">
 					<div class="floaticon">
-						{if $gBitUser->hasPermission( 'p_blogs_post' )}
-							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_post' ))}
-								{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' )) or ($listpages[changes].is_public eq 'y')}
-									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="post"}</a>
-								{/if}
-							{/if}
+						{if ($gBitUser->mUserId and $listBlog.user_id eq $gBitUser->mUserId) || ($gBitUser->hasPermission( 'p_blogs_admin' )) or ($listBlog.is_public eq 'y')}
+									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listBlog.blog_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="post"}</a>
 						{/if}
-						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' ))}
-							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_create' ))}
-								<a title="{tr}edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="document-properties" iexplain="configure"}</a>
-							{/if}
+						{if ($gBitUser->mUserId and $listBlog.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
+							<a title="{tr}edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$listBlog.blog_id}">{biticon ipackage="icons" iname="document-properties" iexplain="configure"}</a>
 						{/if}
-						{if ($gBitUser->mUserId and $listpages[changes].user_id eq $gBitUser->mUserId) or ($gBitUser->hasPermission( 'p_blogs_admin' ))}
-							{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_create' ))}
-								<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove=1&amp;blog_id={$listpages[changes].blog_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
-							{/if}
-						{/if}
-						{if $gBitUser->isAdmin()}
-						    <a title="{tr}perms{/tr}" href="{$smarty.const.KERNEL_PKG_URL}object_permissions.php?objectName=blog%20{$listpages[changes].title|escape}&amp;objectType=blog&amp;permType=blogs&amp;object_id={$listpages[changes].blog_id}">{if $listpages[changes].individual eq 'y'}{biticon ipackage="icons" iname="emblem-readonly" iexplain="set permissions"}{else}{biticon ipackage="icons" iname="emblem-shared" iexplain="set permissions"}{/if}</a>
+						{if ($gBitUser->mUserId and $listBlog.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
+							<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove=1&amp;blog_id={$listBlog.blog_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 						{/if}
 					</div>
 
 					{if $blog_list_title eq 'y'}
-						<h2>{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_view' ))}<a title="{$listpages[changes].title|escape}" href="{$listpages[changes].blog_url}">{/if}
-						{$listpages[changes].title|escape}{if ($gBitUser->isAdmin()) or ($listpages[changes].individual eq 'n') or ($listpages[changes].individual_gBitUser->hasPermission( 'p_blogs_view' ))}</a>{/if}</h2>
+						<h2><a title="{$listBlog.title|escape}" href="{$listBlog.blog_url}">{$listBlog.title|escape}</a></h2>
 					{/if}
 
 					{if $blog_list_description eq 'y'}
-						<p>{$listpages[changes].parsed}</p>
+						<p>{$listBlog.parsed}</p>
 					{/if}
 
 					<div class="date">
 						{if $blog_list_user eq 'y'}
 							{if $blog_list_user_as eq 'link'}
-								{tr}Created by {$listpages[changes].user|userlink}{/tr}
+								{tr}Created by {$listBlog.user|userlink}{/tr}
 							{elseif $blog_list_user_as eq 'avatar'}
-								{$listpages[changes].user|avatarize}
+								{$listBlog.user|avatarize}
 							{else}
-								{tr}Created by {$listpages[changes].user}{/tr}
+								{tr}Created by {$listBlog.user}{/tr}
 							{/if}
 						{/if}
 
 						{if $blog_list_created eq 'y'}
-							{tr}{if $blog_list_user ne 'y'}<br />Created{/if} on {$listpages[changes].created|bit_short_date}{/tr}
+							{tr}{if $blog_list_user ne 'y'}<br />Created{/if} on {$listBlog.created|bit_short_date}{/tr}
 							<br />
 						{/if}
 
 						{if $blog_list_lastmodif eq 'y'}
-							{tr}Last Modified {$listpages[changes].last_modified|bit_short_datetime}{/tr}
+							{tr}Last Modified {$listBlog.last_modified|bit_short_datetime}{/tr}
 						{/if}
 					</div>
 
 					<div class="footer">
 						{if $blog_list_posts eq 'y'}
-							{tr}Posts{/tr}: {$listpages[changes].postscant}&nbsp;&bull;&nbsp;
+							{tr}Posts{/tr}: {$listBlog.postscant}&nbsp;&bull;&nbsp;
 						{/if}
 						
 						{if $blog_list_visits eq 'y'}
-							{tr}Visits{/tr}: {$listpages[changes].hits}&nbsp;&bull;&nbsp;
+							{tr}Visits{/tr}: {$listBlog.hits}&nbsp;&bull;&nbsp;
 						{/if}
-						
-{* TODO: add back once activity is implemented
-						{if $blog_list_activity eq 'y'}
-							{tr}Activity{/tr}: {$listpages[changes].activity|default:0}
-						{/if}
-*}
 					</div>
 
 					<div class="clear"></div>
-			{sectionelse}
+			{foreachelse}
 				<li class="item norecords">
 					{tr}No records found{/tr}
 				</li>
-			{/section}
+			{/foreach}
 		</ul>
 
 		{pagination}

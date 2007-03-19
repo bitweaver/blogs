@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.15 2006/09/17 22:51:10 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.16 2007/03/19 00:34:28 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -37,28 +37,6 @@ $gBitSmarty->assign('uri', $uri);
 $gBitSmarty->assign('uri2', $uri2);
 
 $gBitSmarty->assign( 'parsed_data', $gContent->parseData() );
-
-$gBitSmarty->assign('individual', 'n');
-
-if ($gBitUser->object_has_one_permission($gContent->mInfo["blog_id"], 'blog')) {
-	$gBitSmarty->assign('individual', 'y');
-
-	if (!$gBitUser->isAdmin()) {
-		// Now get all the permissions that are set for this content type
-		$perms = $gBitUser->getPermissions('', 'blogs');
-		foreach( array_keys( $perms ) as $permName ) {
-			if ($gBitUser->object_has_permission( $user, $_REQUEST["blog_id"], 'blog', $permName ) ) {
-				$$permName = 'y';
-				$gBitSmarty->assign( $permName, 'y');
-			} else {
-				$$permName = 'n';
-				$gBitSmarty->assign( $permName, 'n');
-			}
-		}
-	}
-}
-
-$gBitSmarty->assign('ownsblog', $gContent->isBlogOwner() );
 
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
 	$comments_vars = array(

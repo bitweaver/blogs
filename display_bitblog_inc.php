@@ -31,32 +31,6 @@ if (!isset($_REQUEST["blog_id"])) {
 	$gBitSystem->fatalError( 'No blog indicated' );
 }
 
-$gBitSmarty->assign('individual', 'n');
-
-if ($gBitUser->object_has_one_permission( $_REQUEST["blog_id"], $gBlog->getContentType() )) {
-	$gBitSmarty->assign('individual', 'y');
-
-	if (!$gBitUser->isAdmin()) {
-		// Now get all the permissions that are set for this type of permissions 'image gallery'
-		//$perms = $gBitUser->getPermissions('', BLOGS_PKG_NAME );
-		$perms = $gBitSystem->getPermissionInfo(NULL, BLOGS_PKG_NAME);
-
-		foreach ($perms as $perm_name => $permInfo) {
-			//$perm_name = $perm["perm_name"];
-
-			if ($gBitUser->object_has_permission( $gBitUser->mUserId, $_REQUEST["blog_id"], $gBlog->getContentType(), $perm_name ) ) {
-				$$perm_name = 'y';
-
-				$gBitSmarty->assign("$perm_name", 'y');
-			} else {
-				$$perm_name = 'n';
-
-				$gBitSmarty->assign("$perm_name", 'n');
-			}
-		}
-	}
-}
-
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 if( $gBlog->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes') == 'h' ) {

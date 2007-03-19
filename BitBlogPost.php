@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.46 2007/03/18 18:49:58 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.47 2007/03/19 00:34:28 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.46 2007/03/18 18:49:58 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.47 2007/03/19 00:34:28 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.46 $ $Date: 2007/03/18 18:49:58 $ $Author: wjames5 $
+ * @version $Revision: 1.47 $ $Date: 2007/03/19 00:34:28 $ $Author: spiderr $
  */
 
 /**
@@ -93,7 +93,7 @@ class BitBlogPost extends LibertyAttachable {
 			if( $this->mInfo = $this->mDb->getRow( $query, $bindVars ) ) {
 				$this->mPostId = $this->mInfo['post_id'];
 				$this->mContentId = $this->mInfo['content_id'];
-				$this->mInfo['blogs'] = $this->getBlogs( $this->mContentId );
+				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
 				
 				/* this needs to be part of loop that gets all blogs post is in
 				$this->mInfo['blog_url'] = BitBlog::getDisplayUrl( $this->mInfo['blog_id'] );
@@ -122,14 +122,6 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mInfo['trackbacks_to'] = unserialize($this->mInfo['trackbacks_to']);
 				$this->mInfo['trackbacks_to_count'] = count($this->mInfo['trackbacks_to']);
 
-				//"DEPRECATED - Slated for removal
-				/*
-				if ( $gBitSystem->isPackageActive( 'categories' ) ) {
-					global $categlib;
-					$this->mInfo['categs'] = $categlib->get_object_categories( BITBLOGPOST_CONTENT_TYPE_GUID, $this->mContentId );
-				}
-				*/			
-
 				LibertyAttachable::load();
 				if( $this->mStorage ) {
 					foreach( array_keys( $this->mStorage ) as $key ) {
@@ -138,7 +130,7 @@ class BitBlogPost extends LibertyAttachable {
 				}
 			}
 		}
-		//return( count( $this->mInfo ) );
+		return( count( $this->mInfo ) );
 	}
 
 	function getTitle( $pHash = NULL ) {
@@ -164,23 +156,21 @@ class BitBlogPost extends LibertyAttachable {
 		return $ret;
 	}
 
-	function getBlogs( $post_content_id ){
+	function getBlogMemberships( $pPostContentId ){
 		global $gBitSystem;
 		$ret = NULL;
-		if( @$this->verifyId( $post_content_id ) ) {
-			$bindVars = array((int)$post_content_id);
-			$query = "SELECT bpm.*, b.*, lc.* 
+		if( @$this->verifyId( $pPostContentId ) ) {
+			$bindVars = array( (int)$pPostContentId );
+			$query = "SELECT b.`content_id` AS hash_key, bpm.*, b.*, lc.* 
 				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm 
 				INNER JOIN		`".BIT_DB_PREFIX."blogs`				 b ON b.`content_id` = bpm.`blog_content_id`
 				INNER JOIN		`".BIT_DB_PREFIX."liberty_content`		lc ON lc.`content_id` = b.`content_id` 
 				WHERE bpm.post_content_id = ?";
-	
-			$result = $this->mDb->query( $query, $bindVars );
-			$ret = array();
-	
-			while ($res = $result->fetchrow()) {
-				$res['blog_url'] = BitBlog::getDisplayUrl( $res['blog_id'] );
-				$ret[] = $res;
+
+			if( $ret = $this->mDb->getAssoc( $query, $bindVars ) ) {
+				foreach( array_keys( $ret ) as $blogContentId ) {
+					$ret[$blogContentId]['blog_url'] = BitBlog::getDisplayUrl( $ret[$blogContentId]['blog_id'] );
+				}
 			}
 		} else {
 			$this->mErrors['post_id'] = "Invalid post id.";
@@ -218,10 +208,6 @@ class BitBlogPost extends LibertyAttachable {
 			$pParamHash['content_type_guid'] = $this->mContentTypeGuid;
 		}
 
-		if( @$this->verifyId( $pParamHash['content_id'] ) ) {
-			$pParamHash['post_store']['content_id'] = $pParamHash['content_id'];
-		}
-		
 		if( !empty( $pParamHash['data'] ) ) {
 			$pParamHash['edit'] = $pParamHash['data'];
 		}
@@ -304,7 +290,7 @@ class BitBlogPost extends LibertyAttachable {
 			$trackbacks = serialize( $this->sendTrackbacks( $pParamHash['trackback'] ) );
 			
 			if( $this->isValid() ) {
-				$locId = array( "post_id" => $pParamHash['post_id'] );
+				$locId = array( "content_id" => $this->mContentId );
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['post_store'], $locId );
 			} else {
 				$pParamHash['post_store']['content_id'] = $pParamHash['content_id'];
@@ -316,48 +302,46 @@ class BitBlogPost extends LibertyAttachable {
 				}
 				$this->mPostId = $pParamHash['post_store']['post_id'];
 				//store the new post
-				if ( $result = $this->mDb->associateInsert( $table, $pParamHash['post_store'] ) ){ 
+				$result = $this->mDb->associateInsert( $table, $pParamHash['post_store'] );
+			}
+			
+			// let's reload to get a full mInfo hash which is needed below
+			$this->load();
+			
+			// if blog_content_id, then map the post to the relative blogs
+			if ( !empty($pParamHash['blog_content_id']) ){
+				$this->storePostMap( $this->mContentId, $pParamHash['blog_content_id'] );
+			}
 
-					// let's reload to get a full mInfo hash which is needed below
-					$this->load();
-					
-					// if blog_content_id, then map the post to the relative blogs
-					if ( !empty($pParamHash['blog_content_id']) ){
-						$this->storePostMap( $this->mContentId, $pParamHash['blog_content_id'] );
-					}
-	
-					// Update post with trackbacks successfully sent
-					// Can this be moved below into similar function below? -wjames5
-					// this throws an error on site population because post_id is not defined in pParamHash - wjames5
-					$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_from`=?, `trackbacks_to` = ? where `post_id`=?";
-					$this->mDb->query($query,array(serialize(array()), $trackbacks, (int) $pParamHash['post_id']));
-	
-	
-					if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
-						global $gBitUser, $gBitSmarty;
-						if( $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {
-							foreach ($nots as $not) {
-								$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);	
-								$gBitSmarty->assign('mail_title', $this->mInfo['title']);
-								$gBitSmarty->assign('mail_blogid', $this->mInfo['blog_id']);
-								$gBitSmarty->assign('mail_postid', $this->mPostId);
-								$gBitSmarty->assign('mail_date', $gBitSystem->getUTCTime());
-								$gBitSmarty->assign('mail_user', $this->mInfo['login']);
-								$gBitSmarty->assign('mail_data', $this->mInfo['data']);
-								$gBitSmarty->assign('mail_hash', $not['hash']);
-								$foo = parse_url($_SERVER["REQUEST_URI"]);
-								$machine = httpPrefix(). $foo["path"];
-								$gBitSmarty->assign('mail_machine', $machine);
-								$parts = explode('/', $foo['path']);
-	
-								if (count($parts) > 1)
-									unset ($parts[count($parts) - 1]);
-	
-								$gBitSmarty->assign('mail_machine_raw', httpPrefix(). implode('/', $parts));
-								$mail_data = $gBitSmarty->fetch('bitpackage:blogs/user_watch_blog_post.tpl');
-								@mail($not['email'], tra('Blog post'). ' ' . $title, $mail_data, "From: ".$gBitSystem->getPrefence( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
-							}
-						}
+			// Update post with trackbacks successfully sent
+			// Can this be moved below into similar function below? -wjames5
+			// this throws an error on site population because post_id is not defined in pParamHash - wjames5
+			$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_from`=?, `trackbacks_to` = ? where `post_id`=?";
+			$this->mDb->query($query,array(serialize(array()), $trackbacks, (int) $pParamHash['post_id']));
+
+			if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
+				global $gBitUser, $gBitSmarty;
+				if( $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {
+					foreach ($nots as $not) {
+						$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);	
+						$gBitSmarty->assign('mail_title', $this->mInfo['title']);
+						$gBitSmarty->assign('mail_blogid', $this->mInfo['blog_id']);
+						$gBitSmarty->assign('mail_postid', $this->mPostId);
+						$gBitSmarty->assign('mail_date', $gBitSystem->getUTCTime());
+						$gBitSmarty->assign('mail_user', $this->mInfo['login']);
+						$gBitSmarty->assign('mail_data', $this->mInfo['data']);
+						$gBitSmarty->assign('mail_hash', $not['hash']);
+						$foo = parse_url($_SERVER["REQUEST_URI"]);
+						$machine = httpPrefix(). $foo["path"];
+						$gBitSmarty->assign('mail_machine', $machine);
+						$parts = explode('/', $foo['path']);
+
+						if (count($parts) > 1)
+							unset ($parts[count($parts) - 1]);
+
+						$gBitSmarty->assign('mail_machine_raw', httpPrefix(). implode('/', $parts));
+						$mail_data = $gBitSmarty->fetch('bitpackage:blogs/user_watch_blog_post.tpl');
+						@mail($not['email'], tra('Blog post'). ' ' . $title, $mail_data, "From: ".$gBitSystem->getPrefence( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n");
 					}
 				}
 			}
@@ -428,12 +412,13 @@ class BitBlogPost extends LibertyAttachable {
 		$pParamHash['post_content_id'] = $pPostContentId;
 		$pParamHash['blog_content_id_mixed'] = $pBlogMixed;
 		if( $this->verifyPostMap( $pParamHash ) ) {
-			$table = BIT_DB_PREFIX."blogs_posts_map";
 			$this->mDb->StartTrans();
 			//should we check for validity on the post and should we check for validity on the blog ids? -wjames5
 			if( $this->isValid() ) {
+				// wipe out all existing mappings for this post, and re-insert
+				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=?", array( $this->mContentId ) );
 				foreach ( $pParamHash['map_store'] as $value) {
-					$result = $this->mDb->associateInsert( $table, $value );					
+					$result = $this->mDb->associateInsert( BIT_DB_PREFIX."blogs_posts_map", $value );					
 					/* DEPRECATED - this looks stupid -wjames5
 					//prolly should check that the insert above worked before upping the post count
 					$query = "UPDATE `".BIT_DB_PREFIX."blogs` set `posts`=`posts`+1 where `content_id`=?";
@@ -441,10 +426,8 @@ class BitBlogPost extends LibertyAttachable {
 					*/
 				}
 			}
-			
 			$this->mDb->CompleteTrans();
 		}
-		
 		return ( count( $this->mErrors ) == 0 );
 	}
 	
@@ -736,7 +719,7 @@ class BitBlogPost extends LibertyAttachable {
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
 				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
 				$res['display_url'] = $res['post_url'];
-				$res['blogs'] = $this->getBlogs( $res['content_id'] );
+				$res['blogs'] = $this->getBlogMemberships( $res['content_id'] );
 
 				// trackbacks
 				if($res['trackbacks_from']!=null)

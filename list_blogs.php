@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.11 2007/03/18 18:49:58 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.12 2007/03/19 00:34:28 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -37,45 +37,9 @@ if( $gBlog->isValid() && isset($_REQUEST["remove"])) {
 }
 
 // Get a list of last changes to the Wiki database
-$listBlogs = $gBlog->getList( $_REQUEST );
+$blogsList = $gBlog->getList( $_REQUEST );
 $gBitSmarty->assign( 'listInfo', $_REQUEST['listInfo'] );
-$gBitSmarty->assign( 'listpages', $listBlogs["data"] );
-
-for ($i = 0; $i < count($listBlogs["data"]); $i++) {
-	if ($gBitUser->object_has_one_permission($listBlogs["data"][$i]["blog_id"], 'blog')) {
-		$listBlogs["data"][$i]["individual"] = 'y';
-
-		if ($gBitUser->object_has_permission($user, $listBlogs["data"][$i]["blog_id"], 'blog', 'p_blogs_view')) {
-			$listBlogs["data"][$i]["individual_bit_p_read_blog"] = 'y';
-		} else {
-			$listBlogs["data"][$i]["individual_bit_p_read_blog"] = 'n';
-		}
-
-		if ($gBitUser->object_has_permission($user, $listBlogs["data"][$i]["blog_id"], 'blog', 'p_blogs_post')) {
-			$listBlogs["data"][$i]["individual_bit_p_blog_post"] = 'y';
-		} else {
-			$listBlogs["data"][$i]["individual_bit_p_blog_post"] = 'n';
-		}
-
-		if ($gBitUser->object_has_permission($user, $listBlogs["data"][$i]["blog_id"], 'blog', 'p_blogs_create')) {
-			$listBlogs["data"][$i]["individual_bit_p_create_blogs"] = 'y';
-		} else {
-			$listBlogs["data"][$i]["individual_bit_p_create_blogs"] = 'n';
-		}
-
-		if ($gBitUser->isAdmin() || $gBitUser->object_has_permission($user, $listBlogs["data"][$i]["blog_id"], 'blog', 'p_blogs_admin'))
-			{
-			$listBlogs["data"][$i]["individual_bit_p_create_blogs"] = 'y';
-
-			$listBlogs["data"][$i]["individual_bit_p_blog_post"] = 'y';
-			$listBlogs["data"][$i]["individual_bit_p_read_blog"] = 'y';
-		}
-	} else {
-		$listBlogs["data"][$i]["individual"] = 'n';
-	}
-}
-
-$gBitSmarty->assign_by_ref('listpages', $listBlogs["data"]);
+$gBitSmarty->assign_by_ref( 'blogsList', $blogsList );
 
 $gBitSystem->setBrowserTitle("View All Blogs");
 // Display the template

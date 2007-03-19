@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.19 2007/03/18 18:49:59 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.20 2007/03/19 00:34:28 spiderr Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -22,25 +22,11 @@
 			{jstabs}
 				{jstab title="Create Blog Post"}
 					{legend legend="Post"}
-						{if $blogs}
-							<div class="row">
-								{formlabel label="Blogs" for="blog_id"}
-								{forminput}
-									<select multiple name="blog_content_id[]" id="blog_content_id">
-										{section name=ix loop=$blogs}
-											<option value="{$blogs[ix].content_id|escape}" {if $blogs[ix].content_id eq $content_id}selected="selected"{/if}>{$blogs[ix].title|escape}</option>
-										{/section}
-									</select>
-									{formhelp note="You can cross post to any and all of the blogs listed above.<br />To select multiple blogs hold option + shift and then click the blogs you wish to cross post to."}
-								{/forminput}
-							</div>
-						{/if}
-						
 						{if !$blog_data.use_title OR $blog_data.use_title eq 'y'}
 							<div class="row">
 								{formlabel label="Title" for="title"}
 								{forminput}
-									<input type="text" size="50" name="title" id="title" value="{$title|escape}" />
+									<input type="text" size="50" name="title" id="title" value="{$gContent->getTitle()|escape}" />
 									{formhelp note="When you leave the title blank, the current date will be substituted automagically."}
 								{/forminput}
 							</div>
@@ -58,10 +44,24 @@
 
 						<div class="row">
 							{forminput}
-								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$data|escape:html}</textarea>
+								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$gContent->getField('data')|escape:html}</textarea>
 							{/forminput}
 						</div>
 
+						{if $availableBlogs}
+							<div class="row">
+								{formlabel label="Include in Blogs" for="blog_id"}
+								{forminput}
+									<select multiple="multiple" name="blog_content_id[]" id="blog_content_id">
+										{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
+											<option value="{$blogContentId}" {if $gContent->mInfo.blogs.$blogContentId}selected="selected"{/if}>{$availBlogTitle|escape}</option>
+										{/foreach}
+									</select>
+									{formhelp note="You can cross post to any and all of the blogs listed above.<br />To select multiple blogs hold option + shift and then click the blogs you wish to cross post to."}
+								{/forminput}
+							</div>
+						{/if}
+						
 						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
 
 						{include file="bitpackage:liberty/edit_storage_list.tpl"}
