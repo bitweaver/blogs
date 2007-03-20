@@ -8,9 +8,6 @@
 	{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
 		<div class="floaticon">
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$aPost}
-			{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
-				<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$aPost.blog_id}">{biticon ipackage="icons" iname="network-wireless" iexplain="rss feed"}</a>
-			{/if}
 			{if ($aPost.ownsblog eq 'y') or ($gBitUser->mUserId and $aPost.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
 				<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$aPost.blog_id}&amp;post_id={$aPost.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 				<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;remove_post_id={$aPost.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
@@ -31,15 +28,13 @@
 		<div class="date">
 			{tr}Posted by{/tr} {displayname hash=$aPost}<br />
 			{tr}Posted on{/tr} {$aPost.publish_date|default:$aPost.created|bit_long_date}<br/>			
-{*			{if $showBlogTitle} *}
 				{if count($aPost.blogs) > 0}
 					{tr}Posted to{/tr}&nbsp;
-					{section name=blogs loop=$aPost.blogs}
-						<a href="{$aPost.blogs[blogs].blog_url}">{$aPost.blogs[blogs].title}</a>&nbsp;
-					{/section}
+					{foreach from=$aPost.blogs item=memberBlog key=blogContentId name=memberBlogLoop}
+						<a href="{$memberBlog.blog_url}">{$memberBlog.title}</a>{if $smarty.foreach.memberBlogLoop.total > 1 && !$smarty.foreach.memberBlogLoop.last }, {/if}
+					{/foreach}
 				<br />
 				{/if}	
-{*			{/if} *}
 
 
 
