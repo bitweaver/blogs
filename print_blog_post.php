@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.12 2006/04/14 20:25:50 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.13 2007/03/20 17:35:01 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -51,34 +51,12 @@ $find = $_REQUEST["find"];
 
 $gBitSmarty->assign( 'parsed_data', $gContent->parseData() );
 
-$gBitSmarty->assign('individual', 'n');
-
-if ($gBitUser->object_has_one_permission($gContent->mInfo['blog_id'], 'blog')) {
-	$gBitSmarty->assign('individual', 'y');
-
-	if (!$gBitUser->isAdmin()) {
-		// Now get all the permissions that are set for this content type
-		$perms = $gBitUser->getPermissions('', 'blogs');
-		foreach( array_keys( $perms ) as $permName ) {
-			if ($gBitUser->object_has_permission( $user, $_REQUEST["blog_id"], 'blog', $permName ) ) {
-				$$permName = 'y';
-				$gBitSmarty->assign( $permName, 'y');
-			} else {
-				$$permName = 'n';
-				$gBitSmarty->assign( $permName, 'n');
-			}
-		}
-	}
-}
-
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 $ownsblog = 'n';
-
 if ($gBitUser->mUserId && $gBitUser->mUserId == $gContent->mInfo['blog_user_id'] ) {
 	$ownsblog = 'y';
 }
-
 $gBitSmarty->assign('ownsblog', $ownsblog);
 
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
