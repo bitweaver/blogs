@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.18 2007/03/18 18:49:59 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.19 2007/03/20 19:29:29 spiderr Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -8,7 +8,7 @@
 			{/if}
 		{/if}
 
-		{if $gBitSystem->isPackageActive( 'rss' ) && $gBlog->getField('rss_blog') eq 'y'}
+		{if $gBitSystem->isPackageActive( 'rss' )}
 			<a title="{tr}RSS feed{/tr}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$gBlog->mBlogId}">{biticon ipackage="icons" iname="network-wireless" iexplain="RSS feed"}</a>
 		{/if}
 

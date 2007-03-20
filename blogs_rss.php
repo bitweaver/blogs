@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.19 2007/01/07 10:48:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.20 2007/03/20 19:29:29 spiderr Exp $
  * @package article
  * @subpackage functions
  */
@@ -33,32 +33,32 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 	$listHash['sort_mode'] = 'last_modified_desc';
 	$listHash['max_records'] = $gBitSystem->getConfig( 'blogs_rss_max_records', 10 );
 	$listHash['parse_data'] = TRUE;
+	$listHash['full_data'] = TRUE;
 	if( !empty( $_REQUEST['blog_id'] ) ) {
 		$listHash['blog_id'] = $_REQUEST['blog_id'];
+		$gBlog = new BitBlog( $_REQUEST['blog_id'] );
+		if( $gBlog->load() ) {
+			// adjust feed title to blog title
+			$rss->title = $gBlog->getTitle();
+			$rss->description = $gBlog->parseData();
+		}
 	}
 	$feeds = $blogPost->getList( $listHash );
 
-	// adjust feed title to blog title
-	if( !empty( $_REQUEST['blog_id'] ) && !empty( $feeds['data'] ) ) {
-		$rss->title = $feeds['data'][0]['blogtitle'];
-		$rss->description = $feeds['data'][0]['blogdescription'];
-	}
-
 	// set the rss link
 	$rss->link = 'http://'.$_SERVER['HTTP_HOST'].BLOGS_PKG_URL.( !empty( $_REQUEST['blog_id'] ) ? "?blog_id=".$_REQUEST['blog_id'] : "" );
-
 	// get all the data ready for the feed creator
 	foreach( $feeds['data'] as $feed ) {
 		$item = new FeedItem();
 		$item->title = $blogPost->getTitle( $feed );
 		$item->link = BIT_BASE_URI.$blogPost->getDisplayUrl( $feed['content_id'] );
-		$item->description = $feed['parsed_data'];
+		$item->description = $feed['parsed'];
 
 		$item->date = ( int )$feed['last_modified'];
 		$item->source = 'http://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL;
 		$item->author = $gBitUser->getDisplayName( FALSE, $feed );
 
-		$item->descriptionTruncSize = $gBitSystem->getConfig( 'rssfeed_truncate', 5000 );
+		$item->descriptionTruncSize = $gBitSystem->getConfig( 'rssfeed_truncate', 50000 );
 		$item->descriptionHtmlSyndicated = TRUE;
 
 		// pass the item on to the rss feed creator

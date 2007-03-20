@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.47 2007/03/19 00:34:28 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.48 2007/03/20 19:29:29 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.47 2007/03/19 00:34:28 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.48 2007/03/20 19:29:29 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.47 $ $Date: 2007/03/19 00:34:28 $ $Author: spiderr $
+ * @version $Revision: 1.48 $ $Date: 2007/03/20 19:29:29 $ $Author: spiderr $
  */
 
 /**
@@ -741,33 +741,40 @@ class BitBlogPost extends LibertyAttachable {
 				$res['pages'] = $this->getNumberOfPages( $res['data'] );
 				
 				// deal with the parsing
-				$pListHash['format_guid']     = $res['format_guid'];
-				$pListHash['content_id']      = $res['content_id'];
-				$pListHash['cache_extension'] = 'desc';
+				$parseHash['format_guid']     = $res['format_guid'];
+				$parseHash['content_id']      = $res['content_id'];
+				$parseHash['cache_extension'] = 'desc';
 				// support for ...split... and auto split
-				if( preg_match( BITBLOGPOST_SPLIT_REGEX, $res['data'] ) ) {
-					$res['man_split'] = TRUE;
-					$parts = preg_split( BITBLOGPOST_SPLIT_REGEX, $res['data'] );
-					if( empty( $parts[1] ) ) {
-						$res['has_more'] = FALSE;
-					}
-					$pListHash['data'] = $parts[0];
+				if( !empty( $pListHash['full_data'] ) ) {
+					$parseHash['data'] = $res['data'];
+					$res['parsed'] = $this->parseData( $parseHash );
 				} else {
-					$pListHash['data'] = substr( $res['data'], 0, $gBitSystem->getConfig( 'blog_posts_description_length', 500 ) );
-				}
-				// description shouldn't contain {maketoc}
-				$pListHash['data'] = preg_replace( "/\{maketoc[^\}]*\}/i", "", $pListHash['data'] );
-				$res['parsed_description'] = $this->parseData( $pListHash );
-	
-				// this is needed to remove trailing stuff from the parser and insert ...			
-				$trailing_junk_pattern = "/(<br[^>]*>)*$/i";
-				$res['parsed_description'] = preg_replace( $trailing_junk_pattern, "", $res['parsed_description'] );
-				if( preg_replace( "/\{maketoc[^\}]*\}/i", "", $res['data'] ) != $pListHash['data'] && empty( $res['man_split'] )) {
-					// we append ... when the split was generated automagically
-					$res['parsed_description'] .= '&hellip;';
-					$res['has_more'] = TRUE;
-				} elseif( preg_replace( "/\{maketoc[^\}]*\}/i", "", $res['data'] ) != $pListHash['data'] ) {
-					$res['has_more'] = TRUE;
+					if( preg_match( BITBLOGPOST_SPLIT_REGEX, $res['data'] ) ) {
+						$res['man_split'] = TRUE;
+						$parts = preg_split( BITBLOGPOST_SPLIT_REGEX, $res['data'] );
+						if( empty( $parts[1] ) ) {
+							$res['has_more'] = FALSE;
+						}
+						$parseHash['data'] = $parts[0];
+					} else {
+						$parseHash['data'] = substr( $res['data'], 0, $gBitSystem->getConfig( 'blog_posts_description_length', 500 ) );
+					}
+
+					// description shouldn't contain {maketoc}
+					$parseash['data'] = preg_replace( "/\{maketoc[^\}]*\}/i", "", $parseHash['data'] );
+					$res['parsed'] = $this->parseData( $parseHash );
+					$res['parsed_description'] = $res['parsed'];
+		
+					// this is needed to remove trailing stuff from the parser and insert ...			
+					$trailing_junk_pattern = "/(<br[^>]*>)*$/i";
+					$res['parsed_description'] = preg_replace( $trailing_junk_pattern, "", $res['parsed_description'] );
+					if( preg_replace( "/\{maketoc[^\}]*\}/i", "", $res['data'] ) != $parseHash['data'] && empty( $res['man_split'] )) {
+						// we append ... when the split was generated automagically
+						$res['parsed_description'] .= '&hellip;';
+						$res['has_more'] = TRUE;
+					} elseif( preg_replace( "/\{maketoc[^\}]*\}/i", "", $res['data'] ) != $parseHash['data'] ) {
+						$res['has_more'] = TRUE;
+					}
 				}
 				
 				$ret[] = $res;
