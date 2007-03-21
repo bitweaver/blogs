@@ -15,13 +15,13 @@ require_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 $displayHash = array( 'perm_name' => 'p_blogs_view' );
-$gBlog->invokeServices( 'content_display_function', $displayHash );
+$gContent->invokeServices( 'content_display_function', $displayHash );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
 if( isset($_REQUEST['user_id']) && !isset( $_REQUEST['blog_id'] ) ) {
 	// We will try and grab the first blog owned by the user id given
-	$blogsList = $gBlog->list_user_blogs($_REQUEST['user_id']);
+	$blogsList = $gContent->list_user_blogs($_REQUEST['user_id']);
 	if (!empty($blogsList[0]['blog_id'])) {
 		$_REQUEST['blog_id'] = $blogsList[0]['blog_id'];
 	}
@@ -33,14 +33,14 @@ if (!isset($_REQUEST["blog_id"])) {
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
-if( $gBlog->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
-	$gBitSystem->setStyle( $gBlog->getField( 'blog_style' ) );
-	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gBlog->getField( 'blog_style' ), $gBlog->getField( 'user_id' ) );
-	$gBitSmarty->assign( 'userStyle', $gBlog->getField( 'blog_style' ) );
+if( $gContent->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
+	$gBitSystem->setStyle( $gContent->getField( 'blog_style' ) );
+	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gContent->getField( 'blog_style' ), $gContent->getField( 'user_id' ) );
+	$gBitSmarty->assign( 'userStyle', $gContent->getField( 'blog_style' ) );
 }
 
-if( !$gBlog->hasEditPermission() ) {
-	$gBlog->addHit();
+if( !$gContent->hasEditPermission() ) {
+	$gContent->addHit();
 }
 
 
@@ -73,14 +73,14 @@ $blogPost = new BitBlogPost();
 $listHash = array();
 $listHash['blog_id'] = $_REQUEST['blog_id'];
 $listHash['parse_data'] = TRUE;
-$listHash['max_records'] = $gBlog->getField( 'max_posts' );
+$listHash['max_records'] = $gContent->getField( 'max_posts' );
 $listHash['load_num_comments'] = TRUE;
 $blogPosts = $blogPost->getList( $listHash );
 if( count( $blogPosts['data'] ) ) {
 	// If there're more records then assign next_offset
 	$gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
-} elseif( $gBlog->hasPostPermission() ) {
-	bit_redirect( BLOGS_PKG_URL.'post.php?blog_id='.$gBlog->getField( 'blog_id' ) );
+} elseif( $gContent->hasPostPermission() ) {
+	bit_redirect( BLOGS_PKG_URL.'post.php?blog_id='.$gContent->getField( 'blog_id' ) );
 }
 
 if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
@@ -105,6 +105,6 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 $gBitSmarty->assign('descriptionLength', $gBitSystem->getConfig( 'blog_posts_description_length', 500 ) );
 $gBitSmarty->assign('showDescriptionsOnly', TRUE);
 // Display the template
-$gBitSystem->display( 'bitpackage:blogs/view_blog.tpl', $gBlog->getTitle() );
+$gBitSystem->display( 'bitpackage:blogs/view_blog.tpl', $gContent->getTitle() );
 
 ?>

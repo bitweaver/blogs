@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.32 2007/03/19 00:34:28 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.33 2007/03/21 17:29:31 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -18,8 +18,11 @@ require_once( '../bit_setup_inc.php' );
 $gBitSystem->verifyPackage( 'blogs' );
 $gBitSystem->verifyPermission( 'p_blogs_post' );
 
-require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
+//DEPRECATED -wjames5
+//require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
+require_once( BLOGS_PKG_PATH.'BitBlog.php');
+$gBlog = new BitBlog();
 
 // nuke post if requested
 if( !empty( $_REQUEST['action'] ) ) {
@@ -64,6 +67,7 @@ if (isset($_REQUEST["preview"])) {
 	$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
 
 	// used by the preview page
+	/* DEPRECATED - need a substitute for getting a list of the blogs we want to cross post to -wjames5
 	$post_info_blog = array($gBlog->getBlog($_REQUEST['blog_id']));
 	$post_info = array(
 		'title' => isset( $_REQUEST["title"] ) ? $_REQUEST['title'] : '',
@@ -72,6 +76,7 @@ if (isset($_REQUEST["preview"])) {
 		'created' => time(),
 	);
 	$gBitSmarty->assign('post_info', $post_info);
+	*/
 	$gBitSmarty->assign('data', $data);
 	$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
 	$gBitSmarty->assign('parsed_data', $parsed_data);
@@ -107,6 +112,9 @@ if (isset($_REQUEST["preview"])) {
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
+/* DEPRECATED -need a replacement for this but this is all kinds of crazy -wjames5
+ * possible solution at end of commented parts
+ */
 // $blogs holds a list of blogs which the user can post into
 // If a specific blog_id is passed in, we will use that and not load up all the blogs
 if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
@@ -131,7 +139,8 @@ if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
 	}
 }
 
-
+/*probably get rid of this stuff too -wjame5
+ */
 $availableBlogs = array();
 foreach( array_keys( $blogs ) as $blogContentId ) {
 	$availableBlogs[$blogContentId] = $blogs[$blogContentId]['title'];
@@ -143,9 +152,16 @@ if (isset($_REQUEST['blog_content_id'])) {
 	$gBitSmarty->assign('blog_content_id', $_REQUEST['blog_content_id'] );
 }
 
+
+/* replace the above with something like this, with perms check on each blog, 
+ * I think blog_post.tpl will need a bit of modifying as well 
+ * trick is when admin has to check perms on 1000 blogs of legacy sites -wjames5
+$blogs = $gBlog->getList();
+$gBitSmarty->assign( 'availableBlogs', $blogs );
+ */
+ 
 // Need ajax for attachment browser
 $gBitSmarty->assign('loadAjax', true);
 
 $gBitSystem->display( 'bitpackage:blogs/blog_post.tpl', "Create Blog Post" );
-
 ?>

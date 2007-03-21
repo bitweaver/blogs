@@ -7,22 +7,23 @@
 /**
  * required setup
  */
-global $gContent, $gBitSmarty, $gBlog;
-require_once( BLOGS_PKG_PATH.'BitBlog.php');
+global $gContent;
+require_once( BLOGS_PKG_PATH.'BitBlog.php' );
+require_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
 
 // if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.
-if( empty( $gBlog ) || !is_object( $gBlog ) || !$gBlog->isValid() ) {
+if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {
 	// if blog_id supplied, use that
 	if( @BitBase::verifyId( $_REQUEST['blog_id'] ) ) {
-		$gBlog = new BitBlog( $_REQUEST['blog_id'] );
-		$gBlog->load();
+		$gContent = new BitBlog( $_REQUEST['blog_id'] );
+		$gContent->load();
 	} elseif( @BitBase::verifyId( $_REQUEST['content_id'] ) ) {
-		$gBlog = new BitBlog( NULL, $_REQUEST['content_id'] );
-		$gBlog->load();
+		$gContent = new BitBlog( NULL, $_REQUEST['content_id'] );
+		$gContent->load();
 	} else {
-		$gBlog = new BitBlog();
+		$gContent = new BitBlog();
 	}
 
-	$gBitSmarty->assign_by_ref( "gBlog", $gBlog );
- }
+	$gBitSmarty->assign_by_ref( 'gContent', $gContent );
+} 
 ?>

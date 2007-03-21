@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.12 2007/03/19 00:34:28 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.13 2007/03/21 17:29:31 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -21,23 +21,23 @@ $gBitSystem->verifyPackage( 'blogs' );
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
-if( $gBlog->isValid() && isset($_REQUEST["remove"])) {
+if( $gContent->isValid() && isset($_REQUEST["remove"])) {
 	// Check if has edit perm of this blog
-	if( $gBlog->hasUserPermission( 'p_blog_edit', TRUE ) ) {
+	if( $gContent->hasUserPermission( 'p_blog_edit', TRUE ) ) {
 		if( !empty( $_REQUEST['cancel'] ) ) {
 			// user cancelled - just continue on, doing nothing
 		} elseif( empty( $_REQUEST['confirm'] ) ) {
 			$formHash['remove'] = $_REQUEST["remove"];
-			$formHash['blog_id'] = $gBlog->mBlogId;
-			$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$gBlog->getTitle().'? All posts will be permanently deleted.', 'error' => 'This cannot be undone!' ) );
+			$formHash['blog_id'] = $gContent->mBlogId;
+			$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$gContent->getTitle().'? All posts will be permanently deleted.', 'error' => 'This cannot be undone!' ) );
 		} else {
-			$gBlog->expunge();
+			$gContent->expunge();
 		}
 	}
 }
 
 // Get a list of last changes to the Wiki database
-$blogsList = $gBlog->getList( $_REQUEST );
+$blogsList = $gContent->getList( $_REQUEST );
 $gBitSmarty->assign( 'listInfo', $_REQUEST['listInfo'] );
 $gBitSmarty->assign_by_ref( 'blogsList', $blogsList );
 

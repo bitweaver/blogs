@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.19 2007/03/18 18:49:58 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.20 2007/03/21 17:29:31 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -31,6 +31,7 @@ if (!isset($last_modified)) {
 
 $gBitSmarty->assign_by_ref('heading', $heading);
 
+/* DEPRECATED slated for removal -wjames5
 if( $gBlog->isValid() ) {
 	$gContent = &$gContent; // make a reference so services work correctly
 	$_REQUEST['content_id'] = $gBlog->mContentId;
@@ -38,6 +39,15 @@ if( $gBlog->isValid() ) {
 		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
 	}
 }
+*/
+
+if( $gContent->isValid() ) {
+	$_REQUEST['content_id'] = $gContent->mContentId;
+	if( !$gContent->hasEditPermission() ) {
+		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
+	}
+}
+
 
 // Now check permissions to access this page
 if (!$gBitUser->hasPermission( 'p_blogs_create' ) && ($gBitUser->mUserId != $data['user_id'] || !$gBitUser->mUserId) ) {
@@ -60,19 +70,19 @@ if (isset($_REQUEST['preview'])) {
 	$gBlog->invokeServices('content_preview_function');	
 }
 else {
-	$gBlog->invokeServices('content_edit_function');
+	$gContent->invokeServices('content_edit_function');
 }
 
 if (isset($_REQUEST['save_blog'])) {
 
-	if( $gBlog->store( $_REQUEST ) ) {
-		bit_redirect( $gBlog->getDisplayUrl() );
+	if( $gContent->store( $_REQUEST ) ) {
+		bit_redirect( $gContent->getDisplayUrl() );
 	} else {
-		$gBitSmarty->assign_by_ref( 'errors', $gBlog->mErrors );
+		$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 	}
 }
 
-$gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gBlog->getTitle() );
+$gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gContent->getTitle() );
 // Display the Index Template
 $gBitSmarty->assign('show_page_bar', 'n');
 // Let services work on blogs
@@ -80,7 +90,7 @@ if( $gBitUser->hasPermission( 'p_liberty_assign_content_perms' ) ) {
 	require_once( LIBERTY_PKG_PATH.'content_permissions_inc.php' );
 }
 
-$gBitSmarty->assign_by_ref('gContent', $gBlog);
+$gBitSmarty->assign_by_ref('gContent', $gContent);
 $gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl');
 
 ?>
