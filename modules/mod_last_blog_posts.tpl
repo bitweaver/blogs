@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.tpl,v 1.2 2005/08/07 17:35:54 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.tpl,v 1.3 2007/03/22 12:15:34 phoenixandy Exp $ *}
 {strip}
 {if $blogsPackageActive}
 	{bitmodule title="$moduleTitle" name="last_blog_posts"}
@@ -8,7 +8,7 @@
 					<div class="date">{$modLastBlogPosts[ix].created|bit_long_date}
 					<br />
 					by {displayname hash=$modLastBlogPosts[ix]}</div>
-					{$modLastBlogPosts[ix].parsed_data|truncate:$maxPreviewLength}
+					{$modLastBlogPosts[ix].parsed|truncate:$maxPreviewLength}
 					<br />
 					<a href="{$modLastBlogPosts[ix].post_url}">Read more</a>
 				</li>
