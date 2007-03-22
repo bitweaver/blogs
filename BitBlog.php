@@ -244,6 +244,11 @@ class BitBlog extends LibertyContent {
 			}
 		}
 */  
+
+		if( !empty( $pParamHash['content_perm_name'] ) ) {
+			$this->getContentPermissionsSql( $pParamHash['content_perm_name'], $selectSql, $joinSql, $whereSql, $bindVars );
+		}
+
 		if( !empty( $whereSql ) ) {
 			$whereSql = preg_replace( '/^[\s]*AND/', ' WHERE ', $whereSql );
 		}

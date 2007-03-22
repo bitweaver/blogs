@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.33 2007/03/21 17:29:31 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.34 2007/03/22 19:58:10 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -112,32 +112,14 @@ if (isset($_REQUEST["preview"])) {
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
-/* DEPRECATED -need a replacement for this but this is all kinds of crazy -wjames5
- * possible solution at end of commented parts
- */
-// $blogs holds a list of blogs which the user can post into
-// If a specific blog_id is passed in, we will use that and not load up all the blogs
-if ($gBitUser->hasPermission( 'p_blogs_admin' )) {
-	$listHash = array();
-	$listHash['sort_mode'] = 'created_desc';
+$listHash = array();
+$listHash['sort_mode'] = 'title_desc';
+if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
 	$blogs = $gBlog->getList( $listHash );
-	// Get blogs the admin owns
-	$listHash = array();
 	$listHash['user_id'] = $gBitUser->mUserId;
-	$adminBlogs = $gBlog->getList( $listHash );
-} else {
-	if ( $gBlog->isValid() ) {
-		if( $gBlog->hasPostPermission() ) {
-			$blogs['data'][] = $gBlog->mInfo;
-		} else {
-			$gBitSystem->fatalError( tra("You cannot post into this blog") );
-		}
-	} else {
-		$listHash = array();
-		$listHash['user_id'] = $gBitUser->mUserId;
-		$blogs = $gBlog->getList( $listHash );
-	}
+	$listHash['content_perm_name'] = 'p_blogs_post';
 }
+$blogs = $gBlog->getList( $listHash );
 
 /*probably get rid of this stuff too -wjame5
  */
