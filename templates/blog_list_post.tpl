@@ -8,6 +8,9 @@
 	{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
 		<div class="floaticon">
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$aPost}
+			{if $gBitUser->hasPermission( 'p_blogs_admin' )}
+				<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$aPost.post_id}">{biticon ipackage="icons" iname="accessories-crosspost" iexplain="crosspost"}</a>
+			{/if}
 			{if ($aPost.ownsblog eq 'y') or ($gBitUser->mUserId and $aPost.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
 				<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$aPost.blog_id}&amp;post_id={$aPost.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 				<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;remove_post_id={$aPost.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.21 2007/03/22 01:58:36 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.22 2007/03/22 19:59:05 wjames5 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -52,16 +52,18 @@
 							<div class="row">
 								{formlabel label="Include in Blogs" for="blog_id"}
 								{forminput}
+								{*
 									{if count($availableBlogs)==1}
 										{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
 											<input type="hidden" name="blog_content_id[]" value="{$blogContentId}">{$availBlogTitle}
 										{/foreach}
 									{else}
+									*}
 										{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
 											<input name="blog_content_id[]" type="checkbox" option value="{$blogContentId}" {if $gContent->mInfo.blogs.$blogContentId}checked="checked"{/if}>{$availBlogTitle|escape}</option><br/>
 										{/foreach}
-										{formhelp note="You can cross post to any and all of the blogs listed above.<br />To select multiple blogs hold option + shift and then click the blogs you wish to cross post to."}
-									{/if}
+										{formhelp note="You can cross post to any and all of the blogs listed above.<br />Just check off the blogs you wish this post to also show up in."}
+								{*	{/if} *}
 								{/forminput}
 							</div>
 						{/if}
