@@ -19,7 +19,7 @@
 				{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
 					<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?user_id={$post_info.user_id}">{biticon ipackage="icons" iname="network-wireless" iexplain="rss feed"}</a>
 				{/if}
-				{if $gBitUser->hasPermission( 'p_blogs_admin' )}
+				{if $gContent->hasEditPermission()}
 					<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 					<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;remove_post_id={$post_info.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 				{/if}
@@ -64,9 +64,9 @@
 			{tr}Posted on{/tr} {$post_info.publish_date|default:$post_info.created|bit_long_date}<br/>			
 			{if count($post_info.blogs) > 0}
 				{tr}Posted to{/tr}
-				{section name=blogs loop=$post_info.blogs}
-					<a href="{$post_info.blogs[blogs].blog_url}">{$post_info.blogs[blogs].title}</a> 
-				{/section}
+				{foreach from=$post_info.blogs item=memberBlog key=blogContentId name=memberBlogLoop}
+					<a href="{$memberBlog.blog_url}">{$memberBlog.title}</a>{if $smarty.foreach.memberBlogLoop.total > 1 && !$smarty.foreach.memberBlogLoop.last }, {/if}
+				{/foreach}
 			<br />
 			{/if}	
 		</div>

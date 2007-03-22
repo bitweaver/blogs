@@ -163,12 +163,12 @@ class BitBlog extends LibertyContent {
 		if ( $this->isValid() ) {
 			$this->mDb->StartTrans();
 
-			$query = "DELETE from `".BIT_DB_PREFIX."blogs` where `content_id`=?";
-			$result = $this->mDb->query( $query, array( (int)$this->mContentId ) );
-
 			// remove all references in blogs_posts_map where post_content_id = content_id
 			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id` = ?";			
 			$result = $this->mDb->query( $query_map, array( $this->mContentId ) );
+
+			$query = "DELETE from `".BIT_DB_PREFIX."blogs` where `content_id`=?";
+			$result = $this->mDb->query( $query, array( (int)$this->mContentId ) );
 
 			if( parent::expunge() ) {
 				$ret = TRUE;

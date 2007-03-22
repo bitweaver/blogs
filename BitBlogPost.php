@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.48 2007/03/20 19:29:29 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.49 2007/03/22 01:58:36 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.48 2007/03/20 19:29:29 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.49 2007/03/22 01:58:36 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.48 $ $Date: 2007/03/20 19:29:29 $ $Author: spiderr $
+ * @version $Revision: 1.49 $ $Date: 2007/03/22 01:58:36 $ $Author: spiderr $
  */
 
 /**
@@ -140,7 +140,9 @@ class BitBlogPost extends LibertyAttachable {
 			$pHash = &$this->mInfo;
 		}
 
-		if( empty( $pHash['title'] ) ) {
+		if( !empty( $pHash['title'] ) ) {
+			$ret = $pHash['title'];
+		} elseif( !is_null( $pHash ) ) {
 			$date_format = $gBitSystem->get_long_date_format();
 			if( $gBitSystem->mServerTimestamp->get_display_offset() ) {
 				$date_format = preg_replace( "/ ?%Z/", "", $date_format );
@@ -149,8 +151,6 @@ class BitBlogPost extends LibertyAttachable {
 			}
 			$date_string = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC( $pHash['created'] );
 			$ret = $gBitSystem->mServerTimestamp->strftime( $date_format, $date_string, true );
-		} else {
-			$ret = $pHash['title'];
 		}
 
 		return $ret;

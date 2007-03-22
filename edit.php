@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.20 2007/03/21 17:29:31 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.21 2007/03/22 01:58:36 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -68,13 +68,11 @@ if (isset($_REQUEST['preview'])) {
 	$gBitSmarty->assign('max_posts', $_REQUEST["max_posts"]);
 	$gBitSmarty->assign('heading', $heading);
 	$gBlog->invokeServices('content_preview_function');	
-}
-else {
+} else {
 	$gContent->invokeServices('content_edit_function');
 }
 
 if (isset($_REQUEST['save_blog'])) {
-
 	if( $gContent->store( $_REQUEST ) ) {
 		bit_redirect( $gContent->getDisplayUrl() );
 	} else {
