@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.52 2007/03/22 20:00:44 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.53 2007/03/23 14:46:00 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.52 2007/03/22 20:00:44 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.53 2007/03/23 14:46:00 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.52 $ $Date: 2007/03/22 20:00:44 $ $Author: wjames5 $
+ * @version $Revision: 1.53 $ $Date: 2007/03/23 14:46:00 $ $Author: wjames5 $
  */
 
 /**
@@ -368,11 +368,17 @@ class BitBlogPost extends LibertyAttachable {
 		$pParamHash['map_store'] = array();
 		
 		if( @$this->verifyId( $pParamHash['post_content_id'] ) ) {
+				
 			$postContentId = $pParamHash['post_content_id'];
-
+					
 			//this is to set the time we add a post to a blog.
-			$timeStamp = $gBitSystem->getUTCTime();
-			
+			$bindVars = array( (int)$postContentId );
+			$query = "
+				SELECT bpm.`blog_content_id`, bpm.`date_added` 
+				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm 
+				WHERE bpm.post_content_id = ?";
+			$return = $this->mDb->getAssoc( $query, $bindVars );
+		
 			$blogMixed = $pParamHash['blog_content_id_mixed'];		
 			if( !empty( $blogMixed )){
 				if (!is_array( $blogMixed ) && !is_numeric( $blogMixed ) ){
@@ -383,9 +389,13 @@ class BitBlogPost extends LibertyAttachable {
 					$blogIds = array( $blogMixed );
 				}
 			}
-		
+
 			foreach( $blogIds as $value ) {
 				if( @$this->verifyId( $value ) ) {
+				
+					//set the time.
+					$timeStamp = isset($return[$value]) ? $return[$value] : $gBitSystem->getUTCTime();		
+				
 					array_push( $pParamHash['map_store'], array( 
 						'post_content_id' => $postContentId, 
 						'blog_content_id' => (int)$value, 
@@ -596,6 +606,7 @@ class BitBlogPost extends LibertyAttachable {
 			$joinSql .= " LEFT OUTER JOIN `".BIT_DB_PREFIX."blogs` b ON ( bpm.`blog_content_id`=b.`content_id` ) ";
 								//	" ON ( b.`content_id` = bpm.`blog_content_id` AND bp.`content_id` = bpm.`post_content_id` )";			
 			$whereSql .= ' AND b.`blog_id` = ? ';
+			$pListHash['sort_mode'] = 'date_added_desc';
 		}
 
 		if( @$this->verifyId( $pListHash['post_id_gt'] ) ) {
@@ -655,6 +666,9 @@ class BitBlogPost extends LibertyAttachable {
 			}
 		if ($pListHash['sort_mode'] == 'post_id_asc') {
 			$sort_mode_prefix = 'bp';
+			}
+		if ($pListHash['sort_mode'] == 'date_added_desc') {
+			$sort_mode_prefix = 'bpm';
 			}
 			
 		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] ); 
