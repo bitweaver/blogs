@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.34 2007/03/22 19:58:10 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.35 2007/03/23 21:29:26 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -24,30 +24,29 @@ require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 $gBlog = new BitBlog();
 
+// Editing page needs general ticket verification
+$gBitUser->verifyTicket();
+
 // nuke post if requested
 if( !empty( $_REQUEST['action'] ) ) {
-	if( $_REQUEST['action'] == 'remove' && !empty( $_REQUEST['remove_post_id'] ) ) {
-		$tmpPost = new BitBlogPost( $_REQUEST['remove_post_id'] );
-		$tmpPost->load();
-		if( !$gContent->hasEditPermission() ) {
-			$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot remove this post" );
-		}
+	if( $_REQUEST['action'] == 'remove' && $gContent->isValid() ) {
+		$gContent->verifyPermission( 'p_blogs_post_edit' );
+		
 		if( isset( $_REQUEST["confirm"] ) ) {
-			if( $tmpPost->expunge() ) {
-				header( "Location: ".BLOGS_PKG_URL.'index.php?status_id='.( !empty( $_REQUEST['status_id'] ) ? $_REQUEST['status_id'] : '' ) );
-				die;
+			$redirect = !empty( $gContent->mInfo['blogs'] ) ? BLOGS_PKG_URL.'view.php?content_id='.key( $gContent->mInfo['blogs'] ) : BLOGS_PKG_URL;
+			if( $gContent->expunge() ) {
+				bit_redirect( $redirect );
 			} else {
-				$feedback['error'] = $tmpPost->mErrors;
+				$feedback['error'] = $gContent->mErrors;
 			}
 		}
-		$gBitSystem->setBrowserTitle( 'Confirm removal of '.$tmpPost->mInfo['title'] );		
+		$gBitSystem->setBrowserTitle( 'Confirm removal of '.$gContent->getTitle() );		
 		$formHash['remove'] = TRUE;
 		$formHash['action'] = 'remove';
-		$formHash['status_id'] = ( !empty( $_REQUEST['status_id'] ) ? $_REQUEST['status_id'] : '' );
-		$formHash['remove_post_id'] = $_REQUEST['remove_post_id'];
+		$formHash['post_id'] = $_REQUEST['post_id'];
 		$msgHash = array(
 			'label' => 'Remove Blog Post',
-			'confirm_item' => $tmpPost->mInfo['title'],
+			'confirm_item' => $gContent->getTitle(),
 			'warning' => 'This will remove the above blog post. This cannot be undone.',
 		);
 		$gBitSystem->confirmDialog( $formHash, $msgHash );
@@ -82,8 +81,6 @@ if (isset($_REQUEST["preview"])) {
 	$gBitSmarty->assign('parsed_data', $parsed_data);
 	$gBitSmarty->assign('preview', 'y');
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
-	$gBitSmarty->assign('individual', 'n');
-
 	if( $gContent->store( $_REQUEST ) ) {
 		$postid = $gContent->mPostId;
 		$gBitSmarty->assign('post_id', $gContent->mPostId);
@@ -112,6 +109,7 @@ if (isset($_REQUEST["preview"])) {
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
+// Get List of available blogs
 $listHash = array();
 $listHash['sort_mode'] = 'title_desc';
 if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
@@ -120,9 +118,6 @@ if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
 	$listHash['content_perm_name'] = 'p_blogs_post';
 }
 $blogs = $gBlog->getList( $listHash );
-
-/*probably get rid of this stuff too -wjame5
- */
 $availableBlogs = array();
 foreach( array_keys( $blogs ) as $blogContentId ) {
 	$availableBlogs[$blogContentId] = $blogs[$blogContentId]['title'];
@@ -134,14 +129,6 @@ if (isset($_REQUEST['blog_content_id'])) {
 	$gBitSmarty->assign('blog_content_id', $_REQUEST['blog_content_id'] );
 }
 
-
-/* replace the above with something like this, with perms check on each blog, 
- * I think blog_post.tpl will need a bit of modifying as well 
- * trick is when admin has to check perms on 1000 blogs of legacy sites -wjames5
-$blogs = $gBlog->getList();
-$gBitSmarty->assign( 'availableBlogs', $blogs );
- */
- 
 // Need ajax for attachment browser
 $gBitSmarty->assign('loadAjax', true);
 

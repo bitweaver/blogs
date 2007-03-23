@@ -235,15 +235,6 @@ class BitBlog extends LibertyContent {
 		if( !empty( $pParamHash['is_hit'] ) ) {
 			$whereSql .= " AND lch.`hits` IS NOT NULL";
 		}
-/*
-		if ($add_sql) {
-			if (strlen($mid) > 1) {
-				$mid .= ' AND '.$add_sql.' ';
-			} else {
-				$mid = "WHERE $add_sql ";
-			}
-		}
-*/  
 
 		if( !empty( $pParamHash['content_perm_name'] ) ) {
 			$this->getContentPermissionsSql( $pParamHash['content_perm_name'], $selectSql, $joinSql, $whereSql, $bindVars );

@@ -20,7 +20,7 @@
 					<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?user_id={$post_info.user_id}">{biticon ipackage="icons" iname="network-wireless" iexplain="rss feed"}</a>
 				{/if}
 				{if $gBitUser->hasPermission( 'p_blogs_admin' )}
-					<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$aPost.post_id}">{biticon ipackage="icons" iname="accessories-crosspost" iexplain="crosspost"}</a>
+					<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-crosspost" iexplain="crosspost"}</a>
 				{/if}
 				{if $gContent->hasEditPermission()}
 					<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>

@@ -27,7 +27,7 @@ if( isset($_REQUEST['user_id']) && !isset( $_REQUEST['blog_id'] ) ) {
 	}
 }
 
-if (!isset($_REQUEST["blog_id"])) {
+if( !$gContent->isValid() ) {
 	$gBitSystem->fatalError( 'No blog indicated' );
 }
 
@@ -43,35 +43,11 @@ if( !$gContent->hasEditPermission() ) {
 	$gContent->addHit();
 }
 
-
-/* MOVED TO POST
-if (isset($_REQUEST["remove"])) {
-	$blogPost = new BitBlogPost( $_REQUEST["remove"] );
-	if( $blogPost->load() ) {
-		if( !$blogPost->hasEditPermission() ) {
-			$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot remove this post" );
-		}
-
-		if( !empty( $_REQUEST['cancel'] ) ) {
-			// user cancelled - just continue on, doing nothing
-		} elseif( empty( $_REQUEST['confirm'] ) ) {
-			$formHash['remove'] = $_REQUEST['remove'];
-			$formHash['blog_id'] = $_REQUEST['blog_id'];
-			$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to remove post '.$_REQUEST['remove'].'?' ) );
-		} else {
-			$blogPost->expunge();
-			bit_redirect( BLOGS_PKG_URL );
-		}
-	}
-}
-*/
-
-
 $now = $gBitSystem->getUTCTime();
 
 $blogPost = new BitBlogPost();
 $listHash = array();
-$listHash['blog_id'] = $_REQUEST['blog_id'];
+$listHash['blog_id'] = $gContent->getField( 'blog_id' );
 $listHash['parse_data'] = TRUE;
 $listHash['max_records'] = $gContent->getField( 'max_posts' );
 $listHash['load_num_comments'] = TRUE;

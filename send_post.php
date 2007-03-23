@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.16 2007/03/19 00:34:28 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.17 2007/03/23 21:29:26 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -25,7 +25,7 @@ if (!isset($_REQUEST["post_id"])) {
 
 include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 // make sure this user can see the post to avoid emailing post to self to circumvent the perm
-$gContent->hasUserPermission( 'p_blogs_view', TRUE );
+$gContent->verifyPermission( 'p_blogs_view' );
 
 $gBitSmarty->assign('post_info', $gContent->mInfo );
 

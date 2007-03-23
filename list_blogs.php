@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.13 2007/03/21 17:29:31 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.14 2007/03/23 21:29:26 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -23,16 +23,15 @@ $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 if( $gContent->isValid() && isset($_REQUEST["remove"])) {
 	// Check if has edit perm of this blog
-	if( $gContent->hasUserPermission( 'p_blog_edit', TRUE ) ) {
-		if( !empty( $_REQUEST['cancel'] ) ) {
-			// user cancelled - just continue on, doing nothing
-		} elseif( empty( $_REQUEST['confirm'] ) ) {
-			$formHash['remove'] = $_REQUEST["remove"];
-			$formHash['blog_id'] = $gContent->mBlogId;
-			$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$gContent->getTitle().'? All posts will be permanently deleted.', 'error' => 'This cannot be undone!' ) );
-		} else {
-			$gContent->expunge();
-		}
+	$gContent->verifyPermission( 'p_blog_edit' );
+	if( !empty( $_REQUEST['cancel'] ) ) {
+		// user cancelled - just continue on, doing nothing
+	} elseif( empty( $_REQUEST['confirm'] ) ) {
+		$formHash['remove'] = $_REQUEST["remove"];
+		$formHash['blog_id'] = $gContent->mBlogId;
+		$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$gContent->getTitle().'? All posts will be permanently deleted.', 'error' => 'This cannot be undone!' ) );
+	} else {
+		$gContent->expunge();
 	}
 }
 

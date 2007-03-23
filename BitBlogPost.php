@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.53 2007/03/23 14:46:00 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.54 2007/03/23 21:29:26 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.53 2007/03/23 14:46:00 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.54 2007/03/23 21:29:26 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.53 $ $Date: 2007/03/23 14:46:00 $ $Author: wjames5 $
+ * @version $Revision: 1.54 $ $Date: 2007/03/23 21:29:26 $ $Author: spiderr $
  */
 
 /**
@@ -48,6 +48,7 @@ class BitBlogPost extends LibertyAttachable {
 		$this->mPostId = (int)$pPostId;
 		$this->mContentId = (int)$pContentId;
 		$this->mContentTypeGuid = BITBLOGPOST_CONTENT_TYPE_GUID;
+		$this->mAdminContentPerm = 'p_blogs_admin';
 	}
 
 	/**
@@ -359,85 +360,58 @@ class BitBlogPost extends LibertyAttachable {
 	}
 
 
-	/* make sure data is safe to store in
-	 * blogs_posts_map 
-	 */
-	function verifyPostMap( &$pParamHash ) {
-		global $gBitUser, $gBitSystem;
-
-		$pParamHash['map_store'] = array();
-		
-		if( @$this->verifyId( $pParamHash['post_content_id'] ) ) {
-				
-			$postContentId = $pParamHash['post_content_id'];
-					
-			//this is to set the time we add a post to a blog.
-			$bindVars = array( (int)$postContentId );
-			$query = "
-				SELECT bpm.`blog_content_id`, bpm.`date_added` 
-				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm 
-				WHERE bpm.post_content_id = ?";
-			$return = $this->mDb->getAssoc( $query, $bindVars );
-		
-			$blogMixed = $pParamHash['blog_content_id_mixed'];		
-			if( !empty( $blogMixed )){
-				if (!is_array( $blogMixed ) && !is_numeric( $blogMixed ) ){
-					$blogIds = explode( ",", $blogMixed );
-				}else if ( is_array( $blogMixed ) ) {
-					$blogIds = $blogMixed;
-				}else if ( is_numeric( $blogMixed ) ) {
-					$blogIds = array( $blogMixed );
-				}
-			}
-
-			foreach( $blogIds as $value ) {
-				if( @$this->verifyId( $value ) ) {
-				
-					//set the time.
-					$timeStamp = isset($return[$value]) ? $return[$value] : $gBitSystem->getUTCTime();		
-				
-					array_push( $pParamHash['map_store'], array( 
-						'post_content_id' => $postContentId, 
-						'blog_content_id' => (int)$value, 
-						'date_added' => $timeStamp,
-					));			
-				} else {
-					$this->mErrors[$value] = "Invalid blog id.";
-				}
-			}			
-		} else {
-			$this->mErrors['post_content_id'] = "Invalid post id.";
-		}
-
-		return ( count( $this->mErrors ) == 0 );
-	}
-	
 	/**
 	 * Map a Post to a Blog or multiple Blogs
 	 * @param pPostContentId the content_id of the post we are associating with blogs.
 	 * @param pBlogMixed the content_id or and array of ids of the blogs we want the post to show up in.
 	 */
 	function storePostMap( $pPostContentId, $pBlogMixed ) {
-		global $gBitSystem;
-		$pParamHash['post_content_id'] = $pPostContentId;
-		$pParamHash['blog_content_id_mixed'] = $pBlogMixed;
-		if( $this->verifyPostMap( $pParamHash ) ) {
-			$this->mDb->StartTrans();
-			//should we check for validity on the post and should we check for validity on the blog ids? -wjames5
-			if( $this->isValid() ) {
-				// wipe out all existing mappings for this post, and re-insert
-				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=?", array( $this->mContentId ) );
-				foreach ( $pParamHash['map_store'] as $value) {
-					$result = $this->mDb->associateInsert( BIT_DB_PREFIX."blogs_posts_map", $value );					
-					/* DEPRECATED - this looks stupid -wjames5
-					//prolly should check that the insert above worked before upping the post count
-					$query = "UPDATE `".BIT_DB_PREFIX."blogs` set `posts`=`posts`+1 where `content_id`=?";
-					$result = $this->mDb->query($query, $value['blog_content_id'] );
-					*/
+		global $gBitSystem, $gBitUser;
+		$this->mDb->StartTrans();
+		if( @$this->verifyId( $pPostContentId ) ) {
+			//this is to set the time we add a post to a blog.
+			$timeStamp = $gBitSystem->getUTCTime();
+			$blogIds = array();	
+			
+			if( !empty( $pBlogMixed )){
+				if (!is_array( $pBlogMixed ) && !is_numeric( $pBlogMixed ) ){
+					$blogIds = explode( ",", $pBlogMixed );
+				}elseif ( is_array( $pBlogMixed ) ) {
+					$blogIds = $pBlogMixed;
+				}elseif ( is_numeric( $pBlogMixed ) ) {
+					$blogIds = array( $pBlogMixed );
 				}
 			}
-			$this->mDb->CompleteTrans();
+			$allMappings = $this->mDb->getCol( "SELECT `blog_content_id` FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=?", array( $pPostContentId ) );
+
+			// whiddle down all mappings to just those we have perm to
+			$currentMappings = array();
+			foreach( $allMappings as $blogContentId ) {
+				if( $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
+					$currentMappings[] = $blogContentId;
+				}
+			}
+
+			$removedBlogIds = array_diff( $currentMappings, $blogIds );			
+			$newBlogIds = array_diff( $blogIds, $currentMappings );
+
+			// Remove mappings for this post
+			foreach( $removedBlogIds as $blogContentId ) {
+				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id`=? AND `post_content_id`=?", array( $blogContentId, $pPostContentId ) );
+			}
+			
+			foreach( $newBlogIds as $blogContentId ) {
+				if( $this->verifyId( $blogContentId ) && $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
+					$result = $this->mDb->associateInsert( BIT_DB_PREFIX."blogs_posts_map", array( 
+						'post_content_id' => $pPostContentId, 
+						'blog_content_id' => (int)$blogContentId, 
+						'date_added' => $timeStamp,
+					));			
+				}
+			}			
 		}
+
+		$this->mDb->CompleteTrans();
 		return ( count( $this->mErrors ) == 0 );
 	}
 	
@@ -458,12 +432,12 @@ class BitBlogPost extends LibertyAttachable {
 				$tmpComment->deleteComment();
 			}
 
-			$query = "DELETE FROM `".BIT_DB_PREFIX."blog_posts` WHERE `content_id` = ?";			
-			$result = $this->mDb->query( $query, array( $this->mContentId ) );
-
 			// remove all references in blogs_posts_map where post_content_id = content_id
 			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id` = ?";			
 			$result = $this->mDb->query( $query_map, array( $this->mContentId ) );
+
+			$query = "DELETE FROM `".BIT_DB_PREFIX."blog_posts` WHERE `content_id` = ?";			
+			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 
 			// Do this last so foreign keys won't complain (not the we have them... yet ;-)
 			if( LibertyAttachable::expunge() ) {
