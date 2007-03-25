@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.18 2007/03/21 17:29:31 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.19 2007/03/25 15:34:09 laetzer Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -82,7 +82,7 @@
 							{formlabel label="Allow search" for="use_find"}
 							{forminput}
 								<input type="checkbox" name="use_find" id="use_find" {if !$gContent->isValid() || $gContent->getField('use_find') eq 'y'}checked="checked"{/if} />
-								{formhelp note='Allow userers to search this blog for occurances of words.'}
+								{formhelp note='Allow users to search this blog for occurances of words.'}
 							{/forminput}
 						</div>
 
