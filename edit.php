@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.22 2007/03/26 16:12:34 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.23 2007/03/26 16:32:09 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -58,10 +58,12 @@ if (!$gBitUser->hasPermission( 'p_blogs_create' ) && ($gBitUser->mUserId != $dat
 $gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
 if (isset($_REQUEST['preview'])) {
+	//all this should prolly be moved to a BitBlog::preparePreview method and the tpls cleaned - but this works for now -wjames5
 	$gBitSmarty->assign('title', $_REQUEST["title"]);
 	$gBitSmarty->assign('edit', $_REQUEST["edit"]);
 	$gBitSmarty->assign('parsed', $gContent->parseData( $_REQUEST["edit"], $_REQUEST["format_guid"]));	
 	$gBitSmarty->assign('user_name', $gBitUser->getDisplayName());	
+	$gBitSmarty->assign('created', $gBitSystem->getUTCTime());
 
 //DEPRECATED - slated for removal
 //	$gBitSmarty->assign('public_blog', isset($_REQUEST["public_blog"]) ? 'y' : 'n');

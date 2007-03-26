@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.20 2007/03/26 16:12:35 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.21 2007/03/26 16:32:09 wjames5 Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -15,7 +15,7 @@
 					<h1>{$title}</h1>
 					{if $parsed}<h2>{$parsed}</h2>{/if}
 					<div class="date">
-						{tr}By{/tr}: {displayname user=$user_name}, {$gContent->getField('created')|bit_short_datetime}<br />
+						{tr}By{/tr}: {displayname user=$user_name}, {if $created}{$created|bit_short_datetime}{else}{$gContent->getField('created')|bit_short_datetime}{/if}<br />
 					</div>
 				</div>
 			</div>
