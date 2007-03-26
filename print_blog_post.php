@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.13 2007/03/20 17:35:01 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.14 2007/03/26 18:09:07 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -14,7 +14,9 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+//DEPRICATED - we do everything by post id without blog reference now - see URI note below if wanting to add option in -wjames5
+//include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
@@ -28,8 +30,12 @@ $gBitSmarty->assign('post_info', $gContent->mInfo );
 
 //Build absolute URI for this
 $parts = parse_url($_SERVER['REQUEST_URI']);
+/*OLD with blog_id - might later want to reincorporate blog_id but will have to start in the view_blog_post.tpl -wjames5
 $uri = httpPrefix(). $parts['path'] . '?blog_id=' . $gContent->mInfo['blog_id'] . '&post_id=' . $gContent->mInfo['post_id'];
 $uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['blog_id'] . '/' . $gContent->mInfo['post_id'];
+*/
+$uri = httpPrefix(). $parts['path'] . '?post_id=' . $gContent->mInfo['post_id'];
+$uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['post_id'];
 $gBitSmarty->assign('uri', $uri);
 $gBitSmarty->assign('uri2', $uri2);
 
@@ -53,11 +59,13 @@ $gBitSmarty->assign( 'parsed_data', $gContent->parseData() );
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
+/*DEPRECATED - blog_user_id does not exist ownsblog is not even used in print_blog_post.tpl
 $ownsblog = 'n';
 if ($gBitUser->mUserId && $gBitUser->mUserId == $gContent->mInfo['blog_user_id'] ) {
 	$ownsblog = 'y';
 }
 $gBitSmarty->assign('ownsblog', $ownsblog);
+*/
 
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
 	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->getField( 'post_id' );
