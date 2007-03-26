@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.21 2007/03/22 01:58:36 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.22 2007/03/26 16:12:34 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -59,15 +59,19 @@ $gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
 if (isset($_REQUEST['preview'])) {
 	$gBitSmarty->assign('title', $_REQUEST["title"]);
+	$gBitSmarty->assign('edit', $_REQUEST["edit"]);
+	$gBitSmarty->assign('parsed', $gContent->parseData( $_REQUEST["edit"], $_REQUEST["format_guid"]));	
+	$gBitSmarty->assign('user_name', $gBitUser->getDisplayName());	
 
-	$gBitSmarty->assign('description', $_REQUEST["description"]);
-	$gBitSmarty->assign('public_blog', isset($_REQUEST["public_blog"]) ? 'y' : 'n');
+//DEPRECATED - slated for removal
+//	$gBitSmarty->assign('public_blog', isset($_REQUEST["public_blog"]) ? 'y' : 'n');
+
 	$gBitSmarty->assign('use_find', isset($_REQUEST["use_find"]) ? 'y' : 'n');
 	$gBitSmarty->assign('use_title', isset($_REQUEST["use_title"]) ? 'y' : 'n');
 	$gBitSmarty->assign('allow_comments', isset($_REQUEST["allow_comments"]) ? 'y' : 'n');
 	$gBitSmarty->assign('max_posts', $_REQUEST["max_posts"]);
 	$gBitSmarty->assign('heading', $heading);
-	$gBlog->invokeServices('content_preview_function');	
+	$gContent->invokeServices('content_preview_function');	
 } else {
 	$gContent->invokeServices('content_edit_function');
 }

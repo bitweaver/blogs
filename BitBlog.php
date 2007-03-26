@@ -111,7 +111,7 @@ class BitBlog extends LibertyContent {
 					$ret['max_posts'] = 10; // spiderr hack to hardcode fail safe
 				}
 				if( !empty( $ret['data'] ) ) {
-					$ret['parsed'] = $this->parseData( $ret['data'], $ret['content_type_guid'] );
+					$ret['parsed'] = $this->parseData( $ret['data'], $ret['format_guid'] );
 				}
 			}
 		}

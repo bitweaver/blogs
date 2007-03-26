@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.19 2007/03/25 15:34:09 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.20 2007/03/26 16:12:35 wjames5 Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -12,11 +12,10 @@
 		{if $smarty.request.preview}
 			<div class="preview">
 				<div class="header">
-					<h1>{$gContent->getTitle()}</h1>
-					{if $gContent->getField('parsed')}<h2>{$gContent->getField('parsed')}</h2>{/if}
+					<h1>{$title}</h1>
+					{if $parsed}<h2>{$parsed}</h2>{/if}
 					<div class="date">
-						{tr}Created by{/tr}: {displayname hash=$blog_data}, {$gContent->getField('created')|bit_short_datetime}<br />
-						{tr}Last modified{/tr}: {$gContent->getField('last_modified')|bit_short_datetime}
+						{tr}By{/tr}: {displayname user=$user_name}, {$gContent->getField('created')|bit_short_datetime}<br />
 					</div>
 				</div>
 			</div>
@@ -43,9 +42,11 @@
 							{include file="bitpackage:quicktags/quicktags_full.tpl"}
 						{/if}
 
+						{include file="bitpackage:liberty/edit_format.tpl"}
+
 						<div class="row">
 							{forminput}
-								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:5}" cols="50">{$gContent->getField('data')|escape}</textarea>
+								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:5}" cols="50">{if $edit}{$edit|escape}{else}{$gContent->getField('data')|escape}{/if}</textarea>
 								{formhelp note=''}
 							{/forminput}
 						</div>
