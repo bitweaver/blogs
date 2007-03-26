@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.9 2007/02/19 23:33:31 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.10 2007/03/26 17:56:59 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -13,6 +13,70 @@
 /**
  * required setup
  */
+require_once( '../bit_setup_inc.php' );
+
+include_once( LIBERTY_PKG_PATH . 'LibertyContent.php' );
+require_once( BLOGS_PKG_PATH . 'BitBlog.php' );
+require_once( BLOGS_PKG_PATH . 'BitBlogPost.php' );
+
+$gBitSystem->verifyPackage( 'blogs' );
+$gBitSystem->verifyFeature( 'blog_rankings' );
+$gBitSystem->verifyPermission( 'p_blogs_view' );
+
+$rankingOptions = array(
+	array(
+		'output' => tra( 'Most Often Viewed' ),
+		'value' => 'hits_desc'
+	),
+	array(
+		'output' => tra( 'Most Recently Modified' ),
+		'value' => 'last_modified_desc'
+	),
+	array(
+		'output' => tra( 'Most Active Authors' ),
+		'value' => 'top_authors'
+	),
+);
+$gBitSmarty->assign( 'rankingOptions', $rankingOptions );
+
+if( !empty( $_REQUEST['sort_mode'] ) ) {
+	switch( $_REQUEST['sort_mode'] ) {
+		case 'last_modified_desc':
+			$gBitSmarty->assign( 'attribute', 'last_modified' );
+			$_REQUEST['attribute'] = tra( 'Date of last modification' );
+			break;
+		case 'top_authors':
+			$gBitSmarty->assign( 'attribute', 'ag_hits' );
+			$_REQUEST['attribute'] = tra( 'Hits to items by this Author' );
+			break;
+		default:
+			$gBitSmarty->assign( 'attribute', 'hits' );
+			$_REQUEST['attribute'] = tra( 'Hits' );
+			break;
+	}
+} else {
+	$gBitSmarty->assign( 'attribute', 'hits' );
+	$_REQUEST['attribute'] = tra( 'Hits' );
+}
+
+$_REQUEST['title']             = tra( 'Blog Post Rankings' );
+$_REQUEST['content_type_guid'] = BITBLOGPOST_CONTENT_TYPE_GUID;
+$_REQUEST['max_records']       = !empty( $_REQUEST['max_records'] ) ? $_REQUEST['max_records'] : 10;
+
+if( empty( $gContent ) ) {
+	$gContent = new LibertyContent();
+}
+$rankList = $gContent->getContentRanking( $_REQUEST );
+$gBitSmarty->assign( 'rankList', $rankList );
+
+$gBitSystem->display( 'bitpackage:liberty/rankings.tpl', tra( "Blog Post Rankings" ) );
+
+
+
+
+/* ---- below is what blog rankings was - might want to canabalize some of it eventually ---- */
+/* 
+ 
 require_once( '../bit_setup_inc.php' );
 
 
@@ -40,6 +104,7 @@ $allrankings = array(
 	'value' => 'blog_ranking_top_active_blogs'
 )
 	*/
+/*
 );
 
 $gBitSmarty->assign('allrankings', $allrankings);
@@ -97,6 +162,7 @@ function blog_ranking_top_blogs($limit) {
 
 /** TODO: This should be changed when we start using activity in the blog.
           We should check TW 1.9 for code for that field in the blog. */
+/*
 function blog_ranking_top_active_blogs($limit) {
 	global $gBitSystem;
 	$list_hash['sort_mode'] = 'b.activity';
@@ -147,4 +213,5 @@ function blog_ranking_last_posts($limit) {
 	$list['title'] = 'Last Posts';
 	return $list;
 }
+*/
 ?>
