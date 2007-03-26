@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.17 2007/03/23 21:29:26 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.18 2007/03/26 18:14:14 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -15,7 +15,9 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+//DEPRICATED - we do everything by post id without blog reference now -wjames5
+//include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPermission( 'p_blogs_send_post' );
 
@@ -31,8 +33,12 @@ $gBitSmarty->assign('post_info', $gContent->mInfo );
 
 //Build absolute URI for this
 $parts = parse_url($_SERVER['REQUEST_URI']);
+/*OLD with blog_id - might later want to reincorporate blog_id but will have to start in the view_blog_post.tpl -wjames5
 $uri = httpPrefix(). $parts['path'] . '?blog_id=' . $gContent->mInfo['blog_id'] . '&post_id=' . $gContent->mInfo['post_id'];
 $uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['blog_id'] . '/' . $gContent->mInfo['post_id'];
+*/
+$uri = httpPrefix(). $parts['path'] . '?post_id=' . $gContent->mInfo['post_id'];
+$uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['post_id'];
 $gBitSmarty->assign('uri', $uri);
 $gBitSmarty->assign('uri2', $uri2);
 
