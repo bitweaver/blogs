@@ -16,6 +16,7 @@ array( 'DATADICT' => array(
 	)),
 	array( 'CREATE' => array (
 		'blogs_posts_map' => "
+			crosspost_note X,
 			post_content_id I4 NOT NULL,
 			blog_content_id I4 NOT NULL,
 			date_added I4

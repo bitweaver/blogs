@@ -28,6 +28,7 @@ $tables = array(
 ",
 
 'blogs_posts_map' => "
+	crosspost_note X,
 	post_content_id I4 NOTNULL,
 	blog_content_id I4 NOTNULL,
 	date_added I4
