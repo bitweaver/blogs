@@ -11,14 +11,15 @@
 			{if $gBitUser->hasPermission( 'p_blogs_admin' )}
 				<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$aPost.post_id}">{biticon ipackage="icons" iname="accessories-crosspost" iexplain="crosspost"}</a>
 			{/if}
+
+			<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$aPost.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
+			{if $gBitUser->hasPermission('p_blogs_send_post')}
+				<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$aPost.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
+			{/if}
+
 			{if ($aPost.ownsblog eq 'y') or ($gBitUser->mUserId and $aPost.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
 				<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$aPost.blog_id}&amp;post_id={$aPost.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 				<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;post_id={$aPost.post_id}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
-			{/if}
-
-			<a title="{tr}print{/tr}" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$aPost.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
-			{if $gBitUser->hasPermission('p_blogs_send_post')}
-				<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$aPost.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
 			{/if}
 		</div>
 	{/if}
