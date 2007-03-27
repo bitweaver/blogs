@@ -66,7 +66,7 @@
 			{tr}by {displayname hash=$post_info}{/tr}<br />
 			{$post_info.publish_date|default:$post_info.created|bit_long_date}<br />
 			{if count($post_info.blogs) > 0}
-				{tr}Posted to {/tr}
+				{tr}Posted to{/tr}&nbsp;
 				{foreach from=$post_info.blogs item=memberBlog key=blogContentId name=memberBlogLoop}
 					<a href="{$memberBlog.blog_url}">{$memberBlog.title}</a>{if $smarty.foreach.memberBlogLoop.total > 1 && !$smarty.foreach.memberBlogLoop.last }, {/if}
 				{/foreach}
