@@ -29,18 +29,15 @@
 		{/if}
 
 		<div class="date">
-			{tr}Posted by{/tr} {displayname hash=$aPost}<br />
-			{tr}Posted on{/tr} {$aPost.publish_date|default:$aPost.created|bit_long_date}<br/>			
-				{if count($aPost.blogs) > 0}
-					{tr}Posted to{/tr}&nbsp;
-					{foreach from=$aPost.blogs item=memberBlog key=blogContentId name=memberBlogLoop}
-						<a href="{$memberBlog.blog_url}">{$memberBlog.title}</a>{if $smarty.foreach.memberBlogLoop.total > 1 && !$smarty.foreach.memberBlogLoop.last }, {/if}
-					{/foreach}
+			{tr}by {displayname hash=$aPost}{/tr}<br />
+			{$aPost.publish_date|default:$aPost.created|bit_long_date}<br />
+			{if count($aPost.blogs) > 0}
+				{tr}Posted to{/tr}&nbsp;
+				{foreach from=$aPost.blogs item=memberBlog key=blogContentId name=memberBlogLoop}
+					<a href="{$memberBlog.blog_url}">{$memberBlog.title}</a>{if $smarty.foreach.memberBlogLoop.total > 1 && !$smarty.foreach.memberBlogLoop.last }, {/if}
+				{/foreach}
 				<br />
-				{/if}	
-
-
-
+			{/if}
 		</div>
 	</div>
 
@@ -52,16 +49,16 @@
 				{$aPost.parsed_description}
 			{else}
 				{$aPost.parsed_data}
-			{/if}			
-			<p>{tr}Posted on {$aPost.publish_date|default:$aPost.created|bit_long_datetime}{/tr}</p>
-		</div> <!-- end .content -->
+			{/if}
+			{* this is at the top of the post <p>{tr}Posted on {$aPost.publish_date|default:$aPost.created|bit_long_datetime}{/tr}</p> *}
+		</div><!-- end .content -->
 
 		{if $aPost.pages > 1}
 			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$aPost.blog_id}&amp;post_id={$aPost.post_id}">{tr}read more{/tr} ({$aPost.pages} {tr}pages{/tr})</a>
 		{/if}
 	</div> <!-- end .body -->
 
-	<div class="footer">			
+	<div class="footer">
 		<a href="{$aPost.post_url}">{tr}Permalink{/tr}</a>
 		{assign var=spacer value=TRUE}
 
