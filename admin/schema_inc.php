@@ -28,13 +28,12 @@ $tables = array(
 ",
 
 'blogs_posts_map' => "
-	crosspost_note X,
 	post_content_id I4 NOTNULL,
 	blog_content_id I4 NOTNULL,
-	date_added I4
-	CONSTRAINT '
-		, CONSTRAINT `blogs_posts_map_post_ref` FOREIGN KEY (`post_content_id`) REFERENCES `".BIT_DB_PREFIX."blog_posts` (`content_id`)
-		, CONSTRAINT `blogs_posts_map_blog_ref` FOREIGN KEY (`blog_content_id`) REFERENCES `".BIT_DB_PREFIX."blogs` (`content_id`)'
+	date_added I4,
+	crosspost_note X
+	CONSTRAINT ', CONSTRAINT `blogs_posts_map_post_ref` FOREIGN KEY (`post_content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)
+				, CONSTRAINT `blogs_posts_map_blog_ref` FOREIGN KEY (`blog_content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)'
 ",
 
 );
