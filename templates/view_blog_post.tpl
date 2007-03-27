@@ -22,7 +22,7 @@
 			{/if}
 
 			{if $gBitUser->hasPermission( 'p_blogs_admin' )}
-				<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-crosspost" iexplain="crosspost"}</a>
+				<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-attachment" iexplain="crosspost"}</a>
 			{/if}
 
 			<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
@@ -38,7 +38,9 @@
 	</div>
 
 	<div class="header">
-		<h1>{$post_info.blogtitle|escape}</h1>
+		{if $post_info.blogtitle}
+			<h1>{$post_info.blogtitle|escape}</h1>
+		{/if}
 
 		<div class="navigation">
 			{if $gContent_previous}
