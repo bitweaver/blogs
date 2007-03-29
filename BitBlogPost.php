@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.54 2007/03/23 21:29:26 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.55 2007/03/29 16:09:56 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.54 2007/03/23 21:29:26 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.55 2007/03/29 16:09:56 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.54 $ $Date: 2007/03/23 21:29:26 $ $Author: spiderr $
+ * @version $Revision: 1.55 $ $Date: 2007/03/29 16:09:56 $ $Author: squareing $
  */
 
 /**
@@ -310,15 +310,17 @@ class BitBlogPost extends LibertyAttachable {
 			$this->load();
 			
 			// if blog_content_id, then map the post to the relative blogs
-			if ( !empty($pParamHash['blog_content_id']) ){
+			if( !empty( $pParamHash['blog_content_id'] )){
 				$this->storePostMap( $this->mContentId, $pParamHash['blog_content_id'] );
 			}
 
 			// Update post with trackbacks successfully sent
 			// Can this be moved below into similar function below? -wjames5
 			// this throws an error on site population because post_id is not defined in pParamHash - wjames5
-			$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_from`=?, `trackbacks_to` = ? where `post_id`=?";
-			$this->mDb->query($query,array(serialize(array()), $trackbacks, (int) $pParamHash['post_id']));
+			$query = "UPDATE `".BIT_DB_PREFIX."blog_posts` SET `trackbacks_from`=?, `trackbacks_to` = ? WHERE `post_id`=?";
+			if( @BitBase::verifyId( $pParamHash['post_id'] )) {
+				$this->mDb->query( $query, array( serialize( array() ), $trackbacks, (int) $pParamHash['post_id'] ));
+			}
 
 			if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 				global $gBitUser, $gBitSmarty;
@@ -348,6 +350,7 @@ class BitBlogPost extends LibertyAttachable {
 			}
 			
 			//is this nearly identical to the above and can they be consolodated? -wjames5
+			// should this be $pParamHash['trackback'] or the above $pParamHash['trackbacks'] ? - xing
 			if( !empty( $pParamHash['trackbacks'] ) ) {
 				$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_to`=? where `post_id`=?";
 				$result = $this->mDb->query($query,array($trackbacks, $user_id, $post_id));
