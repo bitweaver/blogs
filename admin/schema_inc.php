@@ -13,6 +13,7 @@ $tables = array(
 		, CONSTRAINT `blog_posts_content_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)'
 ",
 
+// TODO: why are we using AUTO here? - xing
 'blogs' => "
 	blog_id I4 AUTO PRIMARY,
 	content_id I4 NOTNULL,
@@ -51,8 +52,8 @@ $gBitInstaller->registerPackageInfo( BLOGS_PKG_NAME, array(
 
 // ### Indexes
 $indices = array (
-	'blog_posts_blog_id_idx' => array( 'table' => 'blog_posts', 'cols' => 'blog_id', 'opts' => NULL ),
-	'blogs_content_id_idx' => array( 'table' => 'blogs', 'cols' => 'content_id', 'opts' => array( 'UNIQUE' ) ),
+	'blog_posts_post_id_idx'    => array( 'table' => 'blog_posts', 'cols' => 'post_id',    'opts' => NULL ),
+	'blogs_content_id_idx'      => array( 'table' => 'blogs',      'cols' => 'content_id', 'opts' => array( 'UNIQUE' ) ),
 	'blog_posts_content_id_idx' => array( 'table' => 'blog_posts', 'cols' => 'content_id', 'opts' => array( 'UNIQUE' ) ),
 );
 // TODO - SPIDERR - following seems to cause time _decrease_ cause bigint on postgres. need more investigation
@@ -61,6 +62,8 @@ $gBitInstaller->registerSchemaIndexes( BLOGS_PKG_NAME, $indices );
 
 // ### Sequences
 $sequences = array (
+	// TODO: we need this sequence if we remove the AUTO on blogs.blog_id - xing
+	//'blogs_blog_id_seq'      => array( 'start' => 1 ),
 	'blog_posts_post_id_seq' => array( 'start' => 1 )
 );
 $gBitInstaller->registerSchemaSequences( BLOGS_PKG_NAME, $sequences );
