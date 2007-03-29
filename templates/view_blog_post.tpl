@@ -90,10 +90,21 @@
 	</div> <!-- end .body -->
 
 	<div class="footer">
-		<a href="{$post_info.url}">{tr}Permalink{/tr}</a> |&nbsp;
-		{tr}referenced by{/tr} {$post_info.trackbacks_from_count} {tr}posts{/tr} | {tr}references{/tr} {$post_info.trackbacks_to_count} {tr}posts{/tr}
-		{if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
-			| {$post_info.num_comments} {tr}comments{/tr}
+		<a href="{$post_info.url}">{tr}Permalink{/tr}</a>
+		{assign var=spacer value=TRUE}
+		{if $post_info.trackbacks_from_count > 0}
+			{if $spacer}&nbsp; &bull; &nbsp;{/if}
+			{tr}referenced by{/tr} {$post_info.trackbacks_from_count} {tr}posts{/tr}
+		{/if}
+		{if $post_info.trackbacks_to_count > 0}
+			{if $spacer}&nbsp; &bull; &nbsp;{/if}
+			{tr}references{/tr} {$post_info.trackbacks_to_count} {tr}posts{/tr}
+		{/if}		
+		{if $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
+			{if $spacer}&nbsp; &bull; &nbsp;{/if}
+			{if $showDescriptionsOnly}<a href="{$post_info.display_url}#editcomments">{/if}
+				{tr}{$post_info.num_comments} Comment(s){/tr}
+			{if $showDescriptionsOnly}</a>{/if}
 		{/if}
 	</div> {* end .footer *}
 
@@ -127,10 +138,8 @@
 	{/if}
 </div> {* end .blog *}
 
-{if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
-	{if $gBitUser->hasPermission( 'p_liberty_read_comments' )}
-		{include file="bitpackage:liberty/comments.tpl"}
-	{/if}
+{if $print_page ne 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' ) and !$preview }
+	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='view' serviceHash=$post_info}

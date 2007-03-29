@@ -71,9 +71,10 @@
 
 		{if $aPost.trackbacks_from_count}({tr}referenced by{/tr}: {$aPost.trackbacks_from_count} {tr}posts{/tr} / {tr}references{/tr}: {$aPost.trackbacks_to_count} {tr}posts{/tr}){/if}
 
-		{if $aPost.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
+		{if $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
+			{if $spacer}&nbsp; &bull; &nbsp;{/if}
 			&nbsp;{$aPost.num_comments} {if $aPost.num_comments == 1} {tr}comment{/tr} {else} {tr}comments{/tr}{/if} &nbsp;|&nbsp;
-			 <a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?find={$find}&amp;blog_id={$aPost.blog_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;post_id={$aPost.post_id}&post_comment_request={if $aPost.num_comments > 0}1{else}y{/if}">{if $aPost.num_comments > 0}{tr}view comments{/tr}{else}{tr}add comment{/tr}{/if}</a>
+			 <a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?&amp;post_id={$aPost.post_id}&post_comment_request={if $aPost.num_comments > 0}1{else}y{/if}">{if $aPost.num_comments > 0}{tr}view comments{/tr}{else}{tr}add comment{/tr}{/if}</a>
 		{/if}
 	</div> <!-- end .footer -->
 </div> <!-- end .blog -->
