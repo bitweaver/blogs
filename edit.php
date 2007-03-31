@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.23 2007/03/26 16:32:09 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.24 2007/03/31 13:01:09 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -87,12 +87,6 @@ if (isset($_REQUEST['save_blog'])) {
 }
 
 $gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gContent->getTitle() );
-// Display the Index Template
-$gBitSmarty->assign('show_page_bar', 'n');
-// Let services work on blogs
-if( $gBitUser->hasPermission( 'p_liberty_assign_content_perms' ) ) {
-	require_once( LIBERTY_PKG_PATH.'content_permissions_inc.php' );
-}
 
 $gBitSmarty->assign_by_ref('gContent', $gContent);
 $gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl');

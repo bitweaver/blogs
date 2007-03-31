@@ -1,7 +1,9 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.20 2007/03/21 17:29:31 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.21 2007/03/31 13:01:09 squareing Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
+		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$gContent->mInfo}
+
 		{if $gBitUser->hasPermission( 'p_blogs_post' )}
 			{if $gContent->hasEditPermission() or $gContent->getField('is_public') eq 'y'}
 				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$gContent->mBlogId}">{biticon ipackage="icons" iname="document-save" iexplain="post"}</a>
@@ -23,6 +25,7 @@
 				<a title="{tr}stop monitoring this blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}view.php?blog_id={$gContent->mBlogId}&amp;watch_event=blog_post&amp;watch_object={$gContent->mBlogId}&amp;watch_action=remove">{biticon ipackage="icons" iname="weather-clear-night" iexplain="stop monitoring this blog"}</a>
 			{/if}
 		{/if}
+
 		{if ($gContent->hasEditPermission())}
 			<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?remove=1&amp;blog_id={$gContent->getField('blog_id')}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 		{/if}
