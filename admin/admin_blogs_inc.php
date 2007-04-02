@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.15 2007/03/18 18:49:58 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.16 2007/04/02 14:06:43 wjames5 Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -61,10 +61,6 @@ $formBlogFeatures = array(
 	"blog_posts_comments" => array(
 		'label' => 'Blog Post Comments',
 		'note' => 'Allow the addition of comments to blog posts.',
-	),
-	"blog_autogen_user_blog" => array(
-		'label' => 'Auto Generate User Blogs',
-		'note' => 'This will autogenerate a blog for each user\' personal use when they register. <br/>You want this on if you are running a community blogging site.',
 	),
 );
 $gBitSmarty->assign( 'formBlogFeatures',$formBlogFeatures );
