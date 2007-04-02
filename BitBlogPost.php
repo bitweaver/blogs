@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.56 2007/04/02 13:36:51 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.57 2007/04/02 15:54:28 lugie Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.56 2007/04/02 13:36:51 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.57 2007/04/02 15:54:28 lugie Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.56 $ $Date: 2007/04/02 13:36:51 $ $Author: wjames5 $
+ * @version $Revision: 1.57 $ $Date: 2007/04/02 15:54:28 $ $Author: lugie $
  */
 
 /**
@@ -711,7 +711,7 @@ class BitBlogPost extends LibertyAttachable {
 				}
 				*/
 				
-				$res['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.dirname($res['avatar']).'/small.jpg' : NULL);
+				$res['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.dirname($res['avatar']).'/avatar.jpg' : NULL);
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
 				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
 				$res['display_url'] = $res['post_url'];
