@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.55 2007/03/29 16:09:56 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.56 2007/04/02 13:36:51 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.55 2007/03/29 16:09:56 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.56 2007/04/02 13:36:51 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.55 $ $Date: 2007/03/29 16:09:56 $ $Author: squareing $
+ * @version $Revision: 1.56 $ $Date: 2007/04/02 13:36:51 $ $Author: wjames5 $
  */
 
 /**
@@ -595,7 +595,7 @@ class BitBlogPost extends LibertyAttachable {
 			array_push( $bindVars, (int)$pListHash['post_id_lt'] );
 			$whereSql .= ' AND bp.`post_id` < ? ';
 		}
-
+/* When we pass these values all user pages get limited to the logged in requester
 		if( @$this->verifyId( $pListHash['user_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['user_id'] );
 			$whereSql .= ' AND lc.`user_id` = ? ';
@@ -603,6 +603,11 @@ class BitBlogPost extends LibertyAttachable {
 				
 		if( !empty( $pListHash['login'] ) ) {
 			array_push( $bindVars, $pListHash['login'] );
+			$whereSql .= ' AND uu.`login` = ? ';
+		}
+*/		
+		if( !empty( $pListHash['user'] ) ) {
+			array_push( $bindVars, $pListHash['user'] );
 			$whereSql .= ' AND uu.`login` = ? ';
 		}
 		

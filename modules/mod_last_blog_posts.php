@@ -3,7 +3,7 @@
  * Params: 
  * - title : if is "title", show the title of the post, else show the date of creation
  *
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.8 2007/03/31 22:39:15 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.9 2007/04/02 13:36:51 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -22,7 +22,7 @@ global $gBitSmarty, $gQueryUserId, $module_rows, $module_params, $gBitSystem;
 
 $listHash = array( 'user_id' => $gQueryUserId, 'sort_mode' => 'created_desc', 'max_records' => $module_rows, 'parse_data' => TRUE );
 
-if ( isset($module_params['user']) ){ $listHash['login'] = $module_params['user']; }
+$listHash['user'] = isset($module_params['user']) ? $module_params['user']:NULL;
 if ( isset($module_params['id']) ){ $listHash['blog_id'] = $module_params['id'];}
 
 $blogPost = new BitBlogPost();

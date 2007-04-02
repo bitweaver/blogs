@@ -72,7 +72,8 @@ $listHash['parse_data'] = TRUE;
 $listHash['load_comments'] = TRUE;
 $listHash['page'] = (!empty($_REQUEST['page']) ? $_REQUEST['page'] : 1);
 $listHash['offset'] = (!empty($_REQUEST['offset']) ? $_REQUEST['offset'] : 0);
-$listHash['login'] = (!empty($_REQUEST['user']) ? $_REQUEST['user'] : NULL);
+$listHash['user'] = (!empty($_REQUEST['fHomepage']) ? $_REQUEST['fHomepage'] : NULL);
+//$listHash['login'] = (!empty($_REQUEST['user']) ? $_REQUEST['user'] : NULL);
 
 if( @BitBase::verifyId( $module_params['blog_content_id'] ) ) {
 	$listHash['blog_content_id'] = $module_params['blog_content_id'];
