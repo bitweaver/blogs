@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.57 2007/04/02 15:54:28 lugie Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.58 2007/04/03 21:13:25 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.57 2007/04/02 15:54:28 lugie Exp $
+ * $Id: BitBlogPost.php,v 1.58 2007/04/03 21:13:25 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.57 $ $Date: 2007/04/02 15:54:28 $ $Author: lugie $
+ * @version $Revision: 1.58 $ $Date: 2007/04/03 21:13:25 $ $Author: squareing $
  */
 
 /**
@@ -595,22 +595,22 @@ class BitBlogPost extends LibertyAttachable {
 			array_push( $bindVars, (int)$pListHash['post_id_lt'] );
 			$whereSql .= ' AND bp.`post_id` < ? ';
 		}
-/* When we pass these values all user pages get limited to the logged in requester
+
 		if( @$this->verifyId( $pListHash['user_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['user_id'] );
 			$whereSql .= ' AND lc.`user_id` = ? ';
 		}
-				
+
+		// map user to login in case we used one instead of the other
+		if( !empty( $pListHash['user'] ) ) {
+			$pListHash['login'] = $pListHash['user'];
+		}
+
 		if( !empty( $pListHash['login'] ) ) {
 			array_push( $bindVars, $pListHash['login'] );
 			$whereSql .= ' AND uu.`login` = ? ';
 		}
-*/		
-		if( !empty( $pListHash['user'] ) ) {
-			array_push( $bindVars, $pListHash['user'] );
-			$whereSql .= ' AND uu.`login` = ? ';
-		}
-		
+
 		if( $pListHash['find'] ) {
 			$findesc = '%' . strtoupper( $pListHash['find'] ) . '%';
  			$whereSql .= "AND (UPPER(lc.`data`) like ?) ";
