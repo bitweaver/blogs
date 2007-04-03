@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.tpl,v 1.5 2007/04/03 16:31:18 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.tpl,v 1.6 2007/04/03 16:51:09 squareing Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive('blogs')}
 	{bitmodule title="$moduleTitle" name="last_blog_posts"}
@@ -10,7 +10,7 @@
 					<br />
 					by {displayname hash=$modLastBlogPosts[ix]}</div>
 					{$modLastBlogPosts[ix].parsed|truncate:$maxPreviewLength}
-					<a href="{$modLastBlogPosts[ix].post_url}">Read more</a>
+					<a class="more" href="{$modLastBlogPosts[ix].post_url}">Read more</a>
 				</li>
 			{sectionelse}
 				<li></li>
