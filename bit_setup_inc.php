@@ -12,15 +12,9 @@ $registerHash = array(
 );
 $gBitSystem->registerPackage( $registerHash );
 
-/* Simple function to fetch and set all config values. */
-function assignConfigs($x) {
-	global $gBitSmarty, $gBitSystem;
-	foreach ($x as $key)
-		$gBitSmarty->assign($key, $gBitSystem->getConfig($key));
-}
-
 if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 	if( $gBitUser->hasPermission( 'p_blogs_admin' ) ) {
+		// this probably has no effect since it doesn't update the users permissions
 		$gBitUser->setPreference( 'p_blogs_create', TRUE );
 		$gBitUser->setPreference( 'p_blogs_post', TRUE );
 		$gBitUser->setPreference( 'p_blogs_view', TRUE );
@@ -36,21 +30,6 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 	}
 
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
-
-	$prefs = array(
-					'home_blog',
-					'blog_list_order',
-					'blog_list_title',
-					'blog_list_description',
-					'blog_list_created',
-					'blog_list_lastmodif',
-					'blog_list_user',
-					'blog_list_posts',
-					'blog_list_visits',
-					'blog_list_activity',
-					'blog_list_user_as',
-				);
-	assignConfigs($prefs);
 
 	require_once( 'BitBlog.php' );	
 }

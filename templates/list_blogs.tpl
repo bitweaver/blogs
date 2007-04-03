@@ -13,28 +13,28 @@
 		<div class="navbar">
 			<ul>
 				<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
-				{if $blog_list_title eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'blog_list_title' )}
 					<li>{smartlink ititle="Title" isort="title" offset=$offset}</li>
 				{/if}
-				{if $blog_list_created eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'blog_list_created' )}
 					<li>{smartlink ititle="Created" isort="created" iorder=desc offset=$offset}</li>
 				{/if}
-				{if $blog_list_lastmodif eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'blog_list_lastmodif' )}
 					<li>{smartlink ititle="Last Modified" isort="last_modified" iorder=desc idefault=1 offset=$offset}</li>
 				{/if}
-				{if $blog_list_user eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'blog_list_user' )}
 					<li>{smartlink ititle="Creator" isort="user" offset=$offset}</li>
 				{/if}
 {* DEPRECATED - need an alt since posts col is being eliminated - need way to sort on postscant -wjames5
-				{if $blog_list_posts eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'blog_list_posts' )}
 					<li>{smartlink ititle="Posts" isort="posts" iorder=desc offset=$offset}</li>
 				{/if}
 *}
-				{if $blog_list_visits eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'blog_list_visits' )}
 					<li>{smartlink ititle="Visits" isort="hits" iorder=desc offset=$offset}</li>
 				{/if}
 {* TODO: Add back once activity is implemented
-				{if $blog_list_activity eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'blog_list_activity' )}
 					<li>{smartlink ititle="Activity" isort="activity" iorder=desc offset=$offset}</li>
 				{/if}
 *}
@@ -56,46 +56,47 @@
 						{/if}
 					</div>
 
-					{if $blog_list_title eq 'y'}
+					{if $gBitSystem->isFeatureActive( 'blog_list_title' )}
 						<h2><a title="{$listBlog.title|escape}" href="{$listBlog.blog_url}">{$listBlog.title|escape}</a></h2>
 					{/if}
 
-					{if $blog_list_description eq 'y'}
+					{if $gBitSystem->isFeatureActive( 'blog_list_description' )}
 						<p>{$listBlog.parsed}</p>
 					{/if}
 
 					<div class="date">
-						{if $blog_list_user eq 'y'}
-							{if $blog_list_user_as eq 'link'}
+						{if $gBitSystem->isFeatureActive( 'blog_list_user' )}
+						{if $gBitSystem->getConfig('blog_list_user_as') eq 'link'}
 								{tr}Created by {$listBlog.user|userlink}{/tr}
-							{elseif $blog_list_user_as eq 'avatar'}
+							{elseif $gBitSystem->getConfig('blog_list_user_as') eq 'avatar'}
 								{$listBlog.user|avatarize}
 							{else}
 								{tr}Created by {$listBlog.user}{/tr}
 							{/if}
 						{/if}
 
-						{if $blog_list_created eq 'y'}
-							{tr}{if $blog_list_user ne 'y'}<br />Created{/if} on {$listBlog.created|bit_short_date}{/tr}
+						{if $gBitSystem->isFeatureActive( 'blog_list_created' )}
+							{tr}{if !$gBitSystem->isFeatureActive('blog_list_user')}<br />Created{/if} on {$listBlog.created|bit_short_date}{/tr}
 							<br />
 						{/if}
 
-						{if $blog_list_lastmodif eq 'y'}
+						{if $gBitSystem->isFeatureActive( 'blog_list_lastmodif' )}
 							{tr}Last Modified {$listBlog.last_modified|bit_short_datetime}{/tr}
 						{/if}
 					</div>
 
 					<div class="footer">
-						{if $blog_list_posts eq 'y'}
+						{if $gBitSystem->isFeatureActive( 'blog_list_posts' )}
 							{tr}Posts{/tr}: {$listBlog.postscant}&nbsp;&bull;&nbsp;
 						{/if}
 						
-						{if $blog_list_visits eq 'y'}
+						{if $gBitSystem->isFeatureActive( 'blog_list_visits' )}
 							{tr}Visits{/tr}: {$listBlog.hits}&nbsp;&bull;&nbsp;
 						{/if}
 					</div>
 
 					<div class="clear"></div>
+				</li>
 			{foreachelse}
 				<li class="item norecords">
 					{tr}No records found{/tr}
