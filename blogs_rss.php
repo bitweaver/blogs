@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.20 2007/03/20 19:29:29 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.21 2007/04/04 23:05:11 wjames5 Exp $
  * @package article
  * @subpackage functions
  */
@@ -18,7 +18,7 @@ require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 require_once( RSS_PKG_PATH."rss_inc.php" );
 
 // default feed info
-$rss->title = $gBitSystem->getConfig( 'blogs_rss_title', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Blogs' ) );
+$rss->title = $gBitSystem->getConfig( 'blogs_rss_title', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'Blog Posts' ) );
 $rss->description = $gBitSystem->getConfig( 'blogs_rss_description', $gBitSystem->getConfig( 'site_title' ).' - '.tra( 'RSS Feed' ) );
 
 // check permission to view wiki pages
@@ -34,12 +34,28 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 	$listHash['max_records'] = $gBitSystem->getConfig( 'blogs_rss_max_records', 10 );
 	$listHash['parse_data'] = TRUE;
 	$listHash['full_data'] = TRUE;
+	if( !empty( $_REQUEST['user_id'] ) ) {
+		require_once( USERS_PKG_PATH.'BitUser.php' );
+		$blogUser = new BitUser();
+		$userData = $blogUser->getUserInfo( array('user_id' => $_REQUEST['user_id']) );
+		// dont try and fool me
+		if (!empty($userData)){
+			$userName = $userData['real_name']?$userData['real_name']:$userData['login'];
+			$rss->title = $userName." at ".$gBitSystem->getConfig( 'site_title' );
+			$listHash['user_id'] = $_REQUEST['user_id'];
+		}
+	}
+
 	if( !empty( $_REQUEST['blog_id'] ) ) {
 		$listHash['blog_id'] = $_REQUEST['blog_id'];
 		$gBlog = new BitBlog( $_REQUEST['blog_id'] );
-		if( $gBlog->load() ) {
+		$gBlog->load();
+		if( isset($gBlog->mContentId) ) {
 			// adjust feed title to blog title
-			$rss->title = $gBlog->getTitle();
+			$rss->title = $gBlog->getTitle()." at ".$gBitSystem->getConfig( 'site_title' );
+			if (isset($userName)){
+				$rss->title = $userName."'s Posts in ".$rss->title;
+			}
 			$rss->description = $gBlog->parseData();
 		}
 	}
