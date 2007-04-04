@@ -34,8 +34,8 @@ if( !$gContent->isValid() ) {
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 if( $gContent->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
-	$gBitSystem->setStyle( $gContent->getField( 'blog_style' ) );
-	$gBitSystem->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gContent->getField( 'blog_style' ), $gContent->getField( 'user_id' ) );
+	$gBitThemes->setStyle( $gContent->getField( 'blog_style' ) );
+	$gBitThemes->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gContent->getField( 'blog_style' ), $gContent->getField( 'user_id' ) );
 	$gBitSmarty->assign( 'userStyle', $gContent->getField( 'blog_style' ) );
 }
 
