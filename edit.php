@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.24 2007/03/31 13:01:09 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.25 2007/04/04 17:03:43 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -50,7 +50,7 @@ if( $gContent->isValid() ) {
 
 
 // Now check permissions to access this page
-if (!$gBitUser->hasPermission( 'p_blogs_create' ) && ($gBitUser->mUserId != $data['user_id'] || !$gBitUser->mUserId) ) {
+if( !$gContent->hasUserPermission( 'p_blogs_create' ) ) {
 	$gBitSystem->fatalPermission('p_blog_create');
 }
 

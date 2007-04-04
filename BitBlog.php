@@ -29,6 +29,7 @@ class BitBlog extends LibertyContent {
 		) );
 		$this->mContentId = $pContentId;
 		$this->mContentTypeGuid = BITBLOG_CONTENT_TYPE_GUID;
+		$this->mAdminContentPerm = 'p_blogs_admin';
 	}
 
 	function get_num_user_blogs($user_id) {
