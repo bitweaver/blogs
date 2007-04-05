@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.21 2007/03/31 13:01:09 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.22 2007/04/05 17:54:38 wjames5 Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -11,7 +11,7 @@
 		{/if}
 
 		{if $gBitSystem->isPackageActive( 'rss' )}
-			<a title="{tr}RSS feed{/tr}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$gContent->mBlogId}">{biticon ipackage="icons" iname="network-wireless" iexplain="RSS feed"}</a>
+			<a title="{tr}RSS feed{/tr}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$gContent->mBlogId}">{biticon ipackage="rss" iname="rss-16x16" iexplain="RSS feed"}</a>
 		{/if}
 
 		{if $gContent->hasEditPermission()}
