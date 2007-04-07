@@ -25,9 +25,13 @@
 	{/if}
 
 	<div class="header">
+		<h1>
 		{if $aPost.title}
-			<h1>{$aPost.title|escape}</h1>
+			{$aPost.title}
+		{else}
+			{$aPost.publish_date|default:$aPost.created|bit_long_date}
 		{/if}
+		</h1>
 
 		<div class="date">
 			{tr}by {displayname hash=$aPost}{/tr}<br />

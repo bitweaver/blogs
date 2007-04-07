@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.35 2007/03/23 21:29:26 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.36 2007/04/07 17:30:43 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -53,33 +53,20 @@ if( !empty( $_REQUEST['action'] ) ) {
 	}
 }
 
-
-$gContent->invokeServices( 'content_edit_function' );
-
 if (isset($_REQUEST['remove_image'])) {
 	$gContent->expungeAttachment( $_REQUEST['remove_image'] );
 }
 
 if (isset($_REQUEST["preview"])) {
-	$data = $_REQUEST['edit'];
-
-	$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
-
-	// used by the preview page
-	/* DEPRECATED - need a substitute for getting a list of the blogs we want to cross post to -wjames5
-	$post_info_blog = array($gBlog->getBlog($_REQUEST['blog_id']));
-	$post_info = array(
-		'title' => isset( $_REQUEST["title"] ) ? $_REQUEST['title'] : '',
-		'blogtitle' => isset( $post_info_blog[0]["title"] ) ? $post_info_blog[0]['title'] : '',
-		'use_title' => 'y',
-		'created' => time(),
-	);
-	$gBitSmarty->assign('post_info', $post_info);
-	*/
-	$gBitSmarty->assign('data', $data);
-	$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
-	$gBitSmarty->assign('parsed_data', $parsed_data);
-	$gBitSmarty->assign('preview', 'y');
+	$post = $gContent->preparePreview( $_REQUEST );
+	$gBitSmarty->assign( 'preview', TRUE );
+	$gContent->invokeServices( 'content_preview_function' );
+	$gBitSmarty->assign_by_ref( 'post_info', $post );
+	/* minor hack to accomodate the view_blog_post.tpl
+	 * this can eventually be removed with a change to the tpl to use post_info['parsed_data'] 
+	 * but requires clean up in a few places.
+	 */
+	$gBitSmarty->assign('parsed_data', $post['parsed_data']);	
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
 	if( $gContent->store( $_REQUEST ) ) {
 		$postid = $gContent->mPostId;
@@ -104,7 +91,11 @@ if (isset($_REQUEST["preview"])) {
 
 		$gContent->load();
 	}
+} else {
+	$gContent->invokeServices( 'content_edit_function' );
+	$gBitSmarty->assign_by_ref('post_info', $gContent->mInfo);
 }
+
 
 // WYSIWYG and Quicktag variable
 $gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
@@ -128,6 +119,8 @@ $gBitSmarty->assign_by_ref('blogs', $blogs['data']);
 if (isset($_REQUEST['blog_content_id'])) {
 	$gBitSmarty->assign('blog_content_id', $_REQUEST['blog_content_id'] );
 }
+
+$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 
 // Need ajax for attachment browser
 $gBitSmarty->assign('loadAjax', true);

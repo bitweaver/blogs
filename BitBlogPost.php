@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.58 2007/04/03 21:13:25 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.59 2007/04/07 17:30:43 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.58 2007/04/03 21:13:25 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.59 2007/04/07 17:30:43 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.58 $ $Date: 2007/04/03 21:13:25 $ $Author: squareing $
+ * @version $Revision: 1.59 $ $Date: 2007/04/07 17:30:43 $ $Author: wjames5 $
  */
 
 /**
@@ -100,7 +100,7 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mInfo['blog_url'] = BitBlog::getDisplayUrl( $this->mInfo['blog_id'] );
 				*/
 				
-				$this->mInfo['title'] = $this->getTitle();
+				//$this->mInfo['title'] = $this->getTitle();
 				$this->mInfo['raw'] = $this->mInfo['data'];
 				$this->mInfo['data'] = preg_replace( BITBLOGPOST_SPLIT_REGEX, "", $this->mInfo['data'] );
 				$this->mInfo['use_title'] = $gBitUser->getPreference( 'user_blog_posts_use_title', 'y', $this->mInfo['user_id'] ) ;
@@ -140,7 +140,6 @@ class BitBlogPost extends LibertyAttachable {
 		if( empty( $pHash ) && !empty( $this->mInfo ) ) {
 			$pHash = &$this->mInfo;
 		}
-
 		if( !empty( $pHash['title'] ) ) {
 			$ret = $pHash['title'];
 		} elseif( !is_null( $pHash ) ) {
@@ -179,6 +178,54 @@ class BitBlogPost extends LibertyAttachable {
 		return $ret;
 	}
 
+
+	/**
+	* Deal with images and text, modify them apprpriately that they can be returned to the form.
+	* @param $previewData data submitted by form - generally $_REQUEST
+	* @return array of data compatible with article form
+	* @access public
+	**/
+	function preparePreview( $pParamHash ) {
+		global $gBitSystem, $gBitUser;
+
+		$data = $pParamHash;
+		$this->verify( $data );
+		$data['raw'] = $data['edit'];
+
+		if( empty( $data['user_id'] ) ) {
+			$data['user_id'] = $gBitUser->mUserId;
+		}
+
+		if( empty( $data['hits'] ) ) {
+			$data['hits'] = 0;
+		}
+
+		if( empty( $data['publish_date'] ) ) {
+			$data['publish_date'] = $gBitSystem->getUTCTime();
+		}
+
+		if( empty( $data['parsed_data'] ) ) {
+			$data['no_cache']    = TRUE;
+			$data['parsed_data'] = $this->parseData( $data['edit'], (!empty($data['format_guid']) ? $data['format_guid'] : 'tikiwiki' ));
+			//$data['parsed_data'] = $this->parseData( $data );
+			// replace the split syntax with a horizontal rule
+			$data['parsed_data'] = preg_replace( BITBLOGPOST_SPLIT_REGEX, "<hr />", $data['parsed_data'] );
+		}
+
+		if( @$this->verifyId( $data['image_attachment_id'] ) ) {
+			$data['image_attachment_id'] = ( int )$data['image_attachment_id'];
+			$query = "SELECT lf.storage_path AS image_storage_path
+				FROM `".BIT_DB_PREFIX."liberty_attachments` a
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON( lf.file_id = a.foreign_id )
+				WHERE a.attachment_id=?";
+			$data['image_storage_path'] = $this->mDb->getOne( $query, array( $data['image_attachment_id'] ) );
+			$data['image_url'] = BitArticle::getImageUrl( $data );
+		}
+
+		return $data;
+	}
+
+
 	
 	/**
 	* Make sure the data is safe to store
@@ -213,20 +260,9 @@ class BitBlogPost extends LibertyAttachable {
 			$pParamHash['edit'] = $pParamHash['data'];
 		}
 
-		// check for name issues, first truncate length if too long
+		// truncate length if too long
 		if( !empty( $pParamHash['title'] ) ) {
-			if( empty( $this->mPostId ) ) {
-				if( empty( $pParamHash['title'] ) ) {
-					$this->mErrors['title'] = 'You must enter a title for this blog post.';
-				} else {
-					$pParamHash['content_store']['title'] = substr( $pParamHash['title'], 0, 160 );
-				}
-			} else {
-				$pParamHash['content_store']['title'] =( isset( $pParamHash['title'] ) )? substr( $pParamHash['title'], 0, 160 ): '';
-			}
-		} else if( empty( $pParamHash['title'] ) ) {
-			// no name specified
-			$this->mErrors['title'] = 'You must enter a title for this blog post';
+			$pParamHash['title'] = substr( $pParamHash['title'], 0, 160 );
 		}
 
 		if( !empty( $pParamHash['publish_Month'] ) ) {

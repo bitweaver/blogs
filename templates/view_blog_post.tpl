@@ -57,7 +57,7 @@
 		</div>
 
 		<h1>
-			{if $post_info.use_title eq 'y'}
+			{if $post_info.use_title eq 'y' && $post_info.title}
 				{$post_info.title|escape}
 			{else}
 				{$post_info.publish_date|default:$post_info.created|bit_long_date}

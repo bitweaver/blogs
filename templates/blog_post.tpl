@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.23 2007/03/23 21:29:26 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.24 2007/04/07 17:30:43 wjames5 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -25,7 +25,7 @@
 							<div class="row">
 								{formlabel label="Title" for="title"}
 								{forminput}
-									<input type="text" size="50" name="title" id="title" value="{$gContent->getTitle()|escape}" />
+									<input type="text" size="50" name="title" id="title" value="{$post_info.title|escape}" />
 									{formhelp note="When you leave the title blank, the current date will be substituted automagically."}
 								{/forminput}
 							</div>
@@ -43,7 +43,7 @@
 
 						<div class="row">
 							{forminput}
-								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$gContent->getField('data')|escape:html}</textarea>
+								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$post_info.raw|escape:html}</textarea>
 							{/forminput}
 						</div>
 
