@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.36 2007/04/07 17:30:43 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.37 2007/04/07 17:50:27 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -55,6 +55,10 @@ if( !empty( $_REQUEST['action'] ) ) {
 
 if (isset($_REQUEST['remove_image'])) {
 	$gContent->expungeAttachment( $_REQUEST['remove_image'] );
+}
+
+if( isset( $_REQUEST['format_guid'] ) && !isset( $gContent->mInfo['format_guid'] ) ) {
+	$formInfo['format_guid'] = $gContent->mInfo['format_guid'] = $_REQUEST['format_guid']; 
 }
 
 if (isset($_REQUEST["preview"])) {

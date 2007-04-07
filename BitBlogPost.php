@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.59 2007/04/07 17:30:43 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.60 2007/04/07 17:50:27 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.59 2007/04/07 17:30:43 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.60 2007/04/07 17:50:27 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.59 $ $Date: 2007/04/07 17:30:43 $ $Author: wjames5 $
+ * @version $Revision: 1.60 $ $Date: 2007/04/07 17:50:27 $ $Author: wjames5 $
  */
 
 /**
@@ -221,7 +221,6 @@ class BitBlogPost extends LibertyAttachable {
 			$data['image_storage_path'] = $this->mDb->getOne( $query, array( $data['image_attachment_id'] ) );
 			$data['image_url'] = BitArticle::getImageUrl( $data );
 		}
-
 		return $data;
 	}
 
@@ -252,7 +251,7 @@ class BitBlogPost extends LibertyAttachable {
 		}
 
 		// It is possible a derived class set this to something different
-		if( @$this->verifyId( $pParamHash['content_type_guid'] ) ) {
+		if( empty( $pParamHash['content_type_guid'] )&& !empty( $this->mContentTypeGuid ) ) {
 			$pParamHash['content_type_guid'] = $this->mContentTypeGuid;
 		}
 
