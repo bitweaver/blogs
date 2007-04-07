@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.11 2007/04/04 12:43:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.12 2007/04/07 23:22:32 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -30,6 +30,8 @@ $blogPost = new BitBlogPost();
 $ranking = $blogPost->getList( $listHash );
 
 $maxPreviewLength = ( !empty( $module_params['max_preview_length'] ) ? $module_params['max_preview_length'] : 500 );
+
+$gBitSmarty->assign( 'modLastBlogPostsFormat', (empty($module_params['format']) ? 'list' : $module_params['format']) );
 $gBitSmarty->assign( 'maxPreviewLength', $maxPreviewLength );
 $gBitSmarty->assign( 'modLastBlogPosts', $ranking["data"] );
 // not sure what this is, but using title doesn't work cos that will rename the moduleTitle
