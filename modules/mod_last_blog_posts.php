@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.13 2007/04/08 01:54:58 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.14 2007/04/08 03:21:11 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -14,12 +14,19 @@ require_once( USERS_PKG_PATH.'BitUser.php' );
 // moduleParams contains lots of goodies: extract for easier handling
 extract( $moduleParams );
 
+$date_start = NULL;
+if( !empty($module_params['date_start_offset']) ){ 
+	//offset is passed as number of hours
+	$date_start = time() - ( $module_params['date_start_offset'] * 3600 );
+}
+
 $listHash = array(
 	'sort_mode'   => ( !empty( $module_params['sort_mode'] ) ? $module_params['sort_mode'] : 'created_desc' ),
 	'max_records' => $module_rows,
 	'parse_data'  => TRUE,
 	'user'        => ( !empty( $module_params['user'] ) ? $module_params['user'] : NULL ),
 	'blog_id'     => ( @BitBase::verifyId( $module_params['blog_id'] ) ? $module_params['blog_id'] : NULL ),
+	'date_start'  =>  $date_start,
 );
 
 if(( empty( $module_params['include'] ) || $module_params['include'] != 'all' ) && !empty( $gQueryUserId )) {
