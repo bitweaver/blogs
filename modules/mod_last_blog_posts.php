@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.12 2007/04/07 23:22:32 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.13 2007/04/08 01:54:58 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -15,7 +15,7 @@ require_once( USERS_PKG_PATH.'BitUser.php' );
 extract( $moduleParams );
 
 $listHash = array(
-	'sort_mode'   => 'created_desc',
+	'sort_mode'   => ( !empty( $module_params['sort_mode'] ) ? $module_params['sort_mode'] : 'created_desc' ),
 	'max_records' => $module_rows,
 	'parse_data'  => TRUE,
 	'user'        => ( !empty( $module_params['user'] ) ? $module_params['user'] : NULL ),

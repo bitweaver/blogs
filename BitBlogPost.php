@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.60 2007/04/07 17:50:27 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.61 2007/04/08 01:54:58 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.60 2007/04/07 17:50:27 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.61 2007/04/08 01:54:58 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.60 $ $Date: 2007/04/07 17:50:27 $ $Author: wjames5 $
+ * @version $Revision: 1.61 $ $Date: 2007/04/08 01:54:58 $ $Author: wjames5 $
  */
 
 /**
@@ -686,6 +686,9 @@ class BitBlogPost extends LibertyAttachable {
 			}
 		if ($pListHash['sort_mode'] == 'date_added_desc') {
 			$sort_mode_prefix = 'bpm';
+			}
+		if ($pListHash['sort_mode'] == 'hits_desc') {
+			$sort_mode_prefix = 'lch';
 			}
 			
 		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] ); 
