@@ -45,6 +45,15 @@
 			{foreach from=$blogsList item=listBlog key=blogContentId}
 				<li class="item {cycle values='odd,even'}">
 					<div class="floaticon">
+						{if $gBitUser->hasPermission( 'p_liberty_assign_content_perms' ) and $listBlog.content_id}
+							{if $gContent->mPerms} {* org note from liberty:service_content_icon_inc: don't think there is a serviceHash way of working out if there are individual permissions set *}
+								{assign var=perm_icon value="icons/emblem-readonly"}
+							{else}
+								{assign var=perm_icon value="icons/emblem-shared"}
+							{/if}
+							{smartlink ipackage=liberty ifile=content_permissions.php ititle="Assign Permissions" ibiticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
+						{/if}
+					
 						{if ($gBitUser->mUserId and $listBlog.user_id eq $gBitUser->mUserId) || ($gBitUser->hasPermission( 'p_blogs_admin' )) or ($listBlog.is_public eq 'y')}
 									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listBlog.blog_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="post"}</a>
 						{/if}
