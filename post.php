@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.37 2007/04/07 17:50:27 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.38 2007/04/10 03:44:40 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -108,7 +108,6 @@ $gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 $listHash = array();
 $listHash['sort_mode'] = 'title_desc';
 if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
-	$blogs = $gBlog->getList( $listHash );
 	$listHash['user_id'] = $gBitUser->mUserId;
 	$listHash['content_perm_name'] = 'p_blogs_post';
 }

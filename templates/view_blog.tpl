@@ -1,13 +1,11 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.22 2007/04/05 17:54:38 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.23 2007/04/10 03:44:40 wjames5 Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$gContent->mInfo}
 
-		{if $gBitUser->hasPermission( 'p_blogs_post' )}
-			{if $gContent->hasEditPermission() or $gContent->getField('is_public') eq 'y'}
-				<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$gContent->mBlogId}">{biticon ipackage="icons" iname="document-save" iexplain="post"}</a>
-			{/if}
+		{if $gContent->hasUserPermission( 'p_blogs_post' )}
+			<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$gContent->mBlogId}">{biticon ipackage="icons" iname="document-save" iexplain="post"}</a>
 		{/if}
 
 		{if $gBitSystem->isPackageActive( 'rss' )}
