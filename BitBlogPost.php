@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.62 2007/04/08 03:21:11 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.63 2007/04/11 21:01:07 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.62 2007/04/08 03:21:11 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.63 2007/04/11 21:01:07 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.62 $ $Date: 2007/04/08 03:21:11 $ $Author: wjames5 $
+ * @version $Revision: 1.63 $ $Date: 2007/04/11 21:01:07 $ $Author: wjames5 $
  */
 
 /**
@@ -265,9 +265,25 @@ class BitBlogPost extends LibertyAttachable {
 		}
 
 		if( !empty( $pParamHash['publish_Month'] ) ) {
-			$dateString = $pParamHash['publish_Year'].'-'.$pParamHash['publish_Month'].'-'.$pParamHash['publish_Day'].' '.$pParamHash['publish_Hour'].':'.$pParamHash['publish_Minute'];
-			//$timestamp = strtotime( $dateString );
-			$timestamp = $gBitSystem->mServerTimestamp->getUTCFromDisplayDate( strtotime( $dateString ) );
+			//$dateString = $pParamHash['publish_Year'].'-'.$pParamHash['publish_Month'].'-'.$pParamHash['publish_Day'].' '.$pParamHash['publish_Hour'].':'.$pParamHash['publish_Minute'];
+
+			//old way
+			//$timestamp = $gBitSystem->mServerTimestamp->getUTCFromDisplayDate( strtotime( $dateString ) );
+			//new way
+			$offset = BitDate::get_display_offset();
+			$this->mDate = new BitDate($offset);
+
+			$dateString = $this->mDate->gmmktime(
+			$pParamHash['publish_Hour'],
+			$pParamHash['publish_Minute'],
+			isset($pParamHash['publish_Second']) ? $pParamHash['publish_Second'] : 0,
+			$pParamHash['publish_Month'],
+			$pParamHash['publish_Day'],
+			$pParamHash['publish_Year']
+			);
+			
+			$timestamp = $this->mDate->getUTCFromDisplayDate( $dateString );
+			
 			if( $timestamp !== -1 ) {
 				$pParamHash['publish_date'] = $timestamp;
 			}
@@ -278,8 +294,24 @@ class BitBlogPost extends LibertyAttachable {
 
 		if( !empty( $pParamHash['expire_Month'] ) ) {
 			$dateString = $pParamHash['expire_Year'].'-'.$pParamHash['expire_Month'].'-'.$pParamHash['expire_Day'].' '.$pParamHash['expire_Hour'].':'.$pParamHash['expire_Minute'];
-			//$timestamp = strtotime( $dateString );
-			$timestamp = $gBitSystem->mServerTimestamp->getUTCFromDisplayDate( strtotime( $dateString ) );
+
+			//old way
+			//$timestamp = $gBitSystem->mServerTimestamp->getUTCFromDisplayDate( strtotime( $dateString ) );
+			//new way
+			$offset = BitDate::get_display_offset();
+			$this->mDate = new BitDate($offset);
+
+			$dateString = $this->mDate->gmmktime(
+			$pParamHash['expire_Hour'],
+			$pParamHash['expire_Minute'],
+			isset($pParamHash['expire_Second']) ? $pParamHash['expire_Second'] : 0,
+			$pParamHash['expire_Month'],
+			$pParamHash['expire_Day'],
+			$pParamHash['expire_Year']
+			);
+			
+			$timestamp = $this->mDate->getUTCFromDisplayDate( $dateString );
+
 			if( $timestamp !== -1 ) {
 				$pParamHash['expire_date'] = $timestamp;
 			}
