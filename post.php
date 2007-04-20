@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.39 2007/04/16 15:58:22 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.40 2007/04/20 11:03:11 nickpalmer Exp $
 
  * @package blogs
  * @subpackage functions
@@ -100,9 +100,6 @@ if (isset($_REQUEST["preview"])) {
 	$gBitSmarty->assign_by_ref('post_info', $gContent->mInfo);
 }
 
-
-// WYSIWYG and Quicktag variable
-$gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
 // Get List of available blogs
 $listHash = array();

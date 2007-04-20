@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.25 2007/04/04 17:03:43 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.26 2007/04/20 11:03:11 nickpalmer Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -53,9 +53,6 @@ if( $gContent->isValid() ) {
 if( !$gContent->hasUserPermission( 'p_blogs_create' ) ) {
 	$gBitSystem->fatalPermission('p_blog_create');
 }
-
-// WYSIWYG and Quicktag variable
-$gBitSmarty->assign( 'textarea_id', LIBERTY_TEXT_AREA );
 
 if (isset($_REQUEST['preview'])) {
 	//all this should prolly be moved to a BitBlog::preparePreview method and the tpls cleaned - but this works for now -wjames5
