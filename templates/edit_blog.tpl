@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.21 2007/03/26 16:32:09 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.22 2007/04/20 10:52:47 nickpalmer Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -34,22 +34,7 @@
 							{/forminput}
 						</div>
 
-						{if $gBitSystem->isPackageActive( 'smileys' )}
-							{include file="bitpackage:smileys/smileys_full.tpl"}
-						{/if}
-
-						{if $gBitSystem->isPackageActive( 'quicktags' )}
-							{include file="bitpackage:quicktags/quicktags_full.tpl"}
-						{/if}
-
-						{include file="bitpackage:liberty/edit_format.tpl"}
-
-						<div class="row">
-							{forminput}
-								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:5}" cols="50">{if $edit}{$edit|escape}{else}{$gContent->getField('data')|escape}{/if}</textarea>
-								{formhelp note=''}
-							{/forminput}
-						</div>
+						{textarea}{if $edit}{$edit}{else}{$gContent->getField('data')}{/if}{/textarea}
 
 						<div class="row">
 							{formlabel label="Number of posts to show" for="max_posts"}

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.24 2007/04/07 17:30:43 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.25 2007/04/20 10:52:47 nickpalmer Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -31,21 +31,7 @@
 							</div>
 						{/if}
 
-						{include file="bitpackage:liberty/edit_format.tpl"}
-
-						{if $gBitSystem->isPackageActive( 'smileys' )}
-							{include file="bitpackage:smileys/smileys_full.tpl"}
-						{/if}
-
-						{if $gBitSystem->isPackageActive( 'quicktags' )}
-							{include file="bitpackage:quicktags/quicktags_full.tpl"}
-						{/if}
-
-						<div class="row">
-							{forminput}
-								<textarea {spellchecker} id="{$textarea_id}" name="edit" rows="{$smarty.cookies.rows|default:20}" cols="50">{$post_info.raw|escape:html}</textarea>
-							{/forminput}
-						</div>
+						{textarea}{$post_info.raw}{/textarea}
 
 						{if $availableBlogs}
 							<div class="row">
