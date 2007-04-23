@@ -53,7 +53,7 @@ $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 // Check permissions to access this page
 if( !$gContent->isValid() ) {
-	$gBitSystem->fatalError( 'Post cannot be found' );
+	$gBitSystem->fatalError( tra( 'Post cannot be found' ));
 }
 
 $displayHash = array( 'perm_name' => 'p_blogs_view' );

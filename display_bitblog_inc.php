@@ -28,7 +28,7 @@ if( isset($_REQUEST['user_id']) && !isset( $_REQUEST['blog_id'] ) ) {
 }
 
 if( !$gContent->isValid() ) {
-	$gBitSystem->fatalError( 'No blog indicated' );
+	$gBitSystem->fatalError( tra( 'No blog indicated' ));
 }
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
