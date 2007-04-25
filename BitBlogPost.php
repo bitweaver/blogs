@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.63 2007/04/11 21:01:07 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.64 2007/04/25 16:03:49 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.63 2007/04/11 21:01:07 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.64 2007/04/25 16:03:49 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.63 $ $Date: 2007/04/11 21:01:07 $ $Author: wjames5 $
+ * @version $Revision: 1.64 $ $Date: 2007/04/25 16:03:49 $ $Author: wjames5 $
  */
 
 /**
@@ -668,6 +668,12 @@ class BitBlogPost extends LibertyAttachable {
 			$whereSql .= ' AND lc.`user_id` = ? ';
 		}
 
+		if( @$this->verifyId( $pListHash['group_id'] ) ) {
+			array_push( $bindVars, (int)$pListHash['group_id'] );
+			$joinSql .= " INNER JOIN `".BIT_DB_PREFIX."users_groups_map` ugm ON (ugm.`user_id`=uu.`user_id`)";
+			$whereSql .= ' AND ugm.`group_id` = ? ';
+		}
+
 		// map user to login in case we used one instead of the other
 		if( !empty( $pListHash['user'] ) ) {
 			$pListHash['login'] = $pListHash['user'];
@@ -739,7 +745,7 @@ class BitBlogPost extends LibertyAttachable {
 				$joinSql
 			WHERE lc.`content_type_guid` = ? $whereSql
 			ORDER BY $sort_mode";
-	
+
 		$query_cant = "
 			SELECT COUNT( * ) 
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
