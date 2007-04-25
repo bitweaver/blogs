@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.25 2007/04/20 10:52:47 nickpalmer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.26 2007/04/25 15:52:14 wjames5 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -66,12 +66,14 @@
 
 				{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_tab_tpl}
 
+				{if $gBitUser->hasPermission('p_liberty_attach_attachments') }
 				{jstab title="Attachments"}
 					{legend legend="Attachments"}
 						{include file="bitpackage:liberty/edit_storage.tpl"}
 					{/legend}
 				{/jstab}
-
+				{/if}
+				
 				{jstab title="Advanced Options"}
 					{legend legend="Publication and Expiration Dates"}
 						<div class="row">
