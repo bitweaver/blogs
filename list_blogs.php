@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.14 2007/03/23 21:29:26 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.15 2007/04/25 16:17:56 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */

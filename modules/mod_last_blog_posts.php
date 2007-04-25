@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.14 2007/04/08 03:21:11 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.15 2007/04/25 16:17:56 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -26,6 +26,7 @@ $listHash = array(
 	'parse_data'  => TRUE,
 	'user'        => ( !empty( $module_params['user'] ) ? $module_params['user'] : NULL ),
 	'blog_id'     => ( @BitBase::verifyId( $module_params['blog_id'] ) ? $module_params['blog_id'] : NULL ),
+	'group_id'     => ( @BitBase::verifyId( $module_params['group_id'] ) ? $module_params['group_id'] : NULL ),
 	'date_start'  =>  $date_start,
 );
 

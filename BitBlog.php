@@ -229,6 +229,12 @@ class BitBlog extends LibertyContent {
 			$bindVars[] = $pParamHash['user_id'];
 		} 
 		
+		if( @$this->verifyId( $pParamHash['group_id'] ) ) {
+			array_push( $bindVars, (int)$pParamHash['group_id'] );
+			$joinSql .= " INNER JOIN `".BIT_DB_PREFIX."users_groups_map` ugm ON (ugm.`user_id`=uu.`user_id`)";
+			$whereSql .= ' AND ugm.`group_id` = ? ';
+		}
+
 		if( !empty( $pParamHash['is_active'] ) ) {
 			$whereSql .= " AND b.`activity` IS NOT NULL";
 		}
