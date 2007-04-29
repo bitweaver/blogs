@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.22 2007/04/20 10:52:47 nickpalmer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.23 2007/04/29 16:25:02 laetzer Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -60,7 +60,7 @@
 							{formlabel label="Use titles in blog posts" for="use_title"}
 							{forminput}
 								<input type="checkbox" name="use_title" id="use_title" {if !$gContent->isValid() || $gContent->getField('use_title') eq 'y'}checked="checked"{/if} />
-								{formhelp note='If this is not seelcted, the time and date of when the post was created will be displayed instead of the post title.'}
+								{formhelp note='If this is not selected, the time and date of when the post was created will be displayed instead of the post title.'}
 							{/forminput}
 						</div>
 
