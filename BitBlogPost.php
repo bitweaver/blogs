@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.64 2007/04/25 16:03:49 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.65 2007/04/30 17:28:36 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.64 2007/04/25 16:03:49 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.65 2007/04/30 17:28:36 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.64 $ $Date: 2007/04/25 16:03:49 $ $Author: wjames5 $
+ * @version $Revision: 1.65 $ $Date: 2007/04/30 17:28:36 $ $Author: squareing $
  */
 
 /**
@@ -68,7 +68,7 @@ class BitBlogPost extends LibertyAttachable {
 			$query = "SELECT bp.*, lc.*, blc.`title` as `blogtitle`, b.`allow_comments`,b.`allow_comments`, b.`use_title`, buu.`user_id` AS `blog_user_id`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
-					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` ) 
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` )
 					INNER JOIN `".BIT_DB_PREFIX."blogs` b ON (b.`blog_id` = bp.`blog_id`)
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` blc ON (blc.`content_id` = b.`content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."users_users` buu ON( buu.`user_id` = blc.`user_id` ) $joinSql
@@ -80,11 +80,11 @@ class BitBlogPost extends LibertyAttachable {
 */
 
 			$query = "
-				SELECT bp.*, lc.*, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar 
+				SELECT bp.*, lc.*, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar
 					$selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
-					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` ) 
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` )
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 					$joinSql
@@ -95,16 +95,16 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mPostId = $this->mInfo['post_id'];
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
-				
+
 				/* this needs to be part of loop that gets all blogs post is in
 				$this->mInfo['blog_url'] = BitBlog::getDisplayUrl( $this->mInfo['blog_id'] );
 				*/
-				
+
 				//$this->mInfo['title'] = $this->getTitle();
 				$this->mInfo['raw'] = $this->mInfo['data'];
 				$this->mInfo['data'] = preg_replace( BITBLOGPOST_SPLIT_REGEX, "", $this->mInfo['data'] );
 				$this->mInfo['use_title'] = $gBitUser->getPreference( 'user_blog_posts_use_title', 'y', $this->mInfo['user_id'] ) ;
-					
+
 				if( $pLoadComments ) {
 					$comment = new LibertyComment();
 					$this->mInfo['num_comments'] = $comment->getNumComments($this->mInfo['content_id']);
@@ -161,10 +161,10 @@ class BitBlogPost extends LibertyAttachable {
 		$ret = NULL;
 		if( @$this->verifyId( $pPostContentId ) ) {
 			$bindVars = array( (int)$pPostContentId );
-			$query = "SELECT b.`content_id` AS hash_key, bpm.*, b.*, lc.* 
-				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm 
+			$query = "SELECT b.`content_id` AS hash_key, bpm.*, b.*, lc.*
+				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm
 				INNER JOIN		`".BIT_DB_PREFIX."blogs`				 b ON b.`content_id` = bpm.`blog_content_id`
-				INNER JOIN		`".BIT_DB_PREFIX."liberty_content`		lc ON lc.`content_id` = b.`content_id` 
+				INNER JOIN		`".BIT_DB_PREFIX."liberty_content`		lc ON lc.`content_id` = b.`content_id`
 				WHERE bpm.post_content_id = ?";
 
 			if( $ret = $this->mDb->getAssoc( $query, $bindVars ) ) {
@@ -225,7 +225,7 @@ class BitBlogPost extends LibertyAttachable {
 	}
 
 
-	
+
 	/**
 	* Make sure the data is safe to store
 	* @param pParamHash be sure to pass by reference in case we need to make modifcations to the hash
@@ -274,16 +274,16 @@ class BitBlogPost extends LibertyAttachable {
 			$this->mDate = new BitDate($offset);
 
 			$dateString = $this->mDate->gmmktime(
-			$pParamHash['publish_Hour'],
-			$pParamHash['publish_Minute'],
-			isset($pParamHash['publish_Second']) ? $pParamHash['publish_Second'] : 0,
-			$pParamHash['publish_Month'],
-			$pParamHash['publish_Day'],
-			$pParamHash['publish_Year']
+				$pParamHash['publish_Hour'],
+				$pParamHash['publish_Minute'],
+				isset($pParamHash['publish_Second']) ? $pParamHash['publish_Second'] : 0,
+				$pParamHash['publish_Month'],
+				$pParamHash['publish_Day'],
+				$pParamHash['publish_Year']
 			);
-			
+
 			$timestamp = $this->mDate->getUTCFromDisplayDate( $dateString );
-			
+
 			if( $timestamp !== -1 ) {
 				$pParamHash['publish_date'] = $timestamp;
 			}
@@ -302,14 +302,14 @@ class BitBlogPost extends LibertyAttachable {
 			$this->mDate = new BitDate($offset);
 
 			$dateString = $this->mDate->gmmktime(
-			$pParamHash['expire_Hour'],
-			$pParamHash['expire_Minute'],
-			isset($pParamHash['expire_Second']) ? $pParamHash['expire_Second'] : 0,
-			$pParamHash['expire_Month'],
-			$pParamHash['expire_Day'],
-			$pParamHash['expire_Year']
+				$pParamHash['expire_Hour'],
+				$pParamHash['expire_Minute'],
+				isset($pParamHash['expire_Second']) ? $pParamHash['expire_Second'] : 0,
+				$pParamHash['expire_Month'],
+				$pParamHash['expire_Day'],
+				$pParamHash['expire_Year']
 			);
-			
+
 			$timestamp = $this->mDate->getUTCFromDisplayDate( $dateString );
 
 			if( $timestamp !== -1 ) {
@@ -322,7 +322,7 @@ class BitBlogPost extends LibertyAttachable {
 
 		return( count( $this->mErrors )== 0 );
 	}
-	
+
 	/**
 	 * Check that the class has a valid blog loaded
 	 */
@@ -344,7 +344,7 @@ class BitBlogPost extends LibertyAttachable {
 		}
 		return $ret;
 	}
-	
+
 	/**
 	 * Store a Blog Post
 	 */
@@ -356,7 +356,7 @@ class BitBlogPost extends LibertyAttachable {
 
 			// Send trackbacks recovering only successful trackbacks
 			$trackbacks = serialize( $this->sendTrackbacks( $pParamHash['trackback'] ) );
-			
+
 			if( $this->isValid() ) {
 				$locId = array( "content_id" => $this->mContentId );
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['post_store'], $locId );
@@ -372,10 +372,10 @@ class BitBlogPost extends LibertyAttachable {
 				//store the new post
 				$result = $this->mDb->associateInsert( $table, $pParamHash['post_store'] );
 			}
-			
+
 			// let's reload to get a full mInfo hash which is needed below
 			$this->load();
-			
+
 			// if blog_content_id, then map the post to the relative blogs
 			if( !empty( $pParamHash['blog_content_id'] )){
 				$this->storePostMap( $this->mContentId, $pParamHash['blog_content_id'] );
@@ -393,7 +393,7 @@ class BitBlogPost extends LibertyAttachable {
 				global $gBitUser, $gBitSmarty;
 				if( $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {
 					foreach ($nots as $not) {
-						$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);	
+						$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 						$gBitSmarty->assign('mail_title', $this->mInfo['title']);
 						$gBitSmarty->assign('mail_blogid', $this->mInfo['blog_id']);
 						$gBitSmarty->assign('mail_postid', $this->mPostId);
@@ -415,7 +415,7 @@ class BitBlogPost extends LibertyAttachable {
 					}
 				}
 			}
-			
+
 			//is this nearly identical to the above and can they be consolodated? -wjames5
 			// should this be $pParamHash['trackback'] or the above $pParamHash['trackbacks'] ? - xing
 			if( !empty( $pParamHash['trackbacks'] ) ) {
@@ -441,8 +441,8 @@ class BitBlogPost extends LibertyAttachable {
 		if( @$this->verifyId( $pPostContentId ) ) {
 			//this is to set the time we add a post to a blog.
 			$timeStamp = $gBitSystem->getUTCTime();
-			$blogIds = array();	
-			
+			$blogIds = array();
+
 			if( !empty( $pBlogMixed )){
 				if (!is_array( $pBlogMixed ) && !is_numeric( $pBlogMixed ) ){
 					$blogIds = explode( ",", $pBlogMixed );
@@ -462,29 +462,29 @@ class BitBlogPost extends LibertyAttachable {
 				}
 			}
 
-			$removedBlogIds = array_diff( $currentMappings, $blogIds );			
+			$removedBlogIds = array_diff( $currentMappings, $blogIds );
 			$newBlogIds = array_diff( $blogIds, $currentMappings );
 
 			// Remove mappings for this post
 			foreach( $removedBlogIds as $blogContentId ) {
 				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id`=? AND `post_content_id`=?", array( $blogContentId, $pPostContentId ) );
 			}
-			
+
 			foreach( $newBlogIds as $blogContentId ) {
 				if( $this->verifyId( $blogContentId ) && $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
-					$result = $this->mDb->associateInsert( BIT_DB_PREFIX."blogs_posts_map", array( 
-						'post_content_id' => $pPostContentId, 
-						'blog_content_id' => (int)$blogContentId, 
+					$result = $this->mDb->associateInsert( BIT_DB_PREFIX."blogs_posts_map", array(
+						'post_content_id' => $pPostContentId,
+						'blog_content_id' => (int)$blogContentId,
 						'date_added' => $timeStamp,
-					));			
+					));
 				}
-			}			
+			}
 		}
 
 		$this->mDb->CompleteTrans();
 		return ( count( $this->mErrors ) == 0 );
 	}
-	
+
 
 	/**
 	 * Remove complete blog post set and any comments
@@ -503,10 +503,10 @@ class BitBlogPost extends LibertyAttachable {
 			}
 
 			// remove all references in blogs_posts_map where post_content_id = content_id
-			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id` = ?";			
+			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id` = ?";
 			$result = $this->mDb->query( $query_map, array( $this->mContentId ) );
 
-			$query = "DELETE FROM `".BIT_DB_PREFIX."blog_posts` WHERE `content_id` = ?";			
+			$query = "DELETE FROM `".BIT_DB_PREFIX."blog_posts` WHERE `content_id` = ?";
 			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 
 			// Do this last so foreign keys won't complain (not the we have them... yet ;-)
@@ -638,17 +638,17 @@ class BitBlogPost extends LibertyAttachable {
 
 		$this->prepGetList( $pListHash );
 
-		$selectSql = ''; $joinSql = ''; $whereSql = '';	
+		$selectSql = ''; $joinSql = ''; $whereSql = '';
 		$bindVars = array();
 		array_push( $bindVars, $this->mContentTypeGuid );
-			
+
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 		if( @$this->verifyId( $pListHash['blog_id'] ) ) {
 			array_push( $bindVars, (int)$pListHash['blog_id'] );
 			$joinSql .= " LEFT OUTER JOIN `".BIT_DB_PREFIX."blogs_posts_map` bpm ON ( bpm.`post_content_id` = bp.`content_id` ) ";
 			$joinSql .= " LEFT OUTER JOIN `".BIT_DB_PREFIX."blogs` b ON ( bpm.`blog_content_id`=b.`content_id` ) ";
-								//	" ON ( b.`content_id` = bpm.`blog_content_id` AND bp.`content_id` = bpm.`post_content_id` )";			
+								//	" ON ( b.`content_id` = bpm.`blog_content_id` AND bp.`content_id` = bpm.`post_content_id` )";
 			$whereSql .= ' AND b.`blog_id` = ? ';
 			$pListHash['sort_mode'] = 'date_added_desc';
 		}
@@ -728,9 +728,9 @@ class BitBlogPost extends LibertyAttachable {
 		if ($pListHash['sort_mode'] == 'hits_desc') {
 			$sort_mode_prefix = 'lch';
 			}
-			
-		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] ); 
-	
+
+		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] );
+
 		$query = "
 			SELECT
 				bp.*, lc.*,
@@ -738,7 +738,7 @@ class BitBlogPost extends LibertyAttachable {
 				$selectSql
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
 				INNER JOIN      `".BIT_DB_PREFIX."liberty_content`       lc ON lc.`content_id`         = bp.`content_id`
-				INNER JOIN		`".BIT_DB_PREFIX."users_users`			 uu ON uu.`user_id`			   = lc.`user_id` 
+				INNER JOIN		`".BIT_DB_PREFIX."users_users`			 uu ON uu.`user_id`			   = lc.`user_id`
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON lc.`content_id`         = lch.`content_id`
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`	  a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`		 lf ON lf.`file_id`			   = a.`foreign_id`
@@ -747,13 +747,13 @@ class BitBlogPost extends LibertyAttachable {
 			ORDER BY $sort_mode";
 
 		$query_cant = "
-			SELECT COUNT( * ) 
+			SELECT COUNT( * )
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
 				INNER JOIN      `".BIT_DB_PREFIX."liberty_content`       lc ON lc.`content_id` = bp.`content_id`
-				INNER JOIN		`".BIT_DB_PREFIX."users_users`			 uu ON uu.`user_id`			   = lc.`user_id` 
-				$joinSql 
+				INNER JOIN		`".BIT_DB_PREFIX."users_users`			 uu ON uu.`user_id`			   = lc.`user_id`
+				$joinSql
 			WHERE lc.`content_type_guid` = ? $whereSql ";
-		
+
 		$result = $this->mDb->query($query,$bindVars,$pListHash['max_records'],$pListHash['offset']);
 		$cant = $this->mDb->getOne($query_cant,$bindVars);
 		$ret = array();
@@ -763,7 +763,7 @@ class BitBlogPost extends LibertyAttachable {
 			$res['no_fatal'] = TRUE;
 			$accessError = $this->invokeServices( 'content_verify_access', $res, FALSE );
 			if( empty( $accessError ) ) {
-				
+
 				//"DEPRECATED - Slated for removal
 				/*
 				if ( $gBitSystem->isPackageActive( 'categories' ) ) {
@@ -772,7 +772,7 @@ class BitBlogPost extends LibertyAttachable {
 					$res['categs'] = $categlib->get_object_categories( BITBLOGPOST_CONTENT_TYPE_GUID, $res["content_id"] );
 				}
 				*/
-				
+
 				// DEPRECATED - more complex comments retrieval - Slated for removal
 				/*
 				if ( $pListHash['load_num_comments'] || $pListHash['load_comments'] ) {
@@ -786,7 +786,7 @@ class BitBlogPost extends LibertyAttachable {
 					$res['comments'] = NULL;
 				}
 				*/
-				
+
 				$res['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.dirname($res['avatar']).'/avatar.jpg' : NULL);
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
 				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
@@ -809,9 +809,9 @@ class BitBlogPost extends LibertyAttachable {
 					$res['ownsblog'] = 'n';
 				}
 				$res['trackbacks_to_count'] = count($res['trackbacks_to']);
-				
+
 				$res['pages'] = $this->getNumberOfPages( $res['data'] );
-				
+
 				// deal with the parsing
 				$parseHash['format_guid']     = $res['format_guid'];
 				$parseHash['content_id']      = $res['content_id'];
@@ -836,8 +836,8 @@ class BitBlogPost extends LibertyAttachable {
 					$parseHash['data'] = preg_replace( "/\{maketoc[^\}]*\}/i", "", $parseHash['data'] );
 					$res['parsed'] = $this->parseData( $parseHash );
 					$res['parsed_description'] = $res['parsed'];
-		
-					// this is needed to remove trailing stuff from the parser and insert ...			
+
+					// this is needed to remove trailing stuff from the parser and insert ...
 					$trailing_junk_pattern = "/(<br[^>]*>)*$/i";
 					$res['parsed_description'] = preg_replace( $trailing_junk_pattern, "", $res['parsed_description'] );
 					if( preg_replace( "/\{maketoc[^\}]*\}/i", "", $res['data'] ) != $parseHash['data'] && empty( $res['man_split'] )) {
@@ -848,9 +848,9 @@ class BitBlogPost extends LibertyAttachable {
 						$res['has_more'] = TRUE;
 					}
 				}
-				
+
 				$ret[] = $res;
-				
+
 			} elseif( !empty( $accessError ) ) {
 				if( !empty( $accessError['access_control'] ) ) {
 					$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
