@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_active_blogs.php,v 1.10 2007/05/01 16:50:17 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_active_blogs.php,v 1.11 2007/05/05 05:56:54 spiderr Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -11,11 +11,9 @@
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );
 
-global $gQueryUserId, $gBitThemes, $module_rows;
+global $gQueryUserId, $gBitThemes, $module_rows, $module_params;
 
-$params = $gBitThemes->getModuleParameters('bitpackage:blogs/mod_top_active_blogs.tpl', $gQueryUserId);
-
-$listHash['max_records'] = $params['module_rows'];
+$listHash['max_records'] = $module_rows;
 $listHash['sort_mode'] = 'activity_desc';
 $listHash['user_id'] = $gQueryUserId;
 $listHash['is_active'] = TRUE;
