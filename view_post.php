@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.7 2007/03/18 18:49:58 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.8 2007/05/05 19:14:20 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -31,12 +31,11 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 
 include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 
-$gContent->addHit();
-
 include_once( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
 
-
-
+if( $gContent->isValid() ) {
+	$gContent->addHit();
+}
 
 
 // This is what Articles would do instead of calling display_bitblogpost_inc -wjames5
