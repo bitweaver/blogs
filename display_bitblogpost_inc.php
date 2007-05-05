@@ -92,35 +92,6 @@ $parsed_data = $gContent->parseData();
 $gBitSmarty->assign('parsed_data', $parsed_data);
 $gBitSmarty->assign('post_info', $gContent->mInfo );
 
-// THIS CAN PROLLY GO -wjames5
-// $gBitSmarty->assign('individual', 'n');
-
-if ( isset($_REQUEST["blog_content_id"]) || isset($_REQUEST["blog_id"]) ) {
-	$blogId = $_REQUEST["blog_id"] ? $_REQUEST["blog_id"] : $_REQUEST["blog_content_id"];
-	if ($gBitUser->object_has_one_permission($blogId, 'blog')) {
-		$gBitSmarty->assign('individual', 'y');
-	
-		if (!$gBitUser->isAdmin()) {
-			// Now get all the permissions that are set for this type of permissions 'blogs'
-			$perms = $gBitUser->getPermissions('', 'blogs');
-	
-			foreach ($perms["data"] as $perm) {
-				$perm_name = $perm["perm_name"];
-	
-				if ($gBitUser->object_has_permission($user, $blogId, 'blog', $perm_name)) {
-					$$perm_name = 'y';
-	
-					$gBitSmarty->assign("$perm_name", 'y');
-				} else {
-					$$perm_name = 'n';
-	
-					$gBitSmarty->assign("$perm_name", 'n');
-				}
-			}
-		}
-	}
-}
-
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
 	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
 	$commentsParentId = $gContent->mInfo['content_id'];
