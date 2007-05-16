@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.8 2007/05/05 19:14:20 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.9 2007/05/16 16:47:07 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -36,28 +36,4 @@ include_once( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
 if( $gContent->isValid() ) {
 	$gContent->addHit();
 }
-
-
-// This is what Articles would do instead of calling display_bitblogpost_inc -wjames5
-/*
-//$gBitSmarty->assign_by_ref( 'post_info', $gContent->mInfo );
-
-// get all the services that want to display something on this page
-$displayHash = array( 'perm_name' => 'p_blogs_view' );
-$gContent->invokeServices( 'content_display_function', $displayHash );
-
-// Comments engine!
-if( @$gContent->mInfo['allow_comments'] == 'y' ) {
-	$comments_vars = Array( 'post' );
-	$comments_prefix_var='post:';
-	$comments_object_var='post';
-	$commentsParentId = $gContent->mContentId;
-	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$_REQUEST['post_id'];
-	include_once( LIBERTY_PKG_PATH.'comments_inc.php' );
-}
-
-// Display the Index Template
-$gBitSystem->display( 'bitpackage:blogs/view_blog_post.tpl', @$gContent->mInfo['title'] );
-*/
-
 ?>

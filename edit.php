@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.26 2007/04/20 11:03:11 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.27 2007/05/16 16:47:06 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -31,16 +31,6 @@ if (!isset($last_modified)) {
 
 $gBitSmarty->assign_by_ref('heading', $heading);
 
-/* DEPRECATED slated for removal -wjames5
-if( $gBlog->isValid() ) {
-	$gContent = &$gContent; // make a reference so services work correctly
-	$_REQUEST['content_id'] = $gBlog->mContentId;
-	if( !$gBlog->hasEditPermission() ) {
-		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
-	}
-}
-*/
-
 if( $gContent->isValid() ) {
 	$_REQUEST['content_id'] = $gContent->mContentId;
 	if( !$gContent->hasEditPermission() ) {
@@ -61,10 +51,6 @@ if (isset($_REQUEST['preview'])) {
 	$gBitSmarty->assign('parsed', $gContent->parseData( $_REQUEST["edit"], $_REQUEST["format_guid"]));	
 	$gBitSmarty->assign('user_name', $gBitUser->getDisplayName());	
 	$gBitSmarty->assign('created', $gBitSystem->getUTCTime());
-
-//DEPRECATED - slated for removal
-//	$gBitSmarty->assign('public_blog', isset($_REQUEST["public_blog"]) ? 'y' : 'n');
-
 	$gBitSmarty->assign('use_find', isset($_REQUEST["use_find"]) ? 'y' : 'n');
 	$gBitSmarty->assign('use_title', isset($_REQUEST["use_title"]) ? 'y' : 'n');
 	$gBitSmarty->assign('allow_comments', isset($_REQUEST["allow_comments"]) ? 'y' : 'n');

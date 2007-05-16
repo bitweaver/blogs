@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.19 2007/04/23 09:36:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.20 2007/05/16 16:47:07 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -15,8 +15,6 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-//DEPRICATED - we do everything by post id without blog reference now -wjames5
-//include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPermission( 'p_blogs_send_post' );

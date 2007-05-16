@@ -126,8 +126,6 @@ class BitBlog extends LibertyContent {
 		$pParamHash['blog_store']['use_title'] = isset( $pParamHash['use_title'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['allow_comments'] = isset( $pParamHash['allow_comments'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['use_find'] = isset( $pParamHash['use_find'] ) ? 'y' : 'n';
-		// DEPRECATED - Slated for removal  -wjames5
-		//$pParamHash['blog_store']['is_public'] = $gBitUser->hasPermission('p_blogs_create_is_public') && isset( $pParamHash['public'] ) ? $pParamHash['public'] : NULL;
 
 		return( count( $this->mErrors ) == 0 );
 	}
@@ -138,8 +136,6 @@ class BitBlog extends LibertyContent {
 			$table = BIT_DB_PREFIX."blogs";
 			$this->mDb->StartTrans();
 			if( $this->isValid() ) {
-				// DEPRECATED - this looks stupid -wjames5		
-				//$pParamHash['blog_store']['posts'] = $this->mDb->getOne( "SELECT COUNT(`blog_id`) FROM `".BIT_DB_PREFIX."blog_posts` WHERE blog_id=?", array( $pParamHash['blog_id'] ) );
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['blog_store'], array( "blog_id" => $pParamHash['blog_id'] ) );
 			} else {
 				// DEPRECATED - this looks stupid -wjames5		

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.15 2007/04/23 09:36:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/print_blog_post.php,v 1.16 2007/05/16 16:47:07 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -14,8 +14,6 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-//DEPRICATED - we do everything by post id without blog reference now - see URI note below if wanting to add option in -wjames5
-//include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
@@ -58,14 +56,6 @@ $find = $_REQUEST["find"];
 $gBitSmarty->assign( 'parsed_data', $gContent->parseData() );
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
-
-/*DEPRECATED - blog_user_id does not exist ownsblog is not even used in print_blog_post.tpl
-$ownsblog = 'n';
-if ($gBitUser->mUserId && $gBitUser->mUserId == $gContent->mInfo['blog_user_id'] ) {
-	$ownsblog = 'y';
-}
-$gBitSmarty->assign('ownsblog', $ownsblog);
-*/
 
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
 	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->getField( 'post_id' );

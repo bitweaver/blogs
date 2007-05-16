@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.41 2007/05/16 13:23:22 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.42 2007/05/16 16:47:07 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -18,8 +18,6 @@ require_once( '../bit_setup_inc.php' );
 $gBitSystem->verifyPackage( 'blogs' );
 $gBitSystem->verifyPermission( 'p_blogs_post' );
 
-//DEPRECATED -wjames5
-//require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 $gBlog = new BitBlog();

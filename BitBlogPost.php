@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.67 2007/05/16 13:23:22 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.68 2007/05/16 16:47:06 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.67 2007/05/16 13:23:22 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.68 2007/05/16 16:47:06 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.67 $ $Date: 2007/05/16 13:23:22 $ $Author: wjames5 $
+ * @version $Revision: 1.68 $ $Date: 2007/05/16 16:47:06 $ $Author: wjames5 $
  */
 
 /**
@@ -63,21 +63,6 @@ class BitBlogPost extends LibertyAttachable {
 			$lookupId = $this->verifyId( $this->mPostId )? $this->mPostId : $this->mContentId;
 			array_push( $bindVars, $lookupId );
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
-
-/* DEPRICATED - Slated for removal
-			$query = "SELECT bp.*, lc.*, blc.`title` as `blogtitle`, b.`allow_comments`,b.`allow_comments`, b.`use_title`, buu.`user_id` AS `blog_user_id`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
-				FROM `".BIT_DB_PREFIX."blog_posts` bp
-					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
-					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` )
-					INNER JOIN `".BIT_DB_PREFIX."blogs` b ON (b.`blog_id` = bp.`blog_id`)
-					INNER JOIN `".BIT_DB_PREFIX."liberty_content` blc ON (blc.`content_id` = b.`content_id`)
-					INNER JOIN `".BIT_DB_PREFIX."users_users` buu ON( buu.`user_id` = blc.`user_id` ) $joinSql
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
-				WHERE bp.`$lookupColumn`=? $whereSql ";
-				// this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
-//				LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
-*/
 
 			$query = "
 				SELECT bp.*, lc.*, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar
@@ -788,29 +773,6 @@ class BitBlogPost extends LibertyAttachable {
 			$res['no_fatal'] = TRUE;
 			$accessError = $this->invokeServices( 'content_verify_access', $res, FALSE );
 			if( empty( $accessError ) ) {
-
-				//"DEPRECATED - Slated for removal
-				/*
-				if ( $gBitSystem->isPackageActive( 'categories' ) ) {
-					global $categlib;
-					require_once( CATEGORIES_PKG_PATH.'categ_lib.php' );
-					$res['categs'] = $categlib->get_object_categories( BITBLOGPOST_CONTENT_TYPE_GUID, $res["content_id"] );
-				}
-				*/
-
-				// DEPRECATED - more complex comments retrieval - Slated for removal
-				/*
-				if ( $pListHash['load_num_comments'] || $pListHash['load_comments'] ) {
-					$comment = new LibertyComment();
-					$res['num_comments'] = $comment->getNumComments($res['content_id']);
-					if( $pListHash['load_comments'] ) {
-						// Get the comments associated with this post
-						$res['comments'] = $comment->getComments($res['content_id'], $gBitSystem->getConfig( 'comments_per_page', 10 ) );
-					}
-				} else {
-					$res['comments'] = NULL;
-				}
-				*/
 
 				$res['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.dirname($res['avatar']).'/avatar.jpg' : NULL);
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
