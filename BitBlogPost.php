@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.66 2007/05/05 04:47:34 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.67 2007/05/16 13:23:22 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.66 2007/05/05 04:47:34 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.67 2007/05/16 13:23:22 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.66 $ $Date: 2007/05/05 04:47:34 $ $Author: spiderr $
+ * @version $Revision: 1.67 $ $Date: 2007/05/16 13:23:22 $ $Author: wjames5 $
  */
 
 /**
@@ -56,7 +56,7 @@ class BitBlogPost extends LibertyAttachable {
 	 */
 	function load( $pLoadComments = TRUE ) {
 		if( $this->verifyId( $this->mPostId ) || $this->verifyId( $this->mContentId ) ) {
-			global $gBitSystem, $gBitUser;
+			global $gBitSystem, $gBitUser, $gLibertySystem;
 
 			$bindVars = array(); $selectSql = ''; $joinSql = ''; $whereSql = '';
 			$lookupColumn = $this->verifyId( $this->mPostId )? 'post_id' : 'content_id';
@@ -102,6 +102,20 @@ class BitBlogPost extends LibertyAttachable {
 
 				//$this->mInfo['title'] = $this->getTitle();
 				$this->mInfo['raw'] = $this->mInfo['data'];
+				
+				//for two text field auto split
+				if( $gBitSystem->isFeatureActive( 'blog_posts_autosplit' ) && preg_match( BITBLOGPOST_SPLIT_REGEX, $this->mInfo['raw'] )){
+					$format = $this->mInfo['format_guid'];
+					$linebreak = $gLibertySystem->mPlugins[$format]['linebreak'];
+					if ( preg_match( "/\.{3}split\.{3}(".preg_quote( $linebreak, "/" )."){2}/i", $this->mInfo['raw'] ) ){
+						$parts = preg_split( "/\.{3}split\.{3}(".preg_quote( $linebreak, "/" )."){2}/i", $this->mInfo['raw'] );
+					}else{
+						$parts = preg_split( "/\.{3}split\.{3}/i", $this->mInfo['raw'] );
+					}
+					$this->mInfo['raw'] = isset( $parts[0] )? $parts[0] : $this->mInfo['raw'];
+					$this->mInfo['raw_more'] = isset( $parts[1] )? $parts[1] : NULL ;
+				}
+
 				$this->mInfo['data'] = preg_replace( BITBLOGPOST_SPLIT_REGEX, "", $this->mInfo['data'] );
 				$this->mInfo['use_title'] = $gBitUser->getPreference( 'user_blog_posts_use_title', 'y', $this->mInfo['user_id'] ) ;
 
@@ -191,7 +205,8 @@ class BitBlogPost extends LibertyAttachable {
 		$data = $pParamHash;
 		$this->verify( $data );
 		$data['raw'] = $data['edit'];
-
+		$data['raw_more'] = (!empty($data['edit_more'])?$data['edit_more']:'');
+		
 		if( empty( $data['user_id'] ) ) {
 			$data['user_id'] = $gBitUser->mUserId;
 		}
@@ -206,6 +221,9 @@ class BitBlogPost extends LibertyAttachable {
 
 		if( empty( $data['parsed_data'] ) ) {
 			$data['no_cache']    = TRUE;
+			if (isset($data['editmore'])){
+				$data['edit'] .= "...split...".$data['editmore'];
+			}			
 			$data['parsed_data'] = $this->parseData( $data['edit'], (!empty($data['format_guid']) ? $data['format_guid'] : 'tikiwiki' ));
 			//$data['parsed_data'] = $this->parseData( $data );
 			// replace the split syntax with a horizontal rule
@@ -239,7 +257,7 @@ class BitBlogPost extends LibertyAttachable {
 	* @access private
 	**/
 	function verify( &$pParamHash ) {
-		global $gBitUser, $gBitSystem;
+		global $gBitUser, $gBitSystem, $gLibertySystem;
 
 		// make sure we're all loaded up of we have a mPostId
 		if( $this->verifyId( $this->mPostId ) && empty( $this->mInfo ) ) {
@@ -257,6 +275,13 @@ class BitBlogPost extends LibertyAttachable {
 
 		if( !empty( $pParamHash['data'] ) ) {
 			$pParamHash['edit'] = $pParamHash['data'];
+		}
+
+		// for two text field auto split
+		if (!empty($pParamHash['edit_body'])){
+			$linebreak = $gLibertySystem->mPlugins[$pParamHash['format_guid']]['linebreak'];
+			// we need two line breaks to simulate a paragraph break
+			$pParamHash['edit'] .= "...split...".$linebreak.$linebreak.$pParamHash['edit_body'];
 		}
 
 		// truncate length if too long

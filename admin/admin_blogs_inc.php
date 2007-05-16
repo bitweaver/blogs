@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.16 2007/04/02 14:06:43 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.17 2007/05/16 13:23:22 wjames5 Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -62,6 +62,10 @@ $formBlogFeatures = array(
 		'label' => 'Blog Post Comments',
 		'note' => 'Allow the addition of comments to blog posts.',
 	),
+	"blog_posts_autosplit" => array(
+		'label' => 'Use 2 Text Fields To Auto Split Blog Posts',
+		'note' => 'Display two text fields when editing a post, for intro and read more sections. Disabling will display one text field and requires use of ...split... to create a read more section',
+	),
 );
 $gBitSmarty->assign( 'formBlogFeatures',$formBlogFeatures );
 
@@ -88,6 +92,7 @@ if( $processForm ) {
 	$gBitSystem->storeConfig("blog_list_order", $_REQUEST["blog_list_order"], BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_list_user_as", $_REQUEST["blog_list_user_as"], BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_posts_description_length", $_REQUEST["blog_posts_description_length"], BLOGS_PKG_NAME );	
+	$gBitSystem->storeConfig("blog_posts_autosplit", isset( $_REQUEST["blog_posts_autosplit"] ) ? 'y' : 'n', BLOGS_PKG_NAME );	
 	$gBitSmarty->assign('blog_list_order', $_REQUEST["blog_list_order"]);
 	$gBitSmarty->assign('blog_list_user_as', $_REQUEST['blog_list_user_as']);
 

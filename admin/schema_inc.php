@@ -106,6 +106,7 @@ $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
  * user_blog_posts_use_title, default y			lets the user toggle to use a typed title for their posts or automatically use a date
  * user_blog_posts_allow_comments, default y	lets a user toggle comments on their blog posts
  * user_blog_description_inc, default n			lets a user include their personal page at the top of their blog
+ * blog_posts_autosplit, default n				automatically uses two fields for editing posts
  *
  * @todo need an admin pref to override allow_comments option 
  * @todo need an admin pref to override description option 

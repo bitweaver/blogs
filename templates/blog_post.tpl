@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.26 2007/04/25 15:52:14 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.27 2007/05/16 13:23:22 wjames5 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -31,7 +31,19 @@
 							</div>
 						{/if}
 
-						{textarea}{$post_info.raw}{/textarea}
+
+						{if $gBitSystem->isFeatureActive( 'blog_posts_autosplit' )}
+							{include file="bitpackage:liberty/edit_format.tpl"}
+							{formlabel label="Intro" for="edit"}
+							{formhelp note="Text entered here is the top half of your post."}
+							{textarea noformat="y"}{$post_info.raw}{/textarea}
+							
+							{formlabel label="Body" for="edit_body"}
+							{formhelp note="Text entered here will be displayed in the full blog post, commonly known as the Read More section."}
+							{textarea id="edit_body" name="edit_body" noformat="y"}{$post_info.raw_more}{/textarea}
+						{else}
+							{textarea}{$post_info.raw}{/textarea}
+						{/if}
 
 						{if $availableBlogs}
 							<div class="row">

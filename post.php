@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.40 2007/04/20 11:03:11 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.41 2007/05/16 13:23:22 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -80,26 +80,17 @@ if (isset($_REQUEST["preview"])) {
 			header ("location: ".BLOGS_PKG_URL."view_post.php?post_id=$postid");
 			die;
 		}
+		
+		$parsed_data = $gContent->parseData( $gContent->getField('data'), ($gContent->getField('format_guid') ? $gContent->getField('format_guid') : 'tikiwiki') );
 
-		$data = $_REQUEST['edit'];
-		$parsed_data = $gContent->parseData( $_REQUEST['edit'], (!empty($_REQUEST['format_guid']) ? $_REQUEST['format_guid'] : 'tikiwiki' ));
-
-		if( empty( $data ) ) {
-			$data = '';
-		}
-
-		$gBitSmarty->assign('data', $data);
-		$gBitSmarty->assign('title', isset($_REQUEST["title"]) ? $_REQUEST['title'] : '');
-		$gBitSmarty->assign('trackbacks_to', explode(',', $_REQUEST['trackback']));
-		$gBitSmarty->assign('parsed_data', $parsed_data);
-
-		$gContent->load();
+		$gBitSmarty->assign( 'title', $gContent->getTitle('title') );
+		$gBitSmarty->assign( 'trackbacks_to', explode(',', $gContent->getField('trackbacks_to')) );
+		$gBitSmarty->assign( 'parsed_data', $parsed_data );
 	}
 } else {
 	$gContent->invokeServices( 'content_edit_function' );
 	$gBitSmarty->assign_by_ref('post_info', $gContent->mInfo);
 }
-
 
 // Get List of available blogs
 $listHash = array();
