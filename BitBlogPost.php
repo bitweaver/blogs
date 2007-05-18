@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.69 2007/05/18 10:11:31 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.71 2007/05/21 21:18:12 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.69 2007/05/18 10:11:31 nickpalmer Exp $
+ * $Id: BitBlogPost.php,v 1.71 2007/05/21 21:18:12 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.69 $ $Date: 2007/05/18 10:11:31 $ $Author: nickpalmer $
+ * @version $Revision: 1.71 $ $Date: 2007/05/21 21:18:12 $ $Author: wjames5 $
  */
 
 /**
@@ -186,9 +186,10 @@ class BitBlogPost extends LibertyAttachable {
 		global $gBitSystem, $gBitUser;
 
 		$data = $pParamHash;
-		$this->verify( $data );
+		// preserve our split data if we are using to text fields cause it gets merged in verify
 		$data['raw'] = $data['edit'];
-		$data['raw_more'] = (!empty($data['edit_more'])?$data['edit_more']:'');
+		$data['raw_more'] = (!empty($data['edit_body'])?$data['edit_body']:'');
+		$this->verify( $data );
 		
 		if( empty( $data['user_id'] ) ) {
 			$data['user_id'] = $gBitUser->mUserId;
@@ -204,9 +205,11 @@ class BitBlogPost extends LibertyAttachable {
 
 		if( empty( $data['parsed_data'] ) ) {
 			$data['no_cache']    = TRUE;
-			if (isset($data['editmore'])){
-				$data['edit'] .= "...split...".$data['editmore'];
+			/* this is already taken care of by calling verify above
+			if (isset($data['edit_body'])){
+				$data['edit'] .= "...split...".$data['edit_body'];
 			}			
+			*/
 			$data['parsed_data'] = $this->parseData( $data['edit'], (!empty($data['format_guid']) ? $data['format_guid'] : 'tikiwiki' ));
 			//$data['parsed_data'] = $this->parseData( $data );
 			// replace the split syntax with a horizontal rule
@@ -222,6 +225,7 @@ class BitBlogPost extends LibertyAttachable {
 			$data['image_storage_path'] = $this->mDb->getOne( $query, array( $data['image_attachment_id'] ) );
 			$data['image_url'] = BitArticle::getImageUrl( $data );
 		}
+		
 		return $data;
 	}
 
