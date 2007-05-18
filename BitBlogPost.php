@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.68 2007/05/16 16:47:06 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.69 2007/05/18 10:11:31 nickpalmer Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.68 2007/05/16 16:47:06 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.69 2007/05/18 10:11:31 nickpalmer Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.68 $ $Date: 2007/05/16 16:47:06 $ $Author: wjames5 $
+ * @version $Revision: 1.69 $ $Date: 2007/05/18 10:11:31 $ $Author: nickpalmer $
  */
 
 /**
@@ -27,8 +27,6 @@ require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php');
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 
 define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
-
-define( 'BITBLOGPOST_SPLIT_REGEX', "/\.{3}split\.{3}[\r\n]?/i" );
 
 /**
  * @package blogs
@@ -89,7 +87,7 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mInfo['raw'] = $this->mInfo['data'];
 				
 				//for two text field auto split
-				if( $gBitSystem->isFeatureActive( 'blog_posts_autosplit' ) && preg_match( BITBLOGPOST_SPLIT_REGEX, $this->mInfo['raw'] )){
+				if( $gBitSystem->isFeatureActive( 'blog_posts_autosplit' ) && preg_match( LIBERTY_SPLIT_REGEX, $this->mInfo['raw'] )){
 					$format = $this->mInfo['format_guid'];
 					$linebreak = $gLibertySystem->mPlugins[$format]['linebreak'];
 					if ( preg_match( "/\.{3}split\.{3}(".preg_quote( $linebreak, "/" )."){2}/i", $this->mInfo['raw'] ) ){
@@ -101,7 +99,7 @@ class BitBlogPost extends LibertyAttachable {
 					$this->mInfo['raw_more'] = isset( $parts[1] )? $parts[1] : NULL ;
 				}
 
-				$this->mInfo['data'] = preg_replace( BITBLOGPOST_SPLIT_REGEX, "", $this->mInfo['data'] );
+				$this->mInfo['data'] = preg_replace( LIBERTY_SPLIT_REGEX, "", $this->mInfo['data'] );
 				$this->mInfo['use_title'] = $gBitUser->getPreference( 'user_blog_posts_use_title', 'y', $this->mInfo['user_id'] ) ;
 
 				if( $pLoadComments ) {
@@ -212,7 +210,7 @@ class BitBlogPost extends LibertyAttachable {
 			$data['parsed_data'] = $this->parseData( $data['edit'], (!empty($data['format_guid']) ? $data['format_guid'] : 'tikiwiki' ));
 			//$data['parsed_data'] = $this->parseData( $data );
 			// replace the split syntax with a horizontal rule
-			$data['parsed_data'] = preg_replace( BITBLOGPOST_SPLIT_REGEX, "<hr />", $data['parsed_data'] );
+			$data['parsed_data'] = preg_replace( LIBERTY_SPLIT_REGEX, "<hr />", $data['parsed_data'] );
 		}
 
 		if( @$this->verifyId( $data['image_attachment_id'] ) ) {
@@ -802,38 +800,14 @@ class BitBlogPost extends LibertyAttachable {
 				// deal with the parsing
 				$parseHash['format_guid']     = $res['format_guid'];
 				$parseHash['content_id']      = $res['content_id'];
-				$parseHash['cache_extension'] = 'desc';
 				// support for ...split... and auto split
 				if( !empty( $pListHash['full_data'] ) ) {
 					$parseHash['data'] = $res['data'];
 					$res['parsed'] = $this->parseData( $parseHash );
 				} else {
-					if( preg_match( BITBLOGPOST_SPLIT_REGEX, $res['data'] ) ) {
-						$res['man_split'] = TRUE;
-						$parts = preg_split( BITBLOGPOST_SPLIT_REGEX, $res['data'] );
-						if( empty( $parts[1] ) ) {
-							$res['has_more'] = FALSE;
-						}
-						$parseHash['data'] = $parts[0];
-					} else {
-						$parseHash['data'] = substr( $res['data'], 0, $gBitSystem->getConfig( 'blog_posts_description_length', 500 ) );
-					}
-
-					// description shouldn't contain {maketoc}
-					$parseHash['data'] = preg_replace( "/\{maketoc[^\}]*\}/i", "", $parseHash['data'] );
-					$res['parsed'] = $this->parseData( $parseHash );
-					$res['parsed_description'] = $res['parsed'];
-
-					// this is needed to remove trailing stuff from the parser and insert ...
-					$trailing_junk_pattern = "/(<br[^>]*>)*$/i";
-					$res['parsed_description'] = preg_replace( $trailing_junk_pattern, "", $res['parsed_description'] );
-					if( preg_replace( "/\{maketoc[^\}]*\}/i", "", $res['data'] ) != $parseHash['data'] && empty( $res['man_split'] )) {
-						// we append ... when the split was generated automagically
-						$res['parsed_description'] .= '&hellip;';
-						$res['has_more'] = TRUE;
-					} elseif( preg_replace( "/\{maketoc[^\}]*\}/i", "", $res['data'] ) != $parseHash['data'] ) {
-						$res['has_more'] = TRUE;
-					}
+					$parseHash['data'] = $res['data'];
+					$splitArray = $this->parseSplit($parseHash, $gBitSystem->getConfig( 'blog_posts_description_length', 500));
+					$res = array_merge($res, $splitArray);
 				}
 
 				$ret[] = $res;
