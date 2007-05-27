@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.tpl,v 1.9 2007/04/07 23:35:49 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.tpl,v 1.10 2007/05/27 04:38:56 laetzer Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive('blogs')}
 	{bitmodule title="$moduleTitle" name="last_blog_posts"}
@@ -19,12 +19,15 @@
 								{else}
 									{$modLastBlogPosts[ix].publish_date|default:$modLastBlogPosts[ix].created|bit_long_date}
 								{/if}
-							</a></div>
-						<div class="date">{$modLastBlogPosts[ix].created|bit_long_date}
-						<br />
-						by {displayname hash=$modLastBlogPosts[ix]}</div>
+							</a>
+						</div>
+						<div class="date">
+							{$modLastBlogPosts[ix].created|bit_long_date}
+							<br />
+							{tr}by{/tr} {displayname hash=$modLastBlogPosts[ix]}
+						</div>
 						{$modLastBlogPosts[ix].parsed|truncate:$maxPreviewLength}
-						<a class="more" href="{$modLastBlogPosts[ix].post_url}">Read more</a>
+						<a class="more" href="{$modLastBlogPosts[ix].post_url}">{tr}read more{/tr}</a>
 					</li>
 				{sectionelse}
 					<li></li>
