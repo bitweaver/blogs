@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.71 2007/05/21 21:18:12 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.72 2007/06/10 15:34:14 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.71 2007/05/21 21:18:12 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.72 2007/06/10 15:34:14 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.71 $ $Date: 2007/05/21 21:18:12 $ $Author: wjames5 $
+ * @version $Revision: 1.72 $ $Date: 2007/06/10 15:34:14 $ $Author: wjames5 $
  */
 
 /**
@@ -355,6 +355,15 @@ class BitBlogPost extends LibertyAttachable {
 			$ret = 'y';
 		}
 		return $ret;
+	}
+
+
+	/**
+	 * Check if the current post can have comments attached to it
+	 */
+	function isCommentable(){
+		global $gBitSystem;	
+		return $gBitSystem->isFeatureActive( 'blog_posts_comments' );
 	}
 
 	/**
