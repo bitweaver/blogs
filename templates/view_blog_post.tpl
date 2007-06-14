@@ -1,3 +1,4 @@
+{if !$preview}
 <!--
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -9,73 +10,76 @@
     trackback:ping="{$uri2}" />
 </rdf:RDF>
 -->
+{/if}
 
 {strip}
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$post_info}
 
 <div class="display blogs">
-	<div class="floaticon">
-		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
-		{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
-			{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
-				<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?user_id={$post_info.user_id}">{biticon ipackage="rss" iname="rss-16x16" iexplain="RSS feed"}</a>
-			{/if}
+	{if !$preview}
+		<div class="floaticon">
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
+			{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
+				{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
+					<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?user_id={$post_info.user_id}">{biticon ipackage="rss" iname="rss-16x16" iexplain="RSS feed"}</a>
+				{/if}
 
-			{if $gBitUser->hasPermission( 'p_blogs_admin' )}
-				<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-attachment" iexplain="crosspost"}</a>
-			{/if}
+				{if $gBitUser->hasPermission( 'p_blogs_admin' )}
+					<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-attachment" iexplain="crosspost"}</a>
+				{/if}
 
-			<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
-			{if $gBitUser->hasPermission('p_blogs_send_post')}
-				<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
-			{/if}
+				<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
+				{if $gBitUser->hasPermission('p_blogs_send_post')}
+					<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
+				{/if}
 
-			{if $gContent->hasEditPermission()}
-				<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
-				<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;post_id={$post_info.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
-			{/if}
-		{/if}
-	</div>
-
-	<div class="header">
-		{if $post_info.blogtitle}
-			<h1>{$post_info.blogtitle|escape}</h1>
-		{/if}
-
-		<div class="navigation">
-			{if $gContent_previous}
-				<span class="left">
-					Previous: <a href="{$gContent_previous->getDisplayUrl()}">{$gContent_previous->mInfo.title|escape}</a>
-				</span>
-			{/if}
-
-			{if $gContent_next}
-				<span class="right">
-					Next: <a href="{$gContent_next->getDisplayUrl()}">{$gContent_next->mInfo.title|escape}</a>
-				</span>
+				{if $gContent->hasEditPermission()}
+					<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+					<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;post_id={$post_info.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
+				{/if}
 			{/if}
 		</div>
 
-		<h1>
-			{if $post_info.use_title eq 'y' && $post_info.title}
-				{$post_info.title|escape}
-			{else}
-				{$post_info.publish_date|default:$post_info.created|bit_long_date}
+		<div class="header">
+			{if $post_info.blogtitle}
+				<h1>{$post_info.blogtitle|escape}</h1>
 			{/if}
-		</h1>
 
-		<div class="date">
-			{tr}by {displayname hash=$post_info}{/tr}<br />
-			{$post_info.publish_date|default:$post_info.created|bit_long_date}<br />
-			{if count($post_info.blogs) > 0}
-				{tr}Posted to{/tr}&nbsp;
-				{foreach from=$post_info.blogs item=memberBlog key=blogContentId name=memberBlogLoop}
-					<a href="{$memberBlog.blog_url}">{$memberBlog.title}</a>{if $smarty.foreach.memberBlogLoop.total > 1 && !$smarty.foreach.memberBlogLoop.last }, {/if}
-				{/foreach}
-			<br />
-			{/if}
+			<div class="navigation">
+				{if $gContent_previous}
+					<span class="left">
+						Previous: <a href="{$gContent_previous->getDisplayUrl()}">{$gContent_previous->mInfo.title|escape}</a>
+					</span>
+				{/if}
+
+				{if $gContent_next}
+					<span class="right">
+						Next: <a href="{$gContent_next->getDisplayUrl()}">{$gContent_next->mInfo.title|escape}</a>
+					</span>
+				{/if}
+			</div>
+
+			<h1>
+				{if $post_info.use_title eq 'y' && $post_info.title}
+					{$post_info.title|escape}
+				{else}
+					{$post_info.publish_date|default:$post_info.created|bit_long_date}
+				{/if}
+			</h1>
+
+			<div class="date">
+				{tr}by {displayname hash=$post_info}{/tr}<br />
+				{$post_info.publish_date|default:$post_info.created|bit_long_date}<br />
+				{if count($post_info.blogs) > 0}
+					{tr}Posted to{/tr}&nbsp;
+					{foreach from=$post_info.blogs item=memberBlog key=blogContentId name=memberBlogLoop}
+						<a href="{$memberBlog.blog_url}">{$memberBlog.title}</a>{if $smarty.foreach.memberBlogLoop.total > 1 && !$smarty.foreach.memberBlogLoop.last }, {/if}
+					{/foreach}
+				<br />
+				{/if}
+			</div>
 		</div>
-	</div>
+	{/if}
 
 	<div class="body"
 	    {if $gBitUser->getPreference( 'users_double_click' ) eq 'y' and (($ownsblog eq 'y') or $gBitUser->hasPermission( 'p_blogs_admin' ))}
