@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/index.php,v 1.10 2007/06/15 16:15:06 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/index.php,v 1.11 2007/06/15 18:53:17 squareing Exp $
 
  * @package blogss
  * @subpackage functions
@@ -21,18 +21,6 @@ $gBitSystem->verifyPackage( 'blogs' );
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
-
-// {{{ start hack
-// this is a very stupid hack until we can sort out the following problem: when 
-// calling center_list_blog_posts.tpl, the php file that goes with it is only 
-// called when the tpl file is called, which is in the middle of the rendering 
-// process i.e. after header_inc.tpl has been rendered.  services such as stars 
-// need to be called before the rendering process that data can be passed on 
-// into their header_inc.tpl file.
-$blogPost = new BitBlogPost();
-$dummy = array();
-$blogPosts = $blogPost->getList( $dummy );
-// }}} end hack
 
 $gBitSmarty->assign( 'showEmpty', TRUE );
 
