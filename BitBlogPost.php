@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.73 2007/06/14 11:59:41 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.74 2007/06/15 21:17:07 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.73 2007/06/14 11:59:41 nickpalmer Exp $
+ * $Id: BitBlogPost.php,v 1.74 2007/06/15 21:17:07 lsces Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.73 $ $Date: 2007/06/14 11:59:41 $ $Author: nickpalmer $
+ * @version $Revision: 1.74 $ $Date: 2007/06/15 21:17:07 $ $Author: lsces $
  */
 
 /**
@@ -786,13 +786,14 @@ class BitBlogPost extends LibertyAttachable {
 		$cant = $this->mDb->getOne($query_cant,$bindVars);
 		$ret = array();
 
+		if( $gBitSystem->isFeatureActive( 'liberty_png_thumbnails' )) { $ext = '.png'; } else { $ext = '.jpg'; }
 		$comment = &new LibertyComment();
 		while ($res = $result->fetchRow()) {
 			$res['no_fatal'] = TRUE;
 			$accessError = $this->invokeServices( 'content_verify_access', $res, FALSE );
 			if( empty( $accessError ) ) {
 
-				$res['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.dirname($res['avatar']).'/avatar.jpg' : NULL);
+				$res['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.dirname($res['avatar']).'/avatar'.$ext : NULL);
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
 				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
 				$res['display_url'] = $res['post_url'];
