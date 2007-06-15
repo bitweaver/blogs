@@ -15,7 +15,7 @@ $tables = array(
 
 // TODO: why are we using AUTO here? - xing
 'blogs' => "
-	blog_id I4 AUTO PRIMARY,
+	blog_id I4 PRIMARY,
 	content_id I4 NOTNULL,
 	is_public C(1),
 	max_posts I4,
@@ -62,8 +62,7 @@ $gBitInstaller->registerSchemaIndexes( BLOGS_PKG_NAME, $indices );
 
 // ### Sequences
 $sequences = array (
-	// TODO: we need this sequence if we remove the AUTO on blogs.blog_id - xing
-	//'blogs_blog_id_seq'      => array( 'start' => 1 ),
+	'blogs_blog_id_seq'      => array( 'start' => 1 ),
 	'blog_posts_post_id_seq' => array( 'start' => 1 )
 );
 $gBitInstaller->registerSchemaSequences( BLOGS_PKG_NAME, $sequences );
