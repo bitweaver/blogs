@@ -1,4 +1,4 @@
-{if !$preview}
+{if !($liberty_preview or $preview)}
 <!--
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -16,29 +16,31 @@
 {include file="bitpackage:liberty/services_inc.tpl" serviceLocation='nav' serviceHash=$post_info}
 
 <div class="display blogs">
-	{if !$preview}
-		<div class="floaticon">
-			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
-			{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
-				{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
-					<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?user_id={$post_info.user_id}">{biticon ipackage="rss" iname="rss-16x16" iexplain="RSS feed"}</a>
-				{/if}
+	{if !($liberty_preview)}
+		{if !($preview)}
+			<div class="floaticon">
+				{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
+				{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
+					{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
+						<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?user_id={$post_info.user_id}">{biticon ipackage="rss" iname="rss-16x16" iexplain="RSS feed"}</a>
+					{/if}
 
-				{if $gBitUser->hasPermission( 'p_blogs_admin' )}
-					<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-attachment" iexplain="crosspost"}</a>
-				{/if}
+					{if $gBitUser->hasPermission( 'p_blogs_admin' )}
+						<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-attachment" iexplain="crosspost"}</a>
+					{/if}
 
-				<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
-				{if $gBitUser->hasPermission('p_blogs_send_post')}
-					<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
-				{/if}
+					<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
+					{if $gBitUser->hasPermission('p_blogs_send_post')}
+						<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
+					{/if}
 
-				{if $gContent->hasEditPermission()}
-					<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
-					<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;post_id={$post_info.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
+					{if $gContent->hasEditPermission()}
+						<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+						<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;post_id={$post_info.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
+					{/if}
 				{/if}
-			{/if}
-		</div>
+			</div>
+		{/if}
 
 		<div class="header">
 			{if $post_info.blogtitle}
@@ -93,7 +95,7 @@
 		</div> <!-- end .content -->
 	</div> <!-- end .body -->
 
-	<div class="footer">
+	<div class="footer">		
 		<a href="{$post_info.url}">{tr}Permalink{/tr}</a>
 		{assign var=spacer value=TRUE}
 		{if $post_info.trackbacks_from_count > 0}
@@ -142,7 +144,7 @@
 	{/if}
 </div> {* end .blog *}
 
-{if $print_page ne 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' ) and !$preview }
+{if $print_page ne 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' ) and !$preview and !$liberty_preview}
 	{include file="bitpackage:liberty/comments.tpl"}
 {/if}
 
