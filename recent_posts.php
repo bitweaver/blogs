@@ -1,4 +1,14 @@
 <?php
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.2 2007/06/22 10:14:52 lsces Exp $
+ * 
+ * @package blogs
+ * @subpackage functions
+ */
+ 
+/**
+ * Initial Setup
+ */
 require_once( '../bit_setup_inc.php' );
 
 // Is package installed and enabled
