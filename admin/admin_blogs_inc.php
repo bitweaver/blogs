@@ -1,23 +1,18 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.17 2007/05/16 13:23:22 wjames5 Exp $
-// Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-if (isset($_REQUEST["blogset"]) && isset($_REQUEST["homeBlog"])) {
-	$gBitSystem->storeConfig("home_blog", $_REQUEST["homeBlog"], BLOGS_PKG_NAME);
-	$gBitSmarty->assign('home_blog', $_REQUEST["homeBlog"]);
-}
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.18 2007/06/22 06:26:20 squareing Exp $
 
+// get a list of blogs for the selection of the home blog
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
+$blog = new BitBlog();
+$listHash['sort_mode'] = 'created_desc';
+$blogList = $blog->getList( $listHash );
+$gBitSmarty->assign_by_ref( 'blogList', $blogList );
 
-//"DEPRECATED - Slated for removal
-/*
-if (defined("CATEGORIES_PKG_PATH")  and $gBitSystem->isPackageActive( 'categories' )) {
-	include_once( CATEGORIES_PKG_PATH.'categ_lib.php');
-	$categs = $categlib->get_all_categories();
-	$gBitSmarty->assign('categs',$categs);
+if( !empty( $_REQUEST["set_blog_home"] )) {
+	$blog_home = @BitBase::verifyId( $_REQUEST['blog_home'] ) ? $_REQUEST['blog_home'] : NULL;
+	$gBitSystem->storeConfig( "blog_home", $blog_home, BLOGS_PKG_NAME );
+	$gBitSmarty->assign( 'blog_home', $blog_home );
 }
-*/
 
 $formBlogLists = array(
 	"blog_list_title" => array(
@@ -95,26 +90,6 @@ if( $processForm ) {
 	$gBitSystem->storeConfig("blog_posts_autosplit", isset( $_REQUEST["blog_posts_autosplit"] ) ? 'y' : 'n', BLOGS_PKG_NAME );	
 	$gBitSmarty->assign('blog_list_order', $_REQUEST["blog_list_order"]);
 	$gBitSmarty->assign('blog_list_user_as', $_REQUEST['blog_list_user_as']);
-
-	//"DEPRECATED - Slated for removal
-	/*
-	if ($gBitSystem->isPackageActive( 'categories' )) {
-		if (isset($_REQUEST["blog_categ"]) && $_REQUEST["blog_categ"] == "on") {
-			$gBitSystem->storeConfig("blog_categ", 'y', BLOGS_PKG_NAME );
-			$gBitSmarty->assign("blog_categ", 'y');
-		} else {
-			$gBitSystem->storeConfig("blog_categ", 'n', BLOGS_PKG_NAME );
-			$gBitSmarty->assign("blog_categ", 'n');
-		}
-		$gBitSystem->storeConfig("blog_parent_categ", $_REQUEST["blog_parent_categ"], BLOGS_PKG_NAME );
-		$gBitSmarty->assign('blog_parent_categ', $_REQUEST['blog_parent_categ']);
-	}
-	*/
 }
 
-/* REMOVE - I think this is not needed here -wjames5
-$listHash['sort_mode'] = 'created_desc';
-$blogs = $gBlog->getList( $listHash );
-$gBitSmarty->assign_by_ref('blogs', $blogs["data"]);
-*/
 ?>

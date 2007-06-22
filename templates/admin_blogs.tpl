@@ -5,20 +5,23 @@
 			{legend legend="Home Blog"}
 				<input type="hidden" name="page" value="{$page}" />
 				<div class="row">
-					{formlabel label="Home Blog (main blog)" for="homeBlog"}
+					{formlabel label="Home Blog (main blog)" for="blog_home"}
 					{forminput}
-						<select name="homeBlog" id="homeBlog">
-							{section name=ix loop=$blogs}
-								<option value="{$blogs[ix].blog_id|escape}" {if $blogs[ix].blog_id eq $home_blog}selected="selected"{/if}>{$blogs[ix].title|escape html|truncate:20:"...":true}</option>
-							{sectionelse}
+						<select name="blog_home" id="blog_home">
+							{if $blogList}
+								<option>{tr}Use default recent blogpost page{/tr}</option>
+							{/if}
+							{foreach from=$blogList item=blog}
+								<option value="{$blog.blog_id}" {if $blog.blog_id == $gBitSystem->getConfig('blog_home')}selected="selected"{/if}>{$blog.title|escape html|truncate:30:"...":true}</option>
+							{foreachelse}
 								<option>{tr}No records found{/tr}</option>
-							{/section}
+							{/foreach}
 						</select>
 					{/forminput}
 				</div>
 
 				<div class="row submit">
-					<input type="submit" name="homeTabSubmit" value="{tr}Change preferences{/tr}" />
+					<input type="submit" name="set_blog_home" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}
