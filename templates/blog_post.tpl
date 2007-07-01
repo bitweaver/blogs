@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.27 2007/05/16 13:23:22 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.28 2007/07/01 20:03:54 squareing Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -13,7 +13,7 @@
 			</div>
 		{/if}
 
-		{form enctype="multipart/form-data" name="blogpost" id="editpageform"}
+		{form enctype="multipart/form-data" id="editpageform"}
 			<input type="hidden" name="content_id" value="{$gContent->getField('content_id')|escape}" />
 			<input type="hidden" name="rows" value="{$rows}"/>
 			<input type="hidden" name="cols" value="{$cols}"/>
@@ -37,7 +37,7 @@
 							{formlabel label="Intro" for="edit"}
 							{formhelp note="Text entered here is the top half of your post."}
 							{textarea noformat="y"}{$post_info.raw}{/textarea}
-							
+
 							{formlabel label="Body" for="edit_body"}
 							{formhelp note="Text entered here will be displayed in the full blog post, commonly known as the Read More section."}
 							{textarea id="edit_body" name="edit_body" noformat="y"}{$post_info.raw_more}{/textarea}
@@ -47,24 +47,24 @@
 
 						{if $availableBlogs}
 							<div class="row">
-								{formlabel label="Include in Blogs" for="blog_id"}
+								{formlabel label="Include in Blogs" for=""}
 								{forminput}
-								{*
-									{if count($availableBlogs)==1}
-										{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
-											<input type="hidden" name="blog_content_id[]" value="{$blogContentId}">{$availBlogTitle}
-										{/foreach}
+									{if count($availableBlogs) > 10}
+										<select name="blog_content_id[]" size="6" id="blog_id" multiple="multiple">
+											{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
+												<option value="{$blogContentId}" {if $gContent->mInfo.blogs.$blogContentId || $blogContentId == $smarty.request.blog_id}selected="selected"{/if}>{$availBlogTitle|escape}</option>
+											{/foreach}
+										</select>
 									{else}
-									*}
 										{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
-											<input name="blog_content_id[]" type="checkbox" option value="{$blogContentId}" {if $gContent->mInfo.blogs.$blogContentId}checked="checked"{/if}>{$availBlogTitle|escape}</option><br/>
+											<input name="blog_content_id[]" type="checkbox" value="{$blogContentId}" {if $gContent->mInfo.blogs.$blogContentId || $blogContentId == $smarty.request.blog_id}checked="checked"{/if} /> {$availBlogTitle|escape}<br/>
 										{/foreach}
-										{formhelp note="You can cross post to any and all of the blogs listed above.<br />Just check off the blogs you wish this post to also show up in."}
-								{*	{/if} *}
+									{/if}
+                                    {formhelp note="You can cross post to any and all of the blogs listed above.<br />Just check off the blogs you wish this post to also show up in."}
 								{/forminput}
 							</div>
 						{/if}
-						
+
 						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
 
 						{include file="bitpackage:liberty/edit_storage_list.tpl"}
@@ -85,7 +85,7 @@
 					{/legend}
 				{/jstab}
 				{/if}
-				
+
 				{jstab title="Advanced Options"}
 					{legend legend="Publication and Expiration Dates"}
 						<div class="row">
@@ -108,7 +108,7 @@
 							{/forminput}
 						</div>
 					{/legend}
-					
+
 					{legend legend="Trackbacks"}
 						<div class="row">
 							{formlabel label="Send trackback pings" for="trackback"}
