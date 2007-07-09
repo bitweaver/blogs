@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.15 2007/04/25 16:17:56 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.16 2007/07/09 21:10:55 nickpalmer Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -29,7 +29,7 @@ if( $gContent->isValid() && isset($_REQUEST["remove"])) {
 	} elseif( empty( $_REQUEST['confirm'] ) ) {
 		$formHash['remove'] = $_REQUEST["remove"];
 		$formHash['blog_id'] = $gContent->mBlogId;
-		$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$gContent->getTitle().'? All posts will be permanently deleted.', 'error' => 'This cannot be undone!' ) );
+		$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$gContent->getTitle().'?', 'error' => 'This cannot be undone!' ) );
 	} else {
 		$gContent->expunge();
 	}
