@@ -210,13 +210,13 @@ class BitBlog extends LibertyContent {
 
 		// You can use a title or an array of blog_id 
 		if (!empty($pParamHash['find'])) {
-			if (is_array($find)) {
+			if (is_array($pParamHash['find'])) {
 				$whereSql .= " AND b.`blog_id` IN ( ".implode( ',',array_fill( 0,count( $pParamHash['find'] ),'?' ) ).") ";
 				$bindVars = array_merge($bindVars, $pParamHash['find']);
 			}
 			else {
 				$findesc = '%' . strtoupper( $pParamHash['find'] ) . '%';
-				$whereSql = " AND (UPPER(lc.`title`) like ? or UPPER(lc`data`) like ?) ";
+				$whereSql = " AND (UPPER(lc.`title`) like ? or UPPER(lc.`data`) like ?) ";
 				$bindVars=array($findesc,$findesc);
 			}
 		} 
