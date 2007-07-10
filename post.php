@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.43 2007/07/09 22:03:17 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.44 2007/07/10 18:58:40 squareing Exp $
 
  * @package blogs
  * @subpackage functions
@@ -112,6 +112,6 @@ if (isset($_REQUEST['blog_content_id'])) {
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 
 // Need ajax for attachment browser
-$gBitSystem->loadAjax( 'prototype' );
+$gBitThemes->loadAjax( 'prototype' );
 $gBitSystem->display( 'bitpackage:blogs/blog_post.tpl', "Create Blog Post" );
 ?>
