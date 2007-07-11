@@ -1,7 +1,7 @@
 {strip}
 {form}
 	{jstabs}
-		{jstab title="Home Blog"}
+		{jstab title="Blog Features"}
 			{legend legend="Home Blog"}
 				<input type="hidden" name="page" value="{$page}" />
 				<div class="row">
@@ -24,9 +24,7 @@
 					<input type="submit" name="set_blog_home" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
-		{/jstab}
 
-		{jstab title="Blog Features"}
 			{legend legend="Blog Features"}
 				<input type="hidden" name="page" value="{$page}" />
 
@@ -44,7 +42,7 @@
 					<div class="row">
 						{formlabel label=`$output.label` for=$item}
 						{forminput}
-							<input type="text" name="$item" value="{$gBitSystem->getConfig($item, 3)}" id={$item} />
+							<input type="text" name="$item" value="{$gBitSystem->getConfig($item, 3)}" id="{$item}" />
 							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>
