@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.23 2007/04/29 16:25:02 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.24 2007/07/14 14:50:50 squareing Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -90,10 +90,8 @@
 				{/jstab}
 
 				{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_tab_tpl}
-
 			{/jstabs}
 		{/form}
-
 	</div><!-- end .body -->
 </div><!-- end .blog -->
 

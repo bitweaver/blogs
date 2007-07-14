@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.28 2007/07/01 20:03:54 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.29 2007/07/14 14:50:50 squareing Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -121,10 +121,6 @@
 				{/jstab}
 			{/jstabs}
 		{/form}
-
-		<br /><br />
-		{include file="bitpackage:liberty/edit_help_inc.tpl"}
-
 	</div><!-- end .body -->
 </div><!-- end .blogs -->
 {/strip}
