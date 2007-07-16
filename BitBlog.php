@@ -16,7 +16,7 @@ define( 'BITBLOG_CONTENT_TYPE_GUID', 'bitblog' );
  */
 class BitBlog extends LibertyContent {
 	var $mBlogId;
-	
+
 	function BitBlog( $pBlogId=NULL, $pContentId=NULL ) {
 		$this->mBlogId = @$this->verifyId( $pBlogId ) ? $pBlogId : NULL;
 		parent::LibertyContent( $pContentId );
@@ -29,6 +29,10 @@ class BitBlog extends LibertyContent {
 		) );
 		$this->mContentId = $pContentId;
 		$this->mContentTypeGuid = BITBLOG_CONTENT_TYPE_GUID;
+
+		// Permission setup
+		$this->mViewContentPerm  = 'p_blogs_view';
+		$this->mEditContentPerm  = 'p_blogs_create';
 		$this->mAdminContentPerm = 'p_blogs_admin';
 	}
 

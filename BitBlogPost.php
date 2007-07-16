@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.75 2007/06/15 21:56:11 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.76 2007/07/16 15:27:20 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.75 2007/06/15 21:56:11 lsces Exp $
+ * $Id: BitBlogPost.php,v 1.76 2007/07/16 15:27:20 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.75 $ $Date: 2007/06/15 21:56:11 $ $Author: lsces $
+ * @version $Revision: 1.76 $ $Date: 2007/07/16 15:27:20 $ $Author: squareing $
  */
 
 /**
@@ -33,6 +33,7 @@ define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
  */
 class BitBlogPost extends LibertyAttachable {
 	var $mPostId;
+
 	function BitBlogPost( $pPostId=NULL, $pContentId=NULL ) {
 		LibertyAttachable::LibertyAttachable();
 		$this->registerContentType( BITBLOGPOST_CONTENT_TYPE_GUID, array(
@@ -46,6 +47,10 @@ class BitBlogPost extends LibertyAttachable {
 		$this->mPostId = (int)$pPostId;
 		$this->mContentId = (int)$pContentId;
 		$this->mContentTypeGuid = BITBLOGPOST_CONTENT_TYPE_GUID;
+
+		// Permission setup
+		$this->mViewContentPerm  = 'p_blogs_view';
+		$this->mEditContentPerm  = 'p_blogs_post';
 		$this->mAdminContentPerm = 'p_blogs_admin';
 	}
 
