@@ -77,7 +77,7 @@
 
 		{if $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
 			{if $spacer}&nbsp; &bull; &nbsp;{/if}
-			&nbsp;{$aPost.num_comments} {if $aPost.num_comments == 1} {tr}comment{/tr} {else} {tr}comments{/tr}{/if} &nbsp;|&nbsp;
+			&nbsp;<span {if $aPost.num_comments > 0}class="commented"{/if}>{$aPost.num_comments} {if $aPost.num_comments == 1} {tr}comment{/tr} {else} {tr}comments{/tr}{/if}</span> &nbsp;|&nbsp;
 			 <a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?&amp;post_id={$aPost.post_id}&post_comment_request={if $aPost.num_comments > 0}1{else}y{/if}">{if $aPost.num_comments > 0}{tr}view comments{/tr}{else}{tr}add comment{/tr}{/if}</a>
 		{/if}
 	</div> <!-- end .footer -->
