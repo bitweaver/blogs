@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.76 2007/07/16 15:27:20 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.77 2007/07/19 13:29:34 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.76 2007/07/16 15:27:20 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.77 2007/07/19 13:29:34 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.76 $ $Date: 2007/07/16 15:27:20 $ $Author: squareing $
+ * @version $Revision: 1.77 $ $Date: 2007/07/19 13:29:34 $ $Author: wjames5 $
  */
 
 /**
@@ -214,6 +214,9 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mInfo['blogs'][$blog_content_id] = $blog_content_id;
 			}
 		}
+
+		$data['use_title'] = $gBitUser->getPreference( 'user_blog_posts_use_title', 'y', $this->mInfo['user_id'] );
+		$data['title'] = $this->getTitle($pParamHash);
 
 		if( empty( $data['parsed_data'] ) ) {
 			$data['no_cache']    = TRUE;
