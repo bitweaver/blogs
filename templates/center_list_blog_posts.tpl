@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.5 2007/07/27 11:40:20 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.6 2007/07/27 12:40:13 wjames5 Exp $ *}
 {if $blogPosts || $showEmpty}
 <div class="floaticon">{bithelp}</div>
 
@@ -12,7 +12,7 @@
 			<h3>{tr}Upcoming Blog Posts{/tr}</h3>
 			<ul>
 				{foreach from=$futures item=future}
-					<li>{$future.display_link} <small>[ {tr}To be published{/tr}: {$future.publish_date|bit_long_datetime} ]</small></li>
+					<li>{$future.display_link} <small>[ {tr}By:{/tr} {displayname hash=$future} | {tr}To be published{/tr}: {$future.publish_date|bit_long_datetime} ]</small></li>
 				{/foreach}
 			</ul>
 		{/if}
