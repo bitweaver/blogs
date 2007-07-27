@@ -10,10 +10,17 @@ if( empty( $gContent )) {
 	$gBitSmarty->assign_by_ref( 'gContent', $blogPost );
 }
 
-$futuresHash = array();
 if( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin() ) {
+	$futuresHash = $_REQUEST;
     $futuresHash['max_records'] = !empty( $_REQUEST['max_records'] ) ? $_REQUEST['max_records'] : $gBitSystem->getConfig( 'blog_posts_max_list' );
     $futuresHash['get_future'] = TRUE;
+	if( empty( $futuresHash['user_id'] )) {
+		if( !empty( $gQueryUserId )) {
+			$futuresHash['user_id'] = $gQueryUserId;
+		} elseif( $_REQUEST['user_id'] ) {
+			$futuresHash['user_id'] = $_REQUEST['user_id'];
+		}
+	}
     $futures = $gContent->getFutureList( $futuresHash );
     $gBitSmarty->assign( 'futures', $futures['data']);
 } else {
