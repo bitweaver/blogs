@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.4 2006/07/05 18:51:32 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.5 2007/07/27 11:40:20 wjames5 Exp $ *}
 {if $blogPosts || $showEmpty}
 <div class="floaticon">{bithelp}</div>
 
@@ -8,6 +8,15 @@
 	</div>
 
 	<div class="body">
+		{if ($gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin() ) && $futures}
+			<h3>{tr}Upcoming Blog Posts{/tr}</h3>
+			<ul>
+				{foreach from=$futures item=future}
+					<li>{$future.display_link} <small>[ {tr}To be published{/tr}: {$future.publish_date|bit_long_datetime} ]</small></li>
+				{/foreach}
+			</ul>
+		{/if}
+	
 		{foreach from=$blogPosts item=aPost}
 			{include file="bitpackage:blogs/blog_list_post.tpl"}
 		{foreachelse}

@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.78 2007/07/27 08:11:09 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.79 2007/07/27 11:40:13 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.78 2007/07/27 08:11:09 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.79 2007/07/27 11:40:13 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.78 $ $Date: 2007/07/27 08:11:09 $ $Author: wjames5 $
+ * @version $Revision: 1.79 $ $Date: 2007/07/27 11:40:13 $ $Author: wjames5 $
  */
 
 /**
@@ -745,6 +745,14 @@ class BitBlogPost extends LibertyAttachable {
 		}
 
 		// determine if future and expired posts are viewable
+		/* I've moved future dated posts to getFuturePosts 
+		   and they are visually separated from the public 
+		   posts so that it is easier for an admin to determine 
+		   what is live and what is not. The following is the 
+		   orginal queries that allowed future posts to be 
+		   joined to the list. This is now depreacted. -wjames5
+		   */
+		/*
 		$timestamp = $gBitSystem->getUTCTime();
 		if( !$gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
 			$whereSql .= " AND ( bp.`publish_date` <= ? OR bp.`publish_date` IS NULL)";
@@ -754,6 +762,36 @@ class BitBlogPost extends LibertyAttachable {
 			$whereSql .= " AND ( bp.`expire_date` >= ? OR bp.`expire_date` <= bp.`publish_date` OR bp.`expire_date` IS NULL )";
 			$bindVars[] = ( int )$timestamp;
 		}
+		*/				
+		
+		/* Check if the post wants to be viewed before / after respective dates
+		 * Note: expiring posts are determined by the expired date being greater than the publish date
+		 */
+		$now = $gBitSystem->getUTCTime();
+		if( !empty( $pListHash['show_future'] ) && !empty( $pListHash['show_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
+		// this will show all post at once - future, current and expired
+		} elseif( !empty( $pListHash['show_future'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
+			// hide expired posts but show future
+			$whereSql .= " AND ( bp.`expire_date` <= bp.`publish_date` OR bp.`expire_date` > ? ) ";
+			$bindVars[] = ( int )$now;
+		} elseif( !empty( $pListHash['show_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
+			// hide future posts but show expired
+			$whereSql .= " AND bp.`publish_date` < ?";
+			$bindVars[] = ( int )$now;
+		} elseif( !empty( $pListHash['get_future'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
+			// show only future
+			$whereSql .= " AND bp.`publish_date` > ?";
+			$bindVars[] = ( int )$now;
+		} elseif( !empty( $pListHash['get_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
+			// show only expired posts
+			$whereSql .= " AND bp.`expire_date` < ? AND bp.`expire_date` > bp.`publish_date` ";
+			$bindVars[] = ( int )$now;
+		} else {
+			// hide future and expired posts
+			$whereSql .= " AND bp.`publish_date` <= ? AND bp.`expire_date` <= bp.`publish_date` ";
+			$bindVars[] = ( int )$now;
+		}
+		
 
 		if ($pListHash['sort_mode'] == 'publish_date_asc') {
 			$sort_mode_prefix = 'bp';
@@ -813,8 +851,9 @@ class BitBlogPost extends LibertyAttachable {
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
 				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
 				$res['display_url'] = $res['post_url'];
+				$res['display_link'] = $this->getDisplayLink( $res['title'], $res );
 				$res['blogs'] = $this->getBlogMemberships( $res['content_id'] );
-
+	
 				// trackbacks
 				if($res['trackbacks_from']!=null)
 					$res['trackbacks_from'] = unserialize($res['trackbacks_from']);
@@ -870,6 +909,33 @@ class BitBlogPost extends LibertyAttachable {
 
 		return $pListHash;
 	}
+
+
+	/**
+	 * Get a list of posts that are to be published in the future
+	 * 
+	 * @param array $pParamHash contains listing options - same as getList()
+	 * @access public
+	 * @return array of posts
+	 */
+	function getFutureList( &$pParamHash ) {
+		$pParamHash['get_future'] = TRUE;
+		return( $this->getList( $pParamHash ));
+	}
+
+
+	/**
+	 * Get list of posts that have expired and are not displayed on the site anymore
+	 * 
+	 * @param array $pParamHash contains listing options - same as getList()
+	 * @access public
+	 * @return array of posts
+	 */
+	function getExpiredList( &$pParamHash ) {
+		$pParamHash['get_expired'] = TRUE;
+		return( $this->getList( $pParamHash ));
+	}
+
 
 	/**
 	 *

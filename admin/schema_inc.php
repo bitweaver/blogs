@@ -95,6 +95,7 @@ $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
 	array( BLOGS_PKG_NAME, 'blog_rankings','y'),
 	array( BLOGS_PKG_NAME, 'blog_list_user_as', 'text'),
 	array( BLOGS_PKG_NAME, 'blog_posts_description_length', '500'),
+	array( BLOGS_PKG_NAME, 'blog_posts_max_list','10'),
 ) );
 
 // ### User Preferences Set In This Package

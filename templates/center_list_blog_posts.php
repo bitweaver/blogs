@@ -3,19 +3,42 @@ global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams;
 extract( $moduleParams );
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+include_once(BLOGS_PKG_PATH."lookup_post_inc.php");
 
 $blogPost = new BitBlogPost();
 if( empty( $gContent )) {
 	$gBitSmarty->assign_by_ref( 'gContent', $blogPost );
 }
 
+$futuresHash = array();
+if( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin() ) {
+    $futuresHash['max_records'] = !empty( $_REQUEST['max_records'] ) ? $_REQUEST['max_records'] : $gBitSystem->getConfig( 'blog_posts_max_list' );
+    $futuresHash['get_future'] = TRUE;
+    $futures = $gContent->getFutureList( $futuresHash );
+    $gBitSmarty->assign( 'futures', $futures['data']);
+} else {
+    $_REQUEST['max_records'] = $gBitSystem->getConfig( 'blog_posts_max_list' );
+}
+
 // various options might be set in module_params
+/*
 $listHash = $module_params;
 $listHash = array(
 	'max_records'   => $module_rows,
 	'parse_data'    => TRUE,
 	'load_comments' => TRUE,
 );
+*/
+
+$listHash = array();
+if( !empty( $moduleParams )) {
+    $listHash = array_merge( $_REQUEST, $moduleParams['module_params'] );
+	$listHash['max_records'] = $module_rows;
+	//$listHash['parse_data'] = TRUE;
+	//$listHash['load_comments'] = TRUE;
+} else {
+    $listHash = $_REQUEST;
+}
 
 if( empty( $listHash['user_id'] )) {
 	if( !empty( $gQueryUserId )) {

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.18 2007/06/22 06:26:20 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.19 2007/07/27 11:40:19 wjames5 Exp $
 
 // get a list of blogs for the selection of the home blog
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
@@ -82,8 +82,8 @@ if( $processForm ) {
 
 	// Lazy error handling to ensure numeric. TODO: Fix.
 	$gBitSystem->storeConfig("blog_top_post_count", (isset( $_REQUEST["blog_top_post_count"]) && is_numeric($_REQUEST["blog_top_post_count"])) ? $_REQUEST["blog_top_post_count"] : "3");
+	$gBitSystem->storeConfig("blog_posts_max_list", (isset( $_REQUEST["blog_posts_max_list"]) && is_numeric($_REQUEST["blog_posts_max_list"])) ? $_REQUEST["blog_posts_max_list"] : "10");
 	$gBitSystem->storeConfig("blog_posts_comments", isset( $_REQUEST["blog_posts_comments"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
-	$gBitSystem->storeConfig("blog_autogen_user_blog", isset( $_REQUEST["blog_autogen_user_blog"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_list_order", $_REQUEST["blog_list_order"], BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_list_user_as", $_REQUEST["blog_list_user_as"], BLOGS_PKG_NAME );
 	$gBitSystem->storeConfig("blog_posts_description_length", $_REQUEST["blog_posts_description_length"], BLOGS_PKG_NAME );	

@@ -38,6 +38,14 @@
 					</div>
 				{/foreach}
 
+				<div class="row">
+					{formlabel label="Maximum Blog Posts" for="blogposts-maxhome"}
+					{forminput}
+						<input size="5" type="text" name="blog_posts_max_list" id="blogposts-maxhome" value="{$gBitSystem->getConfig('blog_posts_max_list')|escape}" />
+						{formhelp note="Number of blog posts shown on recent posts pages."}
+					{/forminput}
+				</div>
+
 				{foreach from=$formBlogInputs key=item item=output}
 					<div class="row">
 						{formlabel label=`$output.label` for=$item}
