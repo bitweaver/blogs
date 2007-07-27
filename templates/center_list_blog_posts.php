@@ -27,6 +27,7 @@ if( empty( $listHash['user_id'] )) {
 if( @BitBase::verifyId( $_REQUEST['group_id'] ) ) {
 	$listHash['group_id'] = $_REQUEST['group_id'];
 }
+
 $blogPosts = $blogPost->getList( $listHash );
 
 $gBitSmarty->assign_by_ref( 'gQueryUserId', $listHash['user_id'] );

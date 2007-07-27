@@ -85,7 +85,7 @@ class BitBlog extends LibertyContent {
 	function getBlog( $pBlogId, $pContentId = NULL ) {
 		global $gBitSystem;
 		$ret = NULL;
-		
+
 		$lookupId = (!empty( $pBlogId ) ? $pBlogId : $pContentId);
 		$lookupColumn = (!empty( $pBlogId ) ? 'blog_id' : 'content_id');
 		

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.15 2007/04/25 16:17:56 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.16 2007/07/27 08:11:10 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -21,7 +21,7 @@ if( !empty($module_params['date_start_offset']) ){
 }
 
 $listHash = array(
-	'sort_mode'   => ( !empty( $module_params['sort_mode'] ) ? $module_params['sort_mode'] : 'created_desc' ),
+	'sort_mode'   => ( !empty( $module_params['sort_mode'] ) ? $module_params['sort_mode'] : 'publish_date_desc' ),
 	'max_records' => $module_rows,
 	'parse_data'  => TRUE,
 	'user'        => ( !empty( $module_params['user'] ) ? $module_params['user'] : NULL ),

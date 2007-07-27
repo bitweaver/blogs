@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.tpl,v 1.10 2007/05/27 04:38:56 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.tpl,v 1.11 2007/07/27 08:11:10 wjames5 Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive('blogs')}
 	{bitmodule title="$moduleTitle" name="last_blog_posts"}
@@ -22,7 +22,7 @@
 							</a>
 						</div>
 						<div class="date">
-							{$modLastBlogPosts[ix].created|bit_long_date}
+							{$modLastBlogPosts[ix].publish_date|default:$modLastBlogPosts[ix].created|bit_long_date}
 							<br />
 							{tr}by{/tr} {displayname hash=$modLastBlogPosts[ix]}
 						</div>
