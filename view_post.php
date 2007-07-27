@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.9 2007/05/16 16:47:07 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.10 2007/07/27 13:01:51 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -31,7 +31,23 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 
 include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 
-include_once( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
+$now = $gBitSystem->getUTCTime();
+$view = FALSE;
+if ( $gBitUser->isAdmin()  || ( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) ){
+	$view = TRUE;
+}elseif ( $gContent->mInfo['publish_date'] > $now && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ){
+	$view = TRUE;
+}elseif ( $gContent->mInfo['expire_date'] < $now && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ){
+	$view = TRUE;
+}
+
+if ($view == TRUE){
+	include_once( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
+}else{
+	$gBitSmarty->assign( 'msg', tra( "The blog post you requested could not be found." ) );
+	$gBitSystem->display( "error.tpl" );
+	die;
+}
 
 if( $gContent->isValid() ) {
 	$gContent->addHit();

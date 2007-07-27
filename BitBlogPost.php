@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.79 2007/07/27 11:40:13 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.80 2007/07/27 13:01:51 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.79 2007/07/27 11:40:13 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.80 2007/07/27 13:01:51 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.79 $ $Date: 2007/07/27 11:40:13 $ $Author: wjames5 $
+ * @version $Revision: 1.80 $ $Date: 2007/07/27 13:01:51 $ $Author: wjames5 $
  */
 
 /**
@@ -744,26 +744,6 @@ class BitBlogPost extends LibertyAttachable {
 			$bindVars[]= $pListHash['date_end'];
 		}
 
-		// determine if future and expired posts are viewable
-		/* I've moved future dated posts to getFuturePosts 
-		   and they are visually separated from the public 
-		   posts so that it is easier for an admin to determine 
-		   what is live and what is not. The following is the 
-		   orginal queries that allowed future posts to be 
-		   joined to the list. This is now depreacted. -wjames5
-		   */
-		/*
-		$timestamp = $gBitSystem->getUTCTime();
-		if( !$gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
-			$whereSql .= " AND ( bp.`publish_date` <= ? OR bp.`publish_date` IS NULL)";
-			$bindVars[] = ( int )$timestamp;
-		}
-		if( !$gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
-			$whereSql .= " AND ( bp.`expire_date` >= ? OR bp.`expire_date` <= bp.`publish_date` OR bp.`expire_date` IS NULL )";
-			$bindVars[] = ( int )$timestamp;
-		}
-		*/				
-		
 		/* Check if the post wants to be viewed before / after respective dates
 		 * Note: expiring posts are determined by the expired date being greater than the publish date
 		 */

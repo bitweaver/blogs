@@ -11,7 +11,7 @@ if( empty( $gContent )) {
 }
 
 if( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin() ) {
-	$futuresHash = $_REQUEST;
+	$futuresHash = array();
     $futuresHash['max_records'] = !empty( $_REQUEST['max_records'] ) ? $_REQUEST['max_records'] : $gBitSystem->getConfig( 'blog_posts_max_list' );
     $futuresHash['get_future'] = TRUE;
 	if( empty( $futuresHash['user_id'] )) {
