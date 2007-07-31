@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.10 2007/07/27 13:01:51 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.11 2007/07/31 07:02:48 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -33,11 +33,14 @@ include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 
 $now = $gBitSystem->getUTCTime();
 $view = FALSE;
+
 if ( $gBitUser->isAdmin()  || ( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) ){
 	$view = TRUE;
 }elseif ( $gContent->mInfo['publish_date'] > $now && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ){
 	$view = TRUE;
 }elseif ( $gContent->mInfo['expire_date'] < $now && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ){
+	$view = TRUE;
+}elseif ( ( $gContent->mInfo['publish_date'] <= $now ) && ( $gContent->mInfo['expire_date'] > $now || $gContent->mInfo['expire_date'] <= $gContent->mInfo['publish_date'] ) ){
 	$view = TRUE;
 }
 
