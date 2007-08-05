@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.82 2007/08/01 15:25:02 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.83 2007/08/05 21:00:50 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.82 2007/08/01 15:25:02 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.83 2007/08/05 21:00:50 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.82 $ $Date: 2007/08/01 15:25:02 $ $Author: wjames5 $
+ * @version $Revision: 1.83 $ $Date: 2007/08/05 21:00:50 $ $Author: spiderr $
  */
 
 /**
@@ -668,14 +668,6 @@ class BitBlogPost extends LibertyAttachable {
 	function getList( &$pListHash ) {
 		global $gBitUser, $gBitSystem;
 
-		if( empty( $pListHash['sort_mode'] ) ) {
-			$pListHash['sort_mode'] = 'publish_date_desc';
-			$sort_mode_prefix = 'bp';
-			//$pListHash['sort_mode'] = 'created_desc';
-		}else{
-			$sort_mode_prefix = 'lc';
-		}
-
 		$this->prepGetList( $pListHash );
 
 		$selectSql = ''; $joinSql = ''; $whereSql = '';
@@ -774,26 +766,35 @@ class BitBlogPost extends LibertyAttachable {
 		}
 		
 
-		if ($pListHash['sort_mode'] == 'publish_date_asc') {
-			$sort_mode_prefix = 'bp';
+		if( empty( $pListHash['sort_mode'] ) ) {
+			$pListHash['sort_mode'] = 'publish_date_desc';
+			$sortModePrefix = 'bp';
+			//$pListHash['sort_mode'] = 'created_desc';
+		} else {
+			switch( $pListHash['sort_mode'] ) {
+				case 'publish_date_asc':
+				case 'publish_date_desc':
+				case 'post_id_desc':
+				case 'post_id_asc':
+					$sortModePrefix = 'bp';
+					break;
+				case 'date_added_desc':
+					$sortModePrefix = 'bpm';
+					break;
+				case 'hits_desc':
+					$sortModePrefix = 'lch';
+					break;
+				case 'real_name_asc':
+				case 'real_name_desc':
+					$sortModePrefix = 'uu';
+					break;
+				default:
+					$sortModePrefix = 'lc';
+					break;
 			}
-		if ($pListHash['sort_mode'] == 'publish_date_desc') {
-			$sort_mode_prefix = 'bp';
-			}
-		if ($pListHash['sort_mode'] == 'post_id_desc') {
-			$sort_mode_prefix = 'bp';
-			}
-		if ($pListHash['sort_mode'] == 'post_id_asc') {
-			$sort_mode_prefix = 'bp';
-			}			
-		if ($pListHash['sort_mode'] == 'date_added_desc') {
-			$sort_mode_prefix = 'bpm';
-			}
-		if ($pListHash['sort_mode'] == 'hits_desc') {
-			$sort_mode_prefix = 'lch';
-			}
+		}
 
-		$sort_mode = $sort_mode_prefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] );
+		$sort_mode = $sortModePrefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] );
 
 		$query = "
 			SELECT
