@@ -1,9 +1,11 @@
 <?php
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams;
-extract( $moduleParams );
+if( !empty( $moduleParams ) ) {
+	extract( $moduleParams );
+}
 
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
-include_once(BLOGS_PKG_PATH."lookup_post_inc.php");
+include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 
 $blogPost = new BitBlogPost();
 if( empty( $gContent )) {
