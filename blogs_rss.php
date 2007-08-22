@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.24 2007/07/08 07:56:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.25 2007/08/22 17:12:59 wjames5 Exp $
  * @package article
  * @subpackage functions
  */
@@ -26,7 +26,7 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 	require_once( RSS_PKG_PATH."rss_error.php" );
 } else {
 	// check if we want to use the cache file
-	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.BLOGS_PKG_NAME.( !empty( $_REQUEST['user_id'] ) ? "_".$_REQUEST['user_id'] : "" ).( !empty( $_REQUEST['blog_id'] ) ? "_".$_REQUEST['blog_id'] : "" ).'_'.$cacheFileTail;
+	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.BLOGS_PKG_NAME.( !empty( $_REQUEST['user_id'] ) ? "_".$_REQUEST['user_id'] : "" ).( !empty( $_REQUEST['group_id'] ) ? "_".$_REQUEST['group_id'] : "" ).( !empty( $_REQUEST['blog_id'] ) ? "_".$_REQUEST['blog_id'] : "" ).'_'.$cacheFileTail;
 	$rss->useCached( $rss_version_name, $cacheFile, $gBitSystem->getConfig( 'rssfeed_cache_time' ));
 
 	$blogPost = new BitBlogPost();
@@ -44,6 +44,17 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 			$rss->title = $userName." at ".$gBitSystem->getConfig( 'site_title' );
 			$listHash['user_id'] = $_REQUEST['user_id'];
 		}
+	}else if( !empty( $_REQUEST['group_id'] ) ) {
+		require_once( USERS_PKG_PATH . 'BitPermUser.php' );
+		$permUser = new BitPermUser();
+		$groupData = $permUser->getGroupInfo( $_REQUEST['group_id'] );
+		// dont try and fool me
+		if (!empty($groupData)){
+			$groupName = $groupData['group_name'];
+			$rss->title = $groupName." Group at ".$gBitSystem->getConfig( 'site_title' );
+			$listHash['group_id'] = $_REQUEST['group_id'];
+		}
+		
 	}
 
 	if( !empty( $_REQUEST['blog_id'] ) ) {
