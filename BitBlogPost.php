@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.85 2007/08/06 16:37:57 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.86 2007/08/23 16:02:39 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.85 2007/08/06 16:37:57 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.86 2007/08/23 16:02:39 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.85 $ $Date: 2007/08/06 16:37:57 $ $Author: wjames5 $
+ * @version $Revision: 1.86 $ $Date: 2007/08/23 16:02:39 $ $Author: wjames5 $
  */
 
 /**
@@ -760,7 +760,7 @@ class BitBlogPost extends LibertyAttachable {
 			$bindVars[] = ( int )$now;
 		} else {
 			// hide future and expired posts
-			$whereSql .= " AND ((bp.`publish_date` IS NULL AND bp.`expire_date` IS NULL) OR (bp.`publish_date` <= ? AND (( bp.`expire_date` <= bp.`publish_date` ) OR ( bp.`expire_date` > ? ))))";
+			$whereSql .= " AND ((bp.`publish_date` IS NULL AND bp.`expire_date` IS NULL) OR (bp.`publish_date` <= ? AND ((bp.`expire_date` IS NULL) OR ( bp.`expire_date` <= bp.`publish_date` ) OR ( bp.`expire_date` > ? ))))";
 			$bindVars[] = ( int )$now;
 			$bindVars[] = ( int )$now;
 		}
