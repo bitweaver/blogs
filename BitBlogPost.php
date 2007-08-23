@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.86 2007/08/23 16:02:39 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.87 2007/08/23 17:38:17 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.86 2007/08/23 16:02:39 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.87 2007/08/23 17:38:17 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.86 $ $Date: 2007/08/23 16:02:39 $ $Author: wjames5 $
+ * @version $Revision: 1.87 $ $Date: 2007/08/23 17:38:17 $ $Author: wjames5 $
  */
 
 /**
@@ -414,7 +414,7 @@ class BitBlogPost extends LibertyAttachable {
 
 			// if blog_content_id, then map the post to the relative blogs
 			if( !empty( $pParamHash['blog_content_id'] )){
-				$this->storePostMap( $this->mContentId, $pParamHash['blog_content_id'] );
+				$this->storePostMap( $this->mInfo, $pParamHash['blog_content_id'] );
 			}
 
 			// Update post with trackbacks successfully sent
@@ -468,15 +468,18 @@ class BitBlogPost extends LibertyAttachable {
 
 	/**
 	 * Map a Post to a Blog or multiple Blogs
-	 * @param pPostContentId the content_id of the post we are associating with blogs.
+	 * @param pPost a Post hash.
 	 * @param pBlogMixed the content_id or and array of ids of the blogs we want the post to show up in.
 	 */
-	function storePostMap( $pPostContentId, $pBlogMixed ) {
+	function storePostMap( $pPost, $pBlogMixed ) {
 		global $gBitSystem, $gBitUser;
+		$postContentId = $pPost['content_id'];
 		$this->mDb->StartTrans();
-		if( @$this->verifyId( $pPostContentId ) ) {
+		if( @$this->verifyId( $postContentId ) ) {
 			//this is to set the time we add a post to a blog.
-			$timeStamp = $gBitSystem->getUTCTime();
+			$currTime = $gBitSystem->getUTCTime();
+			$postTime = $pPost['publish_date'];
+			$timeStamp = ( $postTime > $currTime )?$postTime : $currTime;
 			$blogIds = array();
 
 			if( !empty( $pBlogMixed )){
@@ -488,7 +491,7 @@ class BitBlogPost extends LibertyAttachable {
 					$blogIds = array( $pBlogMixed );
 				}
 			}
-			$allMappings = $this->mDb->getCol( "SELECT `blog_content_id` FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=?", array( $pPostContentId ) );
+			$allMappings = $this->mDb->getCol( "SELECT `blog_content_id` FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=?", array( $postContentId ) );
 
 			// whiddle down all mappings to just those we have perm to
 			$currentMappings = array();
@@ -503,13 +506,13 @@ class BitBlogPost extends LibertyAttachable {
 
 			// Remove mappings for this post
 			foreach( $removedBlogIds as $blogContentId ) {
-				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id`=? AND `post_content_id`=?", array( $blogContentId, $pPostContentId ) );
+				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id`=? AND `post_content_id`=?", array( $blogContentId, $postContentId ) );
 			}
 
 			foreach( $newBlogIds as $blogContentId ) {
 				if( $this->verifyId( $blogContentId ) && $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
 					$result = $this->mDb->associateInsert( BIT_DB_PREFIX."blogs_posts_map", array(
-						'post_content_id' => $pPostContentId,
+						'post_content_id' => $postContentId,
 						'blog_content_id' => (int)$blogContentId,
 						'date_added' => $timeStamp,
 					));

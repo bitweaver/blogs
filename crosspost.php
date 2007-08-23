@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.3 2007/06/22 09:05:13 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.4 2007/08/23 17:38:17 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -23,7 +23,7 @@ $gBlog = new BitBlog();
 
 
 if( isset( $_REQUEST['crosspost_post']) || isset($_REQUEST['save_post_exit'] ) ) {
-	if( $gContent->isValid() && $gContent->storePostMap( $gContent->getField( 'content_id' ), $_REQUEST['blog_content_id'] ) ) {
+	if( $gContent->isValid() && $gContent->storePostMap( $gContent->mInfo, $_REQUEST['blog_content_id'] ) ) {
 		$gContent->load();
 		bit_redirect( $gContent->getDisplayUrl() );
 	}
