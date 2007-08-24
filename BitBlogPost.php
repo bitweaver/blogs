@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.87 2007/08/23 17:38:17 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.88 2007/08/24 10:49:09 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.87 2007/08/23 17:38:17 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.88 2007/08/24 10:49:09 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.87 $ $Date: 2007/08/23 17:38:17 $ $Author: wjames5 $
+ * @version $Revision: 1.88 $ $Date: 2007/08/24 10:49:09 $ $Author: wjames5 $
  */
 
 /**
@@ -767,12 +767,20 @@ class BitBlogPost extends LibertyAttachable {
 			$bindVars[] = ( int )$now;
 			$bindVars[] = ( int )$now;
 		}
-
+		
+		/* sort_mode is never empty due to call to prepGetList above
+		 * I think this will have to be perminently removed and default
+		 * set before passing the list hash in if a different default is 
+		 * desired from that in prepGetList. -wjames5
+		 */
+		/*
 		if( empty( $pListHash['sort_mode'] ) ) {
 			$pListHash['sort_mode'] = 'publish_date_desc';
 			$sortModePrefix = 'bp';
 			//$pListHash['sort_mode'] = 'created_desc';
 		} else {
+		*/
+		if( !empty( $pListHash['sort_mode'] ) ) {
 			switch( $pListHash['sort_mode'] ) {
 				case 'publish_date_asc':
 				case 'publish_date_desc':

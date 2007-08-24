@@ -60,6 +60,10 @@ if( @BitBase::verifyId( $_REQUEST['group_id'] ) ) {
 	$listHash['group_id'] = $_REQUEST['group_id'];
 }
 
+if ( empty( $listHash['sort_mode'] ) ){
+	$listHash['sort_mode'] = 'publish_date_desc';
+}
+
 $blogPosts = $blogPost->getList( $listHash );
 
 $gBitSmarty->assign_by_ref( 'gQueryUserId', $listHash['user_id'] );
