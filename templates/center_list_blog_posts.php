@@ -1,4 +1,8 @@
 <?php
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.19 2007/08/30 23:25:50 spiderr Exp $
+ * @package bitweaver
+ */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams;
 if( !empty( $moduleParams ) ) {
 	extract( $moduleParams );
