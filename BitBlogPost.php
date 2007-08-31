@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.88 2007/08/24 10:49:09 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.89 2007/08/31 00:27:25 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.88 2007/08/24 10:49:09 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.89 2007/08/31 00:27:25 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.88 $ $Date: 2007/08/24 10:49:09 $ $Author: wjames5 $
+ * @version $Revision: 1.89 $ $Date: 2007/08/31 00:27:25 $ $Author: spiderr $
  */
 
 /**
@@ -804,7 +804,8 @@ class BitBlogPost extends LibertyAttachable {
 			}
 		}
 
-		$sort_mode = $sortModePrefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] );
+		$secondarySortMode = ($pListHash['sort_mode'] != 'last_modified_desc') ? ', last_modified DESC': '';
+		$sort_mode = $sortModePrefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] ).$secondarySortMode;
 
 		$query = "
 			SELECT

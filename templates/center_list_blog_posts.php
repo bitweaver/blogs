@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.19 2007/08/30 23:25:50 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.20 2007/08/31 00:27:26 spiderr Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams;
@@ -62,10 +62,6 @@ if( empty( $listHash['user_id'] )) {
 }
 if( @BitBase::verifyId( $_REQUEST['group_id'] ) ) {
 	$listHash['group_id'] = $_REQUEST['group_id'];
-}
-
-if ( empty( $listHash['sort_mode'] ) ){
-	$listHash['sort_mode'] = 'publish_date_desc';
 }
 
 $blogPosts = $blogPost->getList( $listHash );
