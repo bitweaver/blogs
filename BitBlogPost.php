@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.90 2007/09/04 16:23:15 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.91 2007/09/04 17:18:50 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.90 2007/09/04 16:23:15 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.91 2007/09/04 17:18:50 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.90 $ $Date: 2007/09/04 16:23:15 $ $Author: spiderr $
+ * @version $Revision: 1.91 $ $Date: 2007/09/04 17:18:50 $ $Author: spiderr $
  */
 
 /**
@@ -786,24 +786,26 @@ class BitBlogPost extends LibertyAttachable {
 				case 'publish_date_desc':
 				case 'post_id_desc':
 				case 'post_id_asc':
-					$sortModePrefix = 'bp';
+					$sortModePrefix = 'bp.';
 					break;
 				case 'date_added_desc':
-					$sortModePrefix = 'bpm';
+					$sortModePrefix = 'bpm.';
 					break;
 				case 'hits_asc':
 				case 'hits_desc':
-					$sortModePrefix = 'lch';
+					$sortModePrefix = 'lch.';
+					break;
+				case 'sort_date_asc':
+				case 'sort_date_desc':
 					break;
 				case 'real_name_asc':
 				case 'real_name_desc':
-					$sortModePrefix = 'uu';
+					$sortModePrefix = 'uu.';
 					break;
 				default:
-					$sortModePrefix = 'lc';
+					$sortModePrefix = 'lc.';
 					break;
 			}
-			$sortModePrefix .= '.';
 		}
 
 		$secondarySortMode = ($pListHash['sort_mode'] != 'last_modified_desc') ? ', last_modified DESC': '';
@@ -811,7 +813,7 @@ class BitBlogPost extends LibertyAttachable {
 
 		$query = "
 			SELECT
-				bp.*, lc.*,
+				bp.*, lc.*, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
 				uu.`email`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar
 				$selectSql
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
