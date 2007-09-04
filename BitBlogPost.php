@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.89 2007/08/31 00:27:25 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.90 2007/09/04 16:23:15 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.89 2007/08/31 00:27:25 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.90 2007/09/04 16:23:15 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.89 $ $Date: 2007/08/31 00:27:25 $ $Author: spiderr $
+ * @version $Revision: 1.90 $ $Date: 2007/09/04 16:23:15 $ $Author: spiderr $
  */
 
 /**
@@ -780,7 +780,7 @@ class BitBlogPost extends LibertyAttachable {
 			//$pListHash['sort_mode'] = 'created_desc';
 		} else {
 		*/
-		if( !empty( $pListHash['sort_mode'] ) ) {
+		if( !empty( $pListHash['sort_mode'] ) && !strpos( $pListHash['sort_mode'], '.' ) ) {
 			switch( $pListHash['sort_mode'] ) {
 				case 'publish_date_asc':
 				case 'publish_date_desc':
@@ -791,6 +791,7 @@ class BitBlogPost extends LibertyAttachable {
 				case 'date_added_desc':
 					$sortModePrefix = 'bpm';
 					break;
+				case 'hits_asc':
 				case 'hits_desc':
 					$sortModePrefix = 'lch';
 					break;
@@ -802,10 +803,11 @@ class BitBlogPost extends LibertyAttachable {
 					$sortModePrefix = 'lc';
 					break;
 			}
+			$sortModePrefix .= '.';
 		}
 
 		$secondarySortMode = ($pListHash['sort_mode'] != 'last_modified_desc') ? ', last_modified DESC': '';
-		$sort_mode = $sortModePrefix . '.' . $this->mDb->convertSortmode( $pListHash['sort_mode'] ).$secondarySortMode;
+		$sort_mode = $sortModePrefix . $this->mDb->convertSortmode( $pListHash['sort_mode'] ).$secondarySortMode;
 
 		$query = "
 			SELECT
