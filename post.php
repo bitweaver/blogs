@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.44 2007/07/10 18:58:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.45 2007/09/07 20:32:56 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -21,6 +21,13 @@ $gBitSystem->verifyPermission( 'p_blogs_post' );
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 $gBlog = new BitBlog();
+
+//must be owner or admin to edit an existing post
+if (!empty($_REQUEST['post_id']) || !empty($_REQUEST['content_id'])) {
+	if ( !$gContent->isOwner() || !$gBitUser->hasPermission( 'p_blogs_admin' ) ){
+		$gBitSystem->fatalError( tra( "You do not have permission to edit this post!" ));
+	}
+}
 
 // Editing page needs general ticket verification
 $gBitUser->verifyTicket();
