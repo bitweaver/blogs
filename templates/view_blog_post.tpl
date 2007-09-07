@@ -38,8 +38,10 @@
 						<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
 					{/if}
 
-					{if $gContent->hasEditPermission()}
+					{if $gContent->isOwner() || $gBitUser->hasPermission( 'p_blogs_admin' )}
 						<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+					{/if}
+					{if $gBitUser->hasPermission( 'p_blogs_admin' )}
 						<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;post_id={$post_info.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 					{/if}
 				{/if}
