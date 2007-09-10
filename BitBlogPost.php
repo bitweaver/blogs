@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.91 2007/09/04 17:18:50 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.92 2007/09/10 15:17:24 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.91 2007/09/04 17:18:50 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.92 2007/09/10 15:17:24 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.91 $ $Date: 2007/09/04 17:18:50 $ $Author: spiderr $
+ * @version $Revision: 1.92 $ $Date: 2007/09/10 15:17:24 $ $Author: squareing $
  */
 
 /**
@@ -565,13 +565,19 @@ class BitBlogPost extends LibertyAttachable {
 	 * @param	object	PostId of the item to use
 	 * @return	object	Url String
 	 */
-	function getDisplayUrl( $pContentId=NULL ) {
+	function getDisplayUrl( $pContentId = NULL, $pParamHash = NULL ) {
+		global $gBitSystem;
+
 		$ret = NULL;
-		if( empty( $pContentId ) && !empty( $this ) ) {
+		if( empty( $pContentId ) && $this->isValid() ) {
 			$pContentId = $this->mContentId;
 		}
-		global $gBitSystem;
-		if( @BitBase::verifyId( $pContentId ) ) {
+
+		if( !@BitBase::verifyId( $pContentId ) && @BitBase::verifyId( $pParamHash['content_id'] )) {
+			$pContentId = $pParamHash['content_id'];
+		}
+
+		if( @BitBase::verifyId( $pContentId )) {
 			$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/' : '';
 			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				$ret = BLOGS_PKG_URL.$rewrite_tag.'content/'.$pContentId;
@@ -579,6 +585,7 @@ class BitBlogPost extends LibertyAttachable {
 				$ret = BLOGS_PKG_URL.'view_post.php?content_id='.$pContentId;
 			}
 		}
+
 		return $ret;
 	}
 

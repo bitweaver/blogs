@@ -45,21 +45,24 @@ class BitBlog extends LibertyContent {
 		return $ret;
 	}
 
-	function getDisplayUrl( $pBlogId=NULL ) {
+	function getDisplayUrl( $pBlogId = NULL, $pParamHash = NULL ) {
 		global $gBitSystem;
 		$ret = NULL;
+
 		if( empty( $pBlogId ) && !empty( $this ) ) {
 			$pBlogId = $this->mBlogId;
 		}
+
 		if ( BitBase::verifyId( $pBlogId ) ) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				$ret = BLOGS_PKG_URL.'view/'.$pBlogId;
-			} 
-			else if( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
+			} elseif( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
 				$ret = BLOGS_PKG_URL.$pBlogId;
 			} else {
 				$ret = BLOGS_PKG_URL.'view.php?blog_id='.$pBlogId;
 			}
+		} else {
+			$ret = LibertyContent::getDisplayUrl( NULL, $pParamHash );
 		}
 		return $ret;
 	}
