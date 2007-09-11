@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.46 2007/09/07 20:36:25 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.47 2007/09/11 01:32:19 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -23,10 +23,8 @@ require_once( BLOGS_PKG_PATH.'BitBlog.php');
 $gBlog = new BitBlog();
 
 //must be owner or admin to edit an existing post
-if (!empty($_REQUEST['post_id']) || !empty($_REQUEST['content_id'])) {
-	if ( !$gContent->isOwner() && !$gBitUser->hasPermission( 'p_blogs_admin' ) ){
-		$gBitSystem->fatalError( tra( "You do not have permission to edit this post!" ));
-	}
+if( $gContent->isValid() && !$gContent->hasEditPermission() ) {
+	$gBitSystem->fatalError( tra( "You do not have permission to edit this post" ));
 }
 
 // Editing page needs general ticket verification
