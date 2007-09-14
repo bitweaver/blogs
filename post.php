@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.47 2007/09/11 01:32:19 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.48 2007/09/14 00:57:01 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -16,15 +16,17 @@
 require_once( '../bit_setup_inc.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
-$gBitSystem->verifyPermission( 'p_blogs_post' );
+
 
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 $gBlog = new BitBlog();
 
 //must be owner or admin to edit an existing post
-if( $gContent->isValid() && !$gContent->hasEditPermission() ) {
-	$gBitSystem->fatalError( tra( "You do not have permission to edit this post" ));
+if( $gContent->isValid() ) {
+	$gContent->verifyEditPermission();
+} else {
+	$gBitSystem->verifyPermission( 'p_blogs_post' );
 }
 
 // Editing page needs general ticket verification
@@ -33,7 +35,6 @@ $gBitUser->verifyTicket();
 // nuke post if requested
 if( !empty( $_REQUEST['action'] ) ) {
 	if( $_REQUEST['action'] == 'remove' && $gContent->isValid() ) {
-		$gContent->verifyPermission( 'p_blogs_post_edit' );
 		
 		if( isset( $_REQUEST["confirm"] ) ) {
 			$redirect = !empty( $gContent->mInfo['blogs'] ) ? BLOGS_PKG_URL.'view.php?content_id='.key( $gContent->mInfo['blogs'] ) : BLOGS_PKG_URL;

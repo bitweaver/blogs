@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.27 2007/05/16 16:47:06 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.28 2007/09/14 00:57:01 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -31,17 +31,11 @@ if (!isset($last_modified)) {
 
 $gBitSmarty->assign_by_ref('heading', $heading);
 
-if( $gContent->isValid() ) {
-	$_REQUEST['content_id'] = $gContent->mContentId;
-	if( !$gContent->hasEditPermission() ) {
-		$gBitSystem->verifyPermission( 'p_blogs_admin', "Permission denied you cannot edit this blog" );
-	}
-}
-
-
 // Now check permissions to access this page
-if( !$gContent->hasUserPermission( 'p_blogs_create' ) ) {
-	$gBitSystem->fatalPermission('p_blog_create');
+if( $gContent->isValid() ) {
+	$gContent->verifyEditPermission();
+} else {
+	$gBitSystem->verifyPermission( 'p_blog_create' );
 }
 
 if (isset($_REQUEST['preview'])) {
