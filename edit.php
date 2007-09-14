@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.28 2007/09/14 00:57:01 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.29 2007/09/14 01:14:46 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -17,19 +17,11 @@
  * required setup
  */
 require_once( '../bit_setup_inc.php' );
-require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
-
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
-require_once( USERS_PKG_PATH.'BitUser.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
-if (!isset($last_modified)) {
-	$last_modified=time();
-	$gBitSmarty->assign('last_modified', $last_modified);
-}
-
-$gBitSmarty->assign_by_ref('heading', $heading);
+require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 // Now check permissions to access this page
 if( $gContent->isValid() ) {
