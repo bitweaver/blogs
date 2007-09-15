@@ -115,7 +115,7 @@
 		{if $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
 			{if $spacer}&nbsp; &bull; &nbsp;{/if}
 			{if $showDescriptionsOnly}<a href="{$post_info.display_url}#editcomments">{/if}
-				{tr}{$post_info.num_comments} Comment(s){/tr}
+				{tr}{$post_info.num_comments}&nbsp;Comment{if $post_info.num_comments > 1}s{/if}{/tr}
 			{if $showDescriptionsOnly}</a>{/if}
 		{/if}
 	</div> {* end .footer *}
