@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.92 2007/09/10 15:17:24 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.93 2007/09/15 06:18:04 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.92 2007/09/10 15:17:24 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.93 2007/09/15 06:18:04 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.92 $ $Date: 2007/09/10 15:17:24 $ $Author: squareing $
+ * @version $Revision: 1.93 $ $Date: 2007/09/15 06:18:04 $ $Author: spiderr $
  */
 
 /**
@@ -491,13 +491,13 @@ class BitBlogPost extends LibertyAttachable {
 					$blogIds = array( $pBlogMixed );
 				}
 			}
-			$allMappings = $this->mDb->getCol( "SELECT `blog_content_id` FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=?", array( $postContentId ) );
-
-			// whiddle down all mappings to just those we have perm to
 			$currentMappings = array();
-			foreach( $allMappings as $blogContentId ) {
-				if( $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
-					$currentMappings[] = $blogContentId;
+			if( $allMappings = $this->mDb->getCol( "SELECT `blog_content_id` FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=?", array( $postContentId ) ) ) {
+				// whiddle down all mappings to just those we have perm to
+				foreach( $allMappings as $blogContentId ) {
+					if( $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
+						$currentMappings[] = $blogContentId;
+					}
 				}
 			}
 
