@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.29 2007/09/14 01:14:46 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.30 2007/09/22 22:24:22 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -27,7 +27,7 @@ require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 if( $gContent->isValid() ) {
 	$gContent->verifyEditPermission();
 } else {
-	$gBitSystem->verifyPermission( 'p_blog_create' );
+	$gBitSystem->verifyPermission( 'p_blogs_create' );
 }
 
 if (isset($_REQUEST['preview'])) {
