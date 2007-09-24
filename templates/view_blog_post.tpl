@@ -21,10 +21,6 @@
 			<div class="floaticon">
 				{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$post_info}
 				{if $gBitUser->hasPermission( 'p_users_view_icons_and_tools' )}
-					{if $gBitSystem->isFeatureActive( 'promotions_diggthis' )}
-						{include file="bitpackage:liberty/diggthis_inc.tpl" diggStyle='compact'}
-					{/if}
-
 					{if $gBitSystem->isPackageActive( 'rss' ) && $gBitSystem->isFeatureActive( 'rss_blogs' )}
 						<a href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?user_id={$post_info.user_id}">{biticon ipackage="rss" iname="rss-16x16" iexplain="RSS feed"}</a>
 					{/if}
