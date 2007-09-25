@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.29 2007/07/14 14:50:50 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.30 2007/09/25 06:48:33 spiderr Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -19,7 +19,7 @@
 			<input type="hidden" name="cols" value="{$cols}"/>
 
 			{jstabs}
-				{jstab title="Create Blog Post"}
+				{jstab title="Blog Post"}
 					{legend legend="Post"}
 						{if !$blog_data.use_title OR $blog_data.use_title eq 'y'}
 							<div class="row">
@@ -31,6 +31,13 @@
 							</div>
 						{/if}
 
+							<div class="row">
+								{formlabel label="Summary" for="summary"}
+								{forminput}
+									<input type="text" size="50" name="summary" id="summary" value="{$post_info.summary|escape}" />
+									{formhelp note="Description used in listings and search results. If left empty, the first few sentences of the body text will be used."}
+								{/forminput}
+							</div>
 
 						{if $gBitSystem->isFeatureActive( 'blog_posts_autosplit' )}
 							{include file="bitpackage:liberty/edit_format.tpl"}

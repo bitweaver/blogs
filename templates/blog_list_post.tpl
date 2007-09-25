@@ -51,7 +51,7 @@
 			{if $aPost.avatar}<img src="{$aPost.avatar}" class="avatar" />{/if}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$aPost}
 			{if $showDescriptionsOnly}
-				{$aPost.parsed_description}
+				{$aPost.summary|default:$aPost.parsed_description}
 			{else}
 				{$aPost.parsed_data}
 			{/if}

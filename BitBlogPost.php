@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.93 2007/09/15 06:18:04 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.94 2007/09/25 06:48:33 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.93 2007/09/15 06:18:04 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.94 2007/09/25 06:48:33 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.93 $ $Date: 2007/09/15 06:18:04 $ $Author: spiderr $
+ * @version $Revision: 1.94 $ $Date: 2007/09/25 06:48:33 $ $Author: spiderr $
  */
 
 /**
@@ -68,11 +68,12 @@ class BitBlogPost extends LibertyAttachable {
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "
-				SELECT bp.*, lc.*, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar
+				SELECT bp.*, lc.*, lcs.`summary`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar
 					$selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` )
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_summaries` lcs ON lc.`content_id`      = lcs.`content_id`
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 					$joinSql
@@ -560,6 +561,20 @@ class BitBlogPost extends LibertyAttachable {
 	}
 
 	/**
+	 * Return a summary for this content base on 
+	 *
+	 * @param	object	PostId of the item to use
+	 * @return	object	Url String
+	 */
+	function getDescription() {
+		if( !($ret = $this->getField( 'decription' )) ) {
+			$ret = $this->getField( 'data' );
+		}
+		return $ret;
+	}
+
+
+	/**
 	 * Generate a valid url for the Blog
 	 *
 	 * @param	object	PostId of the item to use
@@ -580,7 +595,11 @@ class BitBlogPost extends LibertyAttachable {
 		if( @BitBase::verifyId( $pContentId )) {
 			$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/' : '';
 			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
-				$ret = BLOGS_PKG_URL.$rewrite_tag.'content/'.$pContentId;
+				if( !empty( $pParamHash['post_id'] ) ) {
+					$ret = BLOGS_PKG_URL.$rewrite_tag.'post/'.$pParamHash['post_id'];
+				} else {
+					$ret = BLOGS_PKG_URL.$rewrite_tag.'content/'.$pContentId;
+				}
 			} else {
 				$ret = BLOGS_PKG_URL.'view_post.php?content_id='.$pContentId;
 			}
@@ -820,15 +839,18 @@ class BitBlogPost extends LibertyAttachable {
 
 		$query = "
 			SELECT
-				bp.*, lc.*, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
-				uu.`email`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar
+				bp.*, lc.*, lcs.* AS summary, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
+				uu.`email`, uu.`login`, uu.`real_name`, ulf.`storage_path` as avatar,  lf.storage_path AS `image_attachment_path`
 				$selectSql
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
 				INNER JOIN      `".BIT_DB_PREFIX."liberty_content`       lc ON lc.`content_id`         = bp.`content_id`
 				INNER JOIN		`".BIT_DB_PREFIX."users_users`			 uu ON uu.`user_id`			   = lc.`user_id`
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON lc.`content_id`         = lch.`content_id`
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_summaries` lcs ON lc.`content_id`      = lcs.`content_id`
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`	  a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`		 lf ON lf.`file_id`			   = a.`foreign_id`
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`	    ulf ON ulf.`file_id`		   = a.`foreign_id`
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`   la ON la.`content_id`         = lc.`content_id` AND la.`is_primary` = 'y'
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`         lf ON lf.`file_id`            = la.`foreign_id`
 				$joinSql
 			WHERE lc.`content_type_guid` = ? $whereSql
 			ORDER BY $sort_mode";
@@ -852,8 +874,9 @@ class BitBlogPost extends LibertyAttachable {
 			if( empty( $accessError ) ) {
 
 				$res['avatar'] = liberty_fetch_thumbnail_url( $res['avatar'], 'avatar' );
+				$res['thumbnail_url'] = liberty_fetch_thumbnail_url( $res['image_attachment_path'], 'avatar' );
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
-				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
+				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'], $res );
 				$res['display_url'] = $res['post_url'];
 				$res['display_link'] = $this->getDisplayLink( $res['title'], $res );
 				$res['blogs'] = $this->getBlogMemberships( $res['content_id'] );
@@ -889,12 +912,15 @@ class BitBlogPost extends LibertyAttachable {
 					$splitArray = $this->parseSplit($parseHash, $gBitSystem->getConfig( 'blog_posts_description_length', 500));
 					$res = array_merge($res, $splitArray);
 				}
+				if( !empty( $this->mInfo['summary'] ) ) {
+					$res['summary'] = $this->mInfo['summary'];
+				}
 
 				$ret[] = $res;
 
 			} elseif( !empty( $accessError ) ) {
 				if( !empty( $accessError['access_control'] ) ) {
-					$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'] );
+					$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'], $res );
 					$res['display_url'] = $res['post_url'];
 					/* this needs to be part of loop that gets all blogs post is in
 					$res['blog_url'] = BitBlog::getDisplayUrl( $res['blog_content_id'] );
