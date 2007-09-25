@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.94 2007/09/25 06:48:33 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.95 2007/09/25 11:20:37 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.94 2007/09/25 06:48:33 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.95 2007/09/25 11:20:37 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.94 $ $Date: 2007/09/25 06:48:33 $ $Author: spiderr $
+ * @version $Revision: 1.95 $ $Date: 2007/09/25 11:20:37 $ $Author: squareing $
  */
 
 /**
@@ -567,7 +567,7 @@ class BitBlogPost extends LibertyAttachable {
 	 * @return	object	Url String
 	 */
 	function getDescription() {
-		if( !($ret = $this->getField( 'decription' )) ) {
+		if( !($ret = $this->getField( 'description' )) ) {
 			$ret = $this->getField( 'data' );
 		}
 		return $ret;
