@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.95 2007/09/25 11:20:37 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.96 2007/09/25 18:07:18 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.95 2007/09/25 11:20:37 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.96 2007/09/25 18:07:18 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.95 $ $Date: 2007/09/25 11:20:37 $ $Author: squareing $
+ * @version $Revision: 1.96 $ $Date: 2007/09/25 18:07:18 $ $Author: spiderr $
  */
 
 /**
@@ -839,7 +839,7 @@ class BitBlogPost extends LibertyAttachable {
 
 		$query = "
 			SELECT
-				bp.*, lc.*, lcs.* AS summary, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
+				bp.*, lc.*, lcs.`summary`, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
 				uu.`email`, uu.`login`, uu.`real_name`, ulf.`storage_path` as avatar,  lf.storage_path AS `image_attachment_path`
 				$selectSql
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
