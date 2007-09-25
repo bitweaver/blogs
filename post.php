@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.48 2007/09/14 00:57:01 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.49 2007/09/25 06:46:57 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -119,5 +119,6 @@ $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 
 // Need ajax for attachment browser
 $gBitThemes->loadAjax( 'prototype' );
-$gBitSystem->display( 'bitpackage:blogs/blog_post.tpl', "Create Blog Post" );
+// tweak title displayed for better usuability in browser history
+$gBitSystem->display( 'bitpackage:blogs/blog_post.tpl', $gContent->isValid() ? tra( "Edit Blog Post" ).": ".$gContent->getTitle() : tra( "Create Blog Post" ) );
 ?>
