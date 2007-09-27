@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.97 2007/09/27 13:50:40 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.98 2007/09/27 15:18:10 nickpalmer Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.97 2007/09/27 13:50:40 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.98 2007/09/27 15:18:10 nickpalmer Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.97 $ $Date: 2007/09/27 13:50:40 $ $Author: spiderr $
+ * @version $Revision: 1.98 $ $Date: 2007/09/27 15:18:10 $ $Author: nickpalmer $
  */
 
 /**
@@ -846,7 +846,7 @@ class BitBlogPost extends LibertyAttachable {
 				INNER JOIN      `".BIT_DB_PREFIX."liberty_content`       lc ON lc.`content_id`         = bp.`content_id`
 				INNER JOIN		`".BIT_DB_PREFIX."users_users`			 uu ON uu.`user_id`			   = lc.`user_id`
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON lc.`content_id`         = lch.`content_id`
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcsd ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`	  a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`	    ulf ON ulf.`file_id`		   = a.`foreign_id`
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`   la ON la.`content_id`         = lc.`content_id` AND la.`is_primary` = 'y'
