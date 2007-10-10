@@ -109,7 +109,6 @@ class BitBlog extends LibertyContent {
 					  // this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
 //						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 
-
 			$result = $this->mDb->query($query,$bindVars);
 			$ret = $result->fetchRow();
 			$ret['postscant'] = $this->getPostsCount( $ret['content_id'] );
