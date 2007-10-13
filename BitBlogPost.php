@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.99 2007/09/29 17:35:19 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.100 2007/10/13 21:48:01 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.99 2007/09/29 17:35:19 nickpalmer Exp $
+ * $Id: BitBlogPost.php,v 1.100 2007/10/13 21:48:01 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.99 $ $Date: 2007/09/29 17:35:19 $ $Author: nickpalmer $
+ * @version $Revision: 1.100 $ $Date: 2007/10/13 21:48:01 $ $Author: wjames5 $
  */
 
 /**
@@ -318,6 +318,8 @@ class BitBlogPost extends LibertyAttachable {
 		}
 		if( !empty( $pParamHash['publish_date'] ) ) {
 			$pParamHash['post_store']['publish_date'] = $pParamHash['publish_date'];
+		}else{
+			$pParamHash['post_store']['publish_date'] = $gBitSystem->getUTCTime();
 		}
 
 		if( !empty( $pParamHash['expire_Month'] ) ) {
@@ -346,6 +348,8 @@ class BitBlogPost extends LibertyAttachable {
 		}
 		if( !empty( $pParamHash['expire_date'] ) ) {
 			$pParamHash['post_store']['expire_date'] = $pParamHash['expire_date'];
+		}else{
+			$pParamHash['post_store']['expire_date'] = $gBitSystem->getUTCTime();
 		}
 
 		return( count( $this->mErrors )== 0 );
