@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.31 2007/10/13 21:48:01 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.32 2007/10/18 08:24:52 squareing Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -67,7 +67,7 @@
 											<input name="blog_content_id[]" type="checkbox" value="{$blogContentId}" {if $gContent->mInfo.blogs.$blogContentId || $blogContentId == $smarty.request.blog_id}checked="checked"{/if} /> {$availBlogTitle|escape}<br/>
 										{/foreach}
 									{/if}
-                                    {formhelp note="You can cross post to any and all of the blogs listed above.<br />Just check off the blogs you wish this post to also show up in."}
+									{formhelp note="You can cross post to any and all of the blogs listed above.<br />Just check off the blogs you wish this post to also show up in."}
 								{/forminput}
 							</div>
 						{/if}
@@ -98,7 +98,6 @@
 						<div class="row">
 							<input type="hidden" name="publishDateInput" value="1" />
 							{formlabel label="Publish Date" for=""}
-							{$post_info.publish_date|vd}
 							{forminput}
 								{html_select_date prefix="publish_" time=$post_info.publish_date start_year="-5" end_year="+10"} {tr}at{/tr}&nbsp;
 								<span dir="ltr">{html_select_time prefix="publish_" time=$post_info.publish_date display_seconds=false}&nbsp;{$siteTimeZone}</span>
