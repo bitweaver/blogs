@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.100 2007/10/13 21:48:01 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.101 2007/10/20 12:14:02 nickpalmer Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.100 2007/10/13 21:48:01 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.101 2007/10/20 12:14:02 nickpalmer Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.100 $ $Date: 2007/10/13 21:48:01 $ $Author: wjames5 $
+ * @version $Revision: 1.101 $ $Date: 2007/10/20 12:14:02 $ $Author: nickpalmer $
  */
 
 /**
@@ -772,32 +772,8 @@ class BitBlogPost extends LibertyAttachable {
 		/* Check if the post wants to be viewed before / after respective dates
 		 * Note: expiring posts are determined by the expired date being greater than the publish date
 		 */
-		$now = $gBitSystem->getUTCTime();
-		if( !empty( $pListHash['show_future'] ) && !empty( $pListHash['show_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
-		// this will show all post at once - future, current and expired
-		} elseif( !empty( $pListHash['show_future'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
-			// hide expired posts but show future
-			$whereSql .= " AND ( bp.`expire_date` <= bp.`publish_date` OR bp.`expire_date` > ? ) ";
-			$bindVars[] = ( int )$now;
-		} elseif( !empty( $pListHash['show_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
-			// hide future posts but show expired
-			$whereSql .= " AND bp.`publish_date` < ?";
-			$bindVars[] = ( int )$now;
-		} elseif( !empty( $pListHash['get_future'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
-			// show only future
-			$whereSql .= " AND bp.`publish_date` > ?";
-			$bindVars[] = ( int )$now;
-		} elseif( !empty( $pListHash['get_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
-			// show only expired posts
-			$whereSql .= " AND bp.`expire_date` < ? AND bp.`expire_date` > bp.`publish_date` ";
-			$bindVars[] = ( int )$now;
-		} else {
-			// hide future and expired posts
-			$whereSql .= " AND ((bp.`publish_date` IS NULL AND bp.`expire_date` IS NULL) OR (bp.`publish_date` <= ? AND ((bp.`expire_date` IS NULL) OR ( bp.`expire_date` <= bp.`publish_date` ) OR ( bp.`expire_date` > ? ))))";
-			$bindVars[] = ( int )$now;
-			$bindVars[] = ( int )$now;
-		}
-		
+		$this->getDateRestrictions($pListHash, $whereSql, $bindVars);
+
 		/* sort_mode is never empty due to call to prepGetList above
 		 * I think this will have to be perminently removed and default
 		 * set before passing the list hash in if a different default is 
@@ -944,6 +920,39 @@ class BitBlogPost extends LibertyAttachable {
 		return $pListHash;
 	}
 
+	/**
+	 * alters the whereSql and bindVars to limit the posts returned based on the dates
+	 * expects the blog_psots table to be aliased as bp
+	 */
+	function getDateRestrictions( $pListHash, &$whereSql, &$bindVars ) {
+		global $gBitSystem, $gBitUser;
+
+		$now = $gBitSystem->getUTCTime();
+		if( !empty( $pListHash['show_future'] ) && !empty( $pListHash['show_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
+		// this will show all post at once - future, current and expired
+		} elseif( !empty( $pListHash['show_future'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
+			// hide expired posts but show future
+			$whereSql .= " AND ( bp.`expire_date` <= bp.`publish_date` OR bp.`expire_date` > ? ) ";
+			$bindVars[] = ( int )$now;
+		} elseif( !empty( $pListHash['show_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
+			// hide future posts but show expired
+			$whereSql .= " AND bp.`publish_date` < ?";
+			$bindVars[] = ( int )$now;
+		} elseif( !empty( $pListHash['get_future'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ) {
+			// show only future
+			$whereSql .= " AND bp.`publish_date` > ?";
+			$bindVars[] = ( int )$now;
+		} elseif( !empty( $pListHash['get_expired'] ) && $gBitUser->hasPermission( 'p_blog_posts_read_expired' ) ) {
+			// show only expired posts
+			$whereSql .= " AND bp.`expire_date` < ? AND bp.`expire_date` > bp.`publish_date` ";
+			$bindVars[] = ( int )$now;
+		} else {
+			// hide future and expired posts
+			$whereSql .= " AND ((bp.`publish_date` IS NULL AND bp.`expire_date` IS NULL) OR (bp.`publish_date` <= ? AND ((bp.`expire_date` IS NULL) OR ( bp.`expire_date` <= bp.`publish_date` ) OR ( bp.`expire_date` > ? ))))";
+			$bindVars[] = ( int )$now;
+			$bindVars[] = ( int )$now;
+		}
+	}
 
 	/**
 	 * Get a list of posts that are to be published in the future

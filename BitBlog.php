@@ -296,11 +296,14 @@ class BitBlog extends LibertyContent {
 		global $gBitSystem;
 		$ret = NULL;
 		if( @$this->verifyId( $pBlogContentId ) ) {
+			$whereSql = 'bpm.`blog_content_id` = ?';
 			$bindVars = array((int)$pBlogContentId);
-			$query = "SELECT COUNT(*) 
-				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm 
-				WHERE bpm.blog_content_id = ?";
-	
+			BitBlogPost::getDateRestrictions(array(), $whereSql, $bindVars);
+			$query = "SELECT COUNT(*)
+				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm
+				INNER JOIN `blog_posts` bp ON (bpm.`post_content_id`=bp.`content_id`)
+				WHERE $whereSql";
+
 			$ret = $this->mDb->getOne( $query, $bindVars );
 		} else {
 			$this->mErrors['content_id'] = "Invalid blog content id.";
