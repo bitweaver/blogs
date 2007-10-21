@@ -91,22 +91,23 @@ class BitBlog extends LibertyContent {
 
 		$lookupId = (!empty( $pBlogId ) ? $pBlogId : $pContentId);
 		$lookupColumn = (!empty( $pBlogId ) ? 'blog_id' : 'content_id');
-		
-		$bindVars = array( (int)$lookupId ); 
+
+		$bindVars = array( (int)$lookupId );
 		$selectSql = ''; $joinSql = ''; $whereSql = '';
 		$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 		if ( BitBase::verifyId( $lookupId ) ) {
-			$query = "SELECT b.*, lc.*, lch.`hits`, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
-				  	  FROM `".BIT_DB_PREFIX."blogs` b 
-						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
-					  	INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
-						$joinSql
-			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
-			  			LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
-						LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
-			  		  WHERE b.`$lookupColumn`= ? $whereSql";
-					  // this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
+			$query = "
+				SELECT b.*, lc.*, lch.`hits`, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
+				FROM `".BIT_DB_PREFIX."blogs` b
+					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
+					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+					$joinSql
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
+				WHERE b.`$lookupColumn`= ? $whereSql";
+			// this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
 //						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 
 			$result = $this->mDb->query($query,$bindVars);
@@ -127,7 +128,7 @@ class BitBlog extends LibertyContent {
 
 	function verify( &$pParamHash ) {
 		global $gBitUser;
-	
+
 		$pParamHash['blog_store']['max_posts'] = !empty( $pParamHash['max_posts'] ) && is_numeric( $pParamHash['max_posts'] ) ? $pParamHash['max_posts'] : NULL;
 		$pParamHash['blog_store']['use_title'] = isset( $pParamHash['use_title'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['allow_comments'] = isset( $pParamHash['allow_comments'] ) ? 'y' : 'n';
@@ -144,7 +145,7 @@ class BitBlog extends LibertyContent {
 			if( $this->isValid() ) {
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['blog_store'], array( "blog_id" => $pParamHash['blog_id'] ) );
 			} else {
-				// DEPRECATED - this looks stupid -wjames5		
+				// DEPRECATED - this looks stupid -wjames5
 				//$pParamHash['blog_store']['posts'] = 0;
 				$pParamHash['blog_store']['content_id'] = $this->mContentId;
 				if( isset( $pParamHash['blog_id'] )&& is_numeric( $pParamHash['blog_id'] ) ) {
@@ -167,7 +168,7 @@ class BitBlog extends LibertyContent {
 			$this->mDb->StartTrans();
 
 			// remove all references in blogs_posts_map where post_content_id = content_id
-			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id` = ?";			
+			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id` = ?";
 			$result = $this->mDb->query( $query_map, array( $this->mContentId ) );
 
 			$query = "DELETE from `".BIT_DB_PREFIX."blogs` where `content_id`=?";
@@ -208,13 +209,13 @@ class BitBlog extends LibertyContent {
 		global $gBitSystem;
 
 		LibertyContent::prepGetList( $pParamHash );
-		
+
 		$selectSql = ''; $joinSql = ''; $whereSql = '';
 		$bindVars = array();
 //		array_push( $bindVars, $this->mContentTypeGuid );
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
-		// You can use a title or an array of blog_id 
+		// You can use a title or an array of blog_id
 		if (!empty($pParamHash['find'])) {
 			if (is_array($pParamHash['find'])) {
 				$whereSql .= " AND b.`blog_id` IN ( ".implode( ',',array_fill( 0,count( $pParamHash['find'] ),'?' ) ).") ";
@@ -225,12 +226,12 @@ class BitBlog extends LibertyContent {
 				$whereSql = " AND (UPPER(lc.`title`) like ? or UPPER(lc.`data`) like ?) ";
 				$bindVars=array($findesc,$findesc);
 			}
-		} 
+		}
 		if( @$this->verifyId( $pParamHash['user_id'] ) ) {
 			$whereSql .= " AND uu.`user_id` = ? ";
 			$bindVars[] = $pParamHash['user_id'];
-		} 
-		
+		}
+
 		if( @$this->verifyId( $pParamHash['group_id'] ) ) {
 			array_push( $bindVars, (int)$pParamHash['group_id'] );
 			$joinSql .= " INNER JOIN `".BIT_DB_PREFIX."users_groups_map` ugm ON (ugm.`user_id`=uu.`user_id`)";
@@ -240,7 +241,7 @@ class BitBlog extends LibertyContent {
 		if( !empty( $pParamHash['is_active'] ) ) {
 			$whereSql .= " AND b.`activity` IS NOT NULL";
 		}
-		
+
 		if( !empty( $pParamHash['is_hit'] ) ) {
 			$whereSql .= " AND lch.`hits` IS NOT NULL";
 		}
@@ -253,13 +254,14 @@ class BitBlog extends LibertyContent {
 			$whereSql = preg_replace( '/^[\s]*AND/', ' WHERE ', $whereSql );
 		}
 
-		$query = "SELECT b.`content_id` AS `hash_key`, b.*, uu.`login`, uu.`real_name`, lc.*, lch.hits $selectSql
-				  FROM `".BIT_DB_PREFIX."blogs` b 
-					  INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
-					  INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
-					  $joinSql
-			  		  LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
-				  $whereSql order by ".$this->mDb->convertSortmode($pParamHash['sort_mode']);
+		$query = "
+			SELECT b.`content_id` AS `hash_key`, b.*, uu.`login`, uu.`real_name`, lc.*, lch.hits $selectSql
+			FROM `".BIT_DB_PREFIX."blogs` b
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
+				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+				$joinSql
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
+			$whereSql order by ".$this->mDb->convertSortmode($pParamHash['sort_mode']);
 
 		$ret = array();
 
@@ -278,17 +280,18 @@ class BitBlog extends LibertyContent {
 				$ret[$blogContentId]['parsed'] = $this->parseData( $parseHash );
 			}
 		}
-		
-		$query_cant = "SELECT COUNT(b.`blog_id`)
-					   FROM `".BIT_DB_PREFIX."blogs` b 
-						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
-						INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
-					   $joinSql
-					   $whereSql";
+
+		$query_cant = "
+			SELECT COUNT(b.`blog_id`)
+				FROM `".BIT_DB_PREFIX."blogs` b
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
+				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+				$joinSql
+			$whereSql";
 		$pParamHash["cant"] = $this->mDb->getOne( $query_cant, $bindVars );
 
 		LibertyContent::postGetList( $pParamHash );
-		
+
 		return $ret;
 	}
 
@@ -310,7 +313,7 @@ class BitBlog extends LibertyContent {
 		}
 		return $ret;
 	}
-	
+
 	//This doesnt even appear to be used in blogs before this refactoring -wjames5
 	function viewerCanPostIntoBlog() {
 		global $gBitUser;
