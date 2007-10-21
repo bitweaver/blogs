@@ -1,5 +1,7 @@
 <?php
 /**
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.58 2007/10/21 09:08:46 squareing Exp $
+ * @version  $Revision: 1.58 $
  * @package blogs
  */
 
