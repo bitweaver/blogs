@@ -48,6 +48,7 @@ array( 'DATADICT' => array(
 
 // query: update blogs with content_id's
 // query2: map blog_posts blog_ids to new table blogs_posts_map
+// query3: create a blogs_blog_id_seq and bring the table up to date with the current max blog_id used in the blogs table - this basically for mysql
 array( 'PHP' => '
 	global $gBitSystem;
 	$query = "SELECT * FROM `'.BIT_DB_PREFIX.'blogs` b";
@@ -76,6 +77,8 @@ error_log( $conId."->".$blogId );
 	}		
 	$query2 = "INSERT INTO `'.BIT_DB_PREFIX.'blogs_posts_map` (`post_content_id`,`blog_content_id`,`date_added`) (SELECT blp.`content_id`, blc.`content_id`, bplc.`created` FROM `'.BIT_DB_PREFIX.'blog_posts` blp INNER JOIN `'.BIT_DB_PREFIX.'liberty_content` bplc ON(blp.`content_id`=bplc.`content_id`) INNER JOIN `'.BIT_DB_PREFIX.'blogs` bl ON(blp.`blog_id`=bl.`blog_id`) INNER JOIN `'.BIT_DB_PREFIX.'liberty_content` blc ON(bl.`content_id`=blc.`content_id`))";	
 	$gBitSystem->mDb->query( $query2 );
+	$query3 = $gBitDb->getOne("SELECT MAX(blog_id) FROM `'.BIT_DB_PREFIX.'blogs`");
+	$tempId = $gBitDb->mDb->GenID("blogs_blog_id_seq", $query3);
 ' ),
 
 // Drop moved columns
