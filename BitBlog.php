@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.58 2007/10/21 09:08:46 squareing Exp $
- * @version  $Revision: 1.58 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.59 2007/11/01 10:57:52 squareing Exp $
+ * @version  $Revision: 1.59 $
  * @package blogs
  */
 
@@ -306,7 +306,7 @@ class BitBlog extends LibertyContent {
 			BitBlogPost::getDateRestrictions(array(), $whereSql, $bindVars);
 			$query = "SELECT COUNT(*)
 				FROM `".BIT_DB_PREFIX."blogs_posts_map` bpm
-				INNER JOIN `blog_posts` bp ON (bpm.`post_content_id`=bp.`content_id`)
+				INNER JOIN `".BIT_DB_PREFIX."blog_posts` bp ON (bpm.`post_content_id`=bp.`content_id`)
 				WHERE $whereSql";
 
 			$ret = $this->mDb->getOne( $query, $bindVars );
