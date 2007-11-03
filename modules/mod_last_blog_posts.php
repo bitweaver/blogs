@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.16 2007/07/27 08:11:10 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.17 2007/11/03 22:50:35 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -35,13 +35,13 @@ if(( empty( $module_params['include'] ) || $module_params['include'] != 'all' ) 
 }
 
 $blogPost = new BitBlogPost();
-$ranking = $blogPost->getList( $listHash );
+$blogPosts = $blogPost->getList( $listHash );
 
-$maxPreviewLength = ( !empty( $module_params['max_preview_length'] ) ? $module_params['max_preview_length'] : 500 );
+$descriptionLength = ( !empty( $module_params['max_preview_length'] ) ? $module_params['max_preview_length'] : 500 );
 
-$gBitSmarty->assign( 'modLastBlogPostsFormat', (empty($module_params['format']) ? 'list' : $module_params['format']) );
-$gBitSmarty->assign( 'maxPreviewLength', $maxPreviewLength );
-$gBitSmarty->assign( 'modLastBlogPosts', $ranking["data"] );
+$gBitSmarty->assign( 'blogPostsFormat', (empty($module_params['format']) ? 'list' : $module_params['format']) );
+$gBitSmarty->assign( 'descriptionLength', $descriptionLength );
+$gBitSmarty->assign_by_ref( 'modLastBlogPosts', $blogPosts["data"] );
 // not sure what this is, but using title doesn't work cos that will rename the moduleTitle
 //$gBitSmarty->assign( 'modLastBlogPostsTitle', ( isset( $module_params["title"] ) ? $module_params["title"]:"" ));
 ?>
