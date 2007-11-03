@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.21 2007/09/04 17:18:50 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.22 2007/11/03 20:29:20 wjames5 Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams;
@@ -27,7 +27,7 @@ if( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin
 			$futuresHash['user_id'] = $_REQUEST['user_id'];
 		}
 	}
-    $futures = $gContent->getFutureList( $futuresHash );
+    $futures = $blogPost->getFutureList( $futuresHash );
     $gBitSmarty->assign( 'futures', $futures['data']);
 } else {
     $_REQUEST['max_records'] = $gBitSystem->getConfig( 'blog_posts_max_list' );
@@ -67,8 +67,14 @@ if( @BitBase::verifyId( $_REQUEST['group_id'] ) ) {
 	$listHash['group_id'] = $_REQUEST['group_id'];
 }
 
+/* I think this is right - usually we pass in $_REQUEST
+ * but in this case I pass in the listHash because 
+ * this is in a module - change it if its a mistake wjames5
+ */
+$blogPost->invokeServices( 'content_list_function', $listHash );
 $blogPosts = $blogPost->getList( $listHash );
 
+$gBitSmarty->assign( 'showEmpty', TRUE );
 $gBitSmarty->assign_by_ref( 'gQueryUserId', $listHash['user_id'] );
 $gBitSmarty->assign_by_ref( 'blogPosts', $blogPosts["data"] );
 $gBitSmarty->assign( 'listInfo', $blogPosts['listInfo'] );
