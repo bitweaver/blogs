@@ -52,7 +52,7 @@
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$aPost}
 			
 			{* deal with the blog post image if there is one *}
-			{if $aPost.thumbnail_url}
+			{if $gBitSystem->isFeatureActive( 'blog_show_image' ) && $aPost.thumbnail_url}
 				<div class="image">
 					{jspopup notra=1 href=$aPost.thumbnail_url.original alt=$aPost.title|escape title=$aPost.title|escape" img=$aPost.thumbnail_url.medium}
 				</div>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.20 2007/11/05 21:35:22 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.21 2007/11/05 23:45:10 wjames5 Exp $
 
 // get a list of blogs for the selection of the home blog
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
@@ -64,6 +64,10 @@ $formBlogFeatures = array(
 	"blog_ajax_more" => array(
 		'label' => 'Ajax Read More',
 		'note' => 'Ajax the "read more" text inline into the short description lists of posts.',
+	),
+	"blog_show_image" => array(
+		'label' => 'Auto Display Primary Attachment',
+		'note' => 'Blog posts can automatically display any attachment, typically an image, that is marked as the "Primary Attachment" during editing. This is especially useful for automatically inserting a photograph into a post.',
 	),
 );
 $gBitSmarty->assign( 'formBlogFeatures',$formBlogFeatures );
