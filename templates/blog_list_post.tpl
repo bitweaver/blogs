@@ -52,6 +52,7 @@
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$aPost}
 			{if $showDescriptionsOnly}
 				{$aPost.summary|default:$aPost.parsed_description}
+				{if $gBitSystem->isFeatureActive( 'blog_ajax_more' )}<div id="post_more_{$aPost.post_id}"></div>{/if}
 			{else}
 				{$aPost.parsed_data}
 			{/if}
@@ -70,7 +71,11 @@
 		{if $showDescriptionsOnly and $aPost.has_more}
 			{if $spacer}&nbsp; &bull; &nbsp;{/if}
 			{assign var=spacer value=TRUE}
-			<a class="more" href="{$aPost.display_url}">{tr}Read More&hellip;{/tr}</a>
+			{if $gBitSystem->isFeatureActive( 'blog_ajax_more' )}
+				<a href="javascript:void(0);" onclick="BitAjax.updater( 'post_more_{$aPost.post_id}', '{$smarty.const.BLOGS_PKG_URL}view_post.php', 'blog_id={$aPost.blog_id}&post_id={$aPost.post_id}&format=more&output=ajax' )">{tr}Read More{/tr}</a>
+			{else}
+				<a class="more" href="{$aPost.display_url}">{tr}Read More&hellip;{/tr}</a>
+			{/if}
 		{/if}
 
 		{if $aPost.trackbacks_from_count}({tr}referenced by{/tr}: {$aPost.trackbacks_from_count} {tr}posts{/tr} / {tr}references{/tr}: {$aPost.trackbacks_to_count} {tr}posts{/tr}){/if}

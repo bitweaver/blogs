@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.19 2007/07/27 11:40:19 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.20 2007/11/05 21:35:22 wjames5 Exp $
 
 // get a list of blogs for the selection of the home blog
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
@@ -60,6 +60,10 @@ $formBlogFeatures = array(
 	"blog_posts_autosplit" => array(
 		'label' => 'Use 2 Text Fields To Auto Split Blog Posts',
 		'note' => 'Display two text fields when editing a post, for intro and read more sections. Disabling will display one text field and requires use of ...split... to create a read more section',
+	),
+	"blog_ajax_more" => array(
+		'label' => 'Ajax Read More',
+		'note' => 'Ajax the "read more" text inline into the short description lists of posts.',
 	),
 );
 $gBitSmarty->assign( 'formBlogFeatures',$formBlogFeatures );

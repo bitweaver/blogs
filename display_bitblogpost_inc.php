@@ -53,7 +53,6 @@ $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 // Check permissions to access this page
 if( !$gContent->isValid() ) {
-	$gBitSystem->setHttpStatus( 404 );
 	$gBitSystem->fatalError( tra( 'Post cannot be found' ));
 }
 
@@ -61,47 +60,31 @@ $displayHash = array( 'perm_name' => 'p_blogs_view' );
 $gContent->invokeServices( 'content_display_function', $displayHash );
 $gBitSmarty->assign('post_id', $gContent->mPostId);
 
-
 //Build absolute URI for this
-$parts = parse_url($_SERVER['REQUEST_URI']);
-/* DEPRECATED - these prolly need to be a larger array of any blog_ids 
-$uri = httpPrefix(). $parts['path'] . '?blog_id=' . $gContent->mInfo['blog_id'] . '&post_id=' . $gContent->mPostId;
-$uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['blog_id'] . '/' . $gContent->mPostId;
-$gBitSmarty->assign('uri', $uri);
-$gBitSmarty->assign('uri2', $uri2);
-*/
+if ( empty( $_REQUEST['format'] ) || $_REQUEST['format'] == "full" ){
+	$parts = parse_url($_SERVER['REQUEST_URI']);
+	$parsed_data = $gContent->parseData();
+	if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
+		$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
+		$commentsParentId = $gContent->mContentId;
+		include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
+	}
+	$extendedTitle = isset($gContent->mInfo['blogtitle']) ? ' - '.$gContent->mInfo['blogtitle'] : NULL;
+	$gBitSystem->setBrowserTitle($gContent->mInfo['title'].$extendedTitle);
+}else{
+	// if the format requested is not the full post or the readmore data we default to just the first half of the post
+	$data = ( $_REQUEST['format'] != "more" )?$gContent->mInfo['raw']:$gContent->mInfo['raw_more'];
+	$data = preg_replace( LIBERTY_SPLIT_REGEX, "", $data);
+	$parsed_data = $gContent->parseData( $data, ($gContent->getField('format_guid') ? $gContent->getField('format_guid') : 'tikiwiki') );	
+}
 
-/* MOVE THIS - this looks like it should be part of browsing a blog not a post -wjames5
-if (!isset($_REQUEST['offset']))
-	$_REQUEST['offset'] = 0;
-
-if (!isset($_REQUEST['sort_mode']))
-	$_REQUEST['sort_mode'] = 'created_desc';
-
-if (!isset($_REQUEST['find']))
-	$_REQUEST['find'] = '';
-
-$gBitSmarty->assign('offset', $_REQUEST["offset"]);
-$gBitSmarty->assign('sort_mode', $_REQUEST["sort_mode"]);
-$gBitSmarty->assign('find', $_REQUEST["find"]);
-$offset = $_REQUEST["offset"];
-$sort_mode = $_REQUEST["sort_mode"];
-$find = $_REQUEST["find"];
-*/
-
-$parsed_data = $gContent->parseData();
 $gBitSmarty->assign('parsed_data', $parsed_data);
 $gBitSmarty->assign('post_info', $gContent->mInfo );
 
-if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
-	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
-	$commentsParentId = $gContent->mContentId;
-	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
-}
-
-$extendedTitle = isset($gContent->mInfo['blogtitle']) ? ' - '.$gContent->mInfo['blogtitle'] : NULL;
-$gBitSystem->setBrowserTitle($gContent->mInfo['title'].$extendedTitle);
 // Display the template
-$gBitSystem->display( 'bitpackage:blogs/view_blog_post.tpl');
-
+if ( isset( $_REQUEST['output'] ) && $_REQUEST['output']="ajax"){	
+	$gBitSystem->display( 'bitpackage:blogs/view_blog_post_xml.tpl', NULL, 'center_only');
+}else{
+	$gBitSystem->display( 'bitpackage:blogs/view_blog_post.tpl' );
+}
 ?>
