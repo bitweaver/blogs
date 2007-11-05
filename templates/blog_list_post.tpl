@@ -50,6 +50,14 @@
 		<div class="content">
 			{if $aPost.avatar}<img src="{$aPost.avatar}" class="avatar" />{/if}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$aPost}
+			
+			{* deal with the blog post image if there is one *}
+			{if $aPost.thumbnail_url}
+				<div class="image">
+					{jspopup notra=1 href=$aPost.thumbnail_url.original alt=$aPost.title|escape title=$aPost.title|escape" img=$aPost.thumbnail_url.medium}
+				</div>
+			{/if}
+			
 			{if $showDescriptionsOnly}
 				{$aPost.summary|default:$aPost.parsed_description}
 				{if $gBitSystem->isFeatureActive( 'blog_ajax_more' )}<div id="post_more_{$aPost.post_id}"></div>{/if}

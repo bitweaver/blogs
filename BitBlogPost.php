@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.102 2007/11/05 07:02:27 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.103 2007/11/05 23:34:15 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.102 2007/11/05 07:02:27 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.103 2007/11/05 23:34:15 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.102 $ $Date: 2007/11/05 07:02:27 $ $Author: spiderr $
+ * @version $Revision: 1.103 $ $Date: 2007/11/05 23:34:15 $ $Author: wjames5 $
  */
 
 /**
@@ -68,7 +68,8 @@ class BitBlogPost extends LibertyAttachable {
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "
-				SELECT bp.*, lc.*, lcds.`data` AS `summary`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar
+				SELECT bp.*, lc.*, lcds.`data` AS `summary`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar,
+					lfp.storage_path AS `image_attachment_path` 
 					$selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
@@ -76,6 +77,8 @@ class BitBlogPost extends LibertyAttachable {
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` la ON( la.`content_id` = lc.`content_id` AND la.`is_primary` = 'y' )
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lfp ON( lfp.`file_id` = la.`foreign_id` )
 					$joinSql
 				WHERE bp.`$lookupColumn`=? $whereSql ";
 
@@ -84,14 +87,9 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mPostId = $this->mInfo['post_id'];
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
+				$this->mInfo['thumbnail_url'] = BitBlogPost::getImageThumbnails( $this->mInfo );
 
-				/* this needs to be part of loop that gets all blogs post is in
-				$this->mInfo['blog_url'] = BitBlog::getDisplayUrl( $this->mInfo['blog_id'] );
-				*/
-
-				//$this->mInfo['title'] = $this->getTitle();
 				$this->mInfo['raw'] = $this->mInfo['data'];
-				
 				//for two text field auto split
 				if( $gBitSystem->isFeatureActive( 'blog_posts_autosplit' ) && preg_match( LIBERTY_SPLIT_REGEX, $this->mInfo['raw'] )){
 					$format = $this->mInfo['format_guid'];
@@ -184,6 +182,21 @@ class BitBlogPost extends LibertyAttachable {
 		return $ret;
 	}
 
+	/**
+	* Get the URL for any given post image
+	* @param $pParamHash pass in full set of data returned from post query
+	* @return url to image
+	* @access public
+	**/
+	function getImageThumbnails( $pParamHash ) {
+		global $gBitSystem, $gThumbSizes;
+		$ret = NULL;
+		if( !empty( $pParamHash['image_attachment_path'] )) {
+			$ret = liberty_fetch_thumbnails( $pParamHash['image_attachment_path'], NULL, NULL, FALSE );
+			$ret['original'] = "/".$pParamHash['image_attachment_path'];
+		}
+		return $ret;
+	}
 
 	/**
 	* Deal with images and text, modify them apprpriately that they can be returned to the form.
@@ -857,7 +870,8 @@ class BitBlogPost extends LibertyAttachable {
 			if( empty( $accessError ) ) {
 
 				$res['avatar'] = liberty_fetch_thumbnail_url( $res['avatar'], 'avatar' );
-				$res['thumbnail_url'] = liberty_fetch_thumbnail_url( $res['image_attachment_path'], 'avatar' );
+				//$res['thumbnail_url'] = liberty_fetch_thumbnail_url( $res['image_attachment_path'], 'avatar' );
+				$res['thumbnail_url'] = BitBlogPost::getImageThumbnails( $res );				
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
 				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'], $res );
 				$res['display_url'] = $res['post_url'];

@@ -90,8 +90,15 @@
 			ondblclick="location.href='{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}';"
 		{/if}
 	>
-		<div class="content">
+		<div class="content">		
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$post_info}
+			
+			{* deal with the blog post image if there is one *}
+			{if $post_info.thumbnail_url}
+				<div class="image">
+					{jspopup notra=1 href=$post_info.thumbnail_url.original alt=$post_info.title|escape title=$post_info.title|escape" img=$post_info.thumbnail_url.medium}
+				</div>
+			{/if}
 
 			{$parsed_data}
 		</div> <!-- end .content -->
