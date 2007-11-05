@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.11 2007/07/31 07:02:48 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.12 2007/11/05 07:02:27 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -19,17 +19,14 @@ require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
-if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
-	$gBitSmarty->assign( 'msg', tra( "Permission denied you cannot view this section" ) );
-	$gBitSystem->display( "error.tpl" );
-	die;
-} elseif( !isset( $_REQUEST["post_id"] ) && !isset( $_REQUEST["content_id"] ) ) {
-	$gBitSmarty->assign( 'msg', tra( "No blog post indicated" ) );
-	$gBitSystem->display( "error.tpl" );
-	die;
+include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
+
+if( !$gContent->isValid() ) {
+	$gBitSystem->setHttpStatus( 404 );
+	$gBitSystem->fatalError( "The blog post you requested could not be found." );
 }
 
-include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
+$gContent->verifyViewPermission();
 
 $now = $gBitSystem->getUTCTime();
 $view = FALSE;
@@ -47,9 +44,8 @@ if ( $gBitUser->isAdmin()  || ( $gBitUser->hasPermission( 'p_blog_posts_read_fut
 if ($view == TRUE){
 	include_once( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
 }else{
-	$gBitSmarty->assign( 'msg', tra( "The blog post you requested could not be found." ) );
-	$gBitSystem->display( "error.tpl" );
-	die;
+	$gBitSystem->setHttpStatus( 404 );
+	$gBitSystem->fatalError( "The blog post you requested could not be found." );
 }
 
 if( $gContent->isValid() ) {
