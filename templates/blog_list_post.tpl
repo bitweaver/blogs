@@ -80,7 +80,7 @@
 			{if $spacer}&nbsp; &bull; &nbsp;{/if}
 			{assign var=spacer value=TRUE}
 			{if $ajax_more}
-				<a href="javascript:void(0);" onclick="BitAjax.updater( 'post_more_{$aPost.post_id}', '{$smarty.const.BLOGS_PKG_URL}view_post.php', 'blog_id={$aPost.blog_id}&post_id={$aPost.post_id}&format=more&output=ajax' )">{tr}Read More{/tr}</a>
+				<a href="javascript:void(0);" onclick="BitAjax.updater( 'post_more_{$aPost.post_id}', '{$smarty.const.BLOGS_PKG_URL}view_post.php', 'blog_id={$aPost.blog_id}&post_id={$aPost.post_id}&format={if $aPost.summary}data{else}more{/if}&output=ajax' )">{tr}Read More{/tr}</a>
 			{else}
 				<a class="more" href="{$aPost.display_url}">{tr}Read More&hellip;{/tr}</a>
 			{/if}

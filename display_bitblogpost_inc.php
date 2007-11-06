@@ -61,7 +61,7 @@ $gContent->invokeServices( 'content_display_function', $displayHash );
 $gBitSmarty->assign('post_id', $gContent->mPostId);
 
 //Build absolute URI for this
-if ( empty( $_REQUEST['format'] ) || $_REQUEST['format'] == "full" ){
+if ( empty( $_REQUEST['format'] ) || $_REQUEST['format'] == "full" || $_REQUEST['format'] == "data" ){
 	$parts = parse_url($_SERVER['REQUEST_URI']);
 	$parsed_data = $gContent->parseData();
 	if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
