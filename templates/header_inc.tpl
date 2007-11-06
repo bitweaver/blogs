@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.8 2007/11/05 21:35:22 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.10 2007/11/06 15:07:06 wjames5 Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'rss' ) and $gBitSystem->isFeatureActive( 'blogs_rss' ) and $smarty.const.ACTIVE_PACKAGE eq 'blogs' and $gBitUser->hasPermission( 'p_blogs_view' )}
 	<link rel="alternate" type="application/rss+xml" title="{$gBitSystem->getConfig('blogs_rss_title',"{tr}Blogs{/tr} RSS")}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
@@ -12,9 +12,20 @@
  * needed for your site configuation by creating a custom version of this tpl in your theme. Target the 
  * conditionals to the pkg you are including center_list_blog_posts in.
  *}
-{if $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && !$gBitThemes->isAjaxLib('mochikit') && ( $smarty.const.ACTIVE_PACKAGE == "users" && $gQueryUserId ) }
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/MochiKitBitAjax.js"></script>
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Base.js"></script>
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Async.js"></script>
+{if $ajax_more}
+{* override ajax callback for cool scroll effect *}
+{literal}
+<script type="text/javascript">/* <![CDATA[ */
+	BitAjax.updaterCallback = function(target, rslt){
+		BitAjax.hideSpinner();
+		var e = document.getElementById(target);
+		if (e != null){
+			e.style.display = 'none';
+			e.innerHTML = rslt.responseText;
+			MochiKit.Visual.blindDown( e, {duration:2} );
+		}
+	}
+/* ]]> */</script>
+{/literal}
 {/if}
 {/strip}

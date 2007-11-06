@@ -28,6 +28,10 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 			'admin_comments_url' => KERNEL_PKG_URL.'admin/index.php?page=blogs',
 		);
 		$gBitSystem->registerAppMenu( $menuHash );
+		
+		$gLibertySystem->registerService( LIBERTY_SERVICE_BLOGS, BLOGS_PKG_NAME, array(
+			'module_display_function'  => 'blogs_module_display',
+		) );
 	}
 
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );

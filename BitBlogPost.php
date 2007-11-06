@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.103 2007/11/05 23:34:15 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.104 2007/11/06 14:45:00 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.103 2007/11/05 23:34:15 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.104 2007/11/06 14:45:00 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.103 $ $Date: 2007/11/05 23:34:15 $ $Author: wjames5 $
+ * @version $Revision: 1.104 $ $Date: 2007/11/06 14:45:00 $ $Author: wjames5 $
  */
 
 /**
@@ -1060,3 +1060,4 @@ class BitBlogPost extends LibertyAttachable {
 	}
 
 }
+?>

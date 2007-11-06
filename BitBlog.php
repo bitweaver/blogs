@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.59 2007/11/01 10:57:52 squareing Exp $
- * @version  $Revision: 1.59 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.60 2007/11/06 14:45:00 wjames5 Exp $
+ * @version  $Revision: 1.60 $
  * @package blogs
  */
 
@@ -338,6 +338,17 @@ class BitBlog extends LibertyContent {
 			$ret = $gBitUser->object_has_permission( $gBitUser->mUserId, $this->mInfo['blog_id'], $this->getContentType(), $pPermName );
 		}
 		return $ret;
+	}
+}
+
+function blogs_module_display(&$pParamHash){
+	global $gCenterPieces, $gBitThemes, $gBitSmarty;
+	foreach( $gCenterPieces as $module ) {
+		if ( !empty($module) && $module['module_rsrc'] == 'bitpackage:blogs/center_list_blog_posts.tpl' ){
+			$gBitSmarty->assign('ajax_more', TRUE);
+			$gBitThemes->loadAjax( 'mochikit', array( 'Iter.js', 'DOM.js', 'Style.js', 'Color.js', 'Position.js', 'Visual.js' ) );
+			break;
+		}
 	}
 }
 ?>
