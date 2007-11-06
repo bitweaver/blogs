@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.13 2007/11/06 14:45:00 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.14 2007/11/06 15:07:06 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -83,7 +83,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 $gBitSmarty->assign('descriptionLength', $gBitSystem->getConfig( 'blog_posts_description_length', 500 ) );
 $gBitSmarty->assign('showDescriptionsOnly', TRUE);
 
-if ( $gBitSystem->isFeatureActive( 'blog_ajax_more' ) ){
+if ( $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascriptEnabled() ){
 	$gBitSmarty->assign('ajax_more', TRUE);
 	$gBitThemes->loadAjax( 'mochikit', array( 'Iter.js', 'DOM.js', 'Style.js', 'Color.js', 'Position.js', 'Visual.js' ) );
 }
