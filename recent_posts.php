@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.7 2007/11/06 14:45:00 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.8 2007/11/07 17:41:26 wjames5 Exp $
  * 
  * @package blogs
  * @subpackage functions
@@ -18,6 +18,11 @@ $gBitSystem->verifyPackage( 'blogs' );
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
+
+if ( $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascriptEnabled() ){
+	$gBitSmarty->assign('ajax_more', TRUE);
+	$gBitThemes->loadAjax( 'mochikit', array( 'Iter.js', 'DOM.js', 'Style.js', 'Color.js', 'Position.js', 'Visual.js' ) );
+}
 
 // Display the template
 $gDefaultCenter = 'bitpackage:blogs/center_list_blog_posts.tpl';
