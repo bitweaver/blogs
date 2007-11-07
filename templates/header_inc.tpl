@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.10 2007/11/06 15:07:06 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.11 2007/11/07 17:44:25 wjames5 Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'rss' ) and $gBitSystem->isFeatureActive( 'blogs_rss' ) and $smarty.const.ACTIVE_PACKAGE eq 'blogs' and $gBitUser->hasPermission( 'p_blogs_view' )}
 	<link rel="alternate" type="application/rss+xml" title="{$gBitSystem->getConfig('blogs_rss_title',"{tr}Blogs{/tr} RSS")}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
@@ -13,7 +13,7 @@
  * conditionals to the pkg you are including center_list_blog_posts in.
  *}
 {if $ajax_more}
-{* override ajax callback for cool scroll effect *}
+{* @TODO develop custom callback - for now override ajax callback for cool scroll effect *}
 {literal}
 <script type="text/javascript">/* <![CDATA[ */
 	BitAjax.updaterCallback = function(target, rslt){
@@ -22,7 +22,7 @@
 		if (e != null){
 			e.style.display = 'none';
 			e.innerHTML = rslt.responseText;
-			MochiKit.Visual.blindDown( e, {duration:2} );
+			MochiKit.Visual.blindDown( e, {duration:1} );
 		}
 	}
 /* ]]> */</script>
