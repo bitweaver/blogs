@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.14 2007/11/06 15:07:06 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.15 2007/11/08 21:59:34 squareing Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -34,11 +34,14 @@ if( !$gContent->isValid() ) {
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
+/**
+ * i don't think this is in use anymore - xing - Thursday Nov 08, 2007   21:49:22 CET
 if( $gContent->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes') == 'h' ) {
 	$gBitThemes->setStyle( $gContent->getField( 'blog_style' ) );
 	$gBitThemes->mStyles['styleSheet'] = $gBitSystem->getStyleCss( $gContent->getField( 'blog_style' ), $gContent->getField( 'user_id' ) );
 	$gBitSmarty->assign( 'userStyle', $gContent->getField( 'blog_style' ) );
 }
+ */
 
 if( !$gContent->hasEditPermission() ) {
 	$gContent->addHit();
