@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.62 2007/11/07 17:41:26 wjames5 Exp $
- * @version  $Revision: 1.62 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.63 2007/11/11 12:45:55 squareing Exp $
+ * @version  $Revision: 1.63 $
  * @package blogs
  */
 
@@ -342,15 +342,10 @@ class BitBlog extends LibertyContent {
 }
 
 function blogs_module_display(&$pParamHash){
-	global $gCenterPieces, $gBitThemes, $gBitSmarty, $gBitSystem;
-	if ( !empty($gCenterPieces) ){
-		foreach( $gCenterPieces as $module ) {
-			if ( !empty($module) && $module['module_rsrc'] == 'bitpackage:blogs/center_list_blog_posts.tpl' && $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascriptEnabled() ){
-				$gBitSmarty->assign('ajax_more', TRUE);
-				$gBitThemes->loadAjax( 'mochikit', array( 'Iter.js', 'DOM.js', 'Style.js', 'Color.js', 'Position.js', 'Visual.js' ) );
-				break;
-			}
-		}
+	global $gBitThemes, $gBitSmarty, $gBitSystem;
+	if( $gBitThemes->isModuleLoaded( 'bitpackage:blogs/center_list_blog_posts.tpl', 'c' ) && $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascriptEnabled() ) {
+		$gBitSmarty->assign( 'ajax_more', TRUE );
+		$gBitThemes->loadAjax( 'mochikit', array( 'Iter.js', 'DOM.js', 'Style.js', 'Color.js', 'Position.js', 'Visual.js' ));
 	}
 }
 ?>
