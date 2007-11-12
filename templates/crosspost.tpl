@@ -51,6 +51,7 @@
 							</div>
 						{/if}
 						
+						FORMAT:	{$post_info.format_guid}<br/>
 						{if $has_crosspost_option}
 							{textarea id="crosspost_note" label="Crosspost Note (Optional)" name="crosspost_note" noformat="y" rows=6 help="Add a note you would like to appear above the post when viewed on the crossposted blog. This does not appear on the post page."}{$crosspost.crosspost_note}{/textarea}
 											
