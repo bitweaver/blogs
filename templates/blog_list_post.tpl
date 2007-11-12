@@ -48,12 +48,12 @@
 
 	<div class="body">
 		<div class="content">
+			{if $aPost.crosspost_note}
+				<div class="bitbox">{$aPost.crosspost_note}</div>
+			{/if}
+			
 			{if $aPost.avatar}<img src="{$aPost.avatar}" class="avatar" />{/if}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$aPost}
-
-			{if $aPost.crosspost_note}
-				<div class="crosspost_note">{$aPost.crosspost_note}</div>
-			{/if}
 			
 			{* deal with the blog post image if there is one *}
 			{if $gBitSystem->isFeatureActive( 'blog_show_image' ) && $aPost.thumbnail_url}
