@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.105 2007/11/12 04:00:13 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.106 2007/11/12 22:39:18 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.105 2007/11/12 04:00:13 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.106 2007/11/12 22:39:18 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.105 $ $Date: 2007/11/12 04:00:13 $ $Author: wjames5 $
+ * @version $Revision: 1.106 $ $Date: 2007/11/12 22:39:18 $ $Author: wjames5 $
  */
 
 /**
@@ -962,6 +962,10 @@ class BitBlogPost extends LibertyAttachable {
 				}
 				if( !empty( $this->mInfo['summary'] ) ) {
 					$res['summary'] = $this->mInfo['summary'];
+				}
+				if( !empty( $res['crosspost_note'] ) ){
+					$res['crosspost_note_raw'] = $parseHash['data'] = $res['crosspost_note'];
+					$res['crosspost_note'] = $this->parseData( $parseHash );
 				}
 
 				$ret[] = $res;
