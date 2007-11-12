@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.104 2007/11/06 14:45:00 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.105 2007/11/12 04:00:13 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.104 2007/11/06 14:45:00 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.105 2007/11/12 04:00:13 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.104 $ $Date: 2007/11/06 14:45:00 $ $Author: wjames5 $
+ * @version $Revision: 1.105 $ $Date: 2007/11/12 04:00:13 $ $Author: wjames5 $
  */
 
 /**
@@ -435,7 +435,7 @@ class BitBlogPost extends LibertyAttachable {
 
 			// if blog_content_id, then map the post to the relative blogs
 			if( !empty( $pParamHash['blog_content_id'] )){
-				$this->storePostMap( $this->mInfo, $pParamHash['blog_content_id'] );
+				$this->storePostMap( $this->mInfo, $pParamHash['blog_content_id'], NULL, TRUE );
 			}
 
 			// Update post with trackbacks successfully sent
@@ -487,16 +487,31 @@ class BitBlogPost extends LibertyAttachable {
 	}
 
 
+	function loadPostMap( $pPostContentId, $pBlogContentId){
+		$ret = NULL;
+		if( @BitBase::verifyId( $pPostContentId ) ){
+			$this->mDb->StartTrans();
+			$result = $this->mDb->getRow( "SELECT * FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=? AND `blog_content_id`=?", array( $pPostContentId, $pBlogContentId ) );
+			$this->mDb->CompleteTrans();
+			if ( !empty( $result ) ){
+				$ret = $result;
+			};
+		}
+		return $ret;
+	}
+	
 	/**
 	 * Map a Post to a Blog or multiple Blogs
 	 * @param pPost a Post hash.
 	 * @param pBlogMixed the content_id or and array of ids of the blogs we want the post to show up in.
+	 * @param pCrosspostNote text to display with the blog post when viewed in the blog crossposted to.
+	 * @param pAutoProcess a bool to distinguish if we are storing from the crosspost interface or from the blog posting interface. 
 	 */
-	function storePostMap( $pPost, $pBlogMixed ) {
+	function storePostMap( $pPost, $pBlogMixed, $pCrosspostNote = NULL, $pAutoProcess = FALSE ) {
 		global $gBitSystem, $gBitUser;
 		$postContentId = $pPost['content_id'];
-		$this->mDb->StartTrans();
 		if( @$this->verifyId( $postContentId ) ) {
+			$this->mDb->StartTrans();
 			//this is to set the time we add a post to a blog.
 			$currTime = $gBitSystem->getUTCTime();
 			$postTime = $pPost['publish_date'];
@@ -522,29 +537,64 @@ class BitBlogPost extends LibertyAttachable {
 				}
 			}
 
-			$removedBlogIds = array_diff( $currentMappings, $blogIds );
+			// Add new mappings for this post
 			$newBlogIds = array_diff( $blogIds, $currentMappings );
-
-			// Remove mappings for this post
-			foreach( $removedBlogIds as $blogContentId ) {
-				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id`=? AND `post_content_id`=?", array( $blogContentId, $postContentId ) );
-			}
-
 			foreach( $newBlogIds as $blogContentId ) {
 				if( $this->verifyId( $blogContentId ) && $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
 					$result = $this->mDb->associateInsert( BIT_DB_PREFIX."blogs_posts_map", array(
 						'post_content_id' => $postContentId,
 						'blog_content_id' => (int)$blogContentId,
 						'date_added' => $timeStamp,
+						'crosspost_note' => $pCrosspostNote,
 					));
 				}
 			}
+			
+			/* if we are coming form the crossposting form then we 
+			 * want to update any change to the crosspost note. 
+			 * we dont want to if we are coming from the blog posting form.
+			 */
+			if( !$pAutoProcess ){
+				// Update existing mappings			
+				$updateBlogIds = array_intersect( $blogIds, $currentMappings );
+				foreach( $updateBlogIds as $blogContentId ) {
+					if( $this->verifyId( $blogContentId ) && $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
+						$result = $this->mDb->associateUpdate( BIT_DB_PREFIX."blogs_posts_map", array(
+							'crosspost_note' => $pCrosspostNote,
+						), array(
+							'post_content_id' => $postContentId,
+							'blog_content_id' => (int)$blogContentId,
+						));
+					}
+				}
+			}
+			$this->mDb->CompleteTrans();			
+			
+			/* if we are coming from the blog posting form we 
+			 * want to automatically drop any crossposting if 
+			 * we have unchecked them there. we ignore this when 
+			 * coming from the crossposting form.
+			 */
+			if ( $pAutoProcess ){
+				// Remove mappings for this post
+				$removedBlogIds = array_diff( $currentMappings, $blogIds );
+				$this->expungePostMap( $postContentId, $removedBlogIds );
+			}
 		}
 
-		$this->mDb->CompleteTrans();
 		return ( count( $this->mErrors ) == 0 );
 	}
 
+	function expungePostMap( $pPostContentId, $pBlogContentIds ){
+		$this->mDb->StartTrans();
+		if ( !empty($pBlogContentIds) ){
+			foreach( $pBlogContentIds as $blogContentId ) {
+				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id`=? AND `post_content_id`=?", array( $blogContentId, $pPostContentId ) );
+			}
+		}
+		$this->mDb->CompleteTrans();
+		return ( count( $this->mErrors ) == 0 );
+	}
 
 	/**
 	 * Remove complete blog post set and any comments
@@ -726,6 +776,7 @@ class BitBlogPost extends LibertyAttachable {
 		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 		if( @$this->verifyId( $pListHash['blog_id'] ) ) {
+			$selectSql .= ', bpm.crosspost_note';
 			array_push( $bindVars, (int)$pListHash['blog_id'] );
 			$joinSql .= " LEFT OUTER JOIN `".BIT_DB_PREFIX."blogs_posts_map` bpm ON ( bpm.`post_content_id` = bp.`content_id` ) ";
 			$joinSql .= " LEFT OUTER JOIN `".BIT_DB_PREFIX."blogs` b ON ( bpm.`blog_content_id`=b.`content_id` ) ";

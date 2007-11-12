@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.4 2007/08/23 17:38:17 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.5 2007/11/12 04:00:13 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -21,21 +21,52 @@ require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 $gBlog = new BitBlog();
 
+$gBitUser->verifyTicket();
 
+//if crosspost save store it and send us to the post's page
 if( isset( $_REQUEST['crosspost_post']) || isset($_REQUEST['save_post_exit'] ) ) {
-	if( $gContent->isValid() && $gContent->storePostMap( $gContent->mInfo, $_REQUEST['blog_content_id'] ) ) {
+	$crosspost_note = isset( $_REQUEST['crosspost_note'] )? $_REQUEST['crosspost_note']:NULL;
+	if( $gContent->isValid() && $gContent->storePostMap( $gContent->mInfo, $_REQUEST['blog_content_id'], $crosspost_note ) ) {
 		$gContent->load();
 		bit_redirect( $gContent->getDisplayUrl() );
 	}
 }
 
+// nuke crosspost if requested
+if( !empty( $_REQUEST['action']) && ($_REQUEST['action'] == 'remove') && $gContent->isValid() ) {
+	// confirm first
+	if( isset( $_REQUEST["confirm"] ) ) {
+		//remove it, then relaod the crossposting form
+		if ( $gContent->expungePostMap( $gContent->mInfo['content_id'], array( $_REQUEST["blog_content_id"] ) ) ){
+			$gContent->load();
+		}else{
+			$feedback['error'] = $gContent->mErrors;
+		}
+	}else{
+		$gBitSystem->setBrowserTitle( 'Confirm removal of \''.$gContent->getTitle().'\' crossposting from Blog \''.'addblognamehere'.'\'' );		
+		$formHash['remove'] = TRUE;
+		$formHash['action'] = 'remove';
+		$formHash['post_id'] = $_REQUEST['post_id'];
+		$formHash['blog_content_id'] = $_REQUEST['blog_content_id'];
+		$msgHash = array(
+			'label' => 'Remove Crossposting of Blog Post:',
+			'confirm_item' => $gContent->getTitle(),
+			'warning' => 'This will remove the crossposting, of the above blog post, from the blog \''.'addblognamehere'.'\'. This cannot be undone.',
+		);
+		$gBitSystem->confirmDialog( $formHash, $msgHash );
+	}
+}elseif( isset( $_REQUEST["blog_content_id"] )){
+	//if we are not removing the post but have received a blog_content_id then we want to edit its note, so load it up
+	$crosspost = $gContent->loadPostMap( $gContent->mInfo['content_id'], $_REQUEST["blog_content_id"] );
+	$gBitSmarty->assign('crosspost', $crosspost);
+	$gBitSmarty->assign('blog_content_id', $_REQUEST['blog_content_id'] );
+}
 
 $post_id = $gContent->mPostId;
 $gBitSmarty->assign('post_id', $gContent->mPostId );
 $parsed_data = $gContent->parseData();
 $gBitSmarty->assign('parsed_data', $parsed_data);
 $gBitSmarty->assign('post_info', $gContent->mInfo );
-
 
 // Get List of available blogs
 $listHash = array();
@@ -53,9 +84,6 @@ foreach( array_keys( $blogs ) as $blogContentId ) {
 $gBitSmarty->assign( 'availableBlogs', $availableBlogs );
 
 $gBitSmarty->assign_by_ref('blogs', $blogs['data']);
-if (isset($_REQUEST['blog_content_id'])) {
-	$gBitSmarty->assign('blog_content_id', $_REQUEST['blog_content_id'] );
-}
 
 $gBitSystem->display( 'bitpackage:blogs/crosspost.tpl', "Crosspost Blog Post" );
 ?>
