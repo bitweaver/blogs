@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.24 2007/11/13 04:29:20 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.25 2007/11/13 05:02:37 wjames5 Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams;
@@ -68,7 +68,6 @@ if( @BitBase::verifyId( $_REQUEST['group_id'] ) ) {
 }
 
 if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
-//	$listHash['user_id'] = $gBitUser->mUserId;
 	$listHash['content_perm_name'] = 'p_blogs_view';
 }
 
