@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.23 2007/11/03 22:50:35 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.24 2007/11/13 04:29:20 wjames5 Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams;
@@ -65,6 +65,11 @@ if ( empty( $listHash['sort_mode'] ) ){
 }
 if( @BitBase::verifyId( $_REQUEST['group_id'] ) ) {
 	$listHash['group_id'] = $_REQUEST['group_id'];
+}
+
+if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
+//	$listHash['user_id'] = $gBitUser->mUserId;
+	$listHash['content_perm_name'] = 'p_blogs_view';
 }
 
 /* I think this is right - usually we pass in $_REQUEST

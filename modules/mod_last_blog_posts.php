@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.17 2007/11/03 22:50:35 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.18 2007/11/13 04:29:20 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -32,6 +32,10 @@ $listHash = array(
 
 if(( empty( $module_params['include'] ) || $module_params['include'] != 'all' ) && !empty( $gQueryUserId )) {
 	$listHash['user_id'] = $gQueryUserId;
+}
+
+if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
+	$listHash['content_perm_name'] = 'p_blogs_view';
 }
 
 $blogPost = new BitBlogPost();
