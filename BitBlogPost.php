@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.107 2007/11/13 04:29:20 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.108 2007/11/13 05:04:27 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.107 2007/11/13 04:29:20 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.108 2007/11/13 05:04:27 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.107 $ $Date: 2007/11/13 04:29:20 $ $Author: wjames5 $
+ * @version $Revision: 1.108 $ $Date: 2007/11/13 05:04:27 $ $Author: wjames5 $
  */
 
 /**
@@ -838,16 +838,6 @@ class BitBlogPost extends LibertyAttachable {
 
 		if( !empty( $pListHash['content_perm_name'] ) ) {
 			$this->getContentListPermissionsSql( $pListHash['content_perm_name'], $selectSql, $joinSql, $whereSql, $bindVars );
-/*
-			$joinSql .= "
-			            LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_permissions` lcperm ON (lc.`content_id`=lcperm.`content_id`)
-						LEFT OUTER JOIN `".BIT_DB_PREFIX."users_groups_map` ugm ON (ugm.`group_id`=lcperm.`group_id`) ";
-			$whereSql .= " AND ( lcperm.perm_name IS NULL OR ( lcperm.perm_name=? AND ugm.user_id=? AND ( (lcperm.is_revoked !=? OR lcperm.is_revoked IS NULL) OR lc.`user_id`=? ) ) )";
-			$bindVars[] = 'p_blogs_view';
-			$bindVars[] = $gBitUser->mUserId;
-			$bindVars[] = "y";
-			$bindVars[] = $gBitUser->mUserId;
- */
 		}
 
 		/* Check if the post wants to be viewed before / after respective dates
