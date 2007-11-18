@@ -188,9 +188,9 @@ function migrate_wp_categories() {
 			$pParamHash = array();
 			$pParamHash['title'] = $blog->cat_name;
 			$pParamHash['use_title'] = 'y';
-	
+
 			// ToDo: Map Posts level to user group.
-	
+
 			// ToDO: Make this options in the prep.
 			$pParamHash['is_public'] = 'y';
 			$pParamHash['allow_comments'] = 'y';
@@ -242,7 +242,7 @@ function migrate_wp_posts() {
 				$pParamHash['current_owner_id'] = -1;
 			}
 
-		// TODO: Check attachments
+			// TODO: Check attachments
 
 			$bp = new BitBlogPost();
 			$bp->store($pParamHash);
@@ -253,6 +253,44 @@ function migrate_wp_posts() {
 			} else {
 				$pErrorMap[]['error'] = "Blog Post: " . $pParamHash['title'] . " had errors " . implode(", ", $bp->mErrors);
 			}
+		}
+	}
+
+	if (!empty($posts)) {
+		foreach ($posts as $post) {
+			$pParamHash = array();
+			$pParamHash['data'] = wptexturize(convert_chars(wpautop($post->post_content)));
+			$pParamHash['title'] = $post->post_title;
+			if ($post->post_status == 'draft') {
+				$pParamHash['content_status'] = -5;
+			}
+			else {
+				$pParamHash['content_status'] = 50;
+			}
+		  $pParamHash['publish_date'] = $gBitSystem->mServerTimestamp->getTimestampFromIso($post->post_date_gmt);
+		  $pParamHash['last_modified'] = $gBitSystem->mServerTimestamp->getTimestampFromIso($post->post_modified_gmt);
+		  $pParamHash['expire_date'] = NULL;
+		  if (empty($gUserMap[$post->post_author])) {
+			  $pParamHash['owner_id'] = 1;
+			  $gErrorMap[]['warning'] = "Blog Post: " . $pParamHash['title'] . " author defaulted to Administrator.";
+		  }
+		  else {
+			  $pParamHash['owner_id'] = $gUserMap[$post->post_author];
+			  $pParamHash['current_owner_id'] = -1;
+		  }
+
+		  // TODO: Check attachments
+
+		  $bp = new BitBlogPost();
+		  $bp->store($pParamHash);
+		  if (empty($bp->mErrors)) {
+			  $gPostMap[$post->ID] = $bp->mContentId;
+			  $query = "UPDATE liberty_content SET created = ? WHERE content_id = ?";
+			  $gBitSystem->mDb->query($query, array($pParamHash['publish_date'], $bp->mContentId));
+		  }
+		  else {
+			  $pErrorMap[]['error'] = "Blog Post: " . $pParamHash['title'] . " had errors " . implode(", ", $bp->mErrors);
+		  }
 		}
 	}
 
@@ -275,7 +313,7 @@ function migrate_wp_post_map() {
 		foreach ($post2cat as $map) {
 			$post = new BitBlogPost();
 			if (!empty($gPostMap[$map->post_id])) {
-	
+
 				if (!empty($gBlogMap[$map->category_id])) {
 					$post->storePostMap($gPostMap[$map->post_id], $gBlogMap[$map->category_id]);
 				}
