@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.108 2007/11/13 05:04:27 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.109 2007/11/30 04:58:53 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.108 2007/11/13 05:04:27 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.109 2007/11/30 04:58:53 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.108 $ $Date: 2007/11/13 05:04:27 $ $Author: wjames5 $
+ * @version $Revision: 1.109 $ $Date: 2007/11/30 04:58:53 $ $Author: wjames5 $
  */
 
 /**
@@ -81,7 +81,6 @@ class BitBlogPost extends LibertyAttachable {
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lfp ON( lfp.`file_id` = la.`foreign_id` )
 					$joinSql
 				WHERE bp.`$lookupColumn`=? $whereSql ";
-
 
 			if( $this->mInfo = $this->mDb->getRow( $query, $bindVars ) ) {
 				$this->mPostId = $this->mInfo['post_id'];
@@ -429,7 +428,7 @@ class BitBlogPost extends LibertyAttachable {
 				//store the new post
 				$result = $this->mDb->associateInsert( $table, $pParamHash['post_store'] );
 			}
-
+			
 			// let's reload to get a full mInfo hash which is needed below
 			$this->load();
 
@@ -445,10 +444,11 @@ class BitBlogPost extends LibertyAttachable {
 			if( @BitBase::verifyId( $pParamHash['post_id'] )) {
 				$this->mDb->query( $query, array( serialize( array() ), $trackbacks, (int) $pParamHash['post_id'] ));
 			}
-
+			
+			//@todo  this is a legacy and needs refactoring
 			if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 				global $gBitUser, $gBitSmarty;
-				if( $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {
+				if( isset( $this->mInfo['blog_id'] ) &&  $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {
 					foreach ($nots as $not) {
 						$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 						$gBitSmarty->assign('mail_title', $this->mInfo['title']);
