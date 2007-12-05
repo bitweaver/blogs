@@ -42,6 +42,9 @@ array( 'DATADICT' => array(
 				, CONSTRAINT `blogs_posts_map_blog_ref` FOREIGN KEY (`blog_content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)'
 		",
 	)),
+	array( 'CREATESEQUENCE' => array(
+		'blogs_blog_id_seq',
+	)),
 	array( 'RENAMESEQUENCE' => array(
 		"tiki_blog_posts_post_id_seq" => "blog_posts_post_id_seq",
 	)),
@@ -80,7 +83,7 @@ error_log( $conId."->".$blogId );
 	$query2 = "INSERT INTO `'.BIT_DB_PREFIX.'blogs_posts_map` (`post_content_id`,`blog_content_id`,`date_added`) (SELECT blp.`content_id`, blc.`content_id`, bplc.`created` FROM `'.BIT_DB_PREFIX.'blog_posts` blp INNER JOIN `'.BIT_DB_PREFIX.'liberty_content` bplc ON(blp.`content_id`=bplc.`content_id`) INNER JOIN `'.BIT_DB_PREFIX.'blogs` bl ON(blp.`blog_id`=bl.`blog_id`) INNER JOIN `'.BIT_DB_PREFIX.'liberty_content` blc ON(bl.`content_id`=blc.`content_id`))";
 	$gBitSystem->mDb->query( $query2 );
 	$query3 = $gBitDb->getOne("SELECT MAX(blog_id) FROM `'.BIT_DB_PREFIX.'blogs`");
-	$tempId = $gBitDb->mDb->GenID("blogs_blog_id_seq", $query3);
+	$tempId = $gBitDb->mDb->GenID("`'.BIT_DB_PREFIX.'blogs_blog_id_seq`", $query3);
 ' ),
 
 // Drop moved columns
