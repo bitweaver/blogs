@@ -1,9 +1,9 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.25 2007/11/13 05:02:37 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.26 2007/12/05 05:06:12 wjames5 Exp $
  * @package bitweaver
  */
-global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams;
+global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
 if( !empty( $moduleParams ) ) {
 	extract( $moduleParams );
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.18 2007/11/13 04:29:20 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.19 2007/12/05 05:06:12 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -20,7 +20,7 @@ if( !empty($module_params['date_start_offset']) ){
 	$date_start = time() - ( $module_params['date_start_offset'] * 3600 );
 }
 
-$listHash = array(
+$defaultsHash = array(
 	'sort_mode'   => ( !empty( $module_params['sort_mode'] ) ? $module_params['sort_mode'] : 'publish_date_desc' ),
 	'max_records' => $module_rows,
 	'parse_data'  => TRUE,
@@ -29,6 +29,8 @@ $listHash = array(
 	'group_id'     => ( @BitBase::verifyId( $module_params['group_id'] ) ? $module_params['group_id'] : NULL ),
 	'date_start'  =>  $date_start,
 );
+
+$listHash = array_merge($module_params, $defaultsHash);
 
 if(( empty( $module_params['include'] ) || $module_params['include'] != 'all' ) && !empty( $gQueryUserId )) {
 	$listHash['user_id'] = $gQueryUserId;

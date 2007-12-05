@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.110 2007/12/04 17:59:33 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.111 2007/12/05 05:06:12 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.110 2007/12/04 17:59:33 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.111 2007/12/05 05:06:12 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.110 $ $Date: 2007/12/04 17:59:33 $ $Author: wjames5 $
+ * @version $Revision: 1.111 $ $Date: 2007/12/05 05:06:12 $ $Author: wjames5 $
  */
 
 /**
@@ -773,7 +773,7 @@ class BitBlogPost extends LibertyAttachable {
 		$bindVars = array();
 		array_push( $bindVars, $this->mContentTypeGuid );
 
-		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
+		$this->getServicesSql( 'content_list_sql_function', $selectSql, $joinSql, $whereSql, $bindVars, NULL, $pListHash );
 
 		if( @$this->verifyId( $pListHash['blog_id'] ) ) {
 			$selectSql .= ', bpm.crosspost_note';
