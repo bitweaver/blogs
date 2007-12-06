@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.50 2007/10/10 18:07:15 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.51 2007/12/06 09:27:07 jht001 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -116,6 +116,8 @@ if (isset($_REQUEST['blog_content_id'])) {
 }
 
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
+
+$gBitSmarty->assign( 'textarea_label', 'Post Content' );
 
 // tweak title displayed for better usuability in browser history
 $gBitSystem->display( 'bitpackage:blogs/blog_post.tpl', $gContent->isValid() ? tra( "Edit Blog Post" ).": ".$gContent->getTitle() : tra( "Create Blog Post" ) );

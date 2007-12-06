@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.30 2007/09/22 22:24:22 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.31 2007/12/06 09:27:07 jht001 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -56,6 +56,8 @@ if (isset($_REQUEST['save_blog'])) {
 }
 
 $gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gContent->getTitle() );
+
+$gBitSmarty->assign( 'textarea_label', 'Blog Description' );
 
 $gBitSmarty->assign_by_ref('gContent', $gContent);
 $gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl');
