@@ -42,9 +42,6 @@ array( 'DATADICT' => array(
 				, CONSTRAINT `blogs_posts_map_blog_ref` FOREIGN KEY (`blog_content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content` (`content_id`)'
 		",
 	)),
-	array( 'CREATESEQUENCE' => array(
-		'blogs_blog_id_seq',
-	)),
 	array( 'RENAMESEQUENCE' => array(
 		"tiki_blog_posts_post_id_seq" => "blog_posts_post_id_seq",
 	)),
@@ -62,7 +59,7 @@ array( 'PHP' => '
 			$contentHash = array();
 			$blogId = $rs->fields["blog_id"];
 			$conId = $gBitDb->GenID( "liberty_content_id_seq" );
-error_log( $conId."->".$blogId );
+			error_log( $conId."->".$blogId );
 			$contentHash["content_id"] = $conId;
 			$contentHash["content_type_guid"] = BITBLOG_CONTENT_TYPE_GUID;
 			$contentHash["user_id"] = $rs->fields["user_id"];
