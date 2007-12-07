@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.26 2007/12/05 05:06:12 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.27 2007/12/07 16:50:39 wjames5 Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
@@ -71,13 +71,27 @@ if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
 	$listHash['content_perm_name'] = 'p_blogs_view';
 }
 
+
+$paginationPath = BLOGS_PKG_URL.'index.php';
+
+/* if a blog_id is passed from the modle settings then
+ * we want to push to the view page if the user looks for older posts
+ * i.e. this is for pagination
+ */
+
+if ( !empty( $module_params ) && !empty( $module_params['blog_id'] ) ){
+	$gBitSmarty->assign( 'blogId', $module_params['blog_id']  );
+	$paginationPath = BLOGS_PKG_URL.'view.php';
+}
+
+
 /* I think this is right - usually we pass in $_REQUEST
  * but in this case I pass in the listHash because 
  * this is in a module - change it if its a mistake wjames5
  */
 $blogPost->invokeServices( 'content_list_function', $listHash );
 $blogPosts = $blogPost->getList( $listHash );
-
+$gBitSmarty->assign( 'paginationPath', $paginationPath );
 $gBitSmarty->assign( 'showEmpty', TRUE );
 $gBitSmarty->assign_by_ref( 'gQueryUserId', $listHash['user_id'] );
 $gBitSmarty->assign_by_ref( 'blogPosts', $blogPosts["data"] );

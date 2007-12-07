@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.7 2007/11/03 22:50:35 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.8 2007/12/07 16:50:39 wjames5 Exp $ *}
 {if $blogPosts || $showEmpty}
 <div class="floaticon">{bithelp}</div>
 
@@ -31,7 +31,7 @@
 		{/if}
 	</div><!-- end .body -->
 
-	{pagination url="`$smarty.const.BLOGS_PKG_URL`index.php" user_id="`$gQueryUserId`"}
+    {pagination url="`$paginationPath`" user_id="`$gQueryUserId`" blog_id="`$blogId`"}	
 
 	{*minifind sort_mode=$sort_mode*}
 </div>
