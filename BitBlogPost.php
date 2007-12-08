@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.111 2007/12/05 05:06:12 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.112 2007/12/08 21:13:28 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.111 2007/12/05 05:06:12 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.112 2007/12/08 21:13:28 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.111 $ $Date: 2007/12/05 05:06:12 $ $Author: wjames5 $
+ * @version $Revision: 1.112 $ $Date: 2007/12/08 21:13:28 $ $Author: wjames5 $
  */
 
 /**
@@ -68,13 +68,14 @@ class BitBlogPost extends LibertyAttachable {
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "
-				SELECT bp.*, lc.*, lcds.`data` AS `summary`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar,
+				SELECT bp.*, lc.*, lcds.`data` AS `summary`, lch.*, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar,
 					lfp.storage_path AS `image_attachment_path` 
 					$selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` )
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON( lch.`content_id` = lc.`content_id` )
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` la ON( la.`content_id` = lc.`content_id` AND la.`is_primary` = 'y' )
@@ -890,7 +891,7 @@ class BitBlogPost extends LibertyAttachable {
 		
 		$query = "
 			SELECT
-				bp.*, lc.*, lcds.`data` AS `summary`, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
+				bp.*, lc.*, lch.*, lcds.`data` AS `summary`, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
 				uu.`email`, uu.`login`, uu.`real_name`, ulf.`storage_path` as avatar,  lf.storage_path AS `image_attachment_path`
 				$selectSql
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
