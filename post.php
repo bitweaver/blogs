@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.51 2007/12/06 09:27:07 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.52 2007/12/09 06:08:52 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -35,7 +35,6 @@ $gBitUser->verifyTicket();
 // nuke post if requested
 if( !empty( $_REQUEST['action'] ) ) {
 	if( $_REQUEST['action'] == 'remove' && $gContent->isValid() ) {
-		
 		if( isset( $_REQUEST["confirm"] ) ) {
 			$redirect = !empty( $gContent->mInfo['blogs'] ) ? BLOGS_PKG_URL.'view.php?content_id='.key( $gContent->mInfo['blogs'] ) : BLOGS_PKG_URL;
 			if( $gContent->expunge() ) {
