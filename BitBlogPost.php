@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.115 2007/12/28 05:03:07 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.116 2007/12/28 05:53:38 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.115 2007/12/28 05:03:07 jht001 Exp $
+ * $Id: BitBlogPost.php,v 1.116 2007/12/28 05:53:38 jht001 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.115 $ $Date: 2007/12/28 05:03:07 $ $Author: jht001 $
+ * @version $Revision: 1.116 $ $Date: 2007/12/28 05:53:38 $ $Author: jht001 $
  */
 
 /**
@@ -89,6 +89,7 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
 				$this->mInfo['url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
 				$this->mInfo['thumbnail_url'] = BitBlogPost::getImageThumbnails( $this->mInfo );
+				$this->mInfo['avatar'] = liberty_fetch_thumbnail_url( $this->mInfo['avatar'], 'avatar' );
 
 				$this->mInfo['raw'] = $this->mInfo['data'];
 				//for two text field auto split
