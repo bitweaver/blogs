@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.114 2007/12/18 16:30:04 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.115 2007/12/28 05:03:07 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.114 2007/12/18 16:30:04 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.115 2007/12/28 05:03:07 jht001 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.114 $ $Date: 2007/12/18 16:30:04 $ $Author: wjames5 $
+ * @version $Revision: 1.115 $ $Date: 2007/12/28 05:03:07 $ $Author: jht001 $
  */
 
 /**
@@ -87,6 +87,7 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mPostId = $this->mInfo['post_id'];
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
+				$this->mInfo['url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
 				$this->mInfo['thumbnail_url'] = BitBlogPost::getImageThumbnails( $this->mInfo );
 
 				$this->mInfo['raw'] = $this->mInfo['data'];
@@ -675,7 +676,6 @@ class BitBlogPost extends LibertyAttachable {
 				$ret = BLOGS_PKG_URL.'view_post.php?content_id='.$pContentId;
 			}
 		}
-
 		return $ret;
 	}
 
