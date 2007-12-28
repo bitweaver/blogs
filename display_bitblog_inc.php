@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.15 2007/11/08 21:59:34 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.16 2007/12/28 10:03:24 jht001 Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -78,7 +78,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 
 	$gBitSmarty->assign('user_watching_blog', 'n');
 
-	if ( $watch = $gBitUser->getEventWatches( $gBitUser->mUserId, 'blog_post', $_REQUEST['blog_id'])) {
+	if ( $watch = $gBitUser->getEventWatches( 'blog_post', $_REQUEST['blog_id'] ) ) {
 		$gBitSmarty->assign('user_watching_blog', 'y');
 	}
 }
