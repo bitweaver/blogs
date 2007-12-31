@@ -1,8 +1,12 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.33 2007/12/31 02:13:35 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.34 2007/12/31 02:18:42 jht001 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
-		<h1>{tr}Edit Post{/tr}</h1>
+		{ if !$post_info.content_id }
+			<h1>{tr}Create Post{/tr}</h1>
+		{else}
+			<h1>{tr}Edit Post{/tr}</h1>
+		{/if}
 	</div>
 
 	<div class="body">
