@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.32 2007/10/18 08:24:52 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.33 2007/12/31 02:13:35 jht001 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -64,7 +64,7 @@
 										</select>
 									{else}
 										{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
-											<input name="blog_content_id[]" type="checkbox" value="{$blogContentId}" {if $gContent->mInfo.blogs.$blogContentId || $blogContentId == $smarty.request.blog_id}checked="checked"{/if} /> {$availBlogTitle|escape}<br/>
+											<input name="blog_content_id[]" type="checkbox" value="{$blogContentId}" {if $gContent->mInfo.blogs.$blogContentId || $blogContentId == $smarty.request.blog_id || $blogContentId == $default_target_blog_content_id}checked="checked"{/if} /> {$availBlogTitle|escape}<br/>
 										{/foreach}
 									{/if}
 									{formhelp note="You can cross post to any and all of the blogs listed above.<br />Just check off the blogs you wish this post to also show up in."}

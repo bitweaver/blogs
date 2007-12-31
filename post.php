@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.52 2007/12/09 06:08:52 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.53 2007/12/31 02:13:35 jht001 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -20,8 +20,16 @@ $gBitSystem->verifyPackage( 'blogs' );
 
 require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
-$gBlog = new BitBlog();
 
+if ( isset( $_REQUEST["blog_id"] ) ) {
+	#setup so we know what the default target blog is in the template
+	$gBlog = new BitBlog($_REQUEST["blog_id"]);
+	$gBlog->load();
+	$gBitSmarty->assign('default_target_blog_content_id',$gBlog->mContentId );
+	}
+else {
+	$gBlog = new BitBlog();
+	}	 
 //must be owner or admin to edit an existing post
 if( $gContent->isValid() ) {
 	$gContent->verifyEditPermission();
