@@ -1,5 +1,5 @@
 {strip}
-
+{* This template is used by the blogs plugin to liberty. *}
 <div class="post"
 	{if $gBitUser->getPreference( 'users_double_click' ) and (($aPost.ownsblog eq 'y') or ($gBitUser->mUserId and $aPost.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' ))}
 		ondblclick="location.href='{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$aPost.blog_id}{$blog_id}&amp;post_id={$aPost.post_id}{$post_id}';"
@@ -34,7 +34,14 @@
 		</h1>
 
 		<div class="date">
-			{tr}by {displayname hash=$aPost}{/tr}<br />
+			{if $gBitSystem->getConfig('blog_list_user_as') eq 'link'}
+				{tr}By {displayname hash=$aPost}{/tr}
+			{elseif $gBitSystem->getConfig('blog_list_user_as') eq 'avatar' && $aPost.avatar}
+				<img src="{$aPost.avatar}" class="avatar" />
+			{else}
+				{tr}By {displayname hash=$aPost nolink=true}{/tr}
+			{/if}
+
 			{$aPost.publish_date|default:$aPost.created|bit_long_date}<br />
 			{if count($aPost.blogs) > 0}
 				{tr}Posted to{/tr}&nbsp;
@@ -52,7 +59,6 @@
 				<div class="bitbox">{$aPost.crosspost_note}</div>
 			{/if}
 			
-			{if $aPost.avatar}<img src="{$aPost.avatar}" class="avatar" />{/if}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$aPost}
 			
 			{* deal with the blog post image if there is one *}
