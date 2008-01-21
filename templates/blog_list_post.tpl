@@ -40,7 +40,7 @@
 				<img src="{$aPost.avatar}" class="avatar" />
 			{else}
 				{tr}By {displayname hash=$aPost nolink=true}{/tr}
-			{/if}
+			{/if}<br/>
 
 			{$aPost.publish_date|default:$aPost.created|bit_long_date}<br />
 			{if count($aPost.blogs) > 0}
