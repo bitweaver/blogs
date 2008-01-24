@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.63 2007/11/11 12:45:55 squareing Exp $
- * @version  $Revision: 1.63 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.64 2008/01/24 20:32:55 nickpalmer Exp $
+ * @version  $Revision: 1.64 $
  * @package blogs
  */
 
@@ -141,9 +141,9 @@ class BitBlog extends LibertyContent {
 
 	function store( &$pParamHash ) {
 		global $gBitSystem;
+		$this->mDb->StartTrans();
 		if( $this->verify( $pParamHash ) && parent::store( $pParamHash ) ) {
 			$table = BIT_DB_PREFIX."blogs";
-			$this->mDb->StartTrans();
 			if( $this->isValid() ) {
 				$result = $this->mDb->associateUpdate( $table, $pParamHash['blog_store'], array( "blog_id" => $pParamHash['blog_id'] ) );
 			} else {

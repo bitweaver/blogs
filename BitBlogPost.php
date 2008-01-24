@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.116 2007/12/28 05:53:38 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.117 2008/01/24 20:32:56 nickpalmer Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.116 2007/12/28 05:53:38 jht001 Exp $
+ * $Id: BitBlogPost.php,v 1.117 2008/01/24 20:32:56 nickpalmer Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.116 $ $Date: 2007/12/28 05:53:38 $ $Author: jht001 $
+ * @version $Revision: 1.117 $ $Date: 2008/01/24 20:32:56 $ $Author: nickpalmer $
  */
 
 /**
@@ -409,9 +409,9 @@ class BitBlogPost extends LibertyAttachable {
 	 */
 	function store( &$pParamHash ) {
 		global $gBitSystem;
+		$this->mDb->StartTrans();
 		if( $this->verify( $pParamHash )&& LibertyAttachable::store( $pParamHash ) ) {
 			$table = BIT_DB_PREFIX."blog_posts";
-			$this->mDb->StartTrans();
 
 			// Send trackbacks recovering only successful trackbacks
 			$trackbacks = serialize( $this->sendTrackbacks( $pParamHash['trackback'] ) );
