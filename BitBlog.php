@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.64 2008/01/24 20:32:55 nickpalmer Exp $
- * @version  $Revision: 1.64 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.65 2008/02/03 05:29:06 jht001 Exp $
+ * @version  $Revision: 1.65 $
  * @package blogs
  */
 
@@ -256,6 +256,31 @@ class BitBlog extends LibertyContent {
 			$whereSql = preg_replace( '/^[\s]*AND/', ' WHERE ', $whereSql );
 		}
 
+
+		$ret = array();
+
+		// Return a data array, even if empty
+		$pParamHash["data"] = array();
+
+		# Get count of total number of items available
+		$query_cant = "
+			SELECT COUNT(b.`blog_id`)
+				FROM `".BIT_DB_PREFIX."blogs` b
+				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
+				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
+				$joinSql
+			$whereSql";
+		$pParamHash["cant"] = $this->mDb->getOne( $query_cant, $bindVars );
+
+		# Check for offset out of range
+		if ( $pParamHash['offset'] < 0 ) {
+			$pParamHash['offset'] = 0;
+			}
+		elseif ( $pParamHash['offset']	> $pParamHash["cant"] ) {
+			$lastPageNumber = ceil ( $pParamHash["cant"] / $pParamHash['max_records'] ) - 1;
+			$pParamHash['offset'] = $pParamHash['max_records'] * $lastPageNumber;
+			}
+
 		$query = "
 			SELECT b.`content_id` AS `hash_key`, b.*, uu.`login`, uu.`real_name`, lc.*, lch.hits $selectSql
 			FROM `".BIT_DB_PREFIX."blogs` b
@@ -265,32 +290,20 @@ class BitBlog extends LibertyContent {
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
 			$whereSql order by ".$this->mDb->convertSortmode($pParamHash['sort_mode']);
 
-		$ret = array();
-
-		// Return a data array, even if empty
-		$pParamHash["data"] = array();
-
-		if( $ret = $this->mDb->getAssoc( $query, $bindVars, $pParamHash['max_records'], $pParamHash['offset'] ) ) {
-			foreach( array_keys( $ret ) as $blogContentId ) {
-				$ret[$blogContentId]['blog_url'] = $this->getDisplayUrl( $ret[$blogContentId]['blog_id'] );
-				//get count of post in each blog
-				$ret[$blogContentId]['postscant'] = $this->getPostsCount( $ret[$blogContentId]['content_id'] );
-				// deal with the parsing
-				$parseHash['format_guid']   = $ret[$blogContentId]['format_guid'];
-				$parseHash['content_id']    = $ret[$blogContentId]['content_id'];
-				$parseHash['data'] 			= $ret[$blogContentId]['data'];
-				$ret[$blogContentId]['parsed'] = $this->parseData( $parseHash );
-			}
-		}
-
-		$query_cant = "
-			SELECT COUNT(b.`blog_id`)
-				FROM `".BIT_DB_PREFIX."blogs` b
-				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
-				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
-				$joinSql
-			$whereSql";
-		$pParamHash["cant"] = $this->mDb->getOne( $query_cant, $bindVars );
+		$result = $this->mDb->query( $query, $bindVars, $pParamHash['max_records'], $pParamHash['offset'] );
+		$ret = array ();
+		while ($res = $result->fetchRow()) {
+			$blogContentId = $res['content_id'];
+			$ret[$blogContentId] = $res;
+			$ret[$blogContentId]['blog_url'] = $this->getDisplayUrl( $res['blog_id'] );
+			//get count of post in each blog
+			$ret[$blogContentId]['postscant'] = $this->getPostsCount( $res['content_id'] );
+			// deal with the parsing
+			$parseHash['format_guid']   = $res['format_guid'];
+			$parseHash['content_id']    = $res['content_id'];
+			$parseHash['data'] 	= $res['data'];
+			$ret[$blogContentId]['parsed'] = $this->parseData( $parseHash );
+		}	
 
 		LibertyContent::postGetList( $pParamHash );
 

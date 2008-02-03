@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.117 2008/01/24 20:32:56 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.118 2008/02/03 05:29:06 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.117 2008/01/24 20:32:56 nickpalmer Exp $
+ * $Id: BitBlogPost.php,v 1.118 2008/02/03 05:29:06 jht001 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.117 $ $Date: 2008/01/24 20:32:56 $ $Author: nickpalmer $
+ * @version $Revision: 1.118 $ $Date: 2008/02/03 05:29:06 $ $Author: jht001 $
  */
 
 /**
@@ -908,6 +908,7 @@ class BitBlogPost extends LibertyAttachable {
 			WHERE lc.`content_type_guid` = ? $whereSql
 			ORDER BY $sort_mode";
 
+		# Get count of total number of items available
 		$query_cant = "
 			SELECT COUNT( * )
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
@@ -916,8 +917,20 @@ class BitBlogPost extends LibertyAttachable {
 				$joinSql
 			WHERE lc.`content_type_guid` = ? $whereSql ";
 
-		$result = $this->mDb->query($query,$bindVars,$pListHash['max_records'],$pListHash['offset']);
 		$cant = $this->mDb->getOne($query_cant,$bindVars);
+		$pListHash["cant"] = $cant;
+
+		# Check for offset out of range
+		if ( $pListHash['offset'] < 0 ) {
+			$pListHash['offset'] = 0;
+			}
+		elseif ( $pListHash['offset']	> $pListHash["cant"] ) {
+			$lastPageNumber = ceil ( $pListHash["cant"] / $pListHash['max_records'] ) - 1;
+			$pListHash['offset'] = $pListHash['max_records'] * $lastPageNumber;
+			}
+
+
+		$result = $this->mDb->query($query,$bindVars,$pListHash['max_records'],$pListHash['offset']);
 		$ret = array();
 
 		$comment = &new LibertyComment();
@@ -993,7 +1006,6 @@ class BitBlogPost extends LibertyAttachable {
 		}
 
 		$pListHash["data"] = $ret;
-		$pListHash["cant"] = $cant;
 
 		LibertyContent::postGetList( $pListHash );
 
