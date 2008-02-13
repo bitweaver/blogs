@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.65 2008/02/03 05:29:06 jht001 Exp $
- * @version  $Revision: 1.65 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.66 2008/02/13 00:02:13 wjames5 Exp $
+ * @version  $Revision: 1.66 $
  * @package blogs
  */
 
@@ -23,6 +23,7 @@ class BitBlog extends LibertyContent {
 		$this->mBlogId = @$this->verifyId( $pBlogId ) ? $pBlogId : NULL;
 		parent::LibertyContent( $pContentId );
 		$this->registerContentType( BITBLOG_CONTENT_TYPE_GUID, array(
+			'content_type_guid' => BITBLOG_CONTENT_TYPE_GUID,
 			'content_description' => 'Blog',
 			'handler_class' => 'BitBlog',
 			'handler_package' => 'blogs',
