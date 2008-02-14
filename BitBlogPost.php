@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.118 2008/02/03 05:29:06 jht001 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.119 2008/02/14 18:51:49 bitweaver Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.118 2008/02/03 05:29:06 jht001 Exp $
+ * $Id: BitBlogPost.php,v 1.119 2008/02/14 18:51:49 bitweaver Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.118 $ $Date: 2008/02/03 05:29:06 $ $Author: jht001 $
+ * @version $Revision: 1.119 $ $Date: 2008/02/14 18:51:49 $ $Author: bitweaver $
  */
 
 /**
@@ -150,7 +150,7 @@ class BitBlogPost extends LibertyAttachable {
 			$ret = $pHash['title'];
 		} elseif( !is_null( $pHash ) ) {
 			$date_format = $gBitSystem->get_long_date_format();
-			if( $gBitSystem->mServerTimestamp->get_display_offset() ) {
+			if( $gBitSystem->get_display_offset() ) {
 				$date_format = preg_replace( "/ ?%Z/", "", $date_format );
 			} else {
 				$date_format = preg_replace( "/%Z/", "UTC", $date_format );
@@ -316,7 +316,7 @@ class BitBlogPost extends LibertyAttachable {
 			//old way
 			//$timestamp = $gBitSystem->mServerTimestamp->getUTCFromDisplayDate( strtotime( $dateString ) );
 			//new way
-			$offset = BitDate::get_display_offset();
+			$offset = $gBitSystem->get_display_offset();
 			$this->mDate = new BitDate($offset);
 
 			$dateString = $this->mDate->gmmktime(
@@ -346,7 +346,7 @@ class BitBlogPost extends LibertyAttachable {
 			//old way
 			//$timestamp = $gBitSystem->mServerTimestamp->getUTCFromDisplayDate( strtotime( $dateString ) );
 			//new way
-			$offset = BitDate::get_display_offset();
+			$offset = $gBitSystem->get_display_offset();
 			$this->mDate = new BitDate($offset);
 
 			$dateString = $this->mDate->gmmktime(
