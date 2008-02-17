@@ -27,7 +27,7 @@
 	<div class="header">
 		<h1>
 		{if $aPost.title}
-			{$aPost.title}
+			{$aPost.title|escape:html}
 		{else}
 			{$aPost.publish_date|default:$aPost.created|bit_long_date}
 		{/if}
