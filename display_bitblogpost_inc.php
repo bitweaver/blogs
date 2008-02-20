@@ -62,7 +62,6 @@ $gBitSmarty->assign('post_id', $gContent->mPostId);
 
 //Build absolute URI for this
 if ( empty( $_REQUEST['format'] ) || $_REQUEST['format'] == "full" || $_REQUEST['format'] == "data" ){
-	$parts = parse_url($_SERVER['REQUEST_URI']);
 	$parsed_data = $gContent->parseData();
 	if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
 		$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
