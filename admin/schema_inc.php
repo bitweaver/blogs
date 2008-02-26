@@ -118,4 +118,10 @@ if(defined('RSS_PKG_NAME')) {
 	));
 }
 
+// ### Register content types
+$gBitInstaller->registerContentObjects( BLOGS_PKG_NAME, array( 
+	'BitBlog'=>BLOGS_PKG_PATH.'BitBlog.php',
+	'BitBlogPost'=>BLOGS_PKG_PATH.'BitBlogPost.php'
+));
+
 ?>
