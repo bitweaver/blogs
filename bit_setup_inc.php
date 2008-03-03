@@ -13,12 +13,6 @@ $registerHash = array(
 $gBitSystem->registerPackage( $registerHash );
 
 if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-	if( $gBitUser->hasPermission( 'p_blogs_admin' ) ) {
-		// this probably has no effect since it doesn't update the users permissions
-		$gBitUser->setPreference( 'p_blogs_create', TRUE );
-		$gBitUser->setPreference( 'p_blogs_post', TRUE );
-		$gBitUser->setPreference( 'p_blogs_view', TRUE );
-	}
 
 	if( $gBitUser->hasPermission( 'p_blogs_view' ) ) {
 		$menuHash = array(
