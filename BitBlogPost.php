@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.120 2008/02/17 00:10:03 nickpalmer Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.121 2008/03/21 21:08:52 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.120 2008/02/17 00:10:03 nickpalmer Exp $
+ * $Id: BitBlogPost.php,v 1.121 2008/03/21 21:08:52 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.120 $ $Date: 2008/02/17 00:10:03 $ $Author: nickpalmer $
+ * @version $Revision: 1.121 $ $Date: 2008/03/21 21:08:52 $ $Author: wjames5 $
  */
 
 /**
@@ -977,15 +977,18 @@ class BitBlogPost extends LibertyAttachable {
 					$res['parsed'] = $this->parseData( $parseHash );
 				} else {
 					$parseHash['data'] = $res['data'];
+					$parseHash['no_cache'] = TRUE;
 					$splitArray = $this->parseSplit($parseHash, $gBitSystem->getConfig( 'blog_posts_description_length', 500));
 					$res = array_merge($res, $splitArray);
 				}
 				if( !empty( $this->mInfo['summary'] ) ) {
 					$res['summary'] = $parseHash['data'] = $this->mInfo['summary'];
+					$parseHash['no_cache'] = TRUE;
 					$res['parsed_summary'] = $this->parsedData( $parseHash );
 				}
 				if( !empty( $res['crosspost_note'] ) ){
 					$res['crosspost_note_raw'] = $parseHash['data'] = $res['crosspost_note'];
+					$parseHash['no_cache'] = TRUE;
 					$res['crosspost_note'] = $this->parseData( $parseHash );
 				}
 
