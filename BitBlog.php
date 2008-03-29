@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.66 2008/02/13 00:02:13 wjames5 Exp $
- * @version  $Revision: 1.66 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.67 2008/03/29 16:01:26 wjames5 Exp $
+ * @version  $Revision: 1.67 $
  * @package blogs
  */
 
@@ -350,6 +350,19 @@ class BitBlog extends LibertyContent {
 		$ret = FALSE;
 		if ($gBitUser->mUserId && $pPermName) {
 			$ret = $gBitUser->object_has_permission( $gBitUser->mUserId, $this->mInfo['blog_id'], $this->getContentType(), $pPermName );
+		}
+		return $ret;
+	}
+
+	function getViewTemplate( $pAction ){				
+		$ret = null;
+		switch ( $pAction ){
+			case "view":
+				$ret = "bitpackage:blogs/center_".$pAction."_blog_posts.tpl"; 
+				break;
+			case "list":
+				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl"; 
+				break;
 		}
 		return $ret;
 	}

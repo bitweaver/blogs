@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.121 2008/03/21 21:08:52 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.122 2008/03/29 16:00:00 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.121 2008/03/21 21:08:52 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.122 2008/03/29 16:00:00 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.121 $ $Date: 2008/03/21 21:08:52 $ $Author: wjames5 $
+ * @version $Revision: 1.122 $ $Date: 2008/03/29 16:00:00 $ $Author: wjames5 $
  */
 
 /**
@@ -1135,6 +1135,19 @@ class BitBlogPost extends LibertyAttachable {
 			$query = "update `".BIT_DB_PREFIX."blog_posts` set `trackbacks_to` = ? where `post_id`=?";
 			$this->mDb->query( $query, array( $empty, $this->mPostId ) );
 		}
+	}
+
+	function getViewTemplate( $pAction ){				
+		$ret = null;
+		switch ( $pAction ){
+			case "view":
+				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl"; 
+				break;
+			case "list":
+				$ret = "bitpackage:blogs/center_".$pAction."_blog_posts.tpl"; 
+				break;
+		}
+		return $ret;
 	}
 
 }
