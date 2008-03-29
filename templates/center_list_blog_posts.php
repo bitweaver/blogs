@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.27 2007/12/07 16:50:39 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.28 2008/03/29 16:02:05 wjames5 Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
@@ -45,7 +45,7 @@ $listHash = array(
 
 $listHash = array();
 if( !empty( $moduleParams )) {
-    $listHash = array_merge( $_REQUEST, $moduleParams['module_params'] );
+	$listHash = array_merge( $_REQUEST, $moduleParams['module_params'] );
 	$listHash['max_records'] = $module_rows;
 	//$listHash['parse_data'] = TRUE;
 	//$listHash['load_comments'] = TRUE;

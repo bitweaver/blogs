@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.8 2007/11/07 17:41:26 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.9 2008/03/29 16:02:05 wjames5 Exp $
  * 
  * @package blogs
  * @subpackage functions
@@ -14,10 +14,11 @@ require_once( '../bit_setup_inc.php' );
 // Is package installed and enabled
 $gBitSystem->verifyPackage( 'blogs' );
 
-// Now check permissions to access this page
-$gBitSystem->verifyPermission( 'p_blogs_view' );
-
 require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
+
+// Now check permissions to access this page
+// DEPRECATED $gBitSystem->verifyPermission( 'p_blogs_view' );
+$gContent->verifyViewPermission();
 
 if ( $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascriptEnabled() ){
 	$gBitSmarty->assign('ajax_more', TRUE);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.16 2007/12/28 10:03:24 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.17 2008/03/29 16:02:05 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -12,13 +12,13 @@
 /**
  * required setup
  */
+$gBitSystem->verifyPackage( 'blogs' );
+
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
-$displayHash = array( 'perm_name' => 'p_blogs_view' );
+$displayHash = array( 'perm_name' => $gContent->mViewContentPerm );
 $gContent->invokeServices( 'content_display_function', $displayHash );
-
-$gBitSystem->verifyPackage( 'blogs' );
 
 if( isset($_REQUEST['user_id']) && !isset( $_REQUEST['blog_id'] ) ) {
 	// We will try and grab the first blog owned by the user id given
@@ -32,7 +32,7 @@ if( !$gContent->isValid() ) {
 	$gBitSystem->fatalError( tra( 'No blog indicated' ));
 }
 
-$gBitSystem->verifyPermission( 'p_blogs_view' );
+$gContent->verifyViewPermission();
 
 /**
  * i don't think this is in use anymore - xing - Thursday Nov 08, 2007   21:49:22 CET

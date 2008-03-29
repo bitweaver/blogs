@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.12 2007/11/05 07:02:27 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.13 2008/03/29 16:02:05 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -15,9 +15,9 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
-
 $gBitSystem->verifyPackage( 'blogs' );
+
+require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 
 include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 
