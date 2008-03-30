@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.122 2008/03/29 16:00:00 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.123 2008/03/30 18:02:56 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.122 2008/03/29 16:00:00 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.123 2008/03/30 18:02:56 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.122 $ $Date: 2008/03/29 16:00:00 $ $Author: wjames5 $
+ * @version $Revision: 1.123 $ $Date: 2008/03/30 18:02:56 $ $Author: wjames5 $
  */
 
 /**
@@ -1146,6 +1146,28 @@ class BitBlogPost extends LibertyAttachable {
 			case "list":
 				$ret = "bitpackage:blogs/center_".$pAction."_blog_posts.tpl"; 
 				break;
+		}
+		return $ret;
+	}
+
+	/**
+	* Returns the create/edit url to a blog post 
+	* @param number $pContentId a valid content id
+	* @param array $pMixed a hash of params to add to the url  
+	*/
+	function getEditUrl( $pContentId = NULL, $pMixed = NULL ){
+		if( @BitBase::verifyId( $pContentId ) ) {
+			$ret = BLOGS_PKG_URL.'post.php?content_id='.$pContentId;
+		} elseif( $this->isValid() ) {
+			$ret = BLOGS_PKG_URL.'post.php?content_id='.$this->mContentId;
+		} else {
+			$ret = BLOGS_PKG_URL.'post.php'.(!empty( $pMixed )?"?":"");
+		}
+		foreach( $pMixed as $key => $value ){
+			if( $key != "content_id" || ( $key == "content_id" && @BitBase::verifyId( $value ) ) ) {
+				$ret .= (isset($amp)?"&":"").$key."=".$value;
+			}
+			$amp = TRUE;
 		}
 		return $ret;
 	}
