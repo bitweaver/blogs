@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.10 2007/03/26 17:56:59 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.11 2008/04/01 21:57:13 lsces Exp $
 
  * @package blogs
  * @subpackage functions
@@ -98,12 +98,13 @@ $allrankings = array(
 	'name' => tra('Last posts'),
 	'value' => 'blog_ranking_last_posts'
 ),
-	/* TODO reenable once we have activity implemented
+	/** 
+	 * @todo reenable once we have activity implemented
 	array(
 	'name' => tra('Most active blogs'),
 	'value' => 'blog_ranking_top_active_blogs'
 )
-	*/
+	**/
 /*
 );
 

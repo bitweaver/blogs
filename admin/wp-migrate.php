@@ -189,9 +189,9 @@ function migrate_wp_categories() {
 			$pParamHash['title'] = $blog->cat_name;
 			$pParamHash['use_title'] = 'y';
 
-			// ToDo: Map Posts level to user group.
-
-			// ToDO: Make this options in the prep.
+			/** @TODO : Map Posts level to user group.
+			  * @TODO : Make this options in the prep.
+			  **/
 			$pParamHash['is_public'] = 'y';
 			$pParamHash['allow_comments'] = 'y';
 			$pParamHash['max_posts'] = 10;
@@ -242,7 +242,7 @@ function migrate_wp_posts() {
 				$pParamHash['current_owner_id'] = -1;
 			}
 
-			// TODO: Check attachments
+			/** @TODO : Check attachments **/
 
 			$bp = new BitBlogPost();
 			$bp->store($pParamHash);

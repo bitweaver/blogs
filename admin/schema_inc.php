@@ -55,8 +55,9 @@ $indices = array (
 	'blogs_content_id_idx'      => array( 'table' => 'blogs',      'cols' => 'content_id', 'opts' => array( 'UNIQUE' ) ),
 	'blog_posts_content_id_idx' => array( 'table' => 'blog_posts', 'cols' => 'content_id', 'opts' => array( 'UNIQUE' ) ),
 );
-// TODO - SPIDERR - following seems to cause time _decrease_ cause bigint on postgres. need more investigation
-//	'blog_posts_created_idx' => array( 'table' => 'blog_posts', 'cols' => 'created', 'opts' => NULL ),
+/** @TODO - SPIDERR - following seems to cause time _decrease_ cause bigint on postgres. need more investigation
+ *	'blog_posts_created_idx' => array( 'table' => 'blog_posts', 'cols' => 'created', 'opts' => NULL ),
+ **/
 $gBitInstaller->registerSchemaIndexes( BLOGS_PKG_NAME, $indices );
 
 // ### Sequences
@@ -99,7 +100,7 @@ $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
 ) );
 
 // ### User Preferences Set In This Package
-/* These are mentioned here for reference to understand how the package works
+/** These are mentioned here for reference to understand how the package works
  * They are not to be configured here!
  *
  * user_blog_posts_use_title, default y			lets the user toggle to use a typed title for their posts or automatically use a date
@@ -110,7 +111,7 @@ $gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(
  * @todo need an admin pref to override allow_comments option 
  * @todo need an admin pref to override description option 
  *
- */
+ **/
 
 if(defined('RSS_PKG_NAME')) {
 	$gBitInstaller->registerPreferences( BLOGS_PKG_NAME, array(

@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.123 2008/03/30 18:02:56 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.124 2008/04/01 21:57:13 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.123 2008/03/30 18:02:56 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.124 2008/04/01 21:57:13 lsces Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.123 $ $Date: 2008/03/30 18:02:56 $ $Author: wjames5 $
+ * @version $Revision: 1.124 $ $Date: 2008/04/01 21:57:13 $ $Author: lsces $
  */
 
 /**
@@ -406,6 +406,7 @@ class BitBlogPost extends LibertyAttachable {
 
 	/**
 	 * Store a Blog Post
+	 * @todo users_watches is a legacy package and needs refactoring
 	 */
 	function store( &$pParamHash ) {
 		global $gBitSystem;
@@ -448,7 +449,6 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mDb->query( $query, array( serialize( array() ), $trackbacks, (int) $pParamHash['post_id'] ));
 			}
 			
-			//@todo  this is a legacy and needs refactoring
 			if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 				global $gBitUser, $gBitSmarty;
 				if( isset( $this->mInfo['blog_id'] ) &&  $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {

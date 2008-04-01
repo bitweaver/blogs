@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.21 2007/11/05 23:45:10 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.22 2008/04/01 21:57:13 lsces Exp $
 
 // get a list of blogs for the selection of the home blog
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
@@ -39,12 +39,12 @@ $formBlogLists = array(
 		'label' => 'Visits',
 		'note' => 'Number of times a given blog has been visited.',
 	),
-	/* TODO: Add back once activity is implemented
+	/** @TODO: Add back once activity is implemented
 	"blog_list_activity" => array(
 		'label' => 'Activity',
 		'note' => 'This number is an indication of how active a given blog is. The number is calculated based on god knows what...',
 	),
-	*/
+	**/
 );
 $gBitSmarty->assign( 'formBlogLists',$formBlogLists );
 
@@ -88,7 +88,7 @@ if( $processForm ) {
 		simple_set_toggle( $item, BLOGS_PKG_NAME );
 	}
 
-	// Lazy error handling to ensure numeric. TODO: Fix.
+	/** @TODO: Fix. Lazy error handling to ensure numeric. **/
 	$gBitSystem->storeConfig("blog_top_post_count", (isset( $_REQUEST["blog_top_post_count"]) && is_numeric($_REQUEST["blog_top_post_count"])) ? $_REQUEST["blog_top_post_count"] : "3");
 	$gBitSystem->storeConfig("blog_posts_max_list", (isset( $_REQUEST["blog_posts_max_list"]) && is_numeric($_REQUEST["blog_posts_max_list"])) ? $_REQUEST["blog_posts_max_list"] : "10");
 	$gBitSystem->storeConfig("blog_posts_comments", isset( $_REQUEST["blog_posts_comments"] ) ? 'y' : 'n', BLOGS_PKG_NAME );
