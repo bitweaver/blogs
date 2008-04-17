@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.14 2008/04/17 21:18:57 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.15 2008/04/17 21:25:57 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -32,6 +32,8 @@ $now = $gBitSystem->getUTCTime();
 $view = FALSE;
 
 if ( $gContent->hasAdminPermission()  || ( $gContent->hasUserPermission( 'p_blog_posts_read_future' ) && $gContent->hasUserPermission( 'p_blog_posts_read_expired' ) ) ){
+	$view = TRUE;
+}elseif ( $gContent->mInfo['publish_date'] == $gContent->mInfo['expire_date'] ) {
 	$view = TRUE;
 }elseif ( $gContent->mInfo['publish_date'] > $now && $gBitUser->hasPermission( 'p_blog_posts_read_future' ) ){
 	$view = TRUE;
