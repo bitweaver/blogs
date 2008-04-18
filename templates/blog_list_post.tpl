@@ -35,11 +35,11 @@
 
 		<div class="date">
 			{if $gBitSystem->getConfig('blog_list_user_as') eq 'link'}
-				{tr}By {displayname hash=$aPost}{/tr}
+				{tr}By{/tr} {displayname hash=$aPost}
 			{elseif $gBitSystem->getConfig('blog_list_user_as') eq 'avatar' && $aPost.avatar}
 				<img src="{$aPost.avatar}" class="avatar" />
 			{else}
-				{tr}By {displayname hash=$aPost nolink=true}{/tr}
+				{tr}By{/tr} {displayname hash=$aPost nolink=true}
 			{/if}<br/>
 
 			{$aPost.publish_date|default:$aPost.created|bit_long_date}<br />
