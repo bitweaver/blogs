@@ -26,12 +26,12 @@
 					{/if}
 
 					{if $gContent->hasUserPermission( 'p_blogs_admin' )}
-						<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-attachment" iexplain="crosspost"}</a>
+						<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-attachment" iexplain="Crosspost"}</a>
 					{/if}
 
-					<a title="{tr}print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="print"}</a>
-					{if $gContent->hasUserPermission('p_blogs_send_post')}
-						<a title="{tr}email this post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="email this post"}</a>
+					<a title="{tr}Print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="Print"}</a>
+					{if $gBitUser->hasPermission('p_blogs_send_post')}
+						<a title="{tr}Email This Post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="Email This Post"}</a>
 					{/if}
 
 					{if $gContent->hasEditPermission()}
