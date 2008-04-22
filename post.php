@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.54 2008/04/22 21:23:26 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.55 2008/04/22 21:30:22 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -106,7 +106,7 @@ if (isset($_REQUEST["preview"])) {
 // Get List of available blogs
 $listHash = array();
 $listHash['sort_mode'] = 'title_asc';
-$listHash['max_records'] = NULL;
+$listHash['max_records'] = MAX_RECORDS;
 if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
 	$listHash['user_id'] = $gBitUser->mUserId;
 	$listHash['content_perm_name'] = 'p_blogs_post';
