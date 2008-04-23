@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.16 2008/04/18 03:16:58 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post.php,v 1.17 2008/04/23 21:59:21 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -35,9 +35,9 @@ if ( $gContent->hasAdminPermission()  || ( $gContent->hasUserPermission( 'p_blog
 	$view = TRUE;
 }elseif ( $gContent->mInfo['publish_date'] == $gContent->mInfo['expire_date'] ) {
 	$view = TRUE;
-}elseif ( $gContent->mInfo['publish_date'] > $now && $gContent->hasPermission( 'p_blog_posts_read_future' ) ){
+}elseif ( $gContent->mInfo['publish_date'] > $now && $gContent->hasUserPermission( 'p_blog_posts_read_future' ) ){
 	$view = TRUE;
-}elseif ( $gContent->mInfo['expire_date'] < $now && $gContent->hasPermission( 'p_blog_posts_read_expired' ) ){
+}elseif ( $gContent->mInfo['expire_date'] < $now && $gContent->hasUserPermission( 'p_blog_posts_read_expired' ) ){
 	$view = TRUE;
 }elseif ( ( $gContent->mInfo['publish_date'] <= $now ) && ( $gContent->mInfo['expire_date'] > $now || $gContent->mInfo['expire_date'] <= $gContent->mInfo['publish_date'] ) ){
 	$view = TRUE;
