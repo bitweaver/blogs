@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.55 2008/04/22 21:30:22 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.56 2008/04/25 19:47:56 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -26,10 +26,10 @@ if ( isset( $_REQUEST["blog_id"] ) ) {
 	$gBlog = new BitBlog($_REQUEST["blog_id"]);
 	$gBlog->load();
 	$gBitSmarty->assign('default_target_blog_content_id',$gBlog->mContentId );
-	}
-else {
+}else {
 	$gBlog = new BitBlog();
-	}	 
+}	 
+
 //must be owner or admin to edit an existing post
 if( $gContent->isValid() ) {
 	$gContent->verifyEditPermission();
