@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.126 2008/04/30 14:19:20 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.127 2008/04/30 19:52:43 bitweaver Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.126 2008/04/30 14:19:20 bitweaver Exp $
+ * $Id: BitBlogPost.php,v 1.127 2008/04/30 19:52:43 bitweaver Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.126 $ $Date: 2008/04/30 14:19:20 $ $Author: bitweaver $
+ * @version $Revision: 1.127 $ $Date: 2008/04/30 19:52:43 $ $Author: bitweaver $
  */
 
 /**
@@ -883,10 +883,12 @@ class BitBlogPost extends LibertyAttachable {
 					$sortModePrefix = 'uu.';
 					break;
 				// these technicall are not correct, however, we do not double join on users_users, so we sort by creator real_name
+				case 'creator_real_name_asc':
 				case 'modifier_real_name_asc':
 					$sortModePrefix = 'uu.';
 					$pListHash['sort_mode'] = 'real_name_asc';
 					break;
+				case 'creator_real_name_desc':
 				case 'modifier_real_name_desc':
 					$sortModePrefix = 'uu.';
 					$pListHash['sort_mode'] = 'real_name_desc';
