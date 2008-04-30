@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.17 2008/03/29 16:02:05 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.18 2008/04/30 15:19:05 bitweaver Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -29,6 +29,7 @@ if( isset($_REQUEST['user_id']) && !isset( $_REQUEST['blog_id'] ) ) {
 }
 
 if( !$gContent->isValid() ) {
+	$gBitSystem->setHttpStatus( 404 );
 	$gBitSystem->fatalError( tra( 'No blog indicated' ));
 }
 

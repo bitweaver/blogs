@@ -53,6 +53,7 @@ $gBitSystem->verifyPermission( 'p_blogs_view' );
 
 // Check permissions to access this page
 if( !$gContent->isValid() ) {
+	$gBitSystem->setHttpStatus( 404 );
 	$gBitSystem->fatalError( tra( 'Post cannot be found' ));
 }
 
