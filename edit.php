@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.31 2007/12/06 09:27:07 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.32 2008/05/08 08:50:48 squareing Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -41,7 +41,7 @@ if (isset($_REQUEST['preview'])) {
 	$gBitSmarty->assign('use_title', isset($_REQUEST["use_title"]) ? 'y' : 'n');
 	$gBitSmarty->assign('allow_comments', isset($_REQUEST["allow_comments"]) ? 'y' : 'n');
 	$gBitSmarty->assign('max_posts', $_REQUEST["max_posts"]);
-	$gBitSmarty->assign('heading', $heading);
+	//$gBitSmarty->assign('heading', $heading);
 	$gContent->invokeServices('content_preview_function');	
 } else {
 	$gContent->invokeServices('content_edit_function');
