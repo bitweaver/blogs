@@ -53,6 +53,9 @@ array( 'DATADICT' => array(
 // query3: create a blogs_blog_id_seq and bring the table up to date with the current max blog_id used in the blogs table - this basically for mysql
 array( 'PHP' => '
 	global $gBitSystem;
+	// make sure bitblog content type is registered
+	require_once( BLOGS_PKG_PATH."BitBlog.php" );
+	$tempBlog = new BitBlog();
 	$query = "SELECT * FROM `'.BIT_DB_PREFIX.'blogs` b";
 	if( $rs = $gBitSystem->mDb->query( $query ) ) {
 		while( !$rs->EOF ) {
@@ -63,6 +66,7 @@ array( 'PHP' => '
 			$contentHash["content_id"] = $conId;
 			$contentHash["content_type_guid"] = BITBLOG_CONTENT_TYPE_GUID;
 			$contentHash["user_id"] = $rs->fields["user_id"];
+			$contentHash["modifier_user_id"] = $rs->fields["user_id"];
 			$contentHash["format_guid"] = PLUGIN_GUID_TIKIWIKI;
 			$contentHash["data"] = $rs->fields["description"];
 			$contentHash["title"] = substr( $rs->fields["title"], 0, 160 );
@@ -80,7 +84,7 @@ array( 'PHP' => '
 	$query2 = "INSERT INTO `'.BIT_DB_PREFIX.'blogs_posts_map` (`post_content_id`,`blog_content_id`,`date_added`) (SELECT blp.`content_id`, blc.`content_id`, bplc.`created` FROM `'.BIT_DB_PREFIX.'blog_posts` blp INNER JOIN `'.BIT_DB_PREFIX.'liberty_content` bplc ON(blp.`content_id`=bplc.`content_id`) INNER JOIN `'.BIT_DB_PREFIX.'blogs` bl ON(blp.`blog_id`=bl.`blog_id`) INNER JOIN `'.BIT_DB_PREFIX.'liberty_content` blc ON(bl.`content_id`=blc.`content_id`))";
 	$gBitSystem->mDb->query( $query2 );
 	$query3 = $gBitDb->getOne("SELECT MAX(blog_id) FROM `'.BIT_DB_PREFIX.'blogs`");
-	$tempId = $gBitDb->mDb->GenID("`'.BIT_DB_PREFIX.'blogs_blog_id_seq`", $query3);
+	$tempId = $gBitDb->mDb->GenID("blogs_blog_id_seq", $query3);
 ' ),
 
 // Drop moved columns
