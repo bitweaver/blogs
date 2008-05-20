@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.28 2008/03/29 16:02:05 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.29 2008/05/20 16:42:08 wjames5 Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
@@ -84,6 +84,9 @@ if ( !empty( $module_params ) && !empty( $module_params['blog_id'] ) ){
 	$paginationPath = BLOGS_PKG_URL.'view.php';
 }
 
+// prevent anything lower than publicly visible be displayed in blog roll
+$listHash['enforce_status'] = TRUE;
+$listHash['min_owner_status_id'] = 0;
 
 /* I think this is right - usually we pass in $_REQUEST
  * but in this case I pass in the listHash because 

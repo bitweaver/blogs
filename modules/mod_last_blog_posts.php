@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.20 2007/12/09 06:08:52 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.21 2008/05/20 16:42:08 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -39,6 +39,14 @@ if(( empty( $module_params['include'] ) || $module_params['include'] != 'all' ) 
 
 if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
 	$listHash['content_perm_name'] = 'p_blogs_view';
+}
+
+if ( !empty( $module_params['status'] ) && $module_params['status'] = "draft" && isset( $gBitUser->mUserId ) ){
+	$listHash['enforce_status'] = TRUE;
+	$listHash['min_status_id'] = -6;
+	$listHash['max_status_id'] = -4;
+	$listHash['min_owner_status_id'] = -6;
+	$listHash['user_id'] = $gBitUser->mUserId;
 }
 
 $blogPost = new BitBlogPost();
