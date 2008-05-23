@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.29 2008/05/20 16:42:08 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.30 2008/05/23 17:39:06 wjames5 Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
@@ -27,6 +27,9 @@ if( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin
 			$futuresHash['user_id'] = $_REQUEST['user_id'];
 		}
 	}
+	// prevent anything lower than publicly visible be displayed in blog roll
+	$futuresHash['enforce_status'] = TRUE;
+	$futuresHash['min_owner_status_id'] = 0;
     $futures = $blogPost->getFutureList( $futuresHash );
     $gBitSmarty->assign( 'futures', $futures['data']);
 } else {

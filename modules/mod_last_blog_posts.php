@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.21 2008/05/20 16:42:08 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_blog_posts.php,v 1.22 2008/05/23 17:39:05 wjames5 Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -42,10 +42,13 @@ if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
 }
 
 if ( !empty( $module_params['status'] ) && $module_params['status'] = "draft" && isset( $gBitUser->mUserId ) ){
+	// if we are getting drafts then get future posts too 
+    $listHash['show_future'] = TRUE;
 	$listHash['enforce_status'] = TRUE;
 	$listHash['min_status_id'] = -6;
 	$listHash['max_status_id'] = -4;
 	$listHash['min_owner_status_id'] = -6;
+	// limit by user
 	$listHash['user_id'] = $gBitUser->mUserId;
 }
 
