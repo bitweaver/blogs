@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.128 2008/05/23 17:24:22 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.129 2008/05/23 18:01:14 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.128 2008/05/23 17:24:22 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.129 2008/05/23 18:01:14 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,14 +16,14 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.128 $ $Date: 2008/05/23 17:24:22 $ $Author: wjames5 $
+ * @version $Revision: 1.129 $ $Date: 2008/05/23 18:01:14 $ $Author: wjames5 $
  */
 
 /**
  * required setup
  */
 require_once( LIBERTY_PKG_PATH.'LibertyComment.php');
-require_once( LIBERTY_PKG_PATH.'LibertyAttachable.php');
+require_once( LIBERTY_PKG_PATH.'LibertyMime.php');
 require_once( BLOGS_PKG_PATH.'BitBlog.php');
 
 define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
@@ -31,11 +31,11 @@ define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
 /**
  * @package blogs
  */
-class BitBlogPost extends LibertyAttachable {
+class BitBlogPost extends LibertyMime {
 	var $mPostId;
 
 	function BitBlogPost( $pPostId=NULL, $pContentId=NULL ) {
-		LibertyAttachable::LibertyAttachable();
+		LibertyMime::LibertyMime();
 		$this->registerContentType( BITBLOGPOST_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBLOGPOST_CONTENT_TYPE_GUID,
 			'content_description' => 'Blog Post',
@@ -127,7 +127,7 @@ class BitBlogPost extends LibertyAttachable {
 				$this->mInfo['trackbacks_to'] = unserialize($this->mInfo['trackbacks_to']);
 				$this->mInfo['trackbacks_to_count'] = count($this->mInfo['trackbacks_to']);
 
-				LibertyAttachable::load();
+				LibertyMime::load();
 				if( $this->mStorage ) {
 					foreach( array_keys( $this->mStorage ) as $key ) {
 						$this->mStorage[$key]['wiki_plugin_link'] = '{attachment id='.$key.'}';
@@ -412,7 +412,7 @@ class BitBlogPost extends LibertyAttachable {
 	function store( &$pParamHash ) {
 		global $gBitSystem;
 		$this->mDb->StartTrans();
-		if( $this->verify( $pParamHash )&& LibertyAttachable::store( $pParamHash ) ) {
+		if( $this->verify( $pParamHash )&& LibertyMime::store( $pParamHash ) ) {
 			$table = BIT_DB_PREFIX."blog_posts";
 
 			// Send trackbacks recovering only successful trackbacks
@@ -624,7 +624,7 @@ class BitBlogPost extends LibertyAttachable {
 			$result = $this->mDb->query( $query, array( $this->mContentId ) );
 
 			// Do this last so foreign keys won't complain (not the we have them... yet ;-)
-			if( LibertyAttachable::expunge() ) {
+			if( LibertyMime::expunge() ) {
 				$ret = TRUE;
 				$this->mDb->CompleteTrans();
 			} else {
@@ -1173,7 +1173,7 @@ class BitBlogPost extends LibertyAttachable {
 	 */
 	function getAvailableContentStatuses( $pUserMinimum=-6, $pUserMaximum=51 ) {
 		global $gBitUser;
-		$ret = LibertyAttachable::getAvailableContentStatuses( $pUserMinimum, $pUserMaximum );
+		$ret = LibertyMime::getAvailableContentStatuses( $pUserMinimum, $pUserMaximum );
 		// this is a little ugly as we manually trim the list to just what we need for blog posts for regular users
 		if( !$gBitUser->hasPermission( 'p_liberty_edit_all_status' )) {
 			if ( array_key_exists( -1, $ret ) ){
