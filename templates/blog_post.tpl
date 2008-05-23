@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.34 2007/12/31 02:18:42 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.35 2008/05/23 17:24:22 wjames5 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -76,7 +76,8 @@
 							</div>
 						{/if}
 
-						{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_mini_tpl}
+						{* here we assign edit_content_status_tpl to customize the status input presentation. this gets passed along to liberty::edit_service_mini_inc.tpl *}
+						{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile=content_edit_mini_tpl edit_content_status_tpl="bitpackage:blogs/edit_blogpost_status_inc.tpl"}
 
 						{include file="bitpackage:liberty/edit_storage_list.tpl"}
 
@@ -87,7 +88,7 @@
 					{/legend}
 				{/jstab}
 
-				{include file="bitpackage:liberty/edit_services_inc.tpl serviceFile=content_edit_tab_tpl}
+				{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile=content_edit_tab_tpl}
 
 				{if $gBitUser->hasPermission('p_liberty_attach_attachments') }
 				{jstab title="Attachments"}

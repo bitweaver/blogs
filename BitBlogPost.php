@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.127 2008/04/30 19:52:43 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.128 2008/05/23 17:24:22 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.127 2008/04/30 19:52:43 bitweaver Exp $
+ * $Id: BitBlogPost.php,v 1.128 2008/05/23 17:24:22 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.127 $ $Date: 2008/04/30 19:52:43 $ $Author: bitweaver $
+ * @version $Revision: 1.128 $ $Date: 2008/05/23 17:24:22 $ $Author: wjames5 $
  */
 
 /**
@@ -1158,6 +1158,30 @@ class BitBlogPost extends LibertyAttachable {
 			case "list":
 				$ret = "bitpackage:blogs/center_".$pAction."_blog_posts.tpl"; 
 				break;
+		}
+		return $ret;
+	}
+
+	/**
+	 * getContentStatus
+	 * 
+	 * @access public
+	 * @return an array of content_status_id, content_status_names the current 
+	 * user can use on this content.  
+	 * 
+	 * NOTE: pUserMinimum and pUserMaximum are currently NOT inclusive in parent funtion, so these are one beyond the limit we desire
+	 */
+	function getAvailableContentStatuses( $pUserMinimum=-6, $pUserMaximum=51 ) {
+		global $gBitUser;
+		$ret = LibertyAttachable::getAvailableContentStatuses( $pUserMinimum, $pUserMaximum );
+		// this is a little ugly as we manually trim the list to just what we need for blog posts for regular users
+		if( !$gBitUser->hasPermission( 'p_liberty_edit_all_status' )) {
+			if ( array_key_exists( -1, $ret ) ){
+				unset( $ret[-1] );
+			}
+			if ( array_key_exists( 50, $ret ) && $ret[50]=="Available" ){
+				$ret[50] = "Public";
+			}
 		}
 		return $ret;
 	}

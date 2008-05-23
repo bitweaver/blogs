@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.67 2008/03/29 16:01:26 wjames5 Exp $
- * @version  $Revision: 1.67 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.68 2008/05/23 17:24:22 wjames5 Exp $
+ * @version  $Revision: 1.68 $
  * @package blogs
  */
 
@@ -363,6 +363,23 @@ class BitBlog extends LibertyContent {
 			case "list":
 				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl"; 
 				break;
+		}
+		return $ret;
+	}
+	
+	/**
+	 * getContentStatus
+	 * 
+	 * @access public
+	 * @return an array of content_status_id, content_status_names the current 
+	 * user can use on this content.  
+	 */
+	function getAvailableContentStatuses() {
+		global $gBitUser;
+		$ret = NULL;
+	 	// return NULL for all but admins
+		if( $gBitUser->hasPermission( 'p_liberty_edit_all_status' )) {
+			$ret = LibertyAttachable::getAvailableContentStatuses();
 		}
 		return $ret;
 	}

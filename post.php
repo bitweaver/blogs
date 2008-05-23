@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.57 2008/04/28 12:14:00 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.58 2008/05/23 17:24:22 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -100,6 +100,13 @@ if (isset($_REQUEST["preview"])) {
 	}
 } else {
 	$gContent->invokeServices( 'content_edit_function' );
+	if( $gContent->isValid() && $gContent->getContentStatus() == -5 && $gContent->getField('publish_date') < $gBitSystem->getUTCTime() ){
+		/* if we are working with a draft and a future publish date is not set 
+		 * then we automatically move the publish date up to NOW to help users from publishing in the past.
+		 * if they set it backward and preview or save the back date will be preserved.
+		 */
+		$gContent->mInfo['publish_date'] = $gBitSystem->getUTCTime(); 
+	}
 	$gBitSmarty->assign_by_ref('post_info', $gContent->mInfo);
 }
 
