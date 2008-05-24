@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.129 2008/05/23 18:01:14 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.130 2008/05/24 22:44:55 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.129 2008/05/23 18:01:14 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.130 2008/05/24 22:44:55 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.129 $ $Date: 2008/05/23 18:01:14 $ $Author: wjames5 $
+ * @version $Revision: 1.130 $ $Date: 2008/05/24 22:44:55 $ $Author: wjames5 $
  */
 
 /**
@@ -416,7 +416,9 @@ class BitBlogPost extends LibertyMime {
 			$table = BIT_DB_PREFIX."blog_posts";
 
 			// Send trackbacks recovering only successful trackbacks
-			$trackbacks = serialize( $this->sendTrackbacks( $pParamHash['trackback'] ) );
+			if ( !empty( $pParamHash['trackback'] ) ){
+				$trackbacks = serialize( $this->sendTrackbacks( $pParamHash['trackback'] ) );
+			}
 
 			if( $this->isValid() ) {
 				$locId = array( "content_id" => $this->mContentId );
