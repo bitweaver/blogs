@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.68 2008/05/23 17:24:22 wjames5 Exp $
- * @version  $Revision: 1.68 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.69 2008/06/05 21:32:42 wjames5 Exp $
+ * @version  $Revision: 1.69 $
  * @package blogs
  */
 
@@ -379,7 +379,7 @@ class BitBlog extends LibertyContent {
 		$ret = NULL;
 	 	// return NULL for all but admins
 		if( $gBitUser->hasPermission( 'p_liberty_edit_all_status' )) {
-			$ret = LibertyAttachable::getAvailableContentStatuses();
+			$ret = LibertyMime::getAvailableContentStatuses();
 		}
 		return $ret;
 	}
