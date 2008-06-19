@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.25 2007/08/22 17:12:59 wjames5 Exp $
- * @package article
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.26 2008/06/19 19:33:50 lsces Exp $
+ * @package blogs
  * @subpackage functions
  */
 
