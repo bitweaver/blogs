@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.130 2008/05/24 22:44:55 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.131 2008/06/23 21:56:12 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.130 2008/05/24 22:44:55 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.131 2008/06/23 21:56:12 squareing Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.130 $ $Date: 2008/05/24 22:44:55 $ $Author: wjames5 $
+ * @version $Revision: 1.131 $ $Date: 2008/06/23 21:56:12 $ $Author: squareing $
  */
 
 /**
@@ -89,7 +89,10 @@ class BitBlogPost extends LibertyMime {
 				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
 				$this->mInfo['url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
 				$this->mInfo['thumbnail_url'] = BitBlogPost::getImageThumbnails( $this->mInfo );
-				$this->mInfo['avatar'] = liberty_fetch_thumbnail_url( $this->mInfo['avatar'], 'avatar' );
+				$this->mInfo['avatar'] = liberty_fetch_thumbnail_url( array(
+					'storage_path' => $this->mInfo['avatar'],
+					'size' => 'avatar'
+				));
 
 				$this->mInfo['raw'] = $this->mInfo['data'];
 				//for two text field auto split
@@ -195,7 +198,11 @@ class BitBlogPost extends LibertyMime {
 		global $gBitSystem, $gThumbSizes;
 		$ret = NULL;
 		if( !empty( $pParamHash['image_attachment_path'] )) {
-			$ret = liberty_fetch_thumbnails( $pParamHash['image_attachment_path'], NULL, NULL, FALSE );
+			$thumbHash = array(
+				'mime_image'   => FALSE,
+				'storage_path' => $pParamHash['image_attachment_path']
+			);
+			$ret = liberty_fetch_thumbnails( $thumbHash );
 			$ret['original'] = "/".$pParamHash['image_attachment_path'];
 		}
 		return $ret;
@@ -953,7 +960,10 @@ class BitBlogPost extends LibertyMime {
 			$accessError = $this->invokeServices( 'content_verify_access', $res, FALSE );
 			if( empty( $accessError ) ) {
 
-				$res['avatar'] = liberty_fetch_thumbnail_url( $res['avatar'], 'avatar' );
+				$res['avatar'] = liberty_fetch_thumbnail_url( array(
+					'storage_path' => $res['avatar'],
+					'size' => 'avatar'
+				));
 				//$res['thumbnail_url'] = liberty_fetch_thumbnail_url( $res['image_attachment_path'], 'avatar' );
 				$res['thumbnail_url'] = BitBlogPost::getImageThumbnails( $res );				
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
