@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post_image.php,v 1.3 2005/08/01 18:40:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view_post_image.php,v 1.4 2008/06/25 22:21:07 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -19,11 +19,11 @@ include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 
 if (!isset($_REQUEST["image_id"])) {
 	$gBitSmarty->assign('msg', tra("No image id given"));
-	$gBitSystem->display( 'error.tpl' );
+	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 	die;
 }
 
 $imageInfo = $gBlog->getStorageFileInfo($_REQUEST["image_id"]);
 $gBitSmarty->assign( 'imageInfo' , $imageInfo );
-$gBitSystem->display( 'bitpackage:blogs/view_post_image.tpl' );
+$gBitSystem->display( 'bitpackage:blogs/view_post_image.tpl' , NULL, array( 'display_mode' => 'display' ));
 ?>

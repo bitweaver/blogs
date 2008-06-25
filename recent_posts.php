@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.9 2008/03/29 16:02:05 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.10 2008/06/25 22:21:07 spiderr Exp $
  * 
  * @package blogs
  * @subpackage functions
@@ -29,5 +29,5 @@ if ( $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascri
 $gDefaultCenter = 'bitpackage:blogs/center_list_blog_posts.tpl';
 $gBitSmarty->assign_by_ref( 'gDefaultCenter', $gDefaultCenter );
 
-$gBitSystem->display( 'bitpackage:kernel/dynamic.tpl', 'List Blog Posts' );
+$gBitSystem->display( 'bitpackage:kernel/dynamic.tpl', 'List Blog Posts' , array( 'display_mode' => 'display' ));
 ?>

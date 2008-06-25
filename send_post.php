@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.20 2007/05/16 16:47:07 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.21 2008/06/25 22:21:07 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -84,6 +84,6 @@ if (isset($_REQUEST['send'])) {
 $gBitSystem->setBrowserTitle("Send Blog Post: ".$gContent->mInfo['title']);
 
 // Display the template
-$gBitSystem->display( 'bitpackage:blogs/send_blog_post.tpl');
+$gBitSystem->display( 'bitpackage:blogs/send_blog_post.tpl', NULL, array( 'display_mode' => 'display' ));
 
 ?>

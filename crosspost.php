@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.5 2007/11/12 04:00:13 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.6 2008/06/25 22:21:07 spiderr Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -85,5 +85,5 @@ $gBitSmarty->assign( 'availableBlogs', $availableBlogs );
 
 $gBitSmarty->assign_by_ref('blogs', $blogs['data']);
 
-$gBitSystem->display( 'bitpackage:blogs/crosspost.tpl', "Crosspost Blog Post" );
+$gBitSystem->display( 'bitpackage:blogs/crosspost.tpl', "Crosspost Blog Post" , array( 'display_mode' => 'display' ));
 ?>

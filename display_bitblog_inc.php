@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.18 2008/04/30 15:19:05 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.19 2008/06/25 22:21:07 spiderr Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -92,5 +92,5 @@ if ( $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascri
 	$gBitThemes->loadAjax( 'mochikit', array( 'Iter.js', 'DOM.js', 'Style.js', 'Color.js', 'Position.js', 'Visual.js' ) );
 }
 // Display the template
-$gBitSystem->display( 'bitpackage:blogs/view_blog.tpl', $gContent->getTitle() );
+$gBitSystem->display( 'bitpackage:blogs/view_blog.tpl', $gContent->getTitle() , array( 'display_mode' => 'display' ));
 ?>

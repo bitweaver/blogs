@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.16 2007/07/09 21:10:55 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.17 2008/06/25 22:21:07 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -42,6 +42,6 @@ $gBitSmarty->assign_by_ref( 'blogsList', $blogsList );
 
 $gBitSystem->setBrowserTitle("View All Blogs");
 // Display the template
-$gBitSystem->display( 'bitpackage:blogs/list_blogs.tpl');
+$gBitSystem->display( 'bitpackage:blogs/list_blogs.tpl', NULL, array( 'display_mode' => 'list' ));
 
 ?>

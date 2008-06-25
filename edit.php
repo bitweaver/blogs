@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.32 2008/05/08 08:50:48 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/edit.php,v 1.33 2008/06/25 22:21:07 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -60,6 +60,6 @@ $gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gContent->getTitle() );
 $gBitSmarty->assign( 'textarea_label', 'Blog Description' );
 
 $gBitSmarty->assign_by_ref('gContent', $gContent);
-$gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl');
+$gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl', NULL, array( 'display_mode' => 'edit' ));
 
 ?>

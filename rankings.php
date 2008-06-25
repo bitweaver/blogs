@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.11 2008/04/01 21:57:13 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/rankings.php,v 1.12 2008/06/25 22:21:07 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -69,7 +69,7 @@ if( empty( $gContent ) ) {
 $rankList = $gContent->getContentRanking( $_REQUEST );
 $gBitSmarty->assign( 'rankList', $rankList );
 
-$gBitSystem->display( 'bitpackage:liberty/rankings.tpl', tra( "Blog Post Rankings" ) );
+$gBitSystem->display( 'bitpackage:liberty/rankings.tpl', tra( "Blog Post Rankings" ) , array( 'display_mode' => 'display' ));
 
 
 
@@ -139,7 +139,7 @@ $gBitSmarty->assign_by_ref('rankings', $rankings);
 $gBitSmarty->assign('rpage', 'rankings.php');
 
 // Display the template
-$gBitSystem->display( 'bitpackage:blogs/ranking.tpl', tra($rankings['title']));
+$gBitSystem->display( 'bitpackage:blogs/ranking.tpl', tra($rankings['title']), array( 'display_mode' => 'display' ));
 
 // =============================== some ranking functions - as soon as blogs are part of LibertyContent, we can use LibertyContent::getContentRanking()
 function blog_ranking_top_blogs($limit) {

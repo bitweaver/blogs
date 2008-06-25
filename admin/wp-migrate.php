@@ -44,7 +44,7 @@ if (isset($_REQUEST['wp_config'])) {
 	}
 	$gBitSmarty->assign('wp_config', $_REQUEST['wp_config']);
 }
-$gBitSystem->display("bitpackage:blogs/wp-migrate.tpl", tra("WordPress Migrate"));
+$gBitSystem->display("bitpackage:blogs/wp-migrate.tpl", tra("WordPress Migrate"), array( 'display_mode' => 'admin' ));
 die;
 
 function migrate_wp() {
