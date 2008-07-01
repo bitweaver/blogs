@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.59 2008/06/25 22:21:07 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.60 2008/07/01 17:57:08 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -37,8 +37,6 @@ if( $gContent->isValid() ) {
 	$gBitSystem->verifyPermission( 'p_blogs_post' );
 }
 
-// Editing page needs general ticket verification
-$gBitUser->verifyTicket();
 
 // nuke post if requested
 if( !empty( $_REQUEST['action'] ) ) {
@@ -83,6 +81,8 @@ if (isset($_REQUEST["preview"])) {
 	 */
 	$gBitSmarty->assign('parsed_data', $post['parsed_data']);	
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
+	// Editing page needs general ticket verification
+	$gBitUser->verifyTicket();
 	if( $gContent->store( $_REQUEST ) ) {
 		$postid = $gContent->mPostId;
 		$gBitSmarty->assign('post_id', $gContent->mPostId);
