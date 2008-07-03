@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.35 2008/05/23 17:24:22 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.36 2008/07/03 15:28:02 wjames5 Exp $ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">
@@ -18,7 +18,7 @@
 		{/if}
 
 		{form enctype="multipart/form-data" id="editpageform"}
-			<input type="hidden" name="content_id" value="{$gContent->getField('content_id')|escape}" />
+			<input type="hidden" name="content_id" value="{$gContent->getField('content_id')}" />
 			<input type="hidden" name="rows" value="{$rows}"/>
 			<input type="hidden" name="cols" value="{$cols}"/>
 

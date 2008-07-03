@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.24 2007/07/14 14:50:50 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/edit_blog.tpl,v 1.25 2008/07/03 15:28:05 wjames5 Exp $ *}
 {strip}
 
 <div class="floaticon">{bithelp}</div>
@@ -26,6 +26,7 @@
 				{jstab title="Blog Settings"}
 					{legend legend="Blog Settings"}
 						<input type="hidden" name="blog_id" value="{$gContent->getField('blog_id')}" />
+						<input type="hidden" name="content_id" value="{$gContent->getField('content_id')}" />
 						<div class="row">
 							{formfeedback warning=$warning}
 							{formlabel label="Title" for="title"}
