@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.11 2007/11/07 17:44:25 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.12 2008/07/14 21:29:33 wjames5 Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'rss' ) and $gBitSystem->isFeatureActive( 'blogs_rss' ) and $smarty.const.ACTIVE_PACKAGE eq 'blogs' and $gBitUser->hasPermission( 'p_blogs_view' )}
 	<link rel="alternate" type="application/rss+xml" title="{$gBitSystem->getConfig('blogs_rss_title',"{tr}Blogs{/tr} RSS")}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
@@ -17,7 +17,7 @@
 {literal}
 <script type="text/javascript">/* <![CDATA[ */
 	BitAjax.updaterCallback = function(target, rslt){
-		BitAjax.hideSpinner();
+		BitBase.hideSpinner();
 		var e = document.getElementById(target);
 		if (e != null){
 			e.style.display = 'none';
