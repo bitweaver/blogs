@@ -1,10 +1,14 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.13 2008/07/16 07:50:09 huyderman Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.14 2008/07/16 08:18:52 huyderman Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'rss' ) and $gBitSystem->isFeatureActive( 'blogs_rss' ) and $smarty.const.ACTIVE_PACKAGE eq 'blogs' and $gBitUser->hasPermission( 'p_blogs_view' )}
-	{if !isset($gContent->mBlogId)}
-	<link rel="alternate" type="application/rss+xml" title="{$gBitSystem->getConfig('blogs_rss_title',"{tr}Blogs{/tr} RSS")}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
+	{if isset($gContent->mBlogId)}
+		<link rel="alternate" type="application/rss+xml" title="{$gContent->getTitle()}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$gContent->blog_content_id}&amp;version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
+	{elseif isset($post_info.blogs)}
+		{foreach from=$post_info.blogs item=memberBlog key=blogContentId name=memberBlogLoop}
+			<link rel="alternate" type="application/rss+xml" title="{$memberBlog.title}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$memberBlog.blog_id}&amp;version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
+		{/foreach}
 	{else}
-	<link rel="alternate" type="application/rss+xml" title="{$gContent->getTitle()}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$gContent->mBlogId}&amp;version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
+		<link rel="alternate" type="application/rss+xml" title="{$gBitSystem->getConfig('blogs_rss_title',"{tr}Blogs{/tr} RSS")}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
 	{/if}
 {/if}
 {* this is for ajaxing the readmore portion of blog posts. 
