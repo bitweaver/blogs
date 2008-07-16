@@ -83,7 +83,7 @@
 	</div> <!-- end .body -->
 
 	<div class="footer">
-		<a href="{$aPost.post_url}">{tr}Permalink{/tr}</a>
+		<a href="{$aPost.post_url}" rel="bookmark">{tr}Permalink{/tr}</a>
 		{assign var=spacer value=TRUE}
 
 		{if $showDescriptionsOnly and $aPost.has_more}

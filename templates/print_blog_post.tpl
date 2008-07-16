@@ -53,7 +53,7 @@ a:hover { background-color : #deceae;  }
 <hr />
 <table>
 <tr><td>
-<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$post_info.blog_id}&post_id={$post_info.post_id}">{tr}Permalink{/tr}</a>
+<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$post_info.blog_id}&post_id={$post_info.post_id}" rel="bookmark">{tr}Permalink{/tr}</a>
 ({tr}referenced by{/tr}: {$post_info.trackbacks_from_count} {tr}posts{/tr} {tr}references{/tr}: {$post_info.trackbacks_to_count} {tr}posts{/tr})
 {if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
 {$post_info.num_comments} {tr}comments{/tr}
