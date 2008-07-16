@@ -1,7 +1,11 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.12 2008/07/14 21:29:33 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.13 2008/07/16 07:50:09 huyderman Exp $ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'rss' ) and $gBitSystem->isFeatureActive( 'blogs_rss' ) and $smarty.const.ACTIVE_PACKAGE eq 'blogs' and $gBitUser->hasPermission( 'p_blogs_view' )}
+	{if !isset($gContent->mBlogId)}
 	<link rel="alternate" type="application/rss+xml" title="{$gBitSystem->getConfig('blogs_rss_title',"{tr}Blogs{/tr} RSS")}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
+	{else}
+	<link rel="alternate" type="application/rss+xml" title="{$gContent->getTitle()}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$gContent->mBlogId}&amp;version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
+	{/if}
 {/if}
 {* this is for ajaxing the readmore portion of blog posts. 
  * this is ugly, but because recent posts are handled by dynamic center outside of the blog package we have 
