@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.30 2008/05/23 17:39:06 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.31 2008/08/01 05:11:42 laetzer Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
@@ -106,4 +106,5 @@ $gBitSmarty->assign( 'descriptionLength', $gBitSystem->getConfig( 'blog_posts_de
 $gBitSmarty->assign( 'showDescriptionsOnly', TRUE );
 $gBitSmarty->assign( 'showBlogTitle', 'y' );
 $gBitSmarty->assign( 'blogPostsFormat', (empty($module_params['format']) ? 'full' : $module_params['format']) );
+$gBitSmarty->assign( 'centerTitle', $moduleParams['title'] );
 ?>

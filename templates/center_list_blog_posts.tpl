@@ -1,10 +1,10 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.8 2007/12/07 16:50:39 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.9 2008/08/01 05:11:42 laetzer Exp $ *}
 {if $blogPosts || $showEmpty}
 <div class="floaticon">{bithelp}</div>
 
 <div class="display blogs">
 	<div class="header">
-		<h1>{tr}Recent Blog Posts{/tr}</h1>
+		<h1>{$centerTitle|default:"{tr}Recent Blog Posts{/tr}"}</h1>
 	</div>
 
 	<div class="body">
