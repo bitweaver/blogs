@@ -1,4 +1,5 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/list_posts.tpl,v 1.3 2007/11/03 22:50:35 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/list_posts.tpl,v 1.4 2008/08/01 02:10:39 laetzer Exp $ *}
+{strip}
 <ul class="blogs">
 	{section name=ix loop=$blogPosts}
 		<li class="{cycle values="odd,even"}">
@@ -25,3 +26,4 @@
 		<li></li>
 	{/section}
 </ul>
+{/strip}
