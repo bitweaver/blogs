@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_modified_blogs.php,v 1.6 2007/05/01 16:50:17 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_modified_blogs.php,v 1.7 2008/08/01 02:22:41 laetzer Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -11,11 +11,10 @@
 include_once( BLOGS_PKG_PATH.'BitBlog.php' );
 require_once( USERS_PKG_PATH.'BitUser.php' );
 
-global $gQueryUserId, $module_rows;
+global $gQueryUserId, $moduleParams;
+//$params = $moduleParams['module_params'];
 
-$params = $gBitThemes->getModuleParameters('bitpackage:blogs/mod_top_active_blogs.tpl', $gQueryUserId);
-
-$listHash['max_records'] = $module_rows;
+$listHash['max_records'] = $moduleParams['module_rows'];
 $listHash['sort_mode'] = 'last_modified_desc';
 $listHash['user_id'] = $gQueryUserId;
 if( @BitBase::verifyId( $module_params['group_id'] ) ) {
@@ -24,5 +23,5 @@ if( @BitBase::verifyId( $module_params['group_id'] ) ) {
 $blog = new BitBlog();
 $ranking = $blog->getList( $listHash );
 
-$gBitSmarty->assign('modLastModifiedBlogs', $ranking["data"]);
+$gBitSmarty->assign('modLastModifiedBlogs', $ranking);
 ?>
