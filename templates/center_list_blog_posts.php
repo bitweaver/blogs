@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.32 2008/08/27 18:31:32 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.33 2008/08/27 18:36:05 laetzer Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
@@ -106,5 +106,6 @@ $gBitSmarty->assign( 'descriptionLength', $gBitSystem->getConfig( 'blog_posts_de
 $gBitSmarty->assign( 'showDescriptionsOnly', TRUE );
 $gBitSmarty->assign( 'showBlogTitle', 'y' );
 $gBitSmarty->assign( 'blogPostsFormat', (empty($module_params['format']) ? 'full' : $module_params['format']) );
+// unfortunately, the following feature pulls module parameters in from other modules
 //$gBitSmarty->assign( 'centerTitle', $moduleParams['title'] );
 ?>
