@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.61 2008/07/06 14:38:50 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.62 2008/08/30 05:14:17 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -42,6 +42,7 @@ if( $gContent->isValid() ) {
 if( !empty( $_REQUEST['action'] ) ) {
 	if( $_REQUEST['action'] == 'remove' && $gContent->isValid() ) {
 		if( isset( $_REQUEST["confirm"] ) ) {
+			$gBitUser->verifyTicket();
 			$redirect = !empty( $gContent->mInfo['blogs'] ) ? BLOGS_PKG_URL.'view.php?content_id='.key( $gContent->mInfo['blogs'] ) : BLOGS_PKG_URL;
 			if( $gContent->expunge() ) {
 				bit_redirect( $redirect );
