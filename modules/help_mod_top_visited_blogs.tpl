@@ -7,7 +7,7 @@
 
 	<dt><kbd class="parameter">sort_mode</kbd></dt>
 	<dd><em>{tr}String{/tr}</em></dd>
-	<dd><abbr title="default" class="default">hits_desc</abbr></dd>
+	<dd><abbr title="{tr}default{/tr}" class="default">hits_desc</abbr></dd>
 
 	<dt><kbd class="parameter">user_id</kbd></dt>
 	<dd><em>{tr}Numeric{/tr}</em></dd>

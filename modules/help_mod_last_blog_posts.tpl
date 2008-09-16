@@ -10,7 +10,7 @@
 
 	<dt class="param"><kbd>sort_mode</kbd></dt>
 	<dd><em>{tr}String{/tr}</em></dd>
-	<dd><abbr class="default" title="default">publish_date_desc</abbr></dd>
+	<dd><abbr class="default" title="{tr}default{/tr}">publish_date_desc</abbr></dd>
 
 	<dt class="param"><kbd>user</kbd></dt>
 	<dd><em>{tr}Numeric{/tr}</em></dd>
@@ -20,9 +20,9 @@
 
 	<dt class="param"><kbd>offset</kbd></dt>
 	<dd><em>{tr}Numeric{/tr}</em></dd>
-	<dd><abbr class="default" title="default">0</abbr></dd>
+	<dd><abbr class="default" title="{tr}default{/tr}">0</abbr></dd>
 
 	<dt class="param"><kbd>max_preview_length</kbd></dt>
 	<dd><em>{tr}Numeric{/tr}</em></dd>
-	<dd><abbr class="default" title="default">500</abbr></dd>
+	<dd><abbr class="default" title="{tr}default{/tr}">500</abbr></dd>
 </dl>
