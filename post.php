@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.62 2008/08/30 05:14:17 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.63 2008/09/19 01:34:36 laetzer Exp $
 
  * @package blogs
  * @subpackage functions
@@ -55,9 +55,10 @@ if( !empty( $_REQUEST['action'] ) ) {
 		$formHash['action'] = 'remove';
 		$formHash['post_id'] = $_REQUEST['post_id'];
 		$msgHash = array(
-			'label' => 'Remove Blog Post',
+			'label' => tra('Remove Blog Post'),
 			'confirm_item' => $gContent->getTitle(),
-			'warning' => 'This will remove the above blog post. This cannot be undone.',
+			'warning' => tra( 'This will remove the above blog post.' ),
+			'error' => tra( 'This cannot be undone!' ),
 		);
 		$gBitSystem->confirmDialog( $formHash, $msgHash );
 	}
@@ -133,7 +134,7 @@ if (isset($_REQUEST['blog_content_id'])) {
 
 $gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 
-$gBitSmarty->assign( 'textarea_label', 'Post Content' );
+$gBitSmarty->assign( 'textarea_label', tra('Post Content') );
 
 // tweak title displayed for better usuability in browser history
 $gBitSystem->display( 'bitpackage:blogs/blog_post.tpl', $gContent->isValid() ? tra( "Edit Blog Post" ).": ".$gContent->getTitle() : tra( "Create Blog Post" ) , array( 'display_mode' => 'edit' ));

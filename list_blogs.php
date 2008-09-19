@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.17 2008/06/25 22:21:07 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.18 2008/09/19 01:34:36 laetzer Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -21,7 +21,11 @@ $gBitSystem->verifyPackage( 'blogs' );
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 
+$gBitSystem->setBrowserTitle(tra("View All Blogs"));
+
 if( $gContent->isValid() && isset($_REQUEST["remove"])) {
+	$gBitSystem->setBrowserTitle(tra("Delete Blog"));
+
 	// Check if has edit perm of this blog
 	$gContent->verifyPermission( 'p_blog_edit' );
 	if( !empty( $_REQUEST['cancel'] ) ) {
@@ -29,7 +33,12 @@ if( $gContent->isValid() && isset($_REQUEST["remove"])) {
 	} elseif( empty( $_REQUEST['confirm'] ) ) {
 		$formHash['remove'] = $_REQUEST["remove"];
 		$formHash['blog_id'] = $gContent->mBlogId;
-		$gBitSystem->confirmDialog( $formHash, array( 'warning' => 'Are you sure you want to delete the blog '.$gContent->getTitle().'?', 'error' => 'This cannot be undone!' ) );
+		$gBitSystem->confirmDialog( $formHash, 
+			array(
+				'warning' => tra('Are you sure you want to delete this blog?') . ' ' . $gContent->getTitle(), 
+				'error' => tra('This cannot be undone!'),
+			)
+		);
 	} else {
 		$gContent->expunge();
 	}
@@ -40,7 +49,6 @@ $blogsList = $gContent->getList( $_REQUEST );
 $gBitSmarty->assign( 'listInfo', $_REQUEST['listInfo'] );
 $gBitSmarty->assign_by_ref( 'blogsList', $blogsList );
 
-$gBitSystem->setBrowserTitle("View All Blogs");
 // Display the template
 $gBitSystem->display( 'bitpackage:blogs/list_blogs.tpl', NULL, array( 'display_mode' => 'list' ));
 
