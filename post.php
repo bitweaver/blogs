@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.63 2008/09/19 01:34:36 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.64 2008/10/03 17:20:15 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -34,7 +34,7 @@ if ( isset( $_REQUEST["blog_id"] ) ) {
 if( $gContent->isValid() ) {
 	$gContent->verifyEditPermission();
 } else {
-	$gBitSystem->verifyPermission( 'p_blogs_post' );
+	$gContent->verifyCreatePermission();
 }
 
 

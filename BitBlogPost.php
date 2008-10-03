@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.131 2008/06/23 21:56:12 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.132 2008/10/03 17:20:15 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.131 2008/06/23 21:56:12 squareing Exp $
+ * $Id: BitBlogPost.php,v 1.132 2008/10/03 17:20:15 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.131 $ $Date: 2008/06/23 21:56:12 $ $Author: squareing $
+ * @version $Revision: 1.132 $ $Date: 2008/10/03 17:20:15 $ $Author: wjames5 $
  */
 
 /**
@@ -50,7 +50,8 @@ class BitBlogPost extends LibertyMime {
 
 		// Permission setup
 		$this->mViewContentPerm  = 'p_blogs_view';
-		$this->mEditContentPerm  = 'p_blogs_post';
+		$this->mCreateContentPerm  = 'p_blogs_post';
+		$this->mEditContentPerm  = 'p_blogs_edit';
 		$this->mAdminContentPerm = 'p_blogs_admin';
 	}
 

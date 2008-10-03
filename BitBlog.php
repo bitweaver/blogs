@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.69 2008/06/05 21:32:42 wjames5 Exp $
- * @version  $Revision: 1.69 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.70 2008/10/03 17:20:15 wjames5 Exp $
+ * @version  $Revision: 1.70 $
  * @package blogs
  */
 
@@ -35,7 +35,8 @@ class BitBlog extends LibertyContent {
 
 		// Permission setup
 		$this->mViewContentPerm  = 'p_blogs_view';
-		$this->mEditContentPerm  = 'p_blogs_create';
+		$this->mEditContentPerm  = 'p_blogs_edit';
+		$this->mCreateContentPerm  = 'p_blogs_create';
 		$this->mAdminContentPerm = 'p_blogs_admin';
 	}
 
