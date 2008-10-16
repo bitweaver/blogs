@@ -3,7 +3,7 @@
 		{formlabel label="Publish Status" for="content_status_id"}
 		{forminput}
 			{html_options name="content_status_id" options=$gContent->getAvailableContentStatuses() selected=$gContent->getField('content_status_id',$smarty.const.BIT_CONTENT_DEFAULT_STATUS)}
+			{formhelp note="Select the appropriate status for your posting. To automatically publish your posting in the future, choose a publicly visible Publish Status and set the publish date ahead (see Advanded Options)."}
 		{/forminput}
-		{formhelp note="Select Public to publish your story. To automatically publish your story in the future, set the Publish Status to Public and set the publish date ahead. Click the Advanced tab above to set the publish data."}
 	</div>
 {/if}
