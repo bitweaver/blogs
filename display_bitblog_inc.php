@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.19 2008/06/25 22:21:07 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.20 2008/10/20 21:40:09 spiderr Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -44,7 +44,7 @@ if( $gContent->getField( 'blog_style' ) && $gBitSystem->getConfig('users_themes'
 }
  */
 
-if( !$gContent->hasEditPermission() ) {
+if( !$gContent->hasUpdatePermission() ) {
 	$gContent->addHit();
 }
 

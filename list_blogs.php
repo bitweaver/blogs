@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.19 2008/10/02 16:06:23 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/list_blogs.php,v 1.20 2008/10/20 21:40:09 spiderr Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -27,7 +27,7 @@ if( $gContent->isValid() && isset($_REQUEST["remove"])) {
 	$gBitSystem->setBrowserTitle(tra("Delete Blog"));
 
 	// Check if has edit perm of this blog
-	$gContent->verifyEditPermission();
+	$gContent->verifyUpdatePermission();
 	if( !empty( $_REQUEST['cancel'] ) ) {
 		// user cancelled - just continue on, doing nothing
 	} elseif( empty( $_REQUEST['confirm'] ) ) {

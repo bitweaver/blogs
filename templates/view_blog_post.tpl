@@ -34,7 +34,7 @@
 						<a title="{tr}Email This Post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="Email This Post"}</a>
 					{/if}
 
-					{if $gContent->hasEditPermission()}
+					{if $gContent->hasUpdatePermission()}
 						<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 					{/if}
 					{if $gContent->hasUserPermission( 'p_blogs_admin' )}

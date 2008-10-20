@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.64 2008/10/03 17:20:15 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.65 2008/10/20 21:40:09 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -32,7 +32,7 @@ if ( isset( $_REQUEST["blog_id"] ) ) {
 
 //must be owner or admin to edit an existing post
 if( $gContent->isValid() ) {
-	$gContent->verifyEditPermission();
+	$gContent->verifyUpdatePermission();
 } else {
 	$gContent->verifyCreatePermission();
 }

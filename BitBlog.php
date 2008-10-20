@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.70 2008/10/03 17:20:15 wjames5 Exp $
- * @version  $Revision: 1.70 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.71 2008/10/20 21:40:09 spiderr Exp $
+ * @version  $Revision: 1.71 $
  * @package blogs
  */
 
@@ -35,7 +35,7 @@ class BitBlog extends LibertyContent {
 
 		// Permission setup
 		$this->mViewContentPerm  = 'p_blogs_view';
-		$this->mEditContentPerm  = 'p_blogs_edit';
+		$this->mUpdateContentPerm  = 'p_blogs_update';
 		$this->mCreateContentPerm  = 'p_blogs_create';
 		$this->mAdminContentPerm = 'p_blogs_admin';
 	}
@@ -341,7 +341,7 @@ class BitBlog extends LibertyContent {
 		$ret = FALSE;
 		if( $this->isValid() ) {
 			// for now just check edit permission, however eventually we'll want to separate this notion so blog editors and posters can be distinguished
-			$ret = $this->hasEditPermission();
+			$ret = $this->hasUpdatePermission();
 		}
 		return $ret;
 	}

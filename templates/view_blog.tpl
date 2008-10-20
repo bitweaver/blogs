@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.23 2007/04/10 03:44:40 wjames5 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.24 2008/10/20 21:40:09 spiderr Exp $ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">
@@ -12,7 +12,7 @@
 			<a title="{tr}RSS feed{/tr}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$gContent->mBlogId}">{biticon ipackage="rss" iname="rss-16x16" iexplain="RSS feed"}</a>
 		{/if}
 
-		{if $gContent->hasEditPermission()}
+		{if $gContent->hasUpdatePermission()}
 			<a title="{tr}Edit blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$gContent->mBlogId}">{biticon ipackage="icons" iname="document-properties" iexplain="edit"}</a>
 		{/if}
 
@@ -24,7 +24,7 @@
 			{/if}
 		{/if}
 
-		{if ($gContent->hasEditPermission())}
+		{if ($gContent->hasUpdatePermission())}
 			<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?remove=1&amp;blog_id={$gContent->getField('blog_id')}">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
 		{/if}
 	</div>
