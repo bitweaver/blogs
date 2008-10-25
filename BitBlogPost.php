@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.133 2008/10/20 21:40:09 spiderr Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.134 2008/10/25 01:24:04 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.133 2008/10/20 21:40:09 spiderr Exp $
+ * $Id: BitBlogPost.php,v 1.134 2008/10/25 01:24:04 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.133 $ $Date: 2008/10/20 21:40:09 $ $Author: spiderr $
+ * @version $Revision: 1.134 $ $Date: 2008/10/25 01:24:04 $ $Author: wjames5 $
  */
 
 /**
@@ -377,6 +377,11 @@ class BitBlogPost extends LibertyMime {
 			$pParamHash['post_store']['expire_date'] = $pParamHash['expire_date'];
 		}else{
 			$pParamHash['post_store']['expire_date'] = $gBitSystem->getUTCTime();
+		}
+		
+		// if we have an error we get them all by checking parent classes for additional errors
+		if( count( $this->mErrors ) > 0 ){
+			parent::verify( $pParamHash );
 		}
 
 		return( count( $this->mErrors )== 0 );
