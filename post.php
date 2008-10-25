@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.65 2008/10/20 21:40:09 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.66 2008/10/25 01:22:03 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -85,6 +85,10 @@ if (isset($_REQUEST["preview"])) {
 } elseif (isset($_REQUEST['save_post']) || isset($_REQUEST['save_post_exit'])) {
 	// Editing page needs general ticket verification
 	$gBitUser->verifyTicket();
+
+	// preserve a copy of the request data because if store fails we need to reprocess 
+	$requestCopy = $_REQUEST;
+
 	if( $gContent->store( $_REQUEST ) ) {
 		$postid = $gContent->mPostId;
 		$gBitSmarty->assign('post_id', $gContent->mPostId);
@@ -99,7 +103,13 @@ if (isset($_REQUEST["preview"])) {
 		$gBitSmarty->assign( 'title', $gContent->getTitle('title') );
 		$gBitSmarty->assign( 'trackbacks_to', explode(',', $gContent->getField('trackbacks_to')) );
 		$gBitSmarty->assign( 'parsed_data', $parsed_data );
+	} else {
+		$post = $gContent->preparePreview( $requestCopy );
+		$gContent->invokeServices( 'content_preview_function' );
+		$gBitSmarty->assign_by_ref( 'post_info', $post );
+		$gBitSmarty->assign('parsed_data', $post['parsed_data']);	
 	}
+} elseif( !empty( $_REQUEST['edit'] ) ) {
 } else {
 	$gContent->invokeServices( 'content_edit_function' );
 	if( $gContent->isValid() && $gContent->getContentStatus() == -5 && $gContent->getField('publish_date') < $gBitSystem->getUTCTime() ){
