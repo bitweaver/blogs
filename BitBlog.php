@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.71 2008/10/20 21:40:09 spiderr Exp $
- * @version  $Revision: 1.71 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.72 2008/10/28 01:27:53 wjames5 Exp $
+ * @version  $Revision: 1.72 $
  * @package blogs
  */
 
@@ -137,6 +137,11 @@ class BitBlog extends LibertyContent {
 		$pParamHash['blog_store']['use_title'] = isset( $pParamHash['use_title'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['allow_comments'] = isset( $pParamHash['allow_comments'] ) ? 'y' : 'n';
 		$pParamHash['blog_store']['use_find'] = isset( $pParamHash['use_find'] ) ? 'y' : 'n';
+
+		// if we have an error we get them all by checking parent classes for additional errors
+		if( count( $this->mErrors ) > 0 ){
+			parent::verify( $pParamHash );
+		}
 
 		return( count( $this->mErrors ) == 0 );
 	}
