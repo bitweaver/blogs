@@ -1,6 +1,6 @@
 <?php
 /**
- * @version  $Revision: 1.1 $
+ * @version  $Revision: 1.2 $
  * @package  liberty
  * @subpackage plugins_data
  */
@@ -18,7 +18,7 @@
 // | by: wjames5
 // | Reworked from: data.articles.php from wikiplugin_articles.php
 // +----------------------------------------------------------------------+
-// $Id: data.blog.php,v 1.1 2008/07/08 06:54:18 squareing Exp $
+// $Id: data.blog.php,v 1.2 2008/11/09 09:08:55 squareing Exp $
 
 /**
  * definitions
@@ -38,8 +38,6 @@ $pluginParams = array (
 	'help_page' => 'DataPluginBlog',
 	'description' => tra( "This plugin will display several posts from a blog." ),
 	'syntax' => "{BLOG id= user= max= format= }",
-	'path' => LIBERTY_PKG_PATH.'plugins/data.blog.php',
-	'security' => 'registered',
 	'plugin_type' => DATA_PLUGIN
 );
 $gLibertySystem->registerPlugin( PLUGIN_GUID_DATABLOG, $pluginParams );
