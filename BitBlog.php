@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.72 2008/10/28 01:27:53 wjames5 Exp $
- * @version  $Revision: 1.72 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.73 2008/11/18 23:11:20 pppspoonman Exp $
+ * @version  $Revision: 1.73 $
  * @package blogs
  */
 
@@ -289,7 +289,10 @@ class BitBlog extends LibertyContent {
 			}
 
 		$query = "
-			SELECT b.`content_id` AS `hash_key`, b.*, uu.`login`, uu.`real_name`, lc.*, lch.hits $selectSql
+			SELECT b.`content_id` AS `hash_key`,
+				b.`blog_id`, b.`is_public`, b.`max_posts`, b.`activity`, b.`use_find`, b.`use_title`,
+				b.`add_date`, b.`add_poster`, b.`allow_comments`,
+				uu.`login`,	uu.`real_name`, lc.*, lch.hits $selectSql
 			FROM `".BIT_DB_PREFIX."blogs` b
 				INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
 				INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)

@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.134 2008/10/25 01:24:04 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.135 2008/11/18 23:11:20 pppspoonman Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.134 2008/10/25 01:24:04 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.135 2008/11/18 23:11:20 pppspoonman Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.134 $ $Date: 2008/10/25 01:24:04 $ $Author: wjames5 $
+ * @version $Revision: 1.135 $ $Date: 2008/11/18 23:11:20 $ $Author: pppspoonman $
  */
 
 /**
@@ -919,8 +919,9 @@ class BitBlogPost extends LibertyMime {
 		
 		$query = "
 			SELECT
-				bp.*, lc.*, lch.`hits`, lcds.`data` AS `summary`, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
-				uu.`user_id`, uu.`email`, uu.`login`, uu.`real_name`, ulf.`storage_path` as avatar,  lf.storage_path AS `image_attachment_path`
+				bp.`post_id`, bp.`publish_date`, bp.`expire_date`, bp.`trackbacks_to`, bp.`trackbacks_from`, 
+				lc.*, lch.`hits`, lcds.`data` AS `summary`, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
+				uu.`email`, uu.`login`, uu.`real_name`, ulf.`storage_path` as avatar,  lf.storage_path AS `image_attachment_path`
 				$selectSql
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
 				INNER JOIN      `".BIT_DB_PREFIX."liberty_content`       lc ON lc.`content_id`         = bp.`content_id`
