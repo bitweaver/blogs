@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.php,v 1.9 2008/08/26 19:09:00 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.php,v 1.10 2008/11/24 23:29:57 pppspoonman Exp $
  * @package blogs
  * @subpackage modules
  */
@@ -29,6 +29,6 @@ if( @BitBase::verifyId( $module_params['group_id'] ) ) {
 $blog = new BitBlog();
 $ranking = $blog->getList( $listHash );
 
-$gBitSmarty->assign('modTopVisitedBlogs', $ranking["data"]);
+$gBitSmarty->assign('modTopVisitedBlogs', $ranking);
 $gBitSmarty->assign('bulletSrc', isset($params["bullet"]) ? $params['bullet'] : NULL);
 ?>
