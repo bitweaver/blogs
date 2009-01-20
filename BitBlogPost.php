@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.135 2008/11/18 23:11:20 pppspoonman Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.136 2009/01/20 19:30:14 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.135 2008/11/18 23:11:20 pppspoonman Exp $
+ * $Id: BitBlogPost.php,v 1.136 2009/01/20 19:30:14 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.135 $ $Date: 2008/11/18 23:11:20 $ $Author: pppspoonman $
+ * @version $Revision: 1.136 $ $Date: 2009/01/20 19:30:14 $ $Author: wjames5 $
  */
 
 /**
@@ -88,7 +88,10 @@ class BitBlogPost extends LibertyMime {
 				$this->mPostId = $this->mInfo['post_id'];
 				$this->mContentId = $this->mInfo['content_id'];
 				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
+				// this is bad news right here, 'url' is wrong, standard is 'display_url'
+				// we should remove this now that display_url is added
 				$this->mInfo['url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
+				$this->mInfo['display_url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
 				$this->mInfo['thumbnail_url'] = BitBlogPost::getImageThumbnails( $this->mInfo );
 				$this->mInfo['avatar'] = liberty_fetch_thumbnail_url( array(
 					'storage_path' => $this->mInfo['avatar'],

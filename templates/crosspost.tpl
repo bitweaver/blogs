@@ -124,7 +124,7 @@
 			</div> <!-- end .body -->
 			
 			<div class="footer">
-				<a href="{$post_info.url}" rel="bookmark">{tr}Permalink{/tr}</a>
+				<a href="{$post_info.display_url}" rel="bookmark">{tr}Permalink{/tr}</a>
 				{tr}referenced by{/tr} {$post_info.trackbacks_from_count} {tr}posts{/tr} | {tr}references{/tr} {$post_info.trackbacks_to_count} {tr}posts{/tr}
 				{if $post_info.allow_comments eq 'y' and $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
 					| {$post_info.num_comments} {tr}comments{/tr}

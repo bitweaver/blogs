@@ -105,7 +105,7 @@
 	</div> <!-- end .body -->
 
 	<div class="footer">		
-		<a href="{$post_info.url}" rel="bookmark">{tr}Permalink{/tr}</a>
+		<a href="{$post_info.display_url}" rel="bookmark">{tr}Permalink{/tr}</a>
 		{assign var=spacer value=TRUE}
 		{if $post_info.trackbacks_from_count > 0}
 			{if $spacer}&nbsp; &bull; &nbsp;{/if}
