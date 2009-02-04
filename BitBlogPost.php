@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.136 2009/01/20 19:30:14 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.137 2009/02/04 02:54:59 tekimaki_admin Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.136 2009/01/20 19:30:14 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.137 2009/02/04 02:54:59 tekimaki_admin Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.136 $ $Date: 2009/01/20 19:30:14 $ $Author: wjames5 $
+ * @version $Revision: 1.137 $ $Date: 2009/02/04 02:54:59 $ $Author: tekimaki_admin $
  */
 
 /**
@@ -678,6 +678,10 @@ class BitBlogPost extends LibertyMime {
 		$ret = NULL;
 		if( empty( $pContentId ) && $this->isValid() ) {
 			$pContentId = $this->mContentId;
+			// if we have a post id we'll use it. we should, but nice to check
+			if( !empty( $this->mPostId ) ){
+				$pParamHash['post_id'] = $this->mPostId;
+			}
 		}
 
 		if( !@BitBase::verifyId( $pContentId ) && @BitBase::verifyId( $pParamHash['content_id'] )) {
