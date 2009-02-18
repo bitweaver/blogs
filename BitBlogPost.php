@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.137 2009/02/04 02:54:59 tekimaki_admin Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.138 2009/02/18 17:38:43 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.137 2009/02/04 02:54:59 tekimaki_admin Exp $
+ * $Id: BitBlogPost.php,v 1.138 2009/02/18 17:38:43 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.137 $ $Date: 2009/02/04 02:54:59 $ $Author: tekimaki_admin $
+ * @version $Revision: 1.138 $ $Date: 2009/02/18 17:38:43 $ $Author: wjames5 $
  */
 
 /**
@@ -628,11 +628,6 @@ class BitBlogPost extends LibertyMime {
 		//$this->load();
 		if( $this->isValid() ) {
 			$this->mDb->StartTrans();
-			// First kill any comments which belong to this post
-			 foreach($this->mInfo['comments'] as $comment) {
-				$tmpComment = new LibertyComment($comment['comment_id']);
-				$tmpComment->deleteComment();
-			}
 
 			// remove all references in blogs_posts_map where post_content_id = content_id
 			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id` = ?";
