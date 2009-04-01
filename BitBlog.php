@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.73 2008/11/18 23:11:20 pppspoonman Exp $
- * @version  $Revision: 1.73 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.74 2009/04/01 00:38:34 spiderr Exp $
+ * @version  $Revision: 1.74 $
  * @package blogs
  */
 
@@ -194,19 +194,23 @@ class BitBlog extends LibertyContent {
 		return $ret;
 	}
 
-	function get_random_blog_post($blog_id = NULL, $load_comments = FALSE) {
+	function getPost( $pListHash=array() ) {
 		$ret = NULL;
 		$bindVars = array();
+	
+		$blogId = (!empty( $pListHash['blog_id'] ) ? $pListHash['blog_id'] : $this->mBlogId);
 
-		if ( $this->verifyId( $blog_id ) ) {
-			$sql = "SELECT `post_id` FROM `".BIT_DB_PREFIX."blog_posts` WHERE `blog_id` = ?";
-			$rs = $this->mDb->query($sql, array($blog_id));
-			$rows = $rs->getRows();
-			$numPosts = count($rows);
-			if ($numPosts > 0) {
-				$post_id = $rows[rand(0, $numPosts-1)]['post_id'];	// Get a random post_id array index
-				$blogPost = new BitBlogPost( $post_id );
-				$blogPost->load($load_comments);
+		if ( BitBase::verifyId( $blogId ) ) {
+			$this->prepGetList( $pListHash );
+			$sql = "SELECT bp.`post_id` 
+					FROM `".BIT_DB_PREFIX."blog_posts` bp 
+						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id`=bp.`content_id`) 
+						INNER JOIN `".BIT_DB_PREFIX."blogs_posts_map` bpm ON (bp.`content_id`=bpm.`post_content_id`)
+						INNER JOIN `".BIT_DB_PREFIX."blogs` b on (bpm.`blog_content_id`=b.`content_id`)
+					WHERE b.`blog_id` = ? ORDER BY ".$this->mDb->convertSortMode( $pListHash['sort_mode'] );
+			if( $postId = $this->mDb->getOne($sql, array( $blogId ) ) ) {
+				$blogPost = new BitBlogPost( $postId );
+				$blogPost->load( !empty( $pListHash['load_comments'] ) );
 				$ret = $blogPost;
 			}
 		}
