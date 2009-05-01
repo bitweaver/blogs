@@ -90,7 +90,7 @@
 						{/if}
 
 						{if $gBitSystem->isFeatureActive( 'blog_list_lastmodif' )}
-							{tr}Last Modified {$listBlog.last_modified|bit_short_datetime}{/tr}
+							{tr}Last Modified{/tr} {$listBlog.last_modified|bit_short_datetime}
 						{/if}
 					</div>
 
