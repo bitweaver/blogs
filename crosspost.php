@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.7 2008/09/19 01:34:36 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.8 2009/05/04 09:48:42 lsces Exp $
  * @package blogs
  * @subpackage functions
  * 
@@ -43,7 +43,7 @@ if( !empty( $_REQUEST['action']) && ($_REQUEST['action'] == 'remove') && $gConte
 			$feedback['error'] = $gContent->mErrors;
 		}
 	}else{
-		$gBitSystem->setBrowserTitle( tra('Confirm removal of') . ' ' . $gContent->getTitle(); // crossposting from Blog \''.'addblognamehere'.'\'' );		
+		$gBitSystem->setBrowserTitle( tra('Confirm removal of') . ' ' . $gContent->getTitle()); // crossposting from Blog \''.'addblognamehere'.'\'' );		
 		$formHash['remove'] = TRUE;
 		$formHash['action'] = 'remove';
 		$formHash['post_id'] = $_REQUEST['post_id'];
@@ -51,7 +51,7 @@ if( !empty( $_REQUEST['action']) && ($_REQUEST['action'] == 'remove') && $gConte
 		$msgHash = array(
 			'label' => 'Remove Crossposting of Blog Post:',
 			'confirm_item' => $gContent->getTitle(),
-			'warning' => tra('This will remove the crossposting of the above blog post.') // from the blog \''.'addblognamehere'.'\'),
+			'warning' => tra('This will remove the crossposting of the above blog post.'), // from the blog \''.'addblognamehere'.'\'),
 			'error' => tra('This cannot be undone!'),
 		);
 		$gBitSystem->confirmDialog( $formHash, $msgHash );
