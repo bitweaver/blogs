@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.139 2009/04/21 20:23:11 tekimaki_admin Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.140 2009/07/15 19:17:52 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: BitBlogPost.php,v 1.139 2009/04/21 20:23:11 tekimaki_admin Exp $
+ * $Id: BitBlogPost.php,v 1.140 2009/07/15 19:17:52 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.139 $ $Date: 2009/04/21 20:23:11 $ $Author: tekimaki_admin $
+ * @version $Revision: 1.140 $ $Date: 2009/07/15 19:17:52 $ $Author: spiderr $
  */
 
 /**
@@ -905,6 +905,10 @@ class BitBlogPost extends LibertyMime {
 					$sortModePrefix = 'uu.';
 					$pListHash['sort_mode'] = 'real_name_asc';
 					break;
+				case 'registration_date_desc':
+					$sortModePrefix = 'uu.';
+					$pListHash['sort_mode'] = 'registration_date_desc';
+					break;
 				case 'creator_real_name_desc':
 				case 'modifier_real_name_desc':
 					$sortModePrefix = 'uu.';
@@ -953,11 +957,10 @@ class BitBlogPost extends LibertyMime {
 		# Check for offset out of range
 		if ( $pListHash['offset'] < 0 ) {
 			$pListHash['offset'] = 0;
-			}
-		elseif ( $pListHash['offset']	> $pListHash["cant"] ) {
+		} elseif ( $pListHash['offset']	> $pListHash["cant"] ) {
 			$lastPageNumber = ceil ( $pListHash["cant"] / $pListHash['max_records'] ) - 1;
 			$pListHash['offset'] = $pListHash['max_records'] * $lastPageNumber;
-			}
+		}
 
 
 		$result = $this->mDb->query($query,$bindVars,$pListHash['max_records'],$pListHash['offset']);
