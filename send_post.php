@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.22 2008/10/02 16:06:23 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.23 2009/07/28 14:07:06 spiderr Exp $
 
  * @package blogs
  * @subpackage functions
@@ -9,6 +9,9 @@
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+
+// Make sure all defines get created as fully qualified URI's
+$_REQUEST['uri_mode'] = TRUE;
 
 /**
  * required setup
