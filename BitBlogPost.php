@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.141 2009/08/20 17:48:28 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.142 2009/10/01 13:45:31 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
- * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: BitBlogPost.php,v 1.141 2009/08/20 17:48:28 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.142 2009/10/01 13:45:31 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.141 $ $Date: 2009/08/20 17:48:28 $ $Author: wjames5 $
+ * @version $Revision: 1.142 $ $Date: 2009/10/01 13:45:31 $ $Author: wjames5 $
  */
 
 /**

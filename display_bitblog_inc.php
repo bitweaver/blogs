@@ -1,12 +1,12 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.20 2008/10/20 21:40:09 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/display_bitblog_inc.php,v 1.21 2009/10/01 13:45:31 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  * 
  * @copyright Copyright (c) 2004-2006, bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
- * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
  */
 
 /**
