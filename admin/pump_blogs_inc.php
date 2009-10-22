@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/admin/pump_blogs_inc.php,v 1.1 2007/07/09 13:16:10 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/admin/pump_blogs_inc.php,v 1.2 2009/10/22 01:36:17 wjames5 Exp $
  * @package install
  * @subpackage pumps
  */
@@ -19,7 +19,7 @@ $pageHash = array(
 		'use_title' => 'y',
 		'max_posts' => '10',
 		'use_title' => 'on',
-		'ust_find' => 'on',		
+		'use_find' => 'on',		
 		'allow_comments' => 'on',
 );
 
