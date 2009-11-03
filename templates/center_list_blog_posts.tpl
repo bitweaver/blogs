@@ -1,5 +1,5 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.10 2008/08/27 18:31:32 laetzer Exp $ *}
-{if $blogPosts || $showEmpty}
+{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.tpl,v 1.11 2009/11/03 15:41:42 wjames5 Exp $ *}
+{if !( $smarty.request.home && $gBitSystem->isFeatureActive('blog_hide_empty_usr_list') ) }
 <div class="floaticon">{bithelp}</div>
 
 <div class="display blogs">

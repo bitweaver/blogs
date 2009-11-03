@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.34 2009/09/02 17:41:56 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.35 2009/11/03 15:41:42 wjames5 Exp $
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
@@ -98,7 +98,6 @@ $listHash['min_owner_status_id'] = 0;
 $blogPost->invokeServices( 'content_list_function', $listHash );
 $blogPosts = $blogPost->getList( $listHash );
 $gBitSmarty->assign( 'paginationPath', $paginationPath );
-$gBitSmarty->assign( 'showEmpty', !empty( $moduleParams['module_params']['show_empty'] ) );
 $gBitSmarty->assign_by_ref( 'gQueryUserId', $listHash['user_id'] );
 $gBitSmarty->assign_by_ref( 'blogPosts', $blogPosts["data"] );
 $gBitSmarty->assign( 'listInfo', $blogPosts['listInfo'] );

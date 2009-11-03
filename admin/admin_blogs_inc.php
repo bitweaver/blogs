@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.22 2008/04/01 21:57:13 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.23 2009/11/03 15:41:42 wjames5 Exp $
 
 // get a list of blogs for the selection of the home blog
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );
@@ -68,6 +68,10 @@ $formBlogFeatures = array(
 	"blog_show_image" => array(
 		'label' => 'Auto Display Primary Attachment',
 		'note' => 'Blog posts can automatically display any attachment, typically an image, that is marked as the "Primary Attachment" during editing. This is especially useful for automatically inserting a photograph into a post.',
+	),
+	"blog_hide_empty_usr_list" => array(
+		'label' => 'Hide empty blog message on user pages',
+		'note' => 'Enable to hide the "No Records Found" on user\'s blog rolls',	
 	),
 );
 $gBitSmarty->assign( 'formBlogFeatures',$formBlogFeatures );
