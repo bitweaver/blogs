@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.68 2009/10/01 14:16:58 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.69 2009/11/22 15:11:49 lsces Exp $
 
  * @package blogs
  * @subpackage functions
@@ -111,7 +111,7 @@ if (isset($_REQUEST["preview"])) {
 	}
 } elseif( !empty( $_REQUEST['edit'] ) ) {
 } else {
-	$gContent->invokeServices( 'content_edit_function' );
+	$gBlog->invokeServices( 'content_edit_function' );
 	if( $gContent->isValid() && $gContent->getContentStatus() == -5 && $gContent->getField('publish_date') < $gBitSystem->getUTCTime() ){
 		/* if we are working with a draft and a future publish date is not set 
 		 * then we automatically move the publish date up to NOW to help users from publishing in the past.
