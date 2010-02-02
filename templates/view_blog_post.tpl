@@ -52,13 +52,13 @@
 			<div class="navigation">
 				{if $gContent_previous}
 					<span class="left">
-						Previous: <a href="{$gContent_previous->getDisplayUrl()}">{$gContent_previous->mInfo.title|escape}</a>
+						Previous: <a href="{$gContent_previous->getDisplayUrl()}">{$gContent_previous->getTitle()|escape}</a>
 					</span>
 				{/if}
 
 				{if $gContent_next}
 					<span class="right">
-						Next: <a href="{$gContent_next->getDisplayUrl()}">{$gContent_next->mInfo.title|escape}</a>
+						Next: <a href="{$gContent_next->getDisplayUrl()}">{$gContent_next->getTitle()|escape}</a>
 					</span>
 				{/if}
 			</div>
