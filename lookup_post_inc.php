@@ -7,7 +7,7 @@
 /**
  * Initial Setup
  */
-global $gContent; //, $gBitSmarty;
+global $gContent; 
 require_once( BLOGS_PKG_PATH.'BitBlogPost.php');
 require_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
 
