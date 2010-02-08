@@ -17,7 +17,7 @@
  * You need to have liberty_allow_change_owner on for post ownership to work right. Otherwise all posts will be owned by admin.
  */
 
-require_once( '../../bit_setup_inc.php' );
+require_once( '../../kernel/setup_inc.php' );
 
 require_once(USERS_PKG_PATH.'BitUser.php');
 require_once(BLOGS_PKG_PATH.'BitBlog.php');

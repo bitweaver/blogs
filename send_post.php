@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.26 2009/10/01 14:16:58 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/send_post.php,v 1.27 2010/02/08 21:27:21 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -16,7 +16,7 @@ $_REQUEST['uri_mode'] = TRUE;
 /**
  * required setup
  */
-require_once( '../bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.23 2009/10/01 14:16:58 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/view.php,v 1.24 2010/02/08 21:27:21 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( '../bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 
 include_once( BLOGS_PKG_PATH.'display_bitblog_inc.php' );
 ?>

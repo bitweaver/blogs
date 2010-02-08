@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.70 2009/11/22 15:29:44 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/post.php,v 1.71 2010/02/08 21:27:21 wjames5 Exp $
 
  * @package blogs
  * @subpackage functions
@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( '../bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 

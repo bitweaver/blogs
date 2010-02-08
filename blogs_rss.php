@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.26 2008/06/19 19:33:50 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/blogs_rss.php,v 1.27 2010/02/08 21:27:21 wjames5 Exp $
  * @package blogs
  * @subpackage functions
  */
@@ -8,7 +8,7 @@
 /**
  * Initialization
  */
-require_once( "../bit_setup_inc.php" );
+require_once( "../kernel/setup_inc.php" );
 
 $gBitSystem->verifyPackage( 'rss' );
 $gBitSystem->verifyPackage( 'blogs' );
