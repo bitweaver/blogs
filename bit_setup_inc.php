@@ -29,7 +29,7 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 			BLOGS_PKG_NAME, 
 			array( 'module_display_function'  => 'blogs_module_display', ), 
 			array( 
-				'description' => tra( 'A module display service which helps hook in javascript necessary when using the center module on other pages. This is a temporary fix to address a limitation of the rendering order in BitThemes' ),
+				'description' => tra( 'A module display service which helps hook in javascript necessary when using the center module on other pages. This is a temporary fix to address a limitation of the rendering order in BitThemes and only applies to blog content.' ),
 				'required' => TRUE,
 			)
 		);
