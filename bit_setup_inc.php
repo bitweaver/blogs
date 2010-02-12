@@ -2,8 +2,9 @@
 /**
  * @package blogs
  */
-
 global $gBitSystem, $gBitUser, $gBitSmarty;
+
+define( 'LIBERTY_SERVICE_BLOGS', 'blogs' );
 
 $registerHash = array(
 	'package_name' => 'blogs',
@@ -23,9 +24,15 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 		);
 		$gBitSystem->registerAppMenu( $menuHash );
 
-		$gLibertySystem->registerService( LIBERTY_SERVICE_BLOGS, BLOGS_PKG_NAME, array(
-			'module_display_function'  => 'blogs_module_display',
-		) );
+		$gLibertySystem->registerService( 
+			LIBERTY_SERVICE_BLOGS, 
+			BLOGS_PKG_NAME, 
+			array( 'module_display_function'  => 'blogs_module_display', ), 
+			array( 
+				'description' => tra( 'A module display service which helps hook in javascript necessary when using the center module on other pages. This is a temporary fix to address a limitation of the rendering order in BitThemes' ),
+				'required' => TRUE,
+			)
+		);
 	}
 
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
