@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.11 2010/02/08 21:27:21 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/recent_posts.php,v 1.12 2010/03/07 01:55:59 wjames5 Exp $
  * 
  * @package blogs
  * @subpackage functions
@@ -17,7 +17,6 @@ $gBitSystem->verifyPackage( 'blogs' );
 require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
 
 // Now check permissions to access this page
-// DEPRECATED $gBitSystem->verifyPermission( 'p_blogs_view' );
 $gContent->verifyViewPermission();
 
 if ( $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascriptEnabled() ){
