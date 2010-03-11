@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.143 2009/10/01 14:16:58 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.144 2010/03/11 04:42:18 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: BitBlogPost.php,v 1.143 2009/10/01 14:16:58 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.144 2010/03/11 04:42:18 spiderr Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.143 $ $Date: 2009/10/01 14:16:58 $ $Author: wjames5 $
+ * @version $Revision: 1.144 $ $Date: 2010/03/11 04:42:18 $ $Author: spiderr $
  */
 
 /**
@@ -966,7 +966,7 @@ class BitBlogPost extends LibertyMime {
 		$result = $this->mDb->query($query,$bindVars,$pListHash['max_records'],$pListHash['offset']);
 		$ret = array();
 
-		$comment = &new LibertyComment();
+		$comment = new LibertyComment();
 		while ($res = $result->fetchRow()) {
 			$res['no_fatal'] = TRUE;
 			$accessError = $this->invokeServices( 'content_verify_access', $res, FALSE );
