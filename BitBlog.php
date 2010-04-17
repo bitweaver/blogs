@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.74 2009/04/01 00:38:34 spiderr Exp $
- * @version  $Revision: 1.74 $
+ * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.75 2010/04/17 22:46:07 wjames5 Exp $
+ * @version  $Revision: 1.75 $
  * @package blogs
  */
 
@@ -24,7 +24,7 @@ class BitBlog extends LibertyContent {
 		parent::LibertyContent( $pContentId );
 		$this->registerContentType( BITBLOG_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBLOG_CONTENT_TYPE_GUID,
-			'content_description' => 'Blog',
+			'content_name' => 'Blog',
 			'handler_class' => 'BitBlog',
 			'handler_package' => 'blogs',
 			'handler_file' => 'BitBlog.php',

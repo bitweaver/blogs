@@ -1,12 +1,12 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.145 2010/04/17 03:45:07 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_blogs/BitBlogPost.php,v 1.146 2010/04/17 22:46:07 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id: BitBlogPost.php,v 1.145 2010/04/17 03:45:07 wjames5 Exp $
+ * $Id: BitBlogPost.php,v 1.146 2010/04/17 22:46:07 wjames5 Exp $
  *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
@@ -16,7 +16,7 @@
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
- * @version $Revision: 1.145 $ $Date: 2010/04/17 03:45:07 $ $Author: wjames5 $
+ * @version $Revision: 1.146 $ $Date: 2010/04/17 22:46:07 $ $Author: wjames5 $
  */
 
 /**
@@ -38,7 +38,7 @@ class BitBlogPost extends LibertyMime {
 		LibertyMime::LibertyMime();
 		$this->registerContentType( BITBLOGPOST_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBLOGPOST_CONTENT_TYPE_GUID,
-			'content_description' => 'Blog Post',
+			'content_name' => 'Blog Post',
 			'handler_class' => 'BitBlogPost',
 			'handler_package' => 'blogs',
 			'handler_file' => 'BitBlogPost.php',

@@ -126,4 +126,8 @@ $gBitInstaller->registerContentObjects( BLOGS_PKG_NAME, array(
 	'BitBlogPost'=>BLOGS_PKG_PATH.'BitBlogPost.php'
 ));
 
-?>
+// Requirements
+$gBitInstaller->registerRequirements( BLOGS_PKG_NAME, array(
+	'liberty' => array( 'min' => '2.1.4' ),
+));
+
