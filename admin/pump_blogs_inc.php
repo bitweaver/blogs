@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/admin/pump_blogs_inc.php,v 1.2 2009/10/22 01:36:17 wjames5 Exp $
+ * @version $Header$
  * @package install
  * @subpackage pumps
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/templates/center_list_blog_posts.php,v 1.35 2009/11/03 15:41:42 wjames5 Exp $
+ * @version $Header$
  * @package bitweaver
  */
 global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;

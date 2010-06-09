@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/crosspost.php,v 1.11 2010/02/08 21:27:21 wjames5 Exp $
+ * @version $Header$
  * @package blogs
  * @subpackage functions
  * 

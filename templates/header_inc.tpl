@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/header_inc.tpl,v 1.14 2008/07/16 08:18:52 huyderman Exp $ *}
+{* $Header$ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'rss' ) and $gBitSystem->isFeatureActive( 'blogs_rss' ) and $smarty.const.ACTIVE_PACKAGE eq 'blogs' and $gBitUser->hasPermission( 'p_blogs_view' )}
 	{if isset($gContent->mBlogId)}

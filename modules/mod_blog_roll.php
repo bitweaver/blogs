@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_blog_roll.php,v 1.1 2009/04/01 00:38:34 spiderr Exp $
+ * @version $Header$
  * @package blogs
  * @subpackage modules
  */

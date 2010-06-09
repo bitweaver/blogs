@@ -1,7 +1,7 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/BitBlog.php,v 1.75 2010/04/17 22:46:07 wjames5 Exp $
- * @version  $Revision: 1.75 $
+ * @version $Header$
+ * @version  $Revision$
  * @package blogs
  */
 

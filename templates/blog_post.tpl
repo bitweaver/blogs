@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/blog_post.tpl,v 1.37 2009/01/20 22:18:06 dansut Exp $ *}
+{* $Header$ *}
 {strip}
 <div class="edit blogs">
 	<div class="header">

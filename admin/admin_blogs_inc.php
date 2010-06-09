@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_blogs/admin/admin_blogs_inc.php,v 1.23 2009/11/03 15:41:42 wjames5 Exp $
+// $Header$
 
 // get a list of blogs for the selection of the home blog
 require_once( BLOGS_PKG_PATH.'BitBlog.php' );

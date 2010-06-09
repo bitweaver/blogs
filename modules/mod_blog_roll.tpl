@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_blog_roll.tpl,v 1.1 2009/04/01 00:38:34 spiderr Exp $ *}
+{* $Header$ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'blogs' ) && $modBlogs}
 	{bitmodule title="$moduleTitle" name="blog_roll"}

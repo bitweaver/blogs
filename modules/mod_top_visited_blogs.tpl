@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.tpl,v 1.6 2008/11/24 23:29:57 pppspoonman Exp $ *}
+{* $Header$ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'blogs' )}
 	{if $nonums eq 'y'}

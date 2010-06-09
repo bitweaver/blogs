@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/list_posts.tpl,v 1.4 2008/08/01 02:10:39 laetzer Exp $ *}
+{* $Header$ *}
 {strip}
 <ul class="blogs">
 	{section name=ix loop=$blogPosts}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_visited_blogs.php,v 1.10 2008/11/24 23:29:57 pppspoonman Exp $
+ * @version $Header$
  * @package blogs
  * @subpackage modules
  */

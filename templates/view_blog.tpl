@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/templates/view_blog.tpl,v 1.24 2008/10/20 21:40:09 spiderr Exp $ *}
+{* $Header$ *}
 {strip}
 <div class="display blogs">
 	<div class="floaticon">

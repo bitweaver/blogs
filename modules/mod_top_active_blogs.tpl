@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_top_active_blogs.tpl,v 1.6 2006/04/11 13:03:38 squareing Exp $ *}
+{* $Header$ *}
 {strip}
 {if $gBitSystem->isPackageActive( 'blogs' ) && $gBitUser->hasPermission( 'p_blogs_view' )}
 	{if $nonums eq 'y'}

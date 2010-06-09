@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_blogs/modules/mod_last_created_blogs.php,v 1.8 2007/05/05 05:56:54 spiderr Exp $
+ * @version $Header$
  * @package blogs
  * @subpackage modules
  */
