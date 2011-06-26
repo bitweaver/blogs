@@ -16,7 +16,7 @@ define( 'BITBLOG_CONTENT_TYPE_GUID', 'bitblog' );
 /**
  * @package blogs
  */
-class BitBlog extends LibertyContent {
+class BitBlog extends LibertyMime {
 	var $mBlogId;
 
 	function BitBlog( $pBlogId=NULL, $pContentId=NULL ) {
@@ -82,19 +82,10 @@ class BitBlog extends LibertyContent {
 	}
 
 	function load() {
-		$this->mInfo = $this->getBlog( $this->mBlogId, $this->mContentId );
-		$this->mContentId = $this->getField( 'content_id' );
-		$this->mBlogId = $this->getField('blog_id');
-	}
-
-
-	/*shared*/
-	function getBlog( $pBlogId, $pContentId = NULL ) {
 		global $gBitSystem;
-		$ret = NULL;
 
-		$lookupId = (!empty( $pBlogId ) ? $pBlogId : $pContentId);
-		$lookupColumn = (!empty( $pBlogId ) ? 'blog_id' : 'content_id');
+		$lookupId = (!empty( $this->mBlogId ) ? $this->mBlogId : $this->mContentId);
+		$lookupColumn = (!empty( $this->mBlogId ) ? 'blog_id' : 'content_id');
 
 		$bindVars = array( (int)$lookupId );
 		$selectSql = ''; $joinSql = ''; $whereSql = '';
@@ -102,32 +93,34 @@ class BitBlog extends LibertyContent {
 
 		if ( BitBase::verifyId( $lookupId ) ) {
 			$query = "
-				SELECT b.*, lc.*, lch.`hits`, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`, lf.`storage_path` as avatar $selectSql
+				SELECT b.*, lc.*, lch.`hits`, uu.`login`, uu.`login`, uu.`user_id`, uu.`real_name`,
+					lfa.`file_name` as `avatar_file_name`, lfa.`mime_type` AS `avatar_mime_type`, laa.`attachment_id` AS `avatar_attachment_id`,
+					lfp.`file_name` AS `image_file_name`, lfp.`mime_type` AS `image_mime_type`, lap.`attachment_id` AS `image_attachment_id`
+					$selectSql
 				FROM `".BIT_DB_PREFIX."blogs` b
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = b.`content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON (uu.`user_id` = lc.`user_id`)
 					$joinSql
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON (lc.`content_id` = lch.`content_id`)
-					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
-					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`	laa ON (uu.`user_id` = laa.`user_id` AND laa.`attachment_id` = uu.`avatar_attachment_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`	    lfa ON lfa.`file_id`		   = laa.`foreign_id`
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`  lap ON lap.`content_id`        = lc.`content_id` AND lap.`is_primary` = 'y'
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`        lfp ON lfp.`file_id`           = lap.`foreign_id`
 				WHERE b.`$lookupColumn`= ? $whereSql";
-			// this was the last line in the query - tiki_user_preferences is DEAD DEAD DEAD!!!
-//						LEFT OUTER JOIN `".BIT_DB_PREFIX."tiki_user_preferences` tup ON ( uu.`user_id`=tup.`user_id` AND tup.`pref_name`='theme' )
 
-			$result = $this->mDb->query($query,$bindVars);
-			$ret = $result->fetchRow();
-			$ret['postscant'] = $this->getPostsCount( $ret['content_id'] );
-			if ($ret) {
-				$ret['avatar'] = (!empty($res['avatar']) ? BIT_ROOT_URL.$res['avatar'] : NULL);
-				if( empty( $ret['max_posts'] ) || !is_numeric( $ret['max_posts'] ) ) {
-					$ret['max_posts'] = 10; // spiderr hack to hardcode fail safe
+			if( $this->mInfo = $this->mDb->getRow($query,$bindVars) ) {
+				$this->mContentId = $this->getField( 'content_id' );
+				$this->mBlogId = $this->getField('blog_id');
+				foreach( array( 'avatar', 'image' ) as $img ) {
+					$this->mInfo[$img] = liberty_fetch_thumbnails( array(
+						'source_file' => $this->getSourceFile( array( 'user_id'=>$this->getField( 'user_id' ), 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'type' => $this->getField( $img.'_mime_type' ), 'name' =>  $this->getField( $img.'_file_name' ) ) ), 'file_name' => basename( $this->mInfo[$img.'_file_name'] ), 'sub_dir' =>  $this->getField( $img.'_attachment_id' ) ) )
+					));
 				}
-				if( !empty( $ret['data'] ) ) {
-					$ret['parsed'] = $this->parseData( $ret['data'], $ret['format_guid'] );
-				}
+				parent::load();
+				$this->mInfo['postscant'] = $this->getPostsCount( $this->mContentId );
 			}
 		}
-		return $ret;
+		return count( $this->mInfo ) != 0;
 	}
 
 	function verify( &$pParamHash ) {

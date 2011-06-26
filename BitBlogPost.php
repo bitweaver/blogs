@@ -69,18 +69,19 @@ class BitBlogPost extends LibertyMime {
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "
-				SELECT bp.*, lc.*, lcds.`data` AS `summary`, lch.`hits`, uu.`login`, uu.`real_name`, lf.`storage_path` as avatar,
-					lfp.storage_path AS `image_attachment_path` 
+				SELECT bp.*, lc.*, lcds.`data` AS `summary`, lch.`hits`, uu.`login`, uu.`real_name`, 
+					lfa.`file_name` as `avatar_file_name`, lfa.`mime_type` AS `avatar_mime_type`, laa.`attachment_id` AS `avatar_attachment_id`
+					lfp.`file_name` AS `image_file_name`, lfp.`mime_type` AS `image_mime_type`, lap.`attachment_id` AS `image_attachment_id`
 					$selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
 					INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = bp.`content_id`)
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` )
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON( lch.`content_id` = lc.`content_id` )
-					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` a ON (uu.`user_id` = a.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
-					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = a.`foreign_id`)
-					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` la ON( la.`content_id` = lc.`content_id` AND la.`is_primary` = 'y' )
-					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lfp ON( lfp.`file_id` = la.`foreign_id` )
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` laa ON (uu.`user_id` = laa.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = laa.`foreign_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` lap ON( lap.`content_id` = lc.`content_id` AND lap.`is_primary` = 'y' )
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lfp ON( lfp.`file_id` = lap.`foreign_id` )
 					$joinSql
 				WHERE bp.`$lookupColumn`=? $whereSql ";
 
@@ -92,11 +93,11 @@ class BitBlogPost extends LibertyMime {
 				// we should remove this now that display_url is added
 				$this->mInfo['url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
 				$this->mInfo['display_url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
-				$this->mInfo['thumbnail_url'] = BitBlogPost::getImageThumbnails( $this->mInfo );
-				$this->mInfo['avatar'] = liberty_fetch_thumbnail_url( array(
-					'storage_path' => $this->mInfo['avatar'],
-					'size' => 'avatar'
-				));
+				foreach( array( 'avatar', 'image' ) as $img ) {
+					$this->mInfo[$img] = liberty_fetch_thumbnails( array(
+						'source_file' => $this->getSourceFile( array( 'user_id'=>$this->getField( 'user_id' ), 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'type' => $this->getField( $img.'_mime_type' ), 'name' =>  $this->getField( $img.'_file_name' ) ) ), 'file_name' => basename( $this->mInfo[$img.'_file_name'] ), 'sub_dir' =>  $this->getField( $img.'_attachment_id' ) ) )
+					));
+				}
 
 				$this->mInfo['raw'] = $this->mInfo['data'];
 				//for two text field auto split
@@ -201,13 +202,13 @@ class BitBlogPost extends LibertyMime {
 	function getImageThumbnails( $pParamHash ) {
 		global $gBitSystem, $gThumbSizes;
 		$ret = NULL;
-		if( !empty( $pParamHash['image_attachment_path'] )) {
+		if( !empty( $pParamHash['image_file_name'] )) {
 			$thumbHash = array(
 				'mime_image'   => FALSE,
-				'storage_path' => $pParamHash['image_attachment_path']
+				'source_file' => $pParamHash['image_file_name']
 			);
 			$ret = liberty_fetch_thumbnails( $thumbHash );
-			$ret['original'] = BIT_ROOT_URL.$pParamHash['image_attachment_path'];
+			$ret['original'] = BIT_ROOT_URL.$pParamHash['image_file_name'];
 		}
 		return $ret;
 	}
@@ -262,16 +263,6 @@ class BitBlogPost extends LibertyMime {
 			$data['parsed_data'] = preg_replace( LIBERTY_SPLIT_REGEX, "<hr />", $data['parsed_data'] );
 		}
 
-		if( @$this->verifyId( $data['image_attachment_id'] ) ) {
-			$data['image_attachment_id'] = ( int )$data['image_attachment_id'];
-			$query = "SELECT lf.storage_path AS image_storage_path
-				FROM `".BIT_DB_PREFIX."liberty_attachments` a
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON( lf.file_id = a.foreign_id )
-				WHERE a.attachment_id=?";
-			$data['image_storage_path'] = $this->mDb->getOne( $query, array( $data['image_attachment_id'] ) );
-			$data['image_url'] = BitArticle::getImageUrl( $data );
-		}
-		
 		return $data;
 	}
 
@@ -927,17 +918,18 @@ class BitBlogPost extends LibertyMime {
 			SELECT
 				bp.`post_id`, bp.`publish_date`, bp.`expire_date`, bp.`trackbacks_to`, bp.`trackbacks_from`, 
 				lc.*, lch.`hits`, lcds.`data` AS `summary`, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
-				uu.`email`, uu.`login`, uu.`real_name`, ulf.`storage_path` as avatar,  lf.storage_path AS `image_attachment_path`
-				$selectSql
+				uu.`email`, uu.`login`, uu.`real_name`,
+					lfa.`file_name` as `avatar_file_name`, lfa.`mime_type` AS `avatar_mime_type`, laa.`attachment_id` AS `avatar_attachment_id`,
+					lfp.`file_name` AS `image_file_name`, lfp.`mime_type` AS `image_mime_type`, lap.`attachment_id` AS `image_attachment_id`
 			FROM `".BIT_DB_PREFIX."blog_posts` bp
 				INNER JOIN      `".BIT_DB_PREFIX."liberty_content`       lc ON lc.`content_id`         = bp.`content_id`
 				INNER JOIN		`".BIT_DB_PREFIX."users_users`			 uu ON uu.`user_id`			   = lc.`user_id`
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON lc.`content_id`         = lch.`content_id`
 				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`	  a ON (uu.`user_id` = a.`user_id` AND a.`attachment_id` = uu.`avatar_attachment_id`)
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`	    ulf ON ulf.`file_id`		   = a.`foreign_id`
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`   la ON la.`content_id`         = lc.`content_id` AND la.`is_primary` = 'y'
-				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`         lf ON lf.`file_id`            = la.`foreign_id`
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`	laa ON (uu.`user_id` = laa.`user_id` AND laa.`attachment_id` = uu.`avatar_attachment_id`)
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`	    lfa ON lfa.`file_id`		   = laa.`foreign_id`
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments`  lap ON lap.`content_id`        = lc.`content_id` AND lap.`is_primary` = 'y'
+				LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files`        lfp ON lfp.`file_id`           = lap.`foreign_id`
 				$joinSql
 			WHERE lc.`content_type_guid` = ? $whereSql
 			ORDER BY $sort_mode";
@@ -972,11 +964,11 @@ class BitBlogPost extends LibertyMime {
 			$accessError = $this->invokeServices( 'content_verify_access', $res, FALSE );
 			if( empty( $accessError ) ) {
 
-				$res['avatar'] = liberty_fetch_thumbnail_url( array(
-					'storage_path' => $res['avatar'],
-					'size' => 'avatar'
-				));
-				//$res['thumbnail_url'] = liberty_fetch_thumbnail_url( $res['image_attachment_path'], 'avatar' );
+				foreach( array( 'avatar', 'image' ) as $img ) {
+					$res[$img] = liberty_fetch_thumbnails( array(
+						'source_file' => liberty_mime_get_source_file( array( 'user_id'=>$res['user_id'], 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'type' => $res[$img.'_mime_type'], 'name'=>$res[$img.'_file_name'] ) ), 'file_name'=>basename( $res[$img.'_file_name'] ), 'sub_dir'=>$res[$img.'_attachment_id'] ) )
+					));
+				}
 				$res['thumbnail_url'] = BitBlogPost::getImageThumbnails( $res );				
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
 				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'], $res );
