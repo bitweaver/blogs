@@ -70,7 +70,7 @@ class BitBlogPost extends LibertyMime {
 
 			$query = "
 				SELECT bp.*, lc.*, lcds.`data` AS `summary`, lch.`hits`, uu.`login`, uu.`real_name`, 
-					lfa.`file_name` as `avatar_file_name`, lfa.`mime_type` AS `avatar_mime_type`, laa.`attachment_id` AS `avatar_attachment_id`
+					lfa.`file_name` as `avatar_file_name`, lfa.`mime_type` AS `avatar_mime_type`, laa.`attachment_id` AS `avatar_attachment_id`,
 					lfp.`file_name` AS `image_file_name`, lfp.`mime_type` AS `image_mime_type`, lap.`attachment_id` AS `image_attachment_id`
 					$selectSql
 				FROM `".BIT_DB_PREFIX."blog_posts` bp
@@ -78,8 +78,8 @@ class BitBlogPost extends LibertyMime {
 					INNER JOIN `".BIT_DB_PREFIX."users_users` uu ON( uu.`user_id` = lc.`user_id` )
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_data` lcds ON (lc.`content_id` = lcds.`content_id` AND lcds.`data_type`='summary')
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_content_hits` lch ON( lch.`content_id` = lc.`content_id` )
-					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` laa ON (uu.`user_id` = laa.`user_id` AND uu.`avatar_attachment_id`=a.`attachment_id`)
-					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lf ON (lf.`file_id` = laa.`foreign_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` laa ON (uu.`user_id` = laa.`user_id` AND uu.`avatar_attachment_id`=laa.`attachment_id`)
+					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lfa ON (lfa.`file_id` = laa.`foreign_id`)
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_attachments` lap ON( lap.`content_id` = lc.`content_id` AND lap.`is_primary` = 'y' )
 					LEFT OUTER JOIN `".BIT_DB_PREFIX."liberty_files` lfp ON( lfp.`file_id` = lap.`foreign_id` )
 					$joinSql
