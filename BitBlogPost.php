@@ -658,7 +658,7 @@ class BitBlogPost extends LibertyMime {
 	 * @param	object	PostId of the item to use
 	 * @return	object	Url String
 	 */
-	function getDisplayUrl( $pContentId = NULL, $pParamHash = NULL ) {
+	public static function getDisplayUrl( $pContentId = NULL, $pParamHash = NULL ) {
 		global $gBitSystem;
 
 		$ret = NULL;

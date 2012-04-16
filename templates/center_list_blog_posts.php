@@ -23,7 +23,7 @@ if( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin
 	if( empty( $futuresHash['user_id'] )) {
 		if( !empty( $gQueryUserId )) {
 			$futuresHash['user_id'] = $gQueryUserId;
-		} elseif( $_REQUEST['user_id'] ) {
+		} elseif ( isset($_REQUEST['user_id']) ) {
 			$futuresHash['user_id'] = $_REQUEST['user_id'];
 		}
 	}
@@ -59,7 +59,7 @@ if( !empty( $moduleParams )) {
 if( empty( $listHash['user_id'] )) {
 	if( !empty( $gQueryUserId )) {
 		$listHash['user_id'] = $gQueryUserId;
-	} elseif( $_REQUEST['user_id'] ) {
+	} elseif( isset( $_REQUEST['user_id'] ) ) {
 		$listHash['user_id'] = $_REQUEST['user_id'];
 	}
 }
