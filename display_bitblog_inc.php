@@ -70,7 +70,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 		if ($_REQUEST['watch_action'] == 'add') {
 			$blogPost = new BitBlogPost( $_REQUEST['watch_object'] );
 			if( $blogPost->load() ) {
-				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], tra('blog'), $blogPost->mInfo['title'], $blogPost->getDisplayUrl() );
+				$gBitUser->storeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'], tra('blog'), $blogPost->mInfo['title'], $blogPost->getContentUrl() );
 			}
 		} else {
 			$gBitUser->expungeWatch( $_REQUEST['watch_event'], $_REQUEST['watch_object'] );

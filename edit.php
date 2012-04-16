@@ -49,7 +49,7 @@ if (isset($_REQUEST['preview'])) {
 
 if (isset($_REQUEST['save_blog'])) {
 	if( $gContent->store( $_REQUEST ) ) {
-		bit_redirect( $gContent->getDisplayUrl() );
+		bit_redirect( $gContent->getContentUrl() );
 	} else {
 		$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
 	}

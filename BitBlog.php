@@ -49,13 +49,9 @@ class BitBlog extends LibertyMime {
 		return $ret;
 	}
 
-	function getDisplayUrl( $pBlogId = NULL, $pParamHash = NULL ) {
+	public static function getDisplayUrl( $pBlogId = NULL, $pParamHash = NULL ) {
 		global $gBitSystem;
 		$ret = NULL;
-
-		if( empty( $pBlogId ) && !empty( $this ) ) {
-			$pBlogId = $this->mBlogId;
-		}
 
 		if ( BitBase::verifyId( $pBlogId ) ) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
@@ -71,6 +67,13 @@ class BitBlog extends LibertyMime {
 		return $ret;
 	}
 
+	function getContentUrl( $pBlogId = NULL ) {
+		if( empty( $pBlogId ) && !empty( $this ) ) {
+			$pBlogId = $this->mBlogId;
+		}
+
+		return self::getDisplayUrl( $pBlogId );
+	}
 
 	/**
 	* Check if there is an article loaded
@@ -81,11 +84,20 @@ class BitBlog extends LibertyMime {
 		return( $this->verifyId( $this->mBlogId ) && $this->verifyId( $this->mContentId ) );
 	}
 
-	function load() {
-		global $gBitSystem;
+	function load( $pContentId = NULL, $pPluginParams = NULL ) {
+		$this->mInfo = $this->getBlog( $this->mBlogId, $this->mContentId );
+		$this->mContentId = $this->getField( 'content_id' );
+		$this->mBlogId = $this->getField('blog_id');
+	}
 
-		$lookupId = (!empty( $this->mBlogId ) ? $this->mBlogId : $this->mContentId);
-		$lookupColumn = (!empty( $this->mBlogId ) ? 'blog_id' : 'content_id');
+
+	/*shared*/
+	function getBlog( $pBlogId, $pContentId = NULL ) {
+		global $gBitSystem;
+		$ret = NULL;
+
+		$lookupId = (!empty( $pBlogId ) ? $pBlogId : $pContentId);
+		$lookupColumn = (!empty( $pBlogId ) ? 'blog_id' : 'content_id');
 
 		$bindVars = array( (int)$lookupId );
 		$selectSql = ''; $joinSql = ''; $whereSql = '';
@@ -203,7 +215,7 @@ class BitBlog extends LibertyMime {
 					WHERE b.`blog_id` = ? ORDER BY ".$this->mDb->convertSortMode( $pListHash['sort_mode'] );
 			if( $postId = $this->mDb->getOne($sql, array( $blogId ) ) ) {
 				$blogPost = new BitBlogPost( $postId );
-				$blogPost->load( !empty( $pListHash['load_comments'] ) );
+				$blogPost->load( NULL, $pListHash );
 				$ret = $blogPost;
 			}
 		}
@@ -302,7 +314,7 @@ class BitBlog extends LibertyMime {
 		while ($res = $result->fetchRow()) {
 			$blogContentId = $res['content_id'];
 			$ret[$blogContentId] = $res;
-			$ret[$blogContentId]['blog_url'] = $this->getDisplayUrl( $res['blog_id'] );
+			$ret[$blogContentId]['blog_url'] = $this->getContentUrl( $res['blog_id'] );
 			//get count of post in each blog
 			$ret[$blogContentId]['postscant'] = $this->getPostsCount( $res['content_id'] );
 			// deal with the parsing
@@ -380,7 +392,7 @@ class BitBlog extends LibertyMime {
 	 * @return an array of content_status_id, content_status_names the current 
 	 * user can use on this content.  
 	 */
-	function getAvailableContentStatuses() {
+	function getAvailableContentStatuses( $pUserMinimum=-100, $pUserMaximum=100 ) {
 		global $gBitUser;
 		$ret = NULL;
 	 	// return NULL for all but admins

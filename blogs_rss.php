@@ -78,7 +78,7 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 	foreach( $feeds['data'] as $feed ) {
 		$item = new FeedItem();
 		$item->title = $blogPost->getTitle( $feed );
-		$item->link = BIT_BASE_URI.$blogPost->getDisplayUrl( $feed['content_id'] );
+		$item->link = BIT_BASE_URI.$blogPost->getContentUrl( $feed['content_id'] );
 		$item->description = $feed['parsed'];
 
 		$item->date = ( int )$feed['last_modified'];

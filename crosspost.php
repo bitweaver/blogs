@@ -28,7 +28,7 @@ if( isset( $_REQUEST['crosspost_post']) || isset($_REQUEST['save_post_exit'] ) )
 	$crosspost_note = isset( $_REQUEST['crosspost_note'] )? $_REQUEST['crosspost_note']:NULL;
 	if( $gContent->isValid() && $gContent->storePostMap( $gContent->mInfo, $_REQUEST['blog_content_id'], $crosspost_note ) ) {
 		$gContent->load();
-		bit_redirect( $gContent->getDisplayUrl() );
+		bit_redirect( $gContent->getContentUrl() );
 	}
 }
 

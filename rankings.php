@@ -207,7 +207,7 @@ function blog_ranking_last_posts($limit) {
 	  }
 	  // And merge in posts
 	  foreach($posts['data'] as $key => $post) {
-	    $post['post_url'] = $bp->getDisplayUrl($post['content_id']);
+	    $post['post_url'] = $bp->getContentUrl($post['content_id']);
 	    $list['data'][$post['blog_id']]['post_array'][] = $post;
 	  }
 	}

@@ -58,7 +58,7 @@ class BitBlogPost extends LibertyMime {
 	/**
 	 * Load a Blog Post section
 	 */
-	function load( $pLoadComments = TRUE ) {
+	function load( $pContentId = NULL, $pPluginParams = NULL ) {
 		if( $this->verifyId( $this->mPostId ) || $this->verifyId( $this->mContentId ) ) {
 			global $gBitSystem, $gBitUser, $gLibertySystem;
 
@@ -116,7 +116,7 @@ class BitBlogPost extends LibertyMime {
 				$this->mInfo['data'] = preg_replace( LIBERTY_SPLIT_REGEX, "", $this->mInfo['data'] );
 				$this->mInfo['use_title'] = $gBitUser->getPreference( 'user_blog_posts_use_title', 'y', $this->mInfo['user_id'] ) ;
 
-				if( $pLoadComments ) {
+				if( isset($pPluginParams['load_comments']) and $pPluginParams['load_comments'] ) {
 					$comment = new LibertyComment();
 					$comment->mRootObj = $this;
 					$this->mInfo['num_comments'] = $comment->getNumComments($this->mInfo['content_id']);
@@ -149,7 +149,7 @@ class BitBlogPost extends LibertyMime {
 		return( count( $this->mInfo ) );
 	}
 
-	function getTitle( $pHash = NULL ) {
+	function getTitle( $pHash = NULL, $pDefault=TRUE ) {
 		global $gBitSystem;
 		$ret = NULL;
 		if( empty( $pHash ) && !empty( $this->mInfo ) ) {
@@ -696,7 +696,7 @@ class BitBlogPost extends LibertyMime {
 	 * @param	array	Not used
 	 * @return	object	Fully formatted html link for use by Liberty
 	 */
-	function getDisplayLink( $pTitle=NULL, $pMixed=NULL ) {
+	function getDisplayLink( $pTitle=NULL, $pMixed=NULL, $pAnchor=NULL ) {
 		global $gBitSystem;
 		if( empty( $pTitle ) && !empty( $this ) ) {
 			$pTitle = $this->getField( 'title', $this->getContentTypeName() );
@@ -868,6 +868,7 @@ class BitBlogPost extends LibertyMime {
 			//$pListHash['sort_mode'] = 'created_desc';
 		} else {
 		*/
+		$sortModePrefix = '';
 		if( !empty( $pListHash['sort_mode'] ) && !strpos( $pListHash['sort_mode'], '.' ) ) {
 			switch( $pListHash['sort_mode'] ) {
 				case 'publish_date_asc':
