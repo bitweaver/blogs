@@ -71,7 +71,7 @@ if (isset($_REQUEST['send'])) {
 	$emails = explode(',', $_REQUEST['addresses']);
 
 	$foo = parse_url($_SERVER["REQUEST_URI"]);
-	$machine = $gContent->getContentUrl();
+	$machine = $gContent->getDisplayUrl();
 
 	foreach ($emails as $email) {
 		$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);

@@ -153,7 +153,7 @@ function blog_ranking_top_blogs($limit) {
 		$result = $gBitSystem->mDb->query($query, array($blog['blog_id']), $gBitSystem->getConfig('blogs_top_post_count', 3));
 		
 		while ($ret = $result->fetchRow()) {
-			$ret['display_url'] = BitBlogPost::getDisplayUrl($ret['content_id']);
+			$ret['display_url'] = BitBlogPost::getDisplayUrlFromHash($ret['content_id']);
 			$list['data'][$key]['post_array'][] = $ret;
 		}
 	}
@@ -175,7 +175,7 @@ function blog_ranking_top_active_blogs($limit) {
 		$result = $gBitSystem->mDb->query($query, array($blog['blog_id']), $gBitSystem->getConfig('blogs_top_post_count', 3));
 		
 		while ($ret = $result->fetchRow()) {
-			$ret['display_url'] = BitBlogPost::getDisplayUrl($ret['content_id']);
+			$ret['display_url'] = BitBlogPost::getDisplayUrlFromHash($ret['content_id']);
 			$list['data'][$key]['post_array'][] = $ret;
 		}
 	}

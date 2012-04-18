@@ -91,8 +91,8 @@ class BitBlogPost extends LibertyMime {
 				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
 				// this is bad news right here, 'url' is wrong, standard is 'display_url'
 				// we should remove this now that display_url is added
-				$this->mInfo['url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
-				$this->mInfo['display_url'] = BitBlogPost::getDisplayUrl( $this->mContentId, $this->mInfo );
+				$this->mInfo['url'] = BitBlogPost::getDisplayUrlFromHash( $this->mContentId, $this->mInfo );
+				$this->mInfo['display_url'] = BitBlogPost::getDisplayUrlFromHash( $this->mContentId, $this->mInfo );
 				foreach( array( 'avatar', 'image' ) as $img ) {
 					$this->mInfo[$img] = liberty_fetch_thumbnails( array(
 						'source_file' => $this->getSourceFile( array( 'user_id'=>$this->getField( 'user_id' ), 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'type' => $this->getField( $img.'_mime_type' ), 'name' =>  $this->getField( $img.'_file_name' ) ) ), 'file_name' => basename( $this->mInfo[$img.'_file_name'] ), 'sub_dir' =>  $this->getField( $img.'_attachment_id' ) ) )
@@ -149,12 +149,17 @@ class BitBlogPost extends LibertyMime {
 		return( count( $this->mInfo ) );
 	}
 
-	function getTitle( $pHash = NULL, $pDefault=TRUE ) {
+	function getTitle() {
+		$ret = NULL;
+		if( $this->isValid() ) {
+			$ret = self::getTitleFromHash( $this->mInfo );
+		}
+		return $ret;
+	}
+
+	function getTitleFromHash( $pHash, $pDefault=TRUE ) {
 		global $gBitSystem;
 		$ret = NULL;
-		if( empty( $pHash ) && !empty( $this->mInfo ) ) {
-			$pHash = &$this->mInfo;
-		}
 		if( !empty( $pHash['title'] ) ) {
 			$ret = $pHash['title'];
 		} elseif( !is_null( $pHash ) ) {
@@ -184,7 +189,7 @@ class BitBlogPost extends LibertyMime {
 
 			if( $ret = $this->mDb->getAssoc( $query, $bindVars ) ) {
 				foreach( array_keys( $ret ) as $blogContentId ) {
-					$ret[$blogContentId]['blog_url'] = BitBlog::getDisplayUrl( $ret[$blogContentId]['blog_id'] );
+					$ret[$blogContentId]['blog_url'] = BitBlog::getDisplayUrlFromHash( $ret[$blogContentId]['blog_id'] );
 				}
 			}
 		} else {
@@ -658,7 +663,7 @@ class BitBlogPost extends LibertyMime {
 	 * @param	object	PostId of the item to use
 	 * @return	object	Url String
 	 */
-	public static function getDisplayUrl( $pContentId = NULL, $pParamHash = NULL ) {
+	public static function getDisplayUrlFromHash( $pContentId = NULL, $pParamHash = NULL ) {
 		global $gBitSystem;
 
 		$ret = NULL;
@@ -708,7 +713,7 @@ class BitBlogPost extends LibertyMime {
 
 		$ret = $pTitle;
 		if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitle( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrl( $pMixed['content_id'] ).'">'.htmlspecialchars( BitBlogPost::getTitle( $pMixed  ) ).'</a>';
+			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitle( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrlFromHash( $pMixed['content_id'] ).'">'.htmlspecialchars( BitBlogPost::getTitle( $pMixed  ) ).'</a>';
 		}
 
 		return $ret;
@@ -972,7 +977,7 @@ class BitBlogPost extends LibertyMime {
 				}
 				$res['thumbnail_url'] = BitBlogPost::getImageThumbnails( $res );				
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
-				$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'], $res );
+				$res['post_url'] = BitBlogPost::getDisplayUrlFromHash( $res['content_id'], $res );
 				$res['display_url'] = $res['post_url'];
 				$res['display_link'] = $this->getDisplayLink( $res['title'], $res );
 				$res['blogs'] = $this->getBlogMemberships( $res['content_id'] );
@@ -1025,10 +1030,10 @@ class BitBlogPost extends LibertyMime {
 
 			} elseif( !empty( $accessError ) ) {
 				if( !empty( $accessError['access_control'] ) ) {
-					$res['post_url'] = BitBlogPost::getDisplayUrl( $res['content_id'], $res );
+					$res['post_url'] = BitBlogPost::getDisplayUrlFromHash( $res['content_id'], $res );
 					$res['display_url'] = $res['post_url'];
 					/* this needs to be part of loop that gets all blogs post is in
-					$res['blog_url'] = BitBlog::getDisplayUrl( $res['blog_content_id'] );
+					$res['blog_url'] = BitBlog::getDisplayUrlFromHash( $res['blog_content_id'] );
 					*/
 					$res["parsed_data"] = $accessError['access_control'];
 					$ret[] = $res;

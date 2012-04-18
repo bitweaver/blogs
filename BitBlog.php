@@ -49,7 +49,7 @@ class BitBlog extends LibertyMime {
 		return $ret;
 	}
 
-	public static function getDisplayUrl( $pBlogId = NULL, $pParamHash = NULL ) {
+	public static function getDisplayUrlFromHash( $pBlogId = NULL, $pParamHash = NULL ) {
 		global $gBitSystem;
 		$ret = NULL;
 
@@ -62,17 +62,17 @@ class BitBlog extends LibertyMime {
 				$ret = BLOGS_PKG_URL.'view.php?blog_id='.$pBlogId;
 			}
 		} else {
-			$ret = LibertyContent::getDisplayUrl( NULL, $pParamHash );
+			$ret = LibertyContent::getDisplayUrlFromHash( NULL, $pParamHash );
 		}
 		return $ret;
 	}
 
-	function getContentUrl( $pBlogId = NULL ) {
-		if( empty( $pBlogId ) && !empty( $this ) ) {
-			$pBlogId = $this->mBlogId;
+	function getDisplayUrl() {
+		$ret = NULL;
+		if( $this->isValid() ) {
+			$ret = self::getDisplayUrlFromHash( $pBlogId );
 		}
-
-		return self::getDisplayUrl( $pBlogId );
+		return $ret;
 	}
 
 	/**
