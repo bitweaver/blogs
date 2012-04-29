@@ -75,8 +75,8 @@ $gBitSystem->display( 'bitpackage:liberty/rankings.tpl', tra( "Blog Post Ranking
 
 
 /* ---- below is what blog rankings was - might want to canabalize some of it eventually ---- */
-/* 
- 
+/*
+
 require_once( '../kernel/setup_inc.php' );
 
 
@@ -98,7 +98,7 @@ $allrankings = array(
 	'name' => tra('Last posts'),
 	'value' => 'blog_ranking_last_posts'
 ),
-	/** 
+	/**
 	 * @todo reenable once we have activity implemented
 	array(
 	'name' => tra('Most active blogs'),
@@ -151,7 +151,7 @@ function blog_ranking_top_blogs($limit) {
 	$query = "select p.*, lc.* FROM `".BIT_DB_PREFIX."blog_posts` p LEFT JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (p.`content_id` = lc.`content_id`) WHERE p.blog_id = ? ORDER BY p.post_id desc";
 	foreach($list['data'] as $key => $blog) {
 		$result = $gBitSystem->mDb->query($query, array($blog['blog_id']), $gBitSystem->getConfig('blogs_top_post_count', 3));
-		
+
 		while ($ret = $result->fetchRow()) {
 			$ret['display_url'] = BitBlogPost::getDisplayUrlFromHash($ret['content_id']);
 			$list['data'][$key]['post_array'][] = $ret;
@@ -173,7 +173,7 @@ function blog_ranking_top_active_blogs($limit) {
 	$query = "select p.*, lc.* FROM `".BIT_DB_PREFIX."blog_posts` p LEFT JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (p.`content_id` = lc.`content_id`) WHERE p.blog_id = ? ORDER BY p.post_id desc";
 	foreach($list['data'] as $key => $blog) {
 		$result = $gBitSystem->mDb->query($query, array($blog['blog_id']), $gBitSystem->getConfig('blogs_top_post_count', 3));
-		
+
 		while ($ret = $result->fetchRow()) {
 			$ret['display_url'] = BitBlogPost::getDisplayUrlFromHash($ret['content_id']);
 			$list['data'][$key]['post_array'][] = $ret;
@@ -207,7 +207,7 @@ function blog_ranking_last_posts($limit) {
 	  }
 	  // And merge in posts
 	  foreach($posts['data'] as $key => $post) {
-	    $post['post_url'] = $bp->getContentUrl($post['content_id']);
+	    $post['post_url'] = $bp->getDisplayUrl($post['content_id']);
 	    $list['data'][$post['blog_id']]['post_array'][] = $post;
 	  }
 	}

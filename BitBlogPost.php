@@ -157,7 +157,7 @@ class BitBlogPost extends LibertyMime {
 		return $ret;
 	}
 
-	function getTitleFromHash( $pHash, $pDefault=TRUE ) {
+	public static function getTitleFromHash( $pHash, $pDefault=TRUE ) {
 		global $gBitSystem;
 		$ret = NULL;
 		if( !empty( $pHash['title'] ) ) {
@@ -232,7 +232,7 @@ class BitBlogPost extends LibertyMime {
 		$data['raw'] = $data['edit'];
 		$data['raw_more'] = (!empty($data['edit_body'])?$data['edit_body']:'');
 		$this->verify( $data );
-		
+
 		if( empty( $data['user_id'] ) ) {
 			$data['user_id'] = $gBitUser->mUserId;
 		}
@@ -260,7 +260,7 @@ class BitBlogPost extends LibertyMime {
 			/* this is already taken care of by calling verify above
 			if (isset($data['edit_body'])){
 				$data['edit'] .= "...split...".$data['edit_body'];
-			}			
+			}
 			*/
 			$data['parsed_data'] = $this->parseData( $data['edit'], (!empty($data['format_guid']) ? $data['format_guid'] : 'tikiwiki' ));
 			//$data['parsed_data'] = $this->parseData( $data );
@@ -377,7 +377,7 @@ class BitBlogPost extends LibertyMime {
 		}else{
 			$pParamHash['post_store']['expire_date'] = $gBitSystem->getUTCTime();
 		}
-		
+
 		// if we have an error we get them all by checking parent classes for additional errors
 		if( count( $this->mErrors ) > 0 ){
 			parent::verify( $pParamHash );
@@ -413,7 +413,7 @@ class BitBlogPost extends LibertyMime {
 	 * Check if the current post can have comments attached to it
 	 */
 	function isCommentable(){
-		global $gBitSystem;	
+		global $gBitSystem;
 		return $gBitSystem->isFeatureActive( 'blog_posts_comments' );
 	}
 
@@ -447,7 +447,7 @@ class BitBlogPost extends LibertyMime {
 				//store the new post
 				$result = $this->mDb->associateInsert( $table, $pParamHash['post_store'] );
 			}
-			
+
 			// let's reload to get a full mInfo hash which is needed below
 			$this->load();
 
@@ -463,7 +463,7 @@ class BitBlogPost extends LibertyMime {
 			if( @BitBase::verifyId( $pParamHash['post_id'] )) {
 				$this->mDb->query( $query, array( serialize( array() ), $trackbacks, (int) $pParamHash['post_id'] ));
 			}
-			
+
 			if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 				global $gBitUser, $gBitSmarty;
 				if( isset( $this->mInfo['blog_id'] ) &&  $nots = $gBitUser->getEventWatches( 'blog_post', $this->mInfo['blog_id'] ) ) {
@@ -517,13 +517,13 @@ class BitBlogPost extends LibertyMime {
 		}
 		return $ret;
 	}
-	
+
 	/**
 	 * Map a Post to a Blog or multiple Blogs
 	 * @param pPost a Post hash.
 	 * @param pBlogMixed the content_id or and array of ids of the blogs we want the post to show up in.
 	 * @param pCrosspostNote text to display with the blog post when viewed in the blog crossposted to.
-	 * @param pAutoProcess a bool to distinguish if we are storing from the crosspost interface or from the blog posting interface. 
+	 * @param pAutoProcess a bool to distinguish if we are storing from the crosspost interface or from the blog posting interface.
 	 */
 	function storePostMap( $pPost, $pBlogMixed, $pCrosspostNote = NULL, $pAutoProcess = FALSE ) {
 		global $gBitSystem, $gBitUser;
@@ -567,13 +567,13 @@ class BitBlogPost extends LibertyMime {
 					));
 				}
 			}
-			
-			/* if we are coming form the crossposting form then we 
-			 * want to update any change to the crosspost note. 
+
+			/* if we are coming form the crossposting form then we
+			 * want to update any change to the crosspost note.
 			 * we dont want to if we are coming from the blog posting form.
 			 */
 			if( !$pAutoProcess ){
-				// Update existing mappings			
+				// Update existing mappings
 				$updateBlogIds = array_intersect( $blogIds, $currentMappings );
 				foreach( $updateBlogIds as $blogContentId ) {
 					if( $this->verifyId( $blogContentId ) && $this->checkContentPermission( array( 'user_id' => $gBitUser->mUserId, 'perm_name'=>'p_blogs_post', 'content_id'=>$blogContentId ) ) ) {
@@ -586,11 +586,11 @@ class BitBlogPost extends LibertyMime {
 					}
 				}
 			}
-			$this->mDb->CompleteTrans();			
-			
-			/* if we are coming from the blog posting form we 
-			 * want to automatically drop any crossposting if 
-			 * we have unchecked them there. we ignore this when 
+			$this->mDb->CompleteTrans();
+
+			/* if we are coming from the blog posting form we
+			 * want to automatically drop any crossposting if
+			 * we have unchecked them there. we ignore this when
 			 * coming from the crossposting form.
 			 */
 			if ( $pAutoProcess ){
@@ -644,7 +644,7 @@ class BitBlogPost extends LibertyMime {
 	}
 
 	/**
-	 * Return a summary for this content base on 
+	 * Return a summary for this content base on
 	 *
 	 * @param	object	PostId of the item to use
 	 * @return	object	Url String
@@ -863,7 +863,7 @@ class BitBlogPost extends LibertyMime {
 
 		/* sort_mode is never empty due to call to prepGetList above
 		 * I think this will have to be perminently removed and default
-		 * set before passing the list hash in if a different default is 
+		 * set before passing the list hash in if a different default is
 		 * desired from that in prepGetList. -wjames5
 		 */
 		/*
@@ -919,10 +919,10 @@ class BitBlogPost extends LibertyMime {
 
 		$secondarySortMode = ($pListHash['sort_mode'] != 'last_modified_desc') ? ', last_modified DESC': '';
 		$sort_mode = $sortModePrefix . $this->mDb->convertSortmode( $pListHash['sort_mode'] ).$secondarySortMode;
-		
+
 		$query = "
 			SELECT
-				bp.`post_id`, bp.`publish_date`, bp.`expire_date`, bp.`trackbacks_to`, bp.`trackbacks_from`, 
+				bp.`post_id`, bp.`publish_date`, bp.`expire_date`, bp.`trackbacks_to`, bp.`trackbacks_from`,
 				lc.*, lch.`hits`, lcds.`data` AS `summary`, COALESCE( bp.`publish_date`, lc.`last_modified` ) AS sort_date,
 				uu.`email`, uu.`login`, uu.`real_name`,
 					lfa.`file_name` as `avatar_file_name`, lfa.`mime_type` AS `avatar_mime_type`, laa.`attachment_id` AS `avatar_attachment_id`,
@@ -975,13 +975,13 @@ class BitBlogPost extends LibertyMime {
 						'source_file' => liberty_mime_get_source_file( array( 'user_id'=>$res['user_id'], 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'type' => $res[$img.'_mime_type'], 'name'=>$res[$img.'_file_name'] ) ), 'file_name'=>basename( $res[$img.'_file_name'] ), 'sub_dir'=>$res[$img.'_attachment_id'] ) )
 					));
 				}
-				$res['thumbnail_url'] = BitBlogPost::getImageThumbnails( $res );				
+				$res['thumbnail_url'] = BitBlogPost::getImageThumbnails( $res );
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
 				$res['post_url'] = BitBlogPost::getDisplayUrlFromHash( $res['content_id'], $res );
 				$res['display_url'] = $res['post_url'];
 				$res['display_link'] = $this->getDisplayLink( $res['title'], $res );
 				$res['blogs'] = $this->getBlogMemberships( $res['content_id'] );
-	
+
 				// trackbacks
 				if($res['trackbacks_from']!=null)
 					$res['trackbacks_from'] = unserialize($res['trackbacks_from']);
@@ -1085,7 +1085,7 @@ class BitBlogPost extends LibertyMime {
 
 	/**
 	 * Get a list of posts that are to be published in the future
-	 * 
+	 *
 	 * @param array $pParamHash contains listing options - same as getList()
 	 * @access public
 	 * @return array of posts
@@ -1098,7 +1098,7 @@ class BitBlogPost extends LibertyMime {
 
 	/**
 	 * Get list of posts that have expired and are not displayed on the site anymore
-	 * 
+	 *
 	 * @param array $pParamHash contains listing options - same as getList()
 	 * @access public
 	 * @return array of posts
@@ -1171,14 +1171,14 @@ class BitBlogPost extends LibertyMime {
 		}
 	}
 
-	function getViewTemplate( $pAction ){				
+	function getViewTemplate( $pAction ){
 		$ret = null;
 		switch ( $pAction ){
 			case "view":
-				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl"; 
+				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl";
 				break;
 			case "list":
-				$ret = "bitpackage:blogs/center_".$pAction."_blog_posts.tpl"; 
+				$ret = "bitpackage:blogs/center_".$pAction."_blog_posts.tpl";
 				break;
 		}
 		return $ret;
@@ -1186,11 +1186,11 @@ class BitBlogPost extends LibertyMime {
 
 	/**
 	 * getContentStatus
-	 * 
+	 *
 	 * @access public
-	 * @return an array of content_status_id, content_status_names the current 
-	 * user can use on this content.  
-	 * 
+	 * @return an array of content_status_id, content_status_names the current
+	 * user can use on this content.
+	 *
 	 * NOTE: pUserMinimum and pUserMaximum are currently NOT inclusive in parent funtion, so these are one beyond the limit we desire
 	 */
 	function getAvailableContentStatuses( $pUserMinimum=-6, $pUserMaximum=51 ) {
@@ -1209,9 +1209,9 @@ class BitBlogPost extends LibertyMime {
 	}
 
 	/**
-	* Returns the create/edit url to a blog post 
+	* Returns the create/edit url to a blog post
 	* @param number $pContentId a valid content id
-	* @param array $pMixed a hash of params to add to the url  
+	* @param array $pMixed a hash of params to add to the url
 	*/
 	function getEditUrl( $pContentId = NULL, $pMixed = NULL ){
 		if( @BitBase::verifyId( $pContentId ) ) {

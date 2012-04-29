@@ -49,7 +49,7 @@ class BitBlog extends LibertyMime {
 		return $ret;
 	}
 
-	public static function getDisplayUrlFromHash( $pBlogId = NULL, $pParamHash = NULL ) {
+	public static function getDisplayUrlFromHash( $pParamHash = NULL ) {
 		global $gBitSystem;
 		$ret = NULL;
 
@@ -202,14 +202,14 @@ class BitBlog extends LibertyMime {
 	function getPost( $pListHash=array() ) {
 		$ret = NULL;
 		$bindVars = array();
-	
+
 		$blogId = (!empty( $pListHash['blog_id'] ) ? $pListHash['blog_id'] : $this->mBlogId);
 
 		if ( BitBase::verifyId( $blogId ) ) {
 			$this->prepGetList( $pListHash );
-			$sql = "SELECT bp.`post_id` 
-					FROM `".BIT_DB_PREFIX."blog_posts` bp 
-						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id`=bp.`content_id`) 
+			$sql = "SELECT bp.`post_id`
+					FROM `".BIT_DB_PREFIX."blog_posts` bp
+						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id`=bp.`content_id`)
 						INNER JOIN `".BIT_DB_PREFIX."blogs_posts_map` bpm ON (bp.`content_id`=bpm.`post_content_id`)
 						INNER JOIN `".BIT_DB_PREFIX."blogs` b on (bpm.`blog_content_id`=b.`content_id`)
 					WHERE b.`blog_id` = ? ORDER BY ".$this->mDb->convertSortMode( $pListHash['sort_mode'] );
@@ -314,7 +314,7 @@ class BitBlog extends LibertyMime {
 		while ($res = $result->fetchRow()) {
 			$blogContentId = $res['content_id'];
 			$ret[$blogContentId] = $res;
-			$ret[$blogContentId]['blog_url'] = $this->getContentUrl( $res['blog_id'] );
+			$ret[$blogContentId]['blog_url'] = $this->getDisplayUrl( $res['blog_id'] );
 			//get count of post in each blog
 			$ret[$blogContentId]['postscant'] = $this->getPostsCount( $res['content_id'] );
 			// deal with the parsing
@@ -322,7 +322,7 @@ class BitBlog extends LibertyMime {
 			$parseHash['content_id']    = $res['content_id'];
 			$parseHash['data'] 	= $res['data'];
 			$ret[$blogContentId]['parsed'] = $this->parseData( $parseHash );
-		}	
+		}
 
 		LibertyContent::postGetList( $pParamHash );
 
@@ -372,25 +372,25 @@ class BitBlog extends LibertyMime {
 		return $ret;
 	}
 
-	function getViewTemplate( $pAction ){				
+	function getViewTemplate( $pAction ){
 		$ret = null;
 		switch ( $pAction ){
 			case "view":
-				$ret = "bitpackage:blogs/center_".$pAction."_blog_posts.tpl"; 
+				$ret = "bitpackage:blogs/center_".$pAction."_blog_posts.tpl";
 				break;
 			case "list":
-				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl"; 
+				$ret = "bitpackage:liberty/center_".$pAction."_generic.tpl";
 				break;
 		}
 		return $ret;
 	}
-	
+
 	/**
 	 * getContentStatus
-	 * 
+	 *
 	 * @access public
-	 * @return an array of content_status_id, content_status_names the current 
-	 * user can use on this content.  
+	 * @return an array of content_status_id, content_status_names the current
+	 * user can use on this content.
 	 */
 	function getAvailableContentStatuses( $pUserMinimum=-100, $pUserMaximum=100 ) {
 		global $gBitUser;
