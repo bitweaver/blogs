@@ -90,9 +90,9 @@
 			ondblclick="location.href='{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}';"
 		{/if}
 	>
-		<div class="content">		
+		<div class="content">
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='body' serviceHash=$post_info}
-			
+
 			{* deal with the blog post image if there is one *}
 			{if $gBitSystem->isFeatureActive( 'blog_show_image' ) && $post_info.thumbnail_url}
 				<div class="image primary">
@@ -104,7 +104,7 @@
 		</div> <!-- end .content -->
 	</div> <!-- end .body -->
 
-	<div class="footer">		
+	<div class="footer">
 		<a href="{$post_info.display_url}" rel="bookmark">{tr}Permalink{/tr}</a>
 		{assign var=spacer value=TRUE}
 		{if $post_info.trackbacks_from_count > 0}
@@ -114,7 +114,7 @@
 		{if $post_info.trackbacks_to_count > 0}
 			{if $spacer}&nbsp; &bull; &nbsp;{/if}
 			{tr}references{/tr} {$post_info.trackbacks_to_count} {tr}posts{/tr}
-		{/if}		
+		{/if}
 		{if $gBitSystem->isFeatureActive( 'blog_posts_comments' )}
 			{if $spacer}&nbsp; &bull; &nbsp;{/if}
 			{if $showDescriptionsOnly}<a href="{$post_info.display_url}#editcomments">{/if}

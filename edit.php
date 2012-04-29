@@ -34,15 +34,15 @@ if (isset($_REQUEST['preview'])) {
 	//all this should prolly be moved to a BitBlog::preparePreview method and the tpls cleaned - but this works for now -wjames5
 	$gBitSmarty->assign('title', $_REQUEST["title"]);
 	$gBitSmarty->assign('edit', $_REQUEST["edit"]);
-	$gBitSmarty->assign('parsed', $gContent->parseData( $_REQUEST["edit"], $_REQUEST["format_guid"]));	
-	$gBitSmarty->assign('user_name', $gBitUser->getDisplayName());	
+	$gBitSmarty->assign('parsed', $gContent->parseData( $_REQUEST["edit"], $_REQUEST["format_guid"]));
+	$gBitSmarty->assign('user_name', $gBitUser->getDisplayName());
 	$gBitSmarty->assign('created', $gBitSystem->getUTCTime());
 	$gBitSmarty->assign('use_find', isset($_REQUEST["use_find"]) ? 'y' : 'n');
 	$gBitSmarty->assign('use_title', isset($_REQUEST["use_title"]) ? 'y' : 'n');
 	$gBitSmarty->assign('allow_comments', isset($_REQUEST["allow_comments"]) ? 'y' : 'n');
 	$gBitSmarty->assign('max_posts', $_REQUEST["max_posts"]);
 	//$gBitSmarty->assign('heading', $heading);
-	$gContent->invokeServices('content_preview_function');	
+	$gContent->invokeServices('content_preview_function');
 } else {
 	$gContent->invokeServices('content_edit_function');
 }

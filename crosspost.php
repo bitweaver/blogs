@@ -3,7 +3,7 @@
  * @version $Header$
  * @package blogs
  * @subpackage functions
- * 
+ *
  * @copyright Copyright (c) 2004-2006, bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
@@ -43,7 +43,7 @@ if( !empty( $_REQUEST['action']) && ($_REQUEST['action'] == 'remove') && $gConte
 			$feedback['error'] = $gContent->mErrors;
 		}
 	}else{
-		$gBitSystem->setBrowserTitle( tra('Confirm removal of') . ' ' . $gContent->getTitle()); // crossposting from Blog \''.'addblognamehere'.'\'' );		
+		$gBitSystem->setBrowserTitle( tra('Confirm removal of') . ' ' . $gContent->getTitle()); // crossposting from Blog \''.'addblognamehere'.'\'' );
 		$formHash['remove'] = TRUE;
 		$formHash['action'] = 'remove';
 		$formHash['post_id'] = $_REQUEST['post_id'];

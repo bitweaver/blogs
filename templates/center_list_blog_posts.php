@@ -92,7 +92,7 @@ $listHash['enforce_status'] = TRUE;
 $listHash['min_owner_status_id'] = 0;
 
 /* I think this is right - usually we pass in $_REQUEST
- * but in this case I pass in the listHash because 
+ * but in this case I pass in the listHash because
  * this is in a module - change it if its a mistake wjames5
  */
 $blogPost->invokeServices( 'content_list_function', $listHash );
