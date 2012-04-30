@@ -69,7 +69,7 @@ class BitBlogPost extends LibertyMime {
 			$this->getServicesSql( 'content_load_sql_function', $selectSql, $joinSql, $whereSql, $bindVars );
 
 			$query = "
-				SELECT bp.*, lc.*, lcds.`data` AS `summary`, lch.`hits`, uu.`login`, uu.`real_name`, 
+				SELECT bp.*, lc.*, lcds.`data` AS `summary`, lch.`hits`, uu.`login`, uu.`real_name`,
 					lfa.`file_name` as `avatar_file_name`, lfa.`mime_type` AS `avatar_mime_type`, laa.`attachment_id` AS `avatar_attachment_id`,
 					lfp.`file_name` AS `image_file_name`, lfp.`mime_type` AS `image_mime_type`, lap.`attachment_id` AS `image_attachment_id`
 					$selectSql
@@ -765,7 +765,7 @@ class BitBlogPost extends LibertyMime {
 						$submit_vars["url"] = $uri;
 						$submit_vars["blog_name"] = $this->mInfo['blogtitle'];
 						$submit_vars["title"] = $this->mInfo['title'] ? $this->mInfo['title'] : date("d/m/Y [h:i]", $this->mInfo['created']);
-						$submit_vars["title"] .= ' ' . tra('by'). ' ' . BitUser::getDisplayName( FALSE, $this->mInfo );
+						$submit_vars["title"] .= ' ' . tra('by'). ' ' . BitUser::getDisplayNameFromHash( FALSE, $this->mInfo );
 						$submit_vars["excerpt"] = substr($post_info['data'], 0, 200);
 						$snoopy->submit($submit_url, $submit_vars);
 						$back = $snoopy->results;
