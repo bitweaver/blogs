@@ -816,7 +816,7 @@ class BitBlogPost extends LibertyMime {
 			$whereSql .= ' AND lc.`user_id` = ? ';
 		}
 
-		$this->getServicesSql( 'content_user_collection_function', $selectSql, $joinSql, $whereSql, $bindVars, NULL, &$pListHash );
+		$this->getServicesSql( 'content_user_collection_function', $selectSql, $joinSql, $whereSql, $bindVars, NULL, $pListHash );
 
 		// map user to login in case we used one instead of the other
 		if( !empty( $pListHash['user'] ) ) {
