@@ -15,11 +15,7 @@ global $gQueryUserId, $module_rows, $moduleParams;
 
 $listHash['max_records'] = $module_rows;
 $listHash['sort_mode'] = ( !empty( $moduleParams['module_params']['sort_mode'] ) ) ? $moduleParams['module_params']['sort_mode'] : 'created_desc';
-$listHash['user_id'] = (!empty( $moduleParams['module_params']['user_id'] ) ? $moduleParams['module_params']['user_id'] : (!empty( $gQueryUserId ) ? $gQueryUserId : NULL));
-
-if( @BitBase::verifyId( $moduleParams['module_params']['group_id'] ) ) {
-	$listHash['group_id'] = $moduleParams['module_params']['group_id'];
-}
+BitUser::userCollection( $moduleParams['module_params'], $listHash );
 
 $blog = new BitBlog();
 if( $modBlogs = $blog->getList( $listHash ) ) {

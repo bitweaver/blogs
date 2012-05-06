@@ -49,7 +49,7 @@ class BitBlog extends LibertyMime {
 		return $ret;
 	}
 
-	public static function getDisplayUrlFromHash( $pParamHash = NULL ) {
+	public static function getDisplayUrlFromHash( &$pParamHash ) {
 		global $gBitSystem;
 		$ret = NULL;
 
@@ -250,11 +250,7 @@ class BitBlog extends LibertyMime {
 			$bindVars[] = $pParamHash['user_id'];
 		}
 
-		if( @$this->verifyId( $pParamHash['group_id'] ) ) {
-			array_push( $bindVars, (int)$pParamHash['group_id'] );
-			$joinSql .= " INNER JOIN `".BIT_DB_PREFIX."users_groups_map` ugm ON (ugm.`user_id`=uu.`user_id`)";
-			$whereSql .= ' AND ugm.`group_id` = ? ';
-		}
+		$this->getServicesSql( 'content_user_collection_function', $selectSql, $joinSql, $whereSql, $bindVars, $this, $pListHash );
 
 		if( !empty( $pParamHash['is_active'] ) ) {
 			$whereSql .= " AND b.`activity` IS NOT NULL";

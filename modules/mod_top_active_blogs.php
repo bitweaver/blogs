@@ -15,11 +15,9 @@ global $gQueryUserId, $gBitThemes, $module_rows, $module_params;
 
 $listHash['max_records'] = $module_rows;
 $listHash['sort_mode'] = 'activity_desc';
-$listHash['user_id'] = $gQueryUserId;
+BitUser::userCollection( $module_params, $listHash );
 $listHash['is_active'] = TRUE;
-if( @BitBase::verifyId( $module_params['group_id'] ) ) {
-	$listHash['group_id'] = $module_params['group_id'];
-}
+
 $blog = new BitBlog();
 $ranking = $blog->getList( $listHash );
 if( !empty( $ranking['data'] ) ) {

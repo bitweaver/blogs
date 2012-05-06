@@ -149,7 +149,7 @@ class BitBlogPost extends LibertyMime {
 		return( count( $this->mInfo ) );
 	}
 
-	function getTitle() {
+	function getTitle( $pHash = NULL, $pDefault = true ) {
 		$ret = NULL;
 		if( $this->isValid() ) {
 			$ret = self::getTitleFromHash( $this->mInfo );
@@ -663,32 +663,20 @@ class BitBlogPost extends LibertyMime {
 	 * @param	object	PostId of the item to use
 	 * @return	object	Url String
 	 */
-	public static function getDisplayUrlFromHash( $pContentId = NULL, $pParamHash = NULL ) {
+	public static function getDisplayUrlFromHash( &$pParamHash ) {
 		global $gBitSystem;
 
 		$ret = NULL;
-		if( empty( $pContentId ) && $this->isValid() ) {
-			$pContentId = $this->mContentId;
-			// if we have a post id we'll use it. we should, but nice to check
-			if( !empty( $this->mPostId ) ){
-				$pParamHash['post_id'] = $this->mPostId;
-			}
-		}
-
-		if( !@BitBase::verifyId( $pContentId ) && @BitBase::verifyId( $pParamHash['content_id'] )) {
-			$pContentId = $pParamHash['content_id'];
-		}
-
-		if( @BitBase::verifyId( $pContentId )) {
+		if( @BitBase::verifyId( $pParamHash['content_id'] )) {
 			$rewrite_tag = $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ? 'view/' : '';
 			if( $gBitSystem->isFeatureActive( 'pretty_urls' ) || $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				if( !empty( $pParamHash['post_id'] ) ) {
 					$ret = BLOGS_PKG_URL.$rewrite_tag.'post/'.$pParamHash['post_id'];
 				} else {
-					$ret = BLOGS_PKG_URL.$rewrite_tag.'content/'.$pContentId;
+					$ret = BLOGS_PKG_URL.$rewrite_tag.'content/'.$pParamHash['content_id'];
 				}
 			} else {
-				$ret = BLOGS_PKG_URL.'view_post.php?content_id='.$pContentId;
+				$ret = BLOGS_PKG_URL.'view_post.php?content_id='.$pParamHash['content_id'];
 			}
 		}
 		return $ret;
@@ -816,7 +804,7 @@ class BitBlogPost extends LibertyMime {
 			$whereSql .= ' AND lc.`user_id` = ? ';
 		}
 
-		$this->getServicesSql( 'content_user_collection_function', $selectSql, $joinSql, $whereSql, $bindVars, NULL, $pListHash );
+		$this->getServicesSql( 'content_user_collection_function', $selectSql, $joinSql, $whereSql, $bindVars, $this, $pListHash );
 
 		// map user to login in case we used one instead of the other
 		if( !empty( $pListHash['user'] ) ) {
