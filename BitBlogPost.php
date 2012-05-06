@@ -816,11 +816,7 @@ class BitBlogPost extends LibertyMime {
 			$whereSql .= ' AND lc.`user_id` = ? ';
 		}
 
-		if( @$this->verifyId( $pListHash['group_id'] ) ) {
-			array_push( $bindVars, (int)$pListHash['group_id'] );
-			$joinSql .= " INNER JOIN `".BIT_DB_PREFIX."users_groups_map` ugm ON (ugm.`user_id`=uu.`user_id`)";
-			$whereSql .= ' AND ugm.`group_id` = ? ';
-		}
+		$this->getServicesSql( 'content_user_collection_function', $selectSql, $joinSql, $whereSql, $bindVars, NULL, &$pListHash );
 
 		// map user to login in case we used one instead of the other
 		if( !empty( $pListHash['user'] ) ) {

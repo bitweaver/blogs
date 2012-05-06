@@ -3,7 +3,7 @@
  * @version $Header$
  * @package bitweaver
  */
-global $gBitSmarty, $gBlog, $gBitSystem, $gQueryUserId, $moduleParams, $gBitUser;
+global $gBitSmarty, $gBlog, $gBitSystem, $moduleParams, $gBitUser;
 if( !empty( $moduleParams ) ) {
 	extract( $moduleParams );
 }
@@ -56,18 +56,10 @@ if( !empty( $moduleParams )) {
     $listHash = $_REQUEST;
 }
 
-if( empty( $listHash['user_id'] )) {
-	if( !empty( $gQueryUserId )) {
-		$listHash['user_id'] = $gQueryUserId;
-	} elseif( isset( $_REQUEST['user_id'] ) ) {
-		$listHash['user_id'] = $_REQUEST['user_id'];
-	}
-}
+BitUser::userCollection( $_REQUEST, $listHash );
+
 if ( empty( $listHash['sort_mode'] ) ){
 	$listHash['sort_mode'] = 'sort_date_desc';
-}
-if( @BitBase::verifyId( $_REQUEST['group_id'] ) ) {
-	$listHash['group_id'] = $_REQUEST['group_id'];
 }
 
 if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
