@@ -804,7 +804,7 @@ class BitBlogPost extends LibertyMime {
 			$whereSql .= ' AND lc.`user_id` = ? ';
 		}
 
-		$this->getServicesSql( 'content_user_collection_function', $selectSql, $joinSql, $whereSql, $bindVars, $this, $pListHash );
+		$this->getServicesSql( 'content_user_collection_function', $selectSql, $joinSql, $whereSql, $bindVars, NULL, $pListHash );
 
 		// map user to login in case we used one instead of the other
 		if( !empty( $pListHash['user'] ) ) {
@@ -843,7 +843,7 @@ class BitBlogPost extends LibertyMime {
 		/* Check if the post wants to be viewed before / after respective dates
 		 * Note: expiring posts are determined by the expired date being greater than the publish date
 		 */
-		$this->getDateRestrictions($pListHash, $whereSql, $bindVars);
+		static::getDateRestrictions($pListHash, $whereSql, $bindVars);
 
 		/* sort_mode is never empty due to call to prepGetList above
 		 * I think this will have to be perminently removed and default
@@ -1037,7 +1037,7 @@ class BitBlogPost extends LibertyMime {
 	 * alters the whereSql and bindVars to limit the posts returned based on the dates
 	 * expects the blog_psots table to be aliased as bp
 	 */
-	function getDateRestrictions( $pListHash, &$whereSql, &$bindVars ) {
+	public static function getDateRestrictions( $pListHash, &$whereSql, &$bindVars ) {
 		global $gBitSystem, $gBitUser;
 
 		$now = $gBitSystem->getUTCTime();
