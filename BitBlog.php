@@ -53,16 +53,16 @@ class BitBlog extends LibertyMime {
 		global $gBitSystem;
 		$ret = NULL;
 
-		if ( BitBase::verifyId( $pBlogId ) ) {
+		if ( BitBase::verifyId( $pParamHash['blog_id'] ) ) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
-				$ret = BLOGS_PKG_URL.'view/'.$pBlogId;
+				$ret = BLOGS_PKG_URL.'view/'.$pParamHash['blog_id'];
 			} elseif( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {
-				$ret = BLOGS_PKG_URL.$pBlogId;
+				$ret = BLOGS_PKG_URL.$pParamHash['blog_id'];
 			} else {
-				$ret = BLOGS_PKG_URL.'view.php?blog_id='.$pBlogId;
+				$ret = BLOGS_PKG_URL.'view.php?blog_id='.$pParamHash['blog_id'];
 			}
 		} else {
-			$ret = LibertyContent::getDisplayUrlFromHash( NULL, $pParamHash );
+			$ret = parent::getDisplayUrlFromHash( $pParamHash );
 		}
 		return $ret;
 	}
@@ -70,7 +70,7 @@ class BitBlog extends LibertyMime {
 	function getDisplayUrl() {
 		$ret = NULL;
 		if( $this->isValid() ) {
-			$ret = self::getDisplayUrlFromHash( $pBlogId );
+			$ret = self::getDisplayUrlFromHash( array ( 'blog_id' => $pBlogId ) );
 		}
 		return $ret;
 	}
