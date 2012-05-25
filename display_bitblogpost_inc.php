@@ -65,7 +65,7 @@ $gBitSmarty->assign('post_id', $gContent->mPostId);
 if ( empty( $_REQUEST['format'] ) || $_REQUEST['format'] == "full" || $_REQUEST['format'] == "data" ){
 	$parsed_data = $gContent->parseData();
 	if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
-		$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
+		$comments_return_url = $_SERVER['SCRIPT_NAME']."?post_id=".$gContent->mPostId;
 		$commentsParentId = $gContent->mContentId;
 		include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
 	}

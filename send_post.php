@@ -53,7 +53,7 @@ if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
 		'sort_mode'
 	);
 
-	$comments_return_url = $_SERVER['PHP_SELF']."?post_id=".$gContent->mPostId;
+	$comments_return_url = $_SERVER['SCRIPT_NAME']."?post_id=".$gContent->mPostId;
 	$commentsParentId = $gContent->mContentId;
 	$comments_prefix_var = 'post:';
 	$comments_object_var = 'post_id';
