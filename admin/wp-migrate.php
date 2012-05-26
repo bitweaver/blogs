@@ -3,7 +3,7 @@
  * This migration script is far from handling everything that word press
  * can store. It does what is needed for MY site but may NOT work
  * for yours at all. ~ nickpalmer
- * 
+ *
  * Needs work to handle annonymous comment.
  * Needs work to handle attached images.
  * Needs work on handling errors better.
@@ -19,7 +19,7 @@
 
 require_once( '../../kernel/setup_inc.php' );
 
-require_once(USERS_PKG_PATH.'BitUser.php');
+//require_once(USERS_PKG_PATH.'RoleUser.php');
 require_once(BLOGS_PKG_PATH.'BitBlog.php');
 require_once(BLOGS_PKG_PATH.'BitBlogPost.php');
 require_once(LIBERTY_PKG_PATH.'LibertyComment.php');
@@ -52,19 +52,19 @@ function migrate_wp() {
 	global $wpdb;
 	global $gErrorMap;
 	global $gBitSystem;
-	
+
 	if (empty($wpdb->table_prefix)) {
 		$wpdb->table_prefix = '';
 	}
 
 	setup_migration();
 	migrate_wp_users();
-	migrate_wp_categories();  
+	migrate_wp_categories();
 	migrate_wp_posts();
 	migrate_wp_post_map();
 	migrate_wp_comments();
 	$gBitSystem->storeConfig('blogs_wp_migration', 'y', 'blogs');
-	
+
 	$errors['success'] = tra("Your migration is complete.");
 	$gBitSmarty->assign('errorMap', $gErrorMap);
 	$gBitSmarty->assign('errors', $errors);
@@ -115,14 +115,14 @@ function setup_migration() {
 
 function migrate_wp_users() {
 	global $wpdb, $gBitSystem, $gBitSmarty, $gUserMap, $gErrorMap, $gMaxUser;
-	
+
 	// Get everybody with a post
 	$query = "select distinct(u.ID) from ".$wpdb->table_prefix."wp_users u INNER JOIN ".$wpdb->table_prefix."wp_comments c ON (u.ID = c.user_id) WHERE u.ID != 1";
 	$post_users = $wpdb->get_results($query, ARRAY_A);
 	// Get everybody with a comment
 	$query = "select distinct(u.ID) from ". $wpdb->table_prefix."wp_users u INNER JOIN ".$wpdb->table_prefix."wp_posts p ON (u.ID = p.post_author) WHERE u.ID != 1";
 	$comment_users = $wpdb->get_results($query, ARRAY_A);
-	
+
 	$users = array();
 	foreach ($post_users as $key => $data) {
 		$users[$data['ID']] = $data['ID'];
@@ -178,9 +178,9 @@ function migrate_wp_categories() {
 
 	// Get info on categories
 	$query = "select * from ".$wpdb->table_prefix."wp_categories WHERE cat_ID > $gMaxBlog";
-	
+
 	$blog_data = $wpdb->get_results($query);
-	
+
 	if (!empty($blog_data)) {
 		foreach ($blog_data as $blog) {
 			//    vd($blog);
@@ -292,7 +292,7 @@ function migrate_wp_post_map() {
 
 function migrate_wp_comments() {
 	global $wpdb, $gBitSystem, $gBitSmarty, $gUserMap, $gErrorMap, $gBlogMap, $gPostMap, $gCommentMap, $gMaxComment;
-	
+
 	//  vd("Blog Map");
 	//  vd($gBlogMap);
 	//  vd("Post Map");

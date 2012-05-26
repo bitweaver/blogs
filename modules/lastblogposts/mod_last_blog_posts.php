@@ -9,13 +9,13 @@
  * required setup
  */
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
-require_once( USERS_PKG_PATH.'BitUser.php' );
+//require_once( USERS_PKG_PATH.'BitUser.php' );
 
 // moduleParams contains lots of goodies: extract for easier handling
 extract( $moduleParams );
 
 $date_start = NULL;
-if( !empty($module_params['date_start_offset']) ){ 
+if( !empty($module_params['date_start_offset']) ){
 	//offset is passed as number of hours
 	$date_start = time() - ( $module_params['date_start_offset'] * 3600 );
 }
@@ -45,7 +45,7 @@ if( !$gBitUser->hasPermission( 'p_blogs_admin' )) {
 $listHash['enforce_status'] = TRUE;
 
 if ( !empty( $module_params['status'] ) && $module_params['status'] = "draft" && isset( $gBitUser->mUserId ) ){
-	// if we are getting drafts then get future posts too 
+	// if we are getting drafts then get future posts too
     $listHash['show_future'] = TRUE;
 	$listHash['min_status_id'] = -6;
 	$listHash['max_status_id'] = -4;
