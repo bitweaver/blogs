@@ -118,6 +118,7 @@ function data_blog($data, $params) { // No change in the parameters with Clyde
 		if ( isset($module_params['user']) ){ $getHash['user'] = $module_params['user']; }
 		if ( isset($module_params['id']) ){ $getHash['blog_id'] = $module_params['id'];}
 		if ( isset($module_params['group_id']) ){ $getHash['group_id'] = $module_params['group_id'];}
+		if ( isset($module_params['role_id']) ){ $getHash['role_id'] = $module_params['role_id'];}
 		
 		// handle draft posts
 		$getHash['enforce_status'] = TRUE;
@@ -163,6 +164,8 @@ function data_blog($data, $params) { // No change in the parameters with Clyde
 						.( isset($rssUserId) ? 'user_id='.$rssUserId : "" )
 						.( (isset($rssUserId) && isset($module_params['group_id']))? "&": "")
 						.( isset($module_params['group_id']) ? 'group_id='.$module_params['group_id'] : "" );
+						.( (isset($rssUserId) && isset($module_params['role_id']))? "&": "")
+						.( isset($module_params['role_id']) ? 'role_id='.$module_params['role_id'] : "" );
 					// something like this would be better, calling smarty directly so translation can also be called -wjames5
 					// $rssIcon = smarty_function_biticon( array('ipackage'=>"rss", 'iname'="rss-16x16", 'iexplain'=>"RSS feed"), &$gBitSmarty );
 					$display_result .= '<div class="floaticon"><a title="RSS feed" href="'.$rssPath.'"><img src="'.BIT_ROOT_URL.'rss/icons/rss-16x16.png" alt="RSS feed" title="RSS feed" class="icon" /></a></div>';

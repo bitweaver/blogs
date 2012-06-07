@@ -26,7 +26,8 @@ $defaultsHash = array(
 	'parse_data'  => TRUE,
 	'user'        => ( !empty( $module_params['user'] ) ? $module_params['user'] : NULL ),
 	'blog_id'     => ( @BitBase::verifyId( $module_params['blog_id'] ) ? $module_params['blog_id'] : NULL ),
-	'group_id'     => ( @BitBase::verifyId( $module_params['group_id'] ) ? $module_params['group_id'] : NULL ),
+	'group_id'    => ( @BitBase::verifyId( $module_params['group_id'] ) ? $module_params['group_id'] : NULL ),
+	'role_id'     => ( @BitBase::verifyId( $module_params['role_id'] ) ? $module_params['role_id'] : NULL ),
 	'date_start'  =>  $date_start,
 	'offset'	  => ( !empty( $module_params['offset'] ) ? $module_params['offset'] : 0 ),
 );
