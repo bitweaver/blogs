@@ -22,7 +22,7 @@ $gContent->invokeServices( 'content_display_function', $displayHash );
 
 if( isset($_REQUEST['user_id']) && !isset( $_REQUEST['blog_id'] ) ) {
 	// We will try and grab the first blog owned by the user id given
-	$blogsList = $gContent->list_user_blogs($_REQUEST['user_id']);
+	$blogsList = $gContent->getList( $_REQUEST );
 	if (!empty($blogsList[0]['blog_id'])) {
 		$_REQUEST['blog_id'] = $blogsList[0]['blog_id'];
 	}
@@ -79,7 +79,7 @@ if( $gBitSystem->isFeatureActive( 'users_watches' ) ) {
 
 	$gBitSmarty->assign('user_watching_blog', 'n');
 
-	if ( $watch = $gBitUser->getEventWatches( 'blog_post', $_REQUEST['blog_id'] ) ) {
+	if ( $watch = $gBitUser->getEventWatches( 'blog_post', $listHash['blog_id'] ) ) {
 		$gBitSmarty->assign('user_watching_blog', 'y');
 	}
 }
