@@ -26,7 +26,7 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 	require_once( RSS_PKG_PATH."rss_error.php" );
 } else {
 	// check if we want to use the cache file
-	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.BLOGS_PKG_NAME.( !empty( $_REQUEST['user_id'] ) ? "_".$_REQUEST['user_id'] : "" ).( !empty( $_REQUEST['group_id'] ) ? "_".$_REQUEST['group_id'] : "" ).( !empty( $_REQUEST['blog_id'] ) ? "_".$_REQUEST['blog_id'] : "" ).'_'.$cacheFileTail;
+	$cacheFile = TEMP_PKG_PATH.RSS_PKG_NAME.'/'.BLOGS_PKG_NAME.( !empty( $_REQUEST['user_id'] ) ? "_".$_REQUEST['user_id'] : "" ).( !empty( $_REQUEST['group_id'] ) ? "_".$_REQUEST['group_id'] : "" ).( !empty( $_REQUEST['role_id'] ) ? "_".$_REQUEST['role_id'] : "" ).( !empty( $_REQUEST['blog_id'] ) ? "_".$_REQUEST['blog_id'] : "" ).'_'.$cacheFileTail;
 	$rss->useCached( $rss_version_name, $cacheFile, $gBitSystem->getConfig( 'rssfeed_cache_time' ));
 
 	$blogPost = new BitBlogPost();
@@ -35,7 +35,11 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 	$listHash['parse_data'] = TRUE;
 	$listHash['full_data'] = TRUE;
 	if( !empty( $_REQUEST['user_id'] ) ) {
-		require_once( USERS_PKG_PATH.'BitUser.php' );
+		if ( $gBitSystem->getConfig( 'user_class', 'BitPermUser' ) == 'RolePermUser' ) {
+			require_once( USERS_PKG_PATH.'RoleUser.php' );
+		} else {
+			require_once( USERS_PKG_PATH.'BitUser.php' );
+		}
 		$blogUser = new BitUser();
 		$userData = $blogUser->getUserInfo( array('user_id' => $_REQUEST['user_id']) );
 		// dont try and fool me
@@ -44,7 +48,7 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 			$rss->title = $userName." at ".$gBitSystem->getConfig( 'site_title' );
 			$listHash['user_id'] = $_REQUEST['user_id'];
 		}
-	}else if( !empty( $_REQUEST['group_id'] ) ) {
+	} else if( !empty( $_REQUEST['group_id'] ) ) {
 		require_once( USERS_PKG_PATH . 'BitPermUser.php' );
 		$permUser = new BitPermUser();
 		$groupData = $permUser->getGroupInfo( $_REQUEST['group_id'] );
@@ -54,7 +58,16 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 			$rss->title = $groupName." Group at ".$gBitSystem->getConfig( 'site_title' );
 			$listHash['group_id'] = $_REQUEST['group_id'];
 		}
-		
+	} else if( !empty( $_REQUEST['role_id'] ) ) {
+		require_once( USERS_PKG_PATH . 'RolePermUser.php' );
+		$permUser = new BitPermUser();
+		$roleData = $permUser->getRoleInfo( $_REQUEST['role_id'] );
+		// dont try and fool me
+		if (!empty($roleData)){
+			$roleName = $roleData['role_name'];
+			$rss->title = $roleName." Role at ".$gBitSystem->getConfig( 'site_title' );
+			$listHash['role_id'] = $_REQUEST['role_id'];
+		}
 	}
 
 	if( !empty( $_REQUEST['blog_id'] ) ) {
