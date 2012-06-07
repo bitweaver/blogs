@@ -85,9 +85,10 @@ class BitBlog extends LibertyMime {
 	}
 
 	function load( $pContentId = NULL, $pPluginParams = NULL ) {
-		$this->mInfo = $this->getBlog( $this->mBlogId, $this->mContentId );
-		$this->mContentId = $this->getField( 'content_id' );
-		$this->mBlogId = $this->getField('blog_id');
+		if ( $this->getBlog( $this->mBlogId, $this->mContentId ) ) {
+			$this->mContentId = $this->getField( 'content_id' );
+			$this->mBlogId = $this->getField('blog_id');
+		}
 	}
 
 
