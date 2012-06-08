@@ -70,7 +70,8 @@ class BitBlog extends LibertyMime {
 	function getDisplayUrl() {
 		$ret = NULL;
 		if( $this->isValid() ) {
-			$ret = self::getDisplayUrlFromHash( array ( 'blog_id' => $this->$mBlogId ) );
+			$hash = array ( 'blog_id' => $this->mBlogId );
+			$ret = self::getDisplayUrlFromHash( $hash );
 		}
 		return $ret;
 	}
