@@ -199,7 +199,6 @@ function blog_ranking_last_posts($limit) {
 	  $blog_hash['sort_mode'] = 'lch.hits_desc';
 	  $blog_hash['find'] = $blog_ids;
 	  $blogs = $b->getList($blog_hash);
-	  vd($blogs);
 	  $list['data'] = array();
 	  // Reorganize blogs by id
 	  foreach($blogs['data'] as $key => $blog) {
