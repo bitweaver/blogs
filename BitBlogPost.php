@@ -95,7 +95,7 @@ class BitBlogPost extends LibertyMime {
 				$this->mInfo['display_url'] = BitBlogPost::getDisplayUrlFromHash( $this->mContentId, $this->mInfo );
 				foreach( array( 'avatar', 'image' ) as $img ) {
 					$this->mInfo[$img] = liberty_fetch_thumbnails( array(
-						'source_file' => $this->getSourceFile( array( 'user_id'=>$this->getField( 'user_id' ), 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'type' => $this->getField( $img.'_mime_type' ), 'name' =>  $this->getField( $img.'_file_name' ) ) ), 'file_name' => basename( $this->mInfo[$img.'_file_name'] ), 'sub_dir' =>  $this->getField( $img.'_attachment_id' ) ) )
+						'source_file' => $this->getSourceFile( array( 'user_id'=>$this->getField( 'user_id' ), 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'mime_type' => $this->getField( $img.'_mime_type' ), 'name' =>  $this->getField( $img.'_file_name' ) ) ), 'file_name' => basename( $this->mInfo[$img.'_file_name'] ), 'sub_dir' =>  $this->getField( $img.'_attachment_id' ) ) )
 					));
 				}
 
@@ -956,7 +956,7 @@ class BitBlogPost extends LibertyMime {
 
 				foreach( array( 'avatar', 'image' ) as $img ) {
 					$res[$img] = liberty_fetch_thumbnails( array(
-						'source_file' => liberty_mime_get_source_file( array( 'user_id'=>$res['user_id'], 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'type' => $res[$img.'_mime_type'], 'name'=>$res[$img.'_file_name'] ) ), 'file_name'=>basename( $res[$img.'_file_name'] ), 'sub_dir'=>$res[$img.'_attachment_id'] ) )
+						'source_file' => liberty_mime_get_source_file( array( 'user_id'=>$res['user_id'], 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'mime_type' => $res[$img.'_mime_type'], 'name'=>$res[$img.'_file_name'] ) ), 'file_name'=>basename( $res[$img.'_file_name'] ), 'sub_dir'=>$res[$img.'_attachment_id'] ) )
 					));
 				}
 				$res['thumbnail_url'] = BitBlogPost::getImageThumbnails( $res );
