@@ -51,9 +51,13 @@
 							{else}
 								{assign var=perm_icon value="icons/emblem-shared"}
 							{/if}
-							{smartlink ipackage=liberty ifile=content_permissions.php ititle="Assign Permissions" ibiticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
+							{if $role_model }
+								{smartlink ipackage=liberty ifile=content_role_permissions.php ititle="Assign Permissions" ibiticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
+							{else}
+								{smartlink ipackage=liberty ifile=content_permissions.php ititle="Assign Permissions" ibiticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
+							{/if}
 						{/if}
-					
+
 						{if ($gBitUser->mUserId and $listBlog.user_id eq $gBitUser->mUserId) || ($gBitUser->hasPermission( 'p_blogs_admin' )) or ($listBlog.is_public eq 'y')}
 									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listBlog.blog_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="post"}</a>
 						{/if}
@@ -98,7 +102,7 @@
 						{if $gBitSystem->isFeatureActive( 'blog_list_posts' )}
 							{tr}Posts{/tr}: {$listBlog.postscant}&nbsp;&bull;&nbsp;
 						{/if}
-						
+
 						{if $gBitSystem->isFeatureActive( 'blog_list_visits' )}
 							{tr}Visits{/tr}: {$listBlog.hits}&nbsp;&bull;&nbsp;
 						{/if}
