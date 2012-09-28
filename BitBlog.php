@@ -208,7 +208,7 @@ class BitBlog extends LibertyMime {
 		$blogId = (!empty( $pListHash['blog_id'] ) ? $pListHash['blog_id'] : $this->mBlogId);
 
 		if ( BitBase::verifyId( $blogId ) ) {
-			$this->prepGetList( $pListHash );
+			LibertyContent::prepGetList( $pListHash );
 			$sql = "SELECT bp.`post_id`
 					FROM `".BIT_DB_PREFIX."blog_posts` bp
 						INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id`=bp.`content_id`)

@@ -771,7 +771,7 @@ class BitBlogPost extends LibertyMime {
 	function getList( &$pListHash ) {
 		global $gBitUser, $gBitSystem;
 
-		$this->prepGetList( $pListHash );
+		LibertyContent::prepGetList( $pListHash );
 
 		$selectSql = ''; $joinSql = ''; $whereSql = '';
 		$bindVars = array();
