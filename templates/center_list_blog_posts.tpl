@@ -4,7 +4,7 @@
 
 <div class="display blogs">
 	<div class="header">
-		<h1>{tr}Recent Blog Posts{/tr}</h1>
+		<h2>{tr}Recent Blog Posts{/tr}</h2>
 	</div>
 
 	<div class="body">

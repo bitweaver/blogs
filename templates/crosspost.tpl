@@ -1,7 +1,7 @@
 {strip}
 <div class="edit crosspost">
 	<div class="header">
-		<h1>{tr}Crosspost{/tr}</h1>
+		<h2>{tr}Crosspost{/tr}</h2>
 	</div>
 
 	<div class="body">
