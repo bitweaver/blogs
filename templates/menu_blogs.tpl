@@ -14,7 +14,7 @@
 		<li><a class="item" href="{$smarty.const.BLOGS_PKG_URL}post.php">{booticon iname="icon-file" iexplain="Write Blog Post" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitSystem->isFeatureActive( 'blog_rankings' ) and $gBitUser->hasPermission( 'p_blogs_view' )}
-		<li><a class="item" href="{$smarty.const.BLOGS_PKG_URL}rankings.php">{biticon iname="view-sort-ascending" iexplain="Blog Post Rankings" ilocation=menu}</a></li>
+		<li><a class="item" href="{$smarty.const.BLOGS_PKG_URL}rankings.php">{booticon iname="icon-sort" iexplain="Blog Post Rankings" ilocation=menu}</a></li>
 	{/if}
 </ul>
 {/strip}
