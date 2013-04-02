@@ -27,7 +27,7 @@
 					{legend legend="Blog Settings"}
 						<input type="hidden" name="blog_id" value="{$gContent->getField('blog_id')}" />
 						<input type="hidden" name="content_id" value="{$gContent->getField('content_id')}" />
-						<div class="row">
+						<div class="control-group">
 							{formfeedback warning=$warning}
 							{formlabel label="Title" for="title"}
 							{forminput}
@@ -37,7 +37,7 @@
 
 						{textarea}{if $edit}{$edit}{else}{$gContent->getField('data')}{/if}{/textarea}
 
-						<div class="row">
+						<div class="control-group">
 							{formlabel label="Number of posts to show" for="max_posts"}
 							{forminput}
 								<input type="text" name="max_posts" id="max_posts" value="{$gContent->getField('max_posts')|escape|default:10}" />
@@ -47,7 +47,7 @@
 
 {* DEPRECATED - Slated for removal  -wjames5
 						{if $gBitUser->hasPermission('p_blogs_create_is_public')}
-						<div class="row">
+						<div class="control-group">
 							{formlabel label="Public" for="is_public"}
 							{forminput}
 								<input type="checkbox" name="is_public" id="is_public" {if $gContent->getField('is_public') eq 'y'}checked="checked"{/if} />
@@ -57,7 +57,7 @@
 						{/if}
 *}
 
-						<div class="row">
+						<div class="control-group">
 							{formlabel label="Use titles in blog posts" for="use_title"}
 							{forminput}
 								<input type="checkbox" name="use_title" id="use_title" {if !$gContent->isValid() || $gContent->getField('use_title') eq 'y'}checked="checked"{/if} />
@@ -65,7 +65,7 @@
 							{/forminput}
 						</div>
 
-						<div class="row">
+						<div class="control-group">
 							{formlabel label="Allow search" for="use_find"}
 							{forminput}
 								<input type="checkbox" name="use_find" id="use_find" {if !$gContent->isValid() || $gContent->getField('use_find') eq 'y'}checked="checked"{/if} />
@@ -73,7 +73,7 @@
 							{/forminput}
 						</div>
 
-						<div class="row">
+						<div class="control-group">
 							{formlabel label="Allow comments" for="allow_comments"}
 							{forminput}
 								<input type="checkbox" name="allow_comments" id="allow_comments" {if !$gContent->isValid() || $gContent->getField('allow_comments') eq 'y'}checked="checked"{/if} />
@@ -83,7 +83,7 @@
 
 						{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile="content_edit_mini_tpl"}
 
-						<div class="row submit">
+						<div class="control-group submit">
 							<input type="submit" name="preview" value="{tr}preview{/tr}" />&nbsp;
 							<input type="submit" name="save_blog" value="{tr}save{/tr}" />
 						</div>
