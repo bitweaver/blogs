@@ -29,9 +29,9 @@
 						<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{booticon iname="icon-paperclip"  ipackage="icons"  iexplain="Crosspost"}</a>
 					{/if}
 
-					<a title="{tr}Print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="Print"}</a>
+					<a title="{tr}Print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{booticon iname="icon-print"  ipackage="icons"  iexplain="Print"}</a>
 					{if $gBitUser->hasPermission('p_blogs_send_post')}
-						<a title="{tr}Email This Post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-forward" iexplain="Email This Post"}</a>
+						<a title="{tr}Email This Post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}send_post.php?post_id={$post_info.post_id}">{booticon iname="icon-envelope"  ipackage="icons"  iexplain="Email This Post"}</a>
 					{/if}
 
 					{if $gContent->hasUpdatePermission()}
@@ -126,7 +126,7 @@
 	{if $pages > 1}
 		<div class="pagination">
 			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$first_page}">{biticon ipackage="icons" iname="go-first" iexplain="first page"}</a>
-			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$prev_page}">{biticon ipackage="icons" iname="go-previous" iexplain="previous page"}</a>
+			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$prev_page}">{booticon iname="icon-arrow-left"  ipackage="icons"  iexplain="previous page"}</a>
 			{tr}page{/tr}:{$page}/{$pages}
 			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$next_page}">{biticon ipackage="icons" iname="go-next" iexplain="next page"}</a>
 			<a href="{$smarty.const.BLOGS_PKG_URL}view_post.php?blog_id={$smarty.request.blog_id}&amp;post_id={$smarty.request.post_id}&amp;page={$last_page}">{biticon ipackage="icons" iname="go-last" iexplain="last page"}</a>
