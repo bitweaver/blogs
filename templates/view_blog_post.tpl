@@ -35,10 +35,10 @@
 					{/if}
 
 					{if $gContent->hasUpdatePermission()}
-						<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+						<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$post_info.blog_id}&amp;post_id={$post_info.post_id}">{booticon iname="icon-edit" ipackage="icons" iexplain="edit"}</a>
 					{/if}
 					{if $gContent->hasUserPermission( 'p_blogs_admin' )}
-						<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;post_id={$post_info.post_id}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete"}</a>
+						<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?action=remove&amp;post_id={$post_info.post_id}&amp;status_id=300">{booticon iname="icon-trash" ipackage="icons" iexplain="delete"}</a>
 					{/if}
 				{/if}
 			</div>

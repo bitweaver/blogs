@@ -19,8 +19,8 @@
 											{if $gContent->mInfo.blogs.$blogContentId && ($blogContentId != $crosspost.blog_content_id) }
 												{assign var="has_crosspost" value=TRUE}
 												{$availBlogTitle|escape}
-												&nbsp;<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?blog_content_id={$blogContentId}&amp;post_id={$post_info.post_id}">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit crosspost note"}</a>
-												&nbsp;<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?action=remove&amp;post_id={$post_info.post_id}&amp;blog_content_id={$blogContentId}&amp;status_id=300">{biticon ipackage="icons" iname="edit-delete" iexplain="delete this crossposting"}</a><br/>
+												&nbsp;<a title="{tr}Edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?blog_content_id={$blogContentId}&amp;post_id={$post_info.post_id}">{booticon iname="icon-edit" ipackage="icons" iexplain="edit crosspost note"}</a>
+												&nbsp;<a title="{tr}Remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?action=remove&amp;post_id={$post_info.post_id}&amp;blog_content_id={$blogContentId}&amp;status_id=300">{booticon iname="icon-trash" ipackage="icons" iexplain="delete this crossposting"}</a><br/>
 											{/if}
 										{/foreach}
 										{if !$has_crosspost}
