@@ -26,7 +26,7 @@
 					{/if}
 
 					{if $gContent->hasUserPermission( 'p_blogs_admin' )}
-						<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="mail-attachment" iexplain="Crosspost"}</a>
+						<a title="{tr}Crosspost{/tr}" href="{$smarty.const.BLOGS_PKG_URL}crosspost.php?post_id={$post_info.post_id}">{booticon iname="icon-paperclip"  ipackage="icons"  iexplain="Crosspost"}</a>
 					{/if}
 
 					<a title="{tr}Print{/tr}" style="display:none;" href="{$smarty.const.BLOGS_PKG_URL}print_blog_post.php?post_id={$post_info.post_id}">{biticon ipackage="icons" iname="document-print" iexplain="Print"}</a>

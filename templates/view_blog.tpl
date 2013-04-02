@@ -5,7 +5,7 @@
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='icon' serviceHash=$gContent->mInfo}
 
 		{if $gContent->hasUserPermission( 'p_blogs_post' )}
-			<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$gContent->mBlogId}">{biticon ipackage="icons" iname="document-save" iexplain="post"}</a>
+			<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$gContent->mBlogId}">{booticon iname="icon-save"  ipackage="icons"  iexplain="post"}</a>
 		{/if}
 
 		{if $gBitSystem->isPackageActive( 'rss' )}
@@ -13,7 +13,7 @@
 		{/if}
 
 		{if $gContent->hasUpdatePermission()}
-			<a title="{tr}Edit blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$gContent->mBlogId}">{biticon ipackage="icons" iname="document-properties" iexplain="edit"}</a>
+			<a title="{tr}Edit blog{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$gContent->mBlogId}">{booticon iname="icon-file"  ipackage="icons"  iexplain="edit"}</a>
 		{/if}
 
 		{if $gBitUser->isRegistered() and $gBitSystem->isFeatureActive( 'users_watches' )}

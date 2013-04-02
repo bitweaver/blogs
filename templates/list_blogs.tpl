@@ -12,7 +12,7 @@
 
 		<div class="navbar">
 			<ul>
-				<li>{biticon ipackage="icons" iname="emblem-symbolic-link" iexplain="sort by"}</li>
+				<li>{booticon iname="icon-circle-arrow-right"  ipackage="icons"  iexplain="sort by"}</li>
 				{if $gBitSystem->isFeatureActive( 'blog_list_title' )}
 					<li>{smartlink ititle="Title" isort="title" offset=$offset}</li>
 				{/if}
@@ -62,7 +62,7 @@
 									<a title="{tr}post{/tr}" href="{$smarty.const.BLOGS_PKG_URL}post.php?blog_id={$listBlog.blog_id}">{booticon iname="icon-edit" ipackage="icons" iexplain="post"}</a>
 						{/if}
 						{if ($gBitUser->mUserId and $listBlog.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
-							<a title="{tr}edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$listBlog.blog_id}">{biticon ipackage="icons" iname="document-properties" iexplain="configure"}</a>
+							<a title="{tr}edit{/tr}" href="{$smarty.const.BLOGS_PKG_URL}edit.php?blog_id={$listBlog.blog_id}">{booticon iname="icon-file"  ipackage="icons"  iexplain="configure"}</a>
 						{/if}
 						{if ($gBitUser->mUserId and $listBlog.user_id eq $gBitUser->mUserId) or $gBitUser->hasPermission( 'p_blogs_admin' )}
 							<a title="{tr}remove{/tr}" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove=1&amp;blog_id={$listBlog.blog_id}">{booticon iname="icon-trash" ipackage="icons" iexplain="delete"}</a>

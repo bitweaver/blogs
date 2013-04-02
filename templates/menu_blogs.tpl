@@ -4,7 +4,7 @@
 		{if $gBitSystem->isFeatureActive( 'blog_home' )}
 			<li><a class="item" href="{$smarty.const.BLOGS_PKG_URL}index.php">{booticon iname="icon-home" iexplain="Home Blog" ilocation=menu}</a></li>
 		{/if}
-		<li><a class="item" href="{$smarty.const.BLOGS_PKG_URL}recent_posts.php">{biticon iname="view-refresh" iexplain="Recent Posts" ilocation=menu}</a></li>
+		<li><a class="item" href="{$smarty.const.BLOGS_PKG_URL}recent_posts.php">{booticon iname="icon-recycle"   iexplain="Recent Posts" ilocation=menu}</a></li>
 		<li><a class="item" href="{$smarty.const.BLOGS_PKG_URL}list_blogs.php?sort_mode=last_modified_desc">{booticon iname="icon-list" iexplain="List Blogs" ilocation=menu}</a></li>
 	{/if}
 	{if $gBitUser->hasPermission( 'p_blogs_create' )}
