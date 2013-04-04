@@ -84,8 +84,8 @@
 						{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile="content_edit_mini_tpl"}
 
 						<div class="control-group submit">
-							<input type="submit" name="preview" value="{tr}preview{/tr}" />&nbsp;
-							<input type="submit" name="save_blog" value="{tr}save{/tr}" />
+							<input type="submit" class="btn" name="preview" value="{tr}preview{/tr}" />&nbsp;
+							<input type="submit" class="btn" name="save_blog" value="{tr}save{/tr}" />
 						</div>
 					{/legend}
 				{/jstab}

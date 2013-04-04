@@ -29,7 +29,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" name="send" value="{tr}Send{/tr}" />
+					<input type="submit" class="btn" name="send" value="{tr}Send{/tr}" />
 				</div>
 			{/form}
 		{/if}

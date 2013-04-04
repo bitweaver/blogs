@@ -31,7 +31,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" name="selrank" value="{tr}Apply settings{/tr}" />
+				<input type="submit" class="btn" name="selrank" value="{tr}Apply settings{/tr}" />
 			</div>
 		{/form}
 		
