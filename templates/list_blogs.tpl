@@ -47,14 +47,14 @@
 					<div class="floaticon">
 						{if $gBitUser->hasPermission( 'p_liberty_assign_content_perms' ) and $listBlog.content_id}
 							{if $gContent->mPerms} {* org note from liberty:service_content_icon_inc: don't think there is a serviceHash way of working out if there are individual permissions set *}
-								{assign var=perm_icon value="icons/emblem-readonly"}
+								{assign var=perm_icon value="icon-lock"}
 							{else}
-								{assign var=perm_icon value="icons/emblem-shared"}
+								{assign var=perm_icon value="icon-key"}
 							{/if}
 							{if $role_model }
-								{smartlink ipackage=liberty ifile=content_role_permissions.php ititle="Assign Permissions" ibiticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
+								{smartlink ipackage=liberty ifile=content_role_permissions.php ititle="Assign Permissions" booticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
 							{else}
-								{smartlink ipackage=liberty ifile=content_permissions.php ititle="Assign Permissions" ibiticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
+								{smartlink ipackage=liberty ifile=content_permissions.php ititle="Assign Permissions" booticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
 							{/if}
 						{/if}
 
