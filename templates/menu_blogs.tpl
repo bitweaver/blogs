@@ -1,5 +1,6 @@
 {strip}
-<ul>
+<a class="dropdown-toggle" data-toggle="dropdown" href="#"> {tr}{$packageMenuTitle}{/tr} <b class="caret"></b></a>
+<ul class="{$packageMenuClass}">
 	{if $gBitUser->hasPermission( 'p_blogs_view' )}
 		{if $gBitSystem->isFeatureActive( 'blog_home' )}
 			<li><a class="item" href="{$smarty.const.BLOGS_PKG_URL}index.php">{booticon iname="icon-home" iexplain="Home Blog" ilocation=menu}</a></li>

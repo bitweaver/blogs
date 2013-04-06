@@ -30,10 +30,10 @@
 
 				{foreach from=$formBlogFeatures key=item item=output}
 					<div class="control-group">
-						{formlabel label=`$output.label` for=$item}
+						{formlabel label=$output.label for=$item}
 						{forminput}
 							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
-							{formhelp note=`$output.note` page=`$output.page`}
+							{formhelp note=$output.note page=$output.page}
 						{/forminput}
 					</div>
 				{/foreach}
@@ -48,10 +48,10 @@
 
 				{foreach from=$formBlogInputs key=item item=output}
 					<div class="control-group">
-						{formlabel label=`$output.label` for=$item}
+						{formlabel label=$output.label for=$item}
 						{forminput}
 							<input type="text" name="$item" value="{$gBitSystem->getConfig($item, 3)}" id="{$item}" />
-							{formhelp note=`$output.note` page=`$output.page`}
+							{formhelp note=$output.note page=$output.page}
 						{/forminput}
 					</div>
 				{/foreach}
@@ -102,10 +102,10 @@
 
 				{foreach from=$formBlogLists key=item item=output}
 					<div class="control-group">
-						{formlabel label=`$output.label` for=$item}
+						{formlabel label=$output.label for=$item}
 						{forminput}
 							{html_checkboxes name="$item" values="y" checked=$gBitSystem->getConfig($item) labels=false id=$item}
-							{formhelp note=`$output.note` page=`$output.page`}
+							{formhelp note=$output.note page=$output.page}
 						{/forminput}
 					</div>
 				{/foreach}
