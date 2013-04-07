@@ -52,9 +52,9 @@
 								{assign var=perm_icon value="icon-key"}
 							{/if}
 							{if $role_model }
-								{smartlink ipackage=liberty ifile=content_role_permissions.php ititle="Assign Permissions" booticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
+								{smartlink ipackage=liberty ifile="content_role_permissions.php" ititle="Assign Permissions" booticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
 							{else}
-								{smartlink ipackage=liberty ifile=content_permissions.php ititle="Assign Permissions" booticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
+								{smartlink ipackage=liberty ifile="content_permissions.php" ititle="Assign Permissions" booticon=$perm_icon ipackage=liberty ifile="content_permissions.php" content_id=$listBlog.content_id}
 							{/if}
 						{/if}
 
