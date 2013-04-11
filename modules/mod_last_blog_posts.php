@@ -66,6 +66,3 @@ $descriptionLength = ( !empty( $module_params['max_preview_length'] ) ? $module_
 $_template->tpl_vars['blogPostsFormat'] = new Smarty_variable( (empty($module_params['format']);
 $_template->tpl_vars['descriptionLength'] = new Smarty_variable( $descriptionLength );
 $gBitSmarty->assign_by_ref( 'modLastBlogPosts', $blogPosts["data"] );
-// not sure what this is, but using title doesn't work cos that will rename the moduleTitle
-//$_template->tpl_vars['modLastBlogPostsTitle'] = new Smarty_variable( ( isset( $module_params["title"] );
-?>
