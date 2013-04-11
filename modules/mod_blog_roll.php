@@ -22,9 +22,9 @@ if( $modBlogs = $blog->getList( $listHash ) ) {
 	foreach( array_keys( $modBlogs ) as $b ) {
 		$modBlogs[$b]['post'] = $blog->getPost( array( 'blog_id' => $modBlogs[$b]['blog_id'] ) );
 	}
-	$gBitSmarty->assign( 'modBlogs', $modBlogs );
+	$_template->tpl_vars['modBlogs'] = new Smarty_variable( $modBlogs );
 }
 
 $moduleTitle = (!empty( $moduleParams['title'] ) ? $moduleParams['title'] : 'Blog Roll');
-$gBitSmarty->assign( 'moduleTitle', $moduleTitle );
+$_template->tpl_vars['moduleTitle'] = new Smarty_variable( $moduleTitle );
 ?>

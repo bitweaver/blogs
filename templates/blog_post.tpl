@@ -2,7 +2,7 @@
 {strip}
 <div class="edit blogs">
 	<div class="header">
-		{ if !$post_info.content_id }
+		{if !$post_info.content_id}
 			<h1>{tr}Create Post{/tr}</h1>
 		{else}
 			<h1>{tr}Edit Post{/tr}</h1>
@@ -47,13 +47,13 @@
 							{include file="bitpackage:liberty/edit_format.tpl"}
 							{formlabel label="Intro" for="edit"}
 							{formhelp note="Text entered here is the top half of your post."}
-							{textarea noformat="y"}{$post_info.raw}{/textarea}
+							{textarea noformat="y" edit=$post_info.raw}
 
 							{formlabel label="Body" for="edit_body"}
 							{formhelp note="Text entered here will be displayed in the full blog post, commonly known as the Read More section."}
-							{textarea id="edit_body" name="edit_body" noformat="y"}{$post_info.raw_more}{/textarea}
+							{textarea id="edit_body" name="edit_body" noformat="y" edit=$post_info.raw_more}
 						{else}
-							{textarea}{$post_info.raw}{/textarea}
+							{textarea  edit=$post_info.raw}
 						{/if}
 
 						{if $availableBlogs}

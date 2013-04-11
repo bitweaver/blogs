@@ -63,9 +63,9 @@ $blogPosts = $blogPost->getList( $listHash );
 
 $descriptionLength = ( !empty( $module_params['max_preview_length'] ) ? $module_params['max_preview_length'] : 500 );
 
-$gBitSmarty->assign( 'blogPostsFormat', (empty($module_params['format']) ? 'list' : $module_params['format']) );
-$gBitSmarty->assign( 'descriptionLength', $descriptionLength );
+$_template->tpl_vars['blogPostsFormat'] = new Smarty_variable( (empty($module_params['format']);
+$_template->tpl_vars['descriptionLength'] = new Smarty_variable( $descriptionLength );
 $gBitSmarty->assign_by_ref( 'modLastBlogPosts', $blogPosts["data"] );
 // not sure what this is, but using title doesn't work cos that will rename the moduleTitle
-//$gBitSmarty->assign( 'modLastBlogPostsTitle', ( isset( $module_params["title"] ) ? $module_params["title"]:"" ));
+//$_template->tpl_vars['modLastBlogPostsTitle'] = new Smarty_variable( ( isset( $module_params["title"] );
 ?>
