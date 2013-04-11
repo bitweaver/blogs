@@ -21,6 +21,6 @@ $listHash['is_active'] = TRUE;
 $blog = new BitBlog();
 $ranking = $blog->getList( $listHash );
 if( !empty( $ranking['data'] ) ) {
-	$gBitSmarty->assign('modTopActiveBlogs', $ranking["data"]);
+	$_template->tpl_vars['modTopActiveBlogs'] = new Smarty_variable( $ranking["data"]);
 }
 ?>

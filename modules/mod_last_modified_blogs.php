@@ -21,5 +21,5 @@ BitUser::userCollection( $moduleParams, $listHash );
 $blog = new BitBlog();
 $ranking = $blog->getList( $listHash );
 
-$gBitSmarty->assign('modLastModifiedBlogs', $ranking);
+$_template->tpl_vars['modLastModifiedBlogs'] = new Smarty_variable( $ranking);
 ?>

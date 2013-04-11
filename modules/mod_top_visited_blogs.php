@@ -27,6 +27,6 @@ BitUser::userCollection( $_REQUEST, $listHash );
 $blog = new BitBlog();
 $ranking = $blog->getList( $listHash );
 
-$gBitSmarty->assign('modTopVisitedBlogs', $ranking);
-$gBitSmarty->assign('bulletSrc', isset($params["bullet"]) ? $params['bullet'] : NULL);
+$_template->tpl_vars['modTopVisitedBlogs'] = new Smarty_variable( $ranking);
+$_template->tpl_vars['bulletSrc'] = new Smarty_variable( isset($params["bullet"]) ? $params['bullet'] : NULL);
 ?>

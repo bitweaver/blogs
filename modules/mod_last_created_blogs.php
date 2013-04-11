@@ -18,8 +18,5 @@ $listHash['sort_mode'] = 'created_desc';
 BitUser::userCollection( $module_params, $listHash );
 
 $blog = new BitBlog();
-$ranking = $blog->getList( $listHash );
-if( !empty( $ranking['data'] ) ) {
-	$gBitSmarty->assign('modLastCreatedBlogs', $ranking["data"]);
-}
+$_template->tpl_vars['modLastCreatedBlogs'] = new Smarty_variable( $blog->getList( $listHash ) );
 ?>

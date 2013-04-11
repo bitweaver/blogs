@@ -65,4 +65,4 @@ $descriptionLength = ( !empty( $module_params['max_preview_length'] ) ? $module_
 
 $_template->tpl_vars['blogPostsFormat'] = new Smarty_variable( (empty($module_params['format']);
 $_template->tpl_vars['descriptionLength'] = new Smarty_variable( $descriptionLength );
-$gBitSmarty->assign_by_ref( 'modLastBlogPosts', $blogPosts["data"] );
+$_template->tpl_vars['modLastBlogPosts'] = new Smarty_variable( $blogPosts["data"] );
