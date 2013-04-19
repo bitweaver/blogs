@@ -35,7 +35,7 @@
 							{/forminput}
 						</div>
 
-						{textarea}{if $edit}{$edit}{else}{$gContent->getField('data')}{/if}{/textarea}
+						{textarea edit=$edit|default:$gContent->getField('data')}
 
 						<div class="control-group">
 							{formlabel label="Number of posts to show" for="max_posts"}
