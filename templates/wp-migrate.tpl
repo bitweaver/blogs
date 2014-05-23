@@ -17,7 +17,7 @@
 			{formhelp note="The full path to your wordpress installation directory."}
 		{/forminput}
 	{/legend}
-	<input type="submit" class="btn" name="migrate" value="Migrate!" />
+	<input type="submit" class="btn btn-default" name="migrate" value="Migrate!" />
 {/form}
 {/if}
 {/strip}

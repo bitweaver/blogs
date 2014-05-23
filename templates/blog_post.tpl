@@ -82,8 +82,8 @@
 						{include file="bitpackage:liberty/edit_storage_list.tpl"}
 
 						<div class="control-group submit">
-							<input type="submit" class="btn" name="preview" value="{tr}Preview{/tr}" />&nbsp;
-							<input type="submit" class="btn" name="save_post_exit" value="{tr}Save{/tr}" />
+							<input type="submit" class="btn btn-default" name="preview" value="{tr}Preview{/tr}" />&nbsp;
+							<input type="submit" class="btn btn-default" name="save_post_exit" value="{tr}Save{/tr}" />
 						</div>
 					{/legend}
 				{/jstab}
