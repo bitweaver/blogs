@@ -7,7 +7,7 @@
 
 	<div class="body">
 		{form legend="Ranking Settings"}
-			<div class="control-group">
+			<div class="control-group column-group gutters">
 				{formlabel label="Select Attribute" for="which"}
 				{forminput}
 					<select name="which" id="which">
@@ -18,7 +18,7 @@
 				{/forminput}
 			</div>
 
-			<div class="control-group">
+			<div class="control-group column-group gutters">
 				{formlabel label="Number of items" for="limit"}
 				{forminput}
 					<select name="limit" id="limit">
@@ -31,7 +31,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" class="btn btn-default" name="selrank" value="{tr}Apply settings{/tr}" />
+				<input type="submit" class="ink-button" name="selrank" value="{tr}Apply settings{/tr}" />
 			</div>
 		{/form}
 		

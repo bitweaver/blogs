@@ -20,7 +20,7 @@
 		{else}
 			{form legend="Send post to these addresses"}
 				<input type="hidden" name="post_id" value="{$post_info.post_id}" />
-				<div class="control-group">
+				<div class="control-group column-group gutters">
 					{formlabel label="Email Addresses" for="addresses"}
 					{forminput}
 						<textarea cols="50" rows="2" name="addresses" id="addresses">{$addresses|escape}</textarea>
@@ -29,7 +29,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" class="btn btn-default" name="send" value="{tr}Send{/tr}" />
+					<input type="submit" class="ink-button" name="send" value="{tr}Send{/tr}" />
 				</div>
 			{/form}
 		{/if}

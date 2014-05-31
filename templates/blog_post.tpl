@@ -26,7 +26,7 @@
 				{jstab title="Blog Post"}
 					{legend legend="Post"}
 						{if !$blog_data.use_title OR $blog_data.use_title eq 'y'}
-							<div class="control-group">
+							<div class="control-group column-group gutters">
 								{formlabel label="Title" for="title"}
 								{forminput}
 									<input type="text" size="50" name="title" id="title" value="{$post_info.title|escape}" />
@@ -35,7 +35,7 @@
 							</div>
 						{/if}
 
-							<div class="control-group">
+							<div class="control-group column-group gutters">
 								{formlabel label="Summary" for="summary"}
 								{forminput}
 									<input type="text" size="50" name="summary" id="summary" value="{$post_info.summary|escape}" />
@@ -57,7 +57,7 @@
 						{/if}
 
 						{if $availableBlogs}
-							<div class="control-group">
+							<div class="control-group column-group gutters">
 								{formlabel label="Include in Blogs" for=""}
 								{forminput}
 									{if count($availableBlogs) > 10}
@@ -82,8 +82,8 @@
 						{include file="bitpackage:liberty/edit_storage_list.tpl"}
 
 						<div class="control-group submit">
-							<input type="submit" class="btn btn-default" name="preview" value="{tr}Preview{/tr}" />&nbsp;
-							<input type="submit" class="btn btn-default" name="save_post_exit" value="{tr}Save{/tr}" />
+							<input type="submit" class="ink-button" name="preview" value="{tr}Preview{/tr}" />&nbsp;
+							<input type="submit" class="ink-button" name="save_post_exit" value="{tr}Save{/tr}" />
 						</div>
 					{/legend}
 				{/jstab}
@@ -100,7 +100,7 @@
 
 				{jstab title="Advanced Options"}
 					{legend legend="Publication and Expiration Dates"}
-						<div class="control-group">
+						<div class="control-group column-group gutters">
 							<input type="hidden" name="publishDateInput" value="1" />
 							{formlabel label="Publish Date" for=""}
 							{forminput}
@@ -110,7 +110,7 @@
 							{/forminput}
 						</div>
 
-						<div class="control-group">
+						<div class="control-group column-group gutters">
 							<input type="hidden" name="expireDateInput" value="1" />
 							{formlabel label="Expiration Date" for=""}
 							{forminput}
@@ -122,7 +122,7 @@
 					{/legend}
 
 					{legend legend="Trackbacks"}
-						<div class="control-group">
+						<div class="control-group column-group gutters">
 							{formlabel label="Send trackback pings" for="trackback"}
 							{forminput}
 								<textarea name="trackback" id="trackback" rows="3" cols="50">{section name=ix loop=$trackbacks_to}{if not $smarty.section.ix.first},{/if}{$trackbacks_to[ix]}{/section}</textarea>
