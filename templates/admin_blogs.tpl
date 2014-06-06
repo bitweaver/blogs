@@ -12,7 +12,7 @@
 								<option>{tr}Use default recent blogpost page{/tr}</option>
 							{/if}
 							{foreach from=$blogList item=blog}
-								<option value="{$blog.blog_id}" {if $blog.blog_id == $gBitSystem->getConfig('blog_home')}selected="selected"{/if}>{$blog.title|escape html|truncate:30:"...":true}</option>
+								<option value="{$blog.blog_id}" {if $blog.blog_id == $gBitSystem->getConfig('blog_home')}selected="selected"{/if}>{$blog.title|escape|truncate:30:"...":true}</option>
 							{foreachelse}
 								<option>{tr}No records found{/tr}</option>
 							{/foreach}
