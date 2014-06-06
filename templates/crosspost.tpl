@@ -12,7 +12,7 @@
 					{legend legend="Crosspost"}
 						{* we loop over this twice because we want two separate lists from the same hash *}
 						{if $availableBlogs}
-							<div class="control-group column-group gutters">
+							<div class="form-group">
 								{formlabel label="Blogs this Post is Already Crossposted To" for="blog_id"}
 								{forminput}
 										{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
@@ -33,7 +33,7 @@
 						{/if}
 
 						{if $availableBlogs}
-							<div class="control-group column-group gutters">
+							<div class="form-group">
 								{formlabel label="Include in Blogs" for="blog_id"}
 								{forminput}
 										{foreach from=$availableBlogs key=blogContentId item=availBlogTitle}
@@ -62,9 +62,9 @@
 							{/forminput}
 							{textarea id="crosspost_note" label="Crosspost Note (Optional)" name="crosspost_note" noformat="y" rows=6 help="Add a note you would like to appear above the post when viewed on the crossposted blog. This does not appear on the post page." edit=$crosspost.crosspost_note}
 
-							<div class="control-group submit">
-								<input type="submit" class="ink-button" name="preview" value="{tr}Preview{/tr}" />&nbsp;
-								<input type="submit" class="ink-button" name="save_post_exit" value="{tr}Save{/tr}" />
+							<div class="form-group submit">
+								<input type="submit" class="btn btn-default" name="preview" value="{tr}Preview{/tr}" />&nbsp;
+								<input type="submit" class="btn btn-default" name="save_post_exit" value="{tr}Save{/tr}" />
 							</div>
 						{/if}
 					{/legend}
