@@ -68,6 +68,7 @@
 					{formlabel label="Default ordering for blog listing" for="blog_list_order"}
 					{forminput}
 						<select name="blog_list_order" id="blog_list_order">
+							<option value="publish_date_desc"       {if $gBitSystem->getConfig('blog_list_order') eq 'created_desc'}selected="selected"{/if}>{tr}Published date{/tr} ({tr}desc{/tr})</option>
 							<option value="created_desc"       {if $gBitSystem->getConfig('blog_list_order') eq 'created_desc'}selected="selected"{/if}>{tr}Creation date{/tr} ({tr}desc{/tr})</option>
 							<option value="last_modified_desc" {if $gBitSystem->getConfig('blog_list_order') eq 'last_modified_desc'}selected="selected"{/if}>{tr}Last modification date{/tr} ({tr}desc{/tr})</option>
 							<option value="title_asc"          {if $gBitSystem->getConfig('blog_list_order') eq 'title_asc'}selected="selected"{/if}>{tr}Blog title{/tr} ({tr}asc{/tr})</option>
