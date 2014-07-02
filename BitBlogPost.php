@@ -961,7 +961,7 @@ class BitBlogPost extends LibertyMime {
 				}
 				$res['thumbnail_url'] = BitBlogPost::getImageThumbnails( $res );
 				$res['num_comments'] = $comment->getNumComments( $res['content_id'] );
-				$res['post_url'] = BitBlogPost::getDisplayUrlFromHash( $res['content_id'], $res );
+				$res['post_url'] = BitBlogPost::getDisplayUrlFromHash( $res );
 				$res['display_url'] = $res['post_url'];
 				$res['display_link'] = $this->getDisplayLink( $res['title'], $res );
 				$res['blogs'] = $this->getBlogMemberships( $res['content_id'] );
