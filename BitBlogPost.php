@@ -786,7 +786,7 @@ class BitBlogPost extends LibertyMime {
 			$joinSql .= " LEFT OUTER JOIN `".BIT_DB_PREFIX."blogs` b ON ( bpm.`blog_content_id`=b.`content_id` ) ";
 								//	" ON ( b.`content_id` = bpm.`blog_content_id` AND bp.`content_id` = bpm.`post_content_id` )";
 			$whereSql .= ' AND b.`blog_id` = ? ';
-			$pListHash['sort_mode'] = 'date_added_desc';
+			$pListHash['sort_mode'] = 'publish_date_desc';
 		}
 
 		if( @$this->verifyId( $pListHash['post_id_gt'] ) ) {
