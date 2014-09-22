@@ -149,14 +149,6 @@ class BitBlogPost extends LibertyMime {
 		return( count( $this->mInfo ) );
 	}
 
-	function getTitle( $pHash = NULL, $pDefault = true ) {
-		$ret = NULL;
-		if( $this->isValid() ) {
-			$ret = self::getTitleFromHash( $this->mInfo );
-		}
-		return $ret;
-	}
-
 	public static function getTitleFromHash( $pHash, $pDefault=TRUE ) {
 		global $gBitSystem;
 		$ret = NULL;
@@ -701,7 +693,7 @@ class BitBlogPost extends LibertyMime {
 
 		$ret = $pTitle;
 		if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitle( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrlFromHash( $pMixed['content_id'] ).'">'.htmlspecialchars( BitBlogPost::getTitle( $pMixed  ) ).'</a>';
+			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitleFromHash( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrlFromHash( $pMixed['content_id'] ).'">'.htmlspecialchars( BitBlogPost::getTitleFromHash( $pMixed  ) ).'</a>';
 		}
 
 		return $ret;
