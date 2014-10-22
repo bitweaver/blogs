@@ -10,36 +10,34 @@
 	<div class="body">
 		{minifind sort_mode=$sort_mode}
 
-		<div class="navbar">
-			<ul>
-				<li>{booticon iname="icon-circle-arrow-right"  ipackage="icons"  iexplain="sort by"}</li>
-				{if $gBitSystem->isFeatureActive( 'blog_list_title' )}
-					<li>{smartlink ititle="Title" isort="title" offset=$offset}</li>
-				{/if}
-				{if $gBitSystem->isFeatureActive( 'blog_list_created' )}
-					<li>{smartlink ititle="Created" isort="created" iorder=desc offset=$offset}</li>
-				{/if}
-				{if $gBitSystem->isFeatureActive( 'blog_list_lastmodif' )}
-					<li>{smartlink ititle="Last Modified" isort="last_modified" iorder=desc idefault=1 offset=$offset}</li>
-				{/if}
-				{if $gBitSystem->isFeatureActive( 'blog_list_user' )}
-					<li>{smartlink ititle="Creator" isort="user" offset=$offset}</li>
-				{/if}
+		<ul class="list-inline navbar">
+			<li>{booticon iname="icon-circle-arrow-right"  ipackage="icons"  iexplain="sort by"}</li>
+			{if $gBitSystem->isFeatureActive( 'blog_list_title' )}
+				<li>{smartlink ititle="Title" isort="title" offset=$offset}</li>
+			{/if}
+			{if $gBitSystem->isFeatureActive( 'blog_list_created' )}
+				<li>{smartlink ititle="Created" isort="created" iorder=desc offset=$offset}</li>
+			{/if}
+			{if $gBitSystem->isFeatureActive( 'blog_list_lastmodif' )}
+				<li>{smartlink ititle="Last Modified" isort="last_modified" iorder=desc idefault=1 offset=$offset}</li>
+			{/if}
+			{if $gBitSystem->isFeatureActive( 'blog_list_user' )}
+				<li>{smartlink ititle="Creator" isort="user" offset=$offset}</li>
+			{/if}
 {* DEPRECATED - need an alt since posts col is being eliminated - need way to sort on postscant -wjames5
-				{if $gBitSystem->isFeatureActive( 'blog_list_posts' )}
-					<li>{smartlink ititle="Posts" isort="posts" iorder=desc offset=$offset}</li>
-				{/if}
+			{if $gBitSystem->isFeatureActive( 'blog_list_posts' )}
+				<li>{smartlink ititle="Posts" isort="posts" iorder=desc offset=$offset}</li>
+			{/if}
 *}
-				{if $gBitSystem->isFeatureActive( 'blog_list_visits' )}
-					<li>{smartlink ititle="Visits" isort="hits" iorder=desc offset=$offset}</li>
-				{/if}
+			{if $gBitSystem->isFeatureActive( 'blog_list_visits' )}
+				<li>{smartlink ititle="Visits" isort="hits" iorder=desc offset=$offset}</li>
+			{/if}
 {* TODO: Add back once activity is implemented
-				{if $gBitSystem->isFeatureActive( 'blog_list_activity' )}
-					<li>{smartlink ititle="Activity" isort="activity" iorder=desc offset=$offset}</li>
-				{/if}
+			{if $gBitSystem->isFeatureActive( 'blog_list_activity' )}
+				<li>{smartlink ititle="Activity" isort="activity" iorder=desc offset=$offset}</li>
+			{/if}
 *}
-			</ul>
-		</div>
+		</ul>
 
 		<ul class="clear data">
 			{foreach from=$blogsList item=listBlog key=blogContentId}
