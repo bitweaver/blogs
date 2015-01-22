@@ -48,33 +48,33 @@
 {* DEPRECATED - Slated for removal  -wjames5
 						{if $gBitUser->hasPermission('p_blogs_create_is_public')}
 						<div class="form-group">
-							<label class="checkbox">
+							{forminput label="checkbox"}
 								<input type="checkbox" name="is_public" id="is_public" {if $gContent->getField('is_public') eq 'y'}checked="checked"{/if} />Public
 								{formhelp note='Allow other user to post in this blog'}
-							</label>
+							{/forminput}
 						</div>
 						{/if}
 *}
 
 						<div class="form-group">
-							<label class="checkbox">
+							{forminput label="checkbox"}
 								<input type="checkbox" name="use_title" id="use_title" {if !$gContent->isValid() || $gContent->getField('use_title') eq 'y'}checked="checked"{/if} />Use titles in blog posts
 								{formhelp note='If this is not selected, the time and date of when the post was created will be displayed instead of the post title.'}
-							</label>
+							{/forminput}
 						</div>
 
 						<div class="form-group">
-							<label class="checkbox">
+							{forminput label="checkbox"}
 								<input type="checkbox" name="use_find" id="use_find" {if !$gContent->isValid() || $gContent->getField('use_find') eq 'y'}checked="checked"{/if} />Allow search
 								{formhelp note='Allow users to search this blog for occurances of words.'}
-							</label>
+							{/forminput}
 						</div>
 
 						<div class="form-group">
-							<label class="checkbox">
+							{forminput label="checkbox"}
 								<input type="checkbox" name="allow_comments" id="allow_comments" {if !$gContent->isValid() || $gContent->getField('allow_comments') eq 'y'}checked="checked"{/if} />Allow comments
 								{formhelp note='Are other users allowed to add comments to posts made in this blog?'}
-							</label>
+							{/forminput}
 						</div>
 
 						{include file="bitpackage:liberty/edit_services_inc.tpl" serviceFile="content_edit_mini_tpl"}
