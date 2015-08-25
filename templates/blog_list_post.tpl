@@ -25,13 +25,13 @@
 	{/if}
 
 	<div class="header">
-		<h1>
+		<h2>
 		{if $aPost.title}
 			{$aPost.title|escape:html}
 		{else}
 			{$aPost.publish_date|default:$aPost.created|bit_long_date}
 		{/if}
-		</h1>
+		</h2>
 
 		<div class="date">
 			{if $gBitSystem->getConfig('blog_list_user_as') eq 'link'}
