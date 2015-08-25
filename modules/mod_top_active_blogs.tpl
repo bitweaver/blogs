@@ -8,11 +8,11 @@
 	{/if}
 	{bitmodule title="$moduleTitle" name="top_active_blogs"}
 		<ol class="blogs">
-			{section name=ix loop=$modTopActiveBlogs}
-				<li><a href="{$modTopActiveBlogs[ix].blog_url}">{$modTopActiveBlogs[ix].title|escape|default:"Blog `$modTopActiveBlogs[ix].blog_id`"}</a></li>
-			{sectionelse}
+			{foreach from=$modTopActiveBlogs item=aPost}
+				<li><a href="{$aPost.blog_url}">{$aPost.title|escape|default:"Blog `$aPost.blog_id`"}</a></li>
+			{foreachelse}
 				<li></li>
-			{/section}
+			{/foreach}
 		</ol>
 	{/bitmodule}
 {/if}

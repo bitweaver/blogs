@@ -8,11 +8,11 @@
 	{/if}
 	{bitmodule title="$moduleTitle" name="last_modified_blogs"}
 		<ol class="blogs">
-			{section name=ix loop=$modLastModifiedBlogs}
-				<li><a href="{$modLastModifiedBlogs[ix].blog_url}">{$modLastModifiedBlogs[ix].title|escape|default:"Blog `$modLastModifiedBlogs[ix].blog_id`"}</a></li>
-			{sectionelse}
+			{foreach from=$modLastModifiedBlogs item=aPost}
+				<li><a href="{$aPost.blog_url}">{$aPost.title|escape|default:"Blog `$aPost.blog_id`"}</a></li>
+			{foreachelse}
 				<li></li>
-			{/section}
+			{/foreach}
 		</ol>
 	{/bitmodule}
 {/if}
