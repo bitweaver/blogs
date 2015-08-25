@@ -60,9 +60,8 @@ if ( !empty( $module_params['status'] ) && $module_params['status'] = "draft" &&
 
 $blogPost = new BitBlogPost();
 $blogPosts = $blogPost->getList( $listHash );
-
 $descriptionLength = ( !empty( $module_params['max_preview_length'] ) ? $module_params['max_preview_length'] : 500 );
 
 $_template->tpl_vars['blogPostsFormat'] = new Smarty_variable( (empty($module_params['format']) ) );
 $_template->tpl_vars['descriptionLength'] = new Smarty_variable( $descriptionLength );
-$_template->tpl_vars['modLastBlogPosts'] = new Smarty_variable( $blogPosts["data"] );
+$_template->tpl_vars['modLastBlogPosts'] = new Smarty_variable( $blogPosts );
