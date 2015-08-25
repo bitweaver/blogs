@@ -89,8 +89,8 @@ class BitBlogPost extends LibertyMime {
 				$this->mInfo['blogs'] = $this->getBlogMemberships( $this->mContentId );
 				// this is bad news right here, 'url' is wrong, standard is 'display_url'
 				// we should remove this now that display_url is added
-				$this->mInfo['url'] = BitBlogPost::getDisplayUrlFromHash( $this->mContentId, $this->mInfo );
-				$this->mInfo['display_url'] = BitBlogPost::getDisplayUrlFromHash( $this->mContentId, $this->mInfo );
+				$this->mInfo['url'] = BitBlogPost::getDisplayUrlFromHash( $this->mInfo );
+				$this->mInfo['display_url'] = BitBlogPost::getDisplayUrlFromHash( $this->mInfo );
 				foreach( array( 'avatar', 'image' ) as $img ) {
 					$this->mInfo[$img] = liberty_fetch_thumbnails( array(
 						'source_file' => $this->getSourceFile( array( 'user_id'=>$this->getField( 'user_id' ), 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'mime_type' => $this->getField( $img.'_mime_type' ), 'name' =>  $this->getField( $img.'_file_name' ) ) ), 'file_name' => basename( $this->mInfo[$img.'_file_name'] ), 'sub_dir' =>  $this->getField( $img.'_attachment_id' ) ) )
@@ -699,7 +699,7 @@ class BitBlogPost extends LibertyMime {
 
 		$ret = $pTitle;
 		if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitle( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrlFromHash( $pMixed['content_id'] ).'">'.htmlspecialchars( BitBlogPost::getTitle( $pMixed  ) ).'</a>';
+			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitle( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrlFromHash( $pMixed ).'">'.htmlspecialchars( BitBlogPost::getTitle( $pMixed  ) ).'</a>';
 		}
 
 		return $ret;

@@ -312,7 +312,7 @@ class BitBlog extends LibertyMime {
 		while ($res = $result->fetchRow()) {
 			$blogContentId = $res['content_id'];
 			$ret[$blogContentId] = $res;
-			$ret[$blogContentId]['blog_url'] = $this->getDisplayUrl( $res['blog_id'] );
+			$ret[$blogContentId]['blog_url'] = $this->getDisplayUrlFromHash( $res );
 			//get count of post in each blog
 			$ret[$blogContentId]['postscant'] = $this->getPostsCount( $res['content_id'] );
 			// deal with the parsing
