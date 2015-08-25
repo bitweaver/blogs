@@ -60,7 +60,7 @@ $blogPosts = $blogPost->getList( $listHash );
 if( count( $blogPosts ) ) {
 	// If there're more records then assign next_offset
 	$gBitSmarty->assign_by_ref('blogPosts', $blogPosts);
-	$gBitSmarty->assign( 'listInfo', $listInfo );
+	$gBitSmarty->assign( 'listInfo', $listHash );
 } elseif( $gContent->hasPostPermission() ) {
 	bit_redirect( BLOGS_PKG_URL.'post.php?blog_id='.$gContent->getField( 'blog_id' ) );
 }
