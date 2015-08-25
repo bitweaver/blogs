@@ -75,7 +75,7 @@ $paginationPath = BLOGS_PKG_URL.'index.php';
  */
 
 if ( !empty( $module_params ) && !empty( $module_params['blog_id'] ) ){
-	$gBitSmarty->assign( 'blogId', $module_params['blog_id']  );
+	$_template->tpl_vars['blogId'] = new Smarty_variable( $module_params['blog_id']  );
 	$paginationPath = BLOGS_PKG_URL.'view.php';
 }
 
@@ -89,14 +89,15 @@ $listHash['min_owner_status_id'] = 0;
  */
 $blogPost->invokeServices( 'content_list_function', $listHash );
 $blogPosts = $blogPost->getList( $listHash );
-$gBitSmarty->assign( 'paginationPath', $paginationPath );
-$gBitSmarty->assign_by_ref( 'gQueryUserId', $listHash['user_id'] );
-$gBitSmarty->assign_by_ref( 'blogPosts', $blogPosts["data"] );
-$gBitSmarty->assign( 'listInfo', $blogPosts['listInfo'] );
-$gBitSmarty->assign( 'descriptionLength', $gBitSystem->getConfig( 'blog_posts_description_length', 500 ));
-$gBitSmarty->assign( 'showDescriptionsOnly', TRUE );
-$gBitSmarty->assign( 'showBlogTitle', 'y' );
-$gBitSmarty->assign( 'blogPostsFormat', (empty($module_params['format']) ? 'full' : $module_params['format']) );
+$_template->tpl_vars['paginationPath'] = new Smarty_variable( $paginationPath );
+$_template->tpl_vars['gQueryUserId'] = new Smarty_variable( $listHash['user_id'] );
+$_template->tpl_vars['blogPosts'] = new Smarty_variable( $blogPosts );
+
+$_template->tpl_vars['listInfo'] = new Smarty_variable( $listHash );
+$_template->tpl_vars['descriptionLength'] = new Smarty_variable( $gBitSystem->getConfig( 'blog_posts_description_length', 500 ));
+$_template->tpl_vars['showDescriptionsOnly'] = new Smarty_variable( TRUE );
+$_template->tpl_vars['showBlogTitle'] = new Smarty_variable( 'y' );
+$_template->tpl_vars['blogPostsFormat'] = new Smarty_variable( (empty($module_params['format']) ? 'full' : $module_params['format']) );
 // unfortunately, the following feature pulls module parameters in from other modules
 //$gBitSmarty->assign( 'centerTitle', $moduleParams['title'] );
 ?>
