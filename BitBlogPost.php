@@ -2,21 +2,19 @@
 /**
  * $Header$
  *
- * Copyright (c) 2004 bitweaver.org
+ * @copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
- * $Id$
- *
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived tikiwiki classes that require database access.
- * @package blogs
  *
- * created 2004/10/20
+ * @date created 2004/10/20
  *
  * @author drewslater <andrew@andrewslater.com>, spiderr <spider@steelsun.com>
  *
  * @version $Revision$
+ * @package blogs
  */
 
 /**
@@ -147,6 +145,14 @@ class BitBlogPost extends LibertyMime {
 			}
 		}
 		return( count( $this->mInfo ) );
+	}
+
+	function getTitle( $pHash = NULL, $pDefault = true ) {
+		$ret = NULL;
+		if( $this->isValid() ) {
+			$ret = self::getTitleFromHash( $this->mInfo );
+		}
+		return $ret;
 	}
 
 	public static function getTitleFromHash( $pHash, $pDefault=TRUE ) {
@@ -693,7 +699,7 @@ class BitBlogPost extends LibertyMime {
 
 		$ret = $pTitle;
 		if( $gBitSystem->isPackageActive( 'blogs' ) ) {
-			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitleFromHash( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrlFromHash( $pMixed['content_id'] ).'">'.htmlspecialchars( BitBlogPost::getTitleFromHash( $pMixed  ) ).'</a>';
+			$ret = '<a title="'.htmlspecialchars( BitBlogPost::getTitle( $pMixed ) ).'" href="'.BitBlogPost::getDisplayUrlFromHash( $pMixed['content_id'] ).'">'.htmlspecialchars( BitBlogPost::getTitle( $pMixed  ) ).'</a>';
 		}
 
 		return $ret;
@@ -924,7 +930,6 @@ class BitBlogPost extends LibertyMime {
 				INNER JOIN		`".BIT_DB_PREFIX."users_users`			 uu ON uu.`user_id`			   = lc.`user_id`
 				$joinSql
 			WHERE lc.`content_type_guid` = ? $whereSql ";
-
 		$cant = $this->mDb->getOne($query_cant,$bindVars);
 		$pListHash["cant"] = $cant;
 
@@ -1017,12 +1022,9 @@ class BitBlogPost extends LibertyMime {
 			} else {
 			}
 		}
-
-		$pListHash["data"] = $ret;
-
 		LibertyContent::postGetList( $pListHash );
 
-		return $pListHash;
+		return $ret;
 	}
 
 	/**

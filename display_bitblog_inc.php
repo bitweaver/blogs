@@ -57,10 +57,10 @@ $listHash['parse_data'] = TRUE;
 $listHash['max_records'] = $gContent->getField( 'max_posts' );
 $listHash['load_num_comments'] = TRUE;
 $blogPosts = $blogPost->getList( $listHash );
-if( count( $blogPosts['data'] ) ) {
+if( count( $blogPosts ) ) {
 	// If there're more records then assign next_offset
-	$gBitSmarty->assign_by_ref('blogPosts', $blogPosts["data"]);
-	$gBitSmarty->assign( 'listInfo', $blogPosts['listInfo'] );
+	$gBitSmarty->assign_by_ref('blogPosts', $blogPosts);
+	$gBitSmarty->assign( 'listInfo', $listInfo );
 } elseif( $gContent->hasPostPermission() ) {
 	bit_redirect( BLOGS_PKG_URL.'post.php?blog_id='.$gContent->getField( 'blog_id' ) );
 }
