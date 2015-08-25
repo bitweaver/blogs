@@ -1,7 +1,8 @@
 <?php
 /**
  * @version $Header$
-
+ */
+ 
 /**
  * required setup
  */

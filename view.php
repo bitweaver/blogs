@@ -1,7 +1,7 @@
 <?php
 /**
  * @version $Header$
-
+ *
  * @package blogs
  * @subpackage functions
  */
