@@ -155,7 +155,7 @@ class BitBlogPost extends LibertyMime {
 		return $ret;
 	}
 
-	public static function getTitleFromHash( $pHash, $pDefault=TRUE ) {
+	public static function getTitleFromHash( &$pHash, $pDefault=TRUE ) {
 		global $gBitSystem;
 		$ret = NULL;
 		if( !empty( $pHash['title'] ) ) {
