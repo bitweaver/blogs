@@ -19,7 +19,7 @@ define( 'BITBLOG_CONTENT_TYPE_GUID', 'bitblog' );
 class BitBlog extends LibertyMime {
 	var $mBlogId;
 
-	function BitBlog( $pBlogId=NULL, $pContentId=NULL ) {
+	function __construct( $pBlogId=NULL, $pContentId=NULL ) {
 		$this->mBlogId = @$this->verifyId( $pBlogId ) ? $pBlogId : NULL;
 		parent::__construct( $pContentId );
 		$this->registerContentType( BITBLOG_CONTENT_TYPE_GUID, array(

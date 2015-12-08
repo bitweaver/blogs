@@ -32,7 +32,7 @@ define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
 class BitBlogPost extends LibertyMime {
 	var $mPostId;
 
-	function BitBlogPost( $pPostId=NULL, $pContentId=NULL ) {
+	function __construct( $pPostId=NULL, $pContentId=NULL ) {
 		parent::__construct();
 		$this->registerContentType( BITBLOGPOST_CONTENT_TYPE_GUID, array(
 			'content_type_guid' => BITBLOGPOST_CONTENT_TYPE_GUID,
