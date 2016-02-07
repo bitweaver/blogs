@@ -26,7 +26,7 @@ if ( $gBitSystem->isFeatureActive( 'blog_ajax_more' ) && $gBitThemes->isJavascri
 
 // Display the template
 $gDefaultCenter = 'bitpackage:blogs/center_list_blog_posts.tpl';
-$gBitSmarty->assign_by_ref( 'gDefaultCenter', $gDefaultCenter );
+$gBitSmarty->assignByRef( 'gDefaultCenter', $gDefaultCenter );
 
 $gBitSystem->display( 'bitpackage:kernel/dynamic.tpl', 'List Blog Posts' , array( 'display_mode' => 'display' ));
 ?>

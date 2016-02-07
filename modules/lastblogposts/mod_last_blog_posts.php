@@ -65,7 +65,7 @@ $descriptionLength = ( !empty( $module_params['max_preview_length'] ) ? $module_
 
 $gBitSmarty->assign( 'blogPostsFormat', (empty($module_params['format']) ? 'list' : $module_params['format']) );
 $gBitSmarty->assign( 'descriptionLength', $descriptionLength );
-$gBitSmarty->assign_by_ref( 'modLastBlogPosts', $blogPosts["data"] );
+$gBitSmarty->assignByRef( 'modLastBlogPosts', $blogPosts["data"] );
 // not sure what this is, but using title doesn't work cos that will rename the moduleTitle
 //$gBitSmarty->assign( 'modLastBlogPostsTitle', ( isset( $module_params["title"] ) ? $module_params["title"]:"" ));
 ?>

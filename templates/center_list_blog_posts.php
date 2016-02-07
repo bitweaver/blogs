@@ -13,7 +13,7 @@ include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
 
 $blogPost = new BitBlogPost();
 if( empty( $gContent )) {
-	$gBitSmarty->assign_by_ref( 'gContent', $blogPost );
+	$gBitSmarty->assignByRef( 'gContent', $blogPost );
 }
 
 if( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin() ) {

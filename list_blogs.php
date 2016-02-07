@@ -47,7 +47,7 @@ if( $gContent->isValid() && isset($_REQUEST["remove"])) {
 // Get a list of last changes to the Wiki database
 $blogsList = $gContent->getList( $_REQUEST );
 $gBitSmarty->assign( 'listInfo', $_REQUEST['listInfo'] );
-$gBitSmarty->assign_by_ref( 'blogsList', $blogsList );
+$gBitSmarty->assignByRef( 'blogsList', $blogsList );
 
 if( defined(ROLE_MODEL) ) {
 	$gBitSmarty->assign( 'role_model', TRUE );

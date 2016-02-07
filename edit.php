@@ -47,7 +47,7 @@ if (isset($_REQUEST['save_blog'])) {
 	if( $gContent->store( $_REQUEST ) ) {
 		bit_redirect( $gContent->getDisplayUrl() );
 	} else {
-		$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
+		$gBitSmarty->assignByRef( 'errors', $gContent->mErrors );
 	}
 }
 
@@ -55,7 +55,7 @@ $gBitSystem->setBrowserTitle( tra( 'Edit Blog' ).' - '.$gContent->getTitle() );
 
 $gBitSmarty->assign( 'textarea_label', 'Blog Description' );
 
-$gBitSmarty->assign_by_ref('gContent', $gContent);
+$gBitSmarty->assignByRef('gContent', $gContent);
 $gBitSystem->display( 'bitpackage:blogs/edit_blog.tpl', NULL, array( 'display_mode' => 'edit' ));
 
 ?>

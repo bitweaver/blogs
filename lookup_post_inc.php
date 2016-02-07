@@ -23,6 +23,6 @@ if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {
 		$gContent = new BitBlogPost();
 	}
 
-	$gBitSmarty->assign_by_ref( 'gContent', $gContent );
+	$gBitSmarty->assignByRef( 'gContent', $gContent );
 }
 ?>

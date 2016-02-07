@@ -76,7 +76,7 @@ if (isset($_REQUEST["preview"])) {
 	$post = $gContent->preparePreview( $_REQUEST );
 	$gBitSmarty->assign( 'preview', TRUE );
 	$gContent->invokeServices( 'content_preview_function' );
-	$gBitSmarty->assign_by_ref( 'post_info', $post );
+	$gBitSmarty->assignByRef( 'post_info', $post );
 	/* minor hack to accomodate the view_blog_post.tpl
 	 * this can eventually be removed with a change to the tpl to use post_info['parsed_data'] 
 	 * but requires clean up in a few places.
@@ -106,7 +106,7 @@ if (isset($_REQUEST["preview"])) {
 	} else {
 		$post = $gContent->preparePreview( $requestCopy );
 		$gContent->invokeServices( 'content_preview_function' );
-		$gBitSmarty->assign_by_ref( 'post_info', $post );
+		$gBitSmarty->assignByRef( 'post_info', $post );
 		$gBitSmarty->assign('parsed_data', $post['parsed_data']);	
 	}
 } elseif( !empty( $_REQUEST['edit'] ) ) {
@@ -119,7 +119,7 @@ if (isset($_REQUEST["preview"])) {
 		 */
 		$gContent->mInfo['publish_date'] = $gBitSystem->getUTCTime(); 
 	}
-	$gBitSmarty->assign_by_ref('post_info', $gContent->mInfo);
+	$gBitSmarty->assignByRef('post_info', $gContent->mInfo);
 }
 
 // Get List of available blogs
@@ -137,12 +137,12 @@ foreach( array_keys( $blogs ) as $blogContentId ) {
 }
 $gBitSmarty->assign( 'availableBlogs', $availableBlogs );
 
-$gBitSmarty->assign_by_ref('blogs', $blogs['data']);
+$gBitSmarty->assignByRef('blogs', $blogs['data']);
 if (isset($_REQUEST['blog_content_id'])) {
 	$gBitSmarty->assign('blog_content_id', $_REQUEST['blog_content_id'] );
 }
 
-$gBitSmarty->assign_by_ref( 'errors', $gContent->mErrors );
+$gBitSmarty->assignByRef( 'errors', $gContent->mErrors );
 
 $gBitSmarty->assign( 'textarea_label', tra('Post Content') );
 

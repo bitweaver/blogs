@@ -125,7 +125,7 @@ if (!isset($_REQUEST["limit"])) {
 	$limit = $_REQUEST["limit"];
 }
 
-$gBitSmarty->assign_by_ref('limit', $limit);
+$gBitSmarty->assignByRef('limit', $limit);
 
 // Rankings:
 // Top Pages
@@ -135,7 +135,7 @@ $rankings = array();
 
 $rankings = $which($limit);
 
-$gBitSmarty->assign_by_ref('rankings', $rankings);
+$gBitSmarty->assignByRef('rankings', $rankings);
 $gBitSmarty->assign('rpage', 'rankings.php');
 
 // Display the template

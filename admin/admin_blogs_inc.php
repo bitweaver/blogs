@@ -6,7 +6,7 @@ require_once( BLOGS_PKG_PATH.'BitBlog.php' );
 $blog = new BitBlog();
 $listHash['sort_mode'] = 'created_desc';
 $blogList = $blog->getList( $listHash );
-$gBitSmarty->assign_by_ref( 'blogList', $blogList );
+$gBitSmarty->assignByRef( 'blogList', $blogList );
 
 if( !empty( $_REQUEST["set_blog_home"] )) {
 	$blog_home = @BitBase::verifyId( $_REQUEST['blog_home'] ) ? $_REQUEST['blog_home'] : NULL;

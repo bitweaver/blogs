@@ -84,7 +84,7 @@ foreach( array_keys( $blogs ) as $blogContentId ) {
 }
 $gBitSmarty->assign( 'availableBlogs', $availableBlogs );
 
-$gBitSmarty->assign_by_ref('blogs', $blogs['data']);
+$gBitSmarty->assignByRef('blogs', $blogs['data']);
 
 $gBitSystem->display( 'bitpackage:blogs/crosspost.tpl', tra("Crosspost Blog Post") , array( 'display_mode' => 'display' ));
 ?>
