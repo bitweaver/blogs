@@ -1,6 +1,6 @@
 {* $Header$ *}
 {strip}
-{if $gBitSystem->isPackageActive( 'rss' ) and $gBitSystem->isFeatureActive( 'blogs_rss' ) and $smarty.const.ACTIVE_PACKAGE eq 'blogs' and $gBitUser->hasPermission( 'p_blogs_view' )}
+{if $gBitSystem->isPackageActive( 'rss' ) and $gBitSystem->isFeatureActive( 'blogs_rss' ) and $gBitSystem->getActivePackage() eq 'blogs' and $gBitUser->hasPermission( 'p_blogs_view' )}
 	{if isset($gContent->mBlogId)}
 		<link rel="alternate" type="application/rss+xml" title="{$gContent->getTitle()}" href="{$smarty.const.BLOGS_PKG_URL}blogs_rss.php?blog_id={$gContent->blog_content_id}&amp;version={$gBitSystem->getConfig('rssfeed_default_version',0)}" />
 	{elseif isset($post_info.blogs)}
