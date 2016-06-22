@@ -30,7 +30,7 @@ define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
  * @package blogs
  */
 class BitBlogPost extends LibertyMime {
-	var $mPostId;
+	public $mPostId;
 
 	function __construct( $pPostId=NULL, $pContentId=NULL ) {
 		parent::__construct();
