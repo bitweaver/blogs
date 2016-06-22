@@ -155,7 +155,7 @@ class BitBlog extends LibertyMime {
 
 	function store( &$pParamHash ) {
 		global $gBitSystem;
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		if( $this->verify( $pParamHash ) && parent::store( $pParamHash ) ) {
 			$table = BIT_DB_PREFIX."blogs";
 			if( $this->isValid() ) {
@@ -173,7 +173,7 @@ class BitBlog extends LibertyMime {
 				$this->mBlogId = $pParamHash['blog_store']['blog_id'];
 				$result = $this->mDb->associateInsert( $table, $pParamHash['blog_store'] );
 			}
-			$this->mDb->CompleteTrans();
+			$this->CompleteTrans();
 		}
 		return( count( $this->mErrors ) == 0 );
 	}
@@ -181,7 +181,7 @@ class BitBlog extends LibertyMime {
 	function expunge() {
 		$ret = FALSE;
 		if ( $this->isValid() ) {
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 
 			// remove all references in blogs_posts_map where post_content_id = content_id
 			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id` = ?";
@@ -196,7 +196,7 @@ class BitBlog extends LibertyMime {
 			} else {
 				$this->mDb->RollbackTrans();
 			}
-			$this->mDb->CompleteTrans();
+			$this->CompleteTrans();
 		}
 		return $ret;
 	}

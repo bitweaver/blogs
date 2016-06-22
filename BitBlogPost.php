@@ -421,7 +421,7 @@ class BitBlogPost extends LibertyMime {
 	 */
 	function store( &$pParamHash ) {
 		global $gBitSystem;
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		if( $this->verify( $pParamHash )&& LibertyMime::store( $pParamHash ) ) {
 			$table = BIT_DB_PREFIX."blog_posts";
 
@@ -496,7 +496,7 @@ class BitBlogPost extends LibertyMime {
 				$result = $this->mDb->query($query,array($trackbacks, $user_id, $post_id));
 			}
 
-			$this->mDb->CompleteTrans();
+			$this->CompleteTrans();
 			$this->load();
 		}
 		return ( count( $this->mErrors ) == 0 );
@@ -506,9 +506,9 @@ class BitBlogPost extends LibertyMime {
 	function loadPostMap( $pPostContentId, $pBlogContentId){
 		$ret = NULL;
 		if( @BitBase::verifyId( $pPostContentId ) ){
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 			$result = $this->mDb->getRow( "SELECT * FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id`=? AND `blog_content_id`=?", array( $pPostContentId, $pBlogContentId ) );
-			$this->mDb->CompleteTrans();
+			$this->CompleteTrans();
 			if ( !empty( $result ) ){
 				$ret = $result;
 			};
@@ -527,7 +527,7 @@ class BitBlogPost extends LibertyMime {
 		global $gBitSystem, $gBitUser;
 		$postContentId = $pPost['content_id'];
 		if( @$this->verifyId( $postContentId ) ) {
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 			//this is to set the time we add a post to a blog.
 			$currTime = $gBitSystem->getUTCTime();
 			$postTime = $pPost['publish_date'];
@@ -584,7 +584,7 @@ class BitBlogPost extends LibertyMime {
 					}
 				}
 			}
-			$this->mDb->CompleteTrans();
+			$this->CompleteTrans();
 
 			/* if we are coming from the blog posting form we
 			 * want to automatically drop any crossposting if
@@ -602,13 +602,13 @@ class BitBlogPost extends LibertyMime {
 	}
 
 	function expungePostMap( $pPostContentId, $pBlogContentIds ){
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		if ( !empty($pBlogContentIds) ){
 			foreach( $pBlogContentIds as $blogContentId ) {
 				$this->mDb->query( "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `blog_content_id`=? AND `post_content_id`=?", array( $blogContentId, $pPostContentId ) );
 			}
 		}
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		return ( count( $this->mErrors ) == 0 );
 	}
 
@@ -621,7 +621,7 @@ class BitBlogPost extends LibertyMime {
 		// lets not -wjames5
 		//$this->load();
 		if( $this->isValid() ) {
-			$this->mDb->StartTrans();
+			$this->StartTrans();
 
 			// remove all references in blogs_posts_map where post_content_id = content_id
 			$query_map = "DELETE FROM `".BIT_DB_PREFIX."blogs_posts_map` WHERE `post_content_id` = ?";
@@ -633,9 +633,9 @@ class BitBlogPost extends LibertyMime {
 			// Do this last so foreign keys won't complain (not the we have them... yet ;-)
 			if( LibertyMime::expunge() ) {
 				$ret = TRUE;
-				$this->mDb->CompleteTrans();
+				$this->CompleteTrans();
 			} else {
-				$this->mDb->RollbackTrans();
+				$this->RollbackTrans();
 			}
 		}
 		return $ret;
