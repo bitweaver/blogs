@@ -9,7 +9,6 @@
  * required setup
  */
 include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
-//require_once( USERS_PKG_PATH.'BitUser.php' );
 
 // moduleParams contains lots of goodies: extract for easier handling
 extract( $moduleParams );
