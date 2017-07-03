@@ -36,9 +36,9 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 	$listHash['full_data'] = TRUE;
 	if( !empty( $_REQUEST['user_id'] ) ) {
 		if ( $gBitSystem->getConfig( 'user_class', 'BitPermUser' ) == 'RolePermUser' ) {
-			require_once( USERS_PKG_PATH.'RoleUser.php' );
+			require_once( USERS_PKG_PATH.'includes/RoleUser.php' );
 		} else {
-			require_once( USERS_PKG_PATH.'BitUser.php' );
+			require_once( USERS_PKG_PATH.'includes/BitUser.php' );
 		}
 		$blogUser = new BitUser();
 		$userData = $blogUser->getUserInfo( array('user_id' => $_REQUEST['user_id']) );
