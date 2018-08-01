@@ -723,7 +723,7 @@ class BitBlogPost extends LibertyMime {
 		$parts = parse_url($_SERVER['REQUEST_URI']);
 		$uri = httpPrefix(). str_replace('post',
 			'view_post', $parts['path']). '?post_id=' . $this->mPostId . '&amp;blog_id=' . $this->mInfo['blog_id'];
-		include_once ( UTIL_PKG_PATH.'Snoopy.class.inc' );
+		include_once ( UTIL_PKG_INC.'Snoopy.class.inc' );
 		$snoopy = new Snoopy;
 
 		foreach ($tracks as $track) {
