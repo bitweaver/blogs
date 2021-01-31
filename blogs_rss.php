@@ -80,7 +80,7 @@ if( !$gBitUser->hasPermission( 'p_blogs_view' ) ) {
 			if (isset($userName)){
 				$rss->title = $userName."'s Posts in ".$rss->title;
 			}
-			$rss->description = $gBlog->parseData();
+			$rss->description = $gBlog->getParsedData();
 		}
 	}
 	$feeds = $blogPost->getList( $listHash );

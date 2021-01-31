@@ -65,7 +65,7 @@ if( !empty( $_REQUEST['action']) && ($_REQUEST['action'] == 'remove') && $gConte
 
 $post_id = $gContent->mPostId;
 $gBitSmarty->assign('post_id', $gContent->mPostId );
-$parsed_data = $gContent->parseData();
+$parsed_data = $gContent->getParsedData();
 $gBitSmarty->assign('parsed_data', $parsed_data);
 $gBitSmarty->assign('post_info', $gContent->mInfo );
 

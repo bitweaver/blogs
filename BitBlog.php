@@ -319,7 +319,7 @@ class BitBlog extends LibertyMime {
 			$parseHash['format_guid']   = $res['format_guid'];
 			$parseHash['content_id']    = $res['content_id'];
 			$parseHash['data'] 	= $res['data'];
-			$ret[$blogContentId]['parsed'] = $this->parseData( $parseHash );
+			$ret[$blogContentId]['parsed'] = self::parseDataHash( $parseHash );
 		}
 
 		LibertyContent::postGetList( $pParamHash );

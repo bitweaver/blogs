@@ -53,7 +53,7 @@ $offset = $_REQUEST["offset"];
 $sort_mode = $_REQUEST["sort_mode"];
 $find = $_REQUEST["find"];
 
-$gBitSmarty->assign( 'parsed_data', $gContent->parseData() );
+$gBitSmarty->assign( 'parsed_data', $gContent->getParsedData() );
 
 $gBitSystem->verifyPermission( 'p_blogs_view' );
 

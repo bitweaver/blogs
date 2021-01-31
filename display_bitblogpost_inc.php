@@ -63,7 +63,7 @@ $gBitSmarty->assign('post_id', $gContent->mPostId);
 
 //Build absolute URI for this
 if ( empty( $_REQUEST['format'] ) || $_REQUEST['format'] == "full" || $_REQUEST['format'] == "data" ){
-	$parsed_data = $gContent->parseData();
+	$parsed_data = $gContent->getParsedData();
 	if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
 		$comments_return_url = $_SERVER['SCRIPT_NAME']."?post_id=".$gContent->mPostId;
 		$commentsParentId = $gContent->mContentId;
@@ -71,11 +71,10 @@ if ( empty( $_REQUEST['format'] ) || $_REQUEST['format'] == "full" || $_REQUEST[
 	}
 	$extendedTitle = isset($gContent->mInfo['blogtitle']) ? ' - '.$gContent->mInfo['blogtitle'] : NULL;
 	$gBitSystem->setBrowserTitle($gContent->mInfo['title'].$extendedTitle);
-}else{
+} else {
 	// if the format requested is not the full post or the readmore data we default to just the first half of the post
-	$data = ( $_REQUEST['format'] != "more" )?$gContent->mInfo['raw']:$gContent->mInfo['raw_more'];
-	$data = preg_replace( LIBERTY_SPLIT_REGEX, "", $data);
-	$parsed_data = $gContent->parseData( $data, ($gContent->getField('format_guid') ? $gContent->getField('format_guid') : 'tikiwiki') );	
+	$parseHash['data'] = preg_replace( LIBERTY_SPLIT_REGEX, "", ( $_REQUEST['format'] != "more" )?$gContent->mInfo['raw']:$gContent->mInfo['raw_more']);
+	$parsed_data = LibertyContent::parseDataHash( $parseHash, $gContent );	
 }
 
 $gBitSmarty->assign('parsed_data', $parsed_data);

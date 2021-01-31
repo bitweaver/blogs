@@ -98,7 +98,7 @@ if (isset($_REQUEST["preview"])) {
 			die;
 		}
 		
-		$parsed_data = $gContent->parseData( $gContent->getField('data'), ($gContent->getField('format_guid') ? $gContent->getField('format_guid') : 'tikiwiki') );
+		$parsed_data = $gContent->getParsedData();
 
 		$gBitSmarty->assign( 'title', $gContent->getTitle('title') );
 		$gBitSmarty->assign( 'trackbacks_to', explode(',', $gContent->getField('trackbacks_to')) );

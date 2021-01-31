@@ -227,6 +227,7 @@ class BitBlogPost extends LibertyMime {
 
 		$data = $pParamHash;
 		// preserve our split data if we are using to text fields cause it gets merged in verify
+		$data['data'] = $data['edit'];
 		$data['raw'] = $data['edit'];
 		$data['raw_more'] = (!empty($data['edit_body'])?$data['edit_body']:'');
 		$this->verify( $data );
@@ -260,8 +261,7 @@ class BitBlogPost extends LibertyMime {
 				$data['edit'] .= "...split...".$data['edit_body'];
 			}
 			*/
-			$data['parsed_data'] = $this->parseData( $data['edit'], (!empty($data['format_guid']) ? $data['format_guid'] : 'tikiwiki' ));
-			//$data['parsed_data'] = $this->parseData( $data );
+			$data['parsed_data'] = self::parseDataHash( $data );
 			// replace the split syntax with a horizontal rule
 			$data['parsed_data'] = preg_replace( LIBERTY_SPLIT_REGEX, "<hr />", $data['parsed_data'] );
 		}
@@ -989,7 +989,7 @@ class BitBlogPost extends LibertyMime {
 				// support for ...split... and auto split
 				if( !empty( $pListHash['full_data'] ) ) {
 					$parseHash['data'] = $res['data'];
-					$res['parsed'] = $this->parseData( $parseHash );
+					$res['parsed'] = self::parseDataHash( $parseHash );
 				} else {
 					$parseHash['data'] = $res['data'];
 					$parseHash['no_cache'] = TRUE;
@@ -1004,7 +1004,7 @@ class BitBlogPost extends LibertyMime {
 				if( !empty( $res['crosspost_note'] ) ){
 					$res['crosspost_note_raw'] = $parseHash['data'] = $res['crosspost_note'];
 					$parseHash['no_cache'] = TRUE;
-					$res['crosspost_note'] = $this->parseData( $parseHash );
+					$res['crosspost_note'] = self::parseDataHash( $parseHash );
 				}
 
 				$ret[] = $res;

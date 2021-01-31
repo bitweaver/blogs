@@ -43,7 +43,7 @@ $uri2 = httpPrefix(). $parts['path'] . '/' . $gContent->mInfo['post_id'];
 $gBitSmarty->assign('uri', $uri);
 $gBitSmarty->assign('uri2', $uri2);
 
-$gBitSmarty->assign( 'parsed_data', $gContent->parseData() );
+$gBitSmarty->assign( 'parsed_data', $gContent->getParsedData() );
 
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
 	$comments_vars = array(

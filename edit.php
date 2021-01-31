@@ -30,7 +30,8 @@ if (isset($_REQUEST['preview'])) {
 	//all this should prolly be moved to a BitBlog::preparePreview method and the tpls cleaned - but this works for now -wjames5
 	$gBitSmarty->assign('title', $_REQUEST["title"]);
 	$gBitSmarty->assign('edit', $_REQUEST["edit"]);
-	$gBitSmarty->assign('parsed', $gContent->parseData( $_REQUEST["edit"], $_REQUEST["format_guid"]));
+	$_REQUEST['data'] = $_REQUEST['edit']; // needed for parseDataHash
+	$gBitSmarty->assign('parsed', LibertyContent::parseDataHash( $_REQUEST );
 	$gBitSmarty->assign('user_name', $gBitUser->getDisplayName());
 	$gBitSmarty->assign('created', $gBitSystem->getUTCTime());
 	$gBitSmarty->assign('use_find', isset($_REQUEST["use_find"]) ? 'y' : 'n');
