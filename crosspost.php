@@ -17,8 +17,8 @@ require_once( '../kernel/setup_inc.php' );
 $gBitSystem->verifyPackage( 'blogs' );
 $gBitSystem->verifyPermission( 'p_blogs_admin' );
 
-require_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
-require_once( BLOGS_PKG_PATH.'BitBlog.php');
+require_once( BLOGS_PKG_INCLUDE_PATH.'lookup_post_inc.php' );
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php');
 $gBlog = new BitBlog();
 
 $gBitUser->verifyTicket();

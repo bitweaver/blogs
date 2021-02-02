@@ -14,8 +14,8 @@
  */
 $gBitSystem->verifyPackage( 'blogs' );
 
-require_once( BLOGS_PKG_PATH.'BitBlog.php' );
-require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php' );
+require_once( BLOGS_PKG_INCLUDE_PATH.'lookup_blog_inc.php');
 
 $displayHash = array( 'perm_name' => $gContent->mViewContentPerm );
 $gContent->invokeServices( 'content_display_function', $displayHash );

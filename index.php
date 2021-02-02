@@ -14,7 +14,7 @@ if( !@BitBase::verifyId( $_REQUEST['blog_id'] ) && $gBitSystem->isFeatureActive(
 
 // if we have a blog_id, we display the correct blog - otherwise we simply display recent posts
 if( @BitBase::verifyId( $_REQUEST['blog_id'] )) {
-	include_once( BLOGS_PKG_PATH.'display_bitblog_inc.php' );
+	include_once( BLOGS_PKG_INCLUDE_PATH.'display_bitblog_inc.php' );
 } else {
 	include_once( BLOGS_PKG_PATH.'recent_posts.php' );
 }

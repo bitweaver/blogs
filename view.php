@@ -15,5 +15,5 @@
  */
 require_once( '../kernel/setup_inc.php' );
 
-include_once( BLOGS_PKG_PATH.'display_bitblog_inc.php' );
+include_once( BLOGS_PKG_INCLUDE_PATH.'display_bitblog_inc.php' );
 ?>

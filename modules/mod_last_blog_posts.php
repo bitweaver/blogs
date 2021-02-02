@@ -8,7 +8,7 @@
 /**
  * required setup
  */
-include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
+include_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php' );
 
 // moduleParams contains lots of goodies: extract for easier handling
 extract( $moduleParams );

@@ -13,11 +13,11 @@
  * required setup
  */
 require_once( '../kernel/setup_inc.php' );
-include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+include_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
-require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
+require_once( BLOGS_PKG_INCLUDE_PATH.'lookup_blog_inc.php');
 
 // Now check permissions to access this page
 if( $gContent->isValid() ) {

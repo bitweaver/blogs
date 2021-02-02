@@ -18,7 +18,7 @@ $_REQUEST['uri_mode'] = TRUE;
  */
 require_once( '../kernel/setup_inc.php' );
 
-include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
+include_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPermission( 'p_blogs_send_post' );
 
@@ -26,7 +26,7 @@ if (!isset($_REQUEST["post_id"])) {
 	$gBitSystem->fatalError( tra( 'No post indicated' ));
 }
 
-include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
+include_once( BLOGS_PKG_INCLUDE_PATH.'lookup_post_inc.php' );
 // make sure this user can see the post to avoid emailing post to self to circumvent the perm
 $gContent->verifyViewPermission();
 

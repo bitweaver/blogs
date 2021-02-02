@@ -14,7 +14,7 @@ $gBitSystem->verifyPackage( 'rss' );
 $gBitSystem->verifyPackage( 'blogs' );
 $gBitSystem->verifyFeature( 'blogs_rss' );
 
-require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php' );
 require_once( RSS_PKG_PATH."rss_inc.php" );
 
 // default feed info

@@ -15,7 +15,7 @@
  */
 require_once( '../kernel/setup_inc.php' );
 
-include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+include_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php' );
 
 if (!isset($_REQUEST["image_id"])) {
 	$gBitSmarty->assign('msg', tra("No image id given"));

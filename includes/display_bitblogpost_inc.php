@@ -7,7 +7,7 @@
 /**
  * required setup
  */
-include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+include_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php' );
 
 if (!isset($gContent->mPostId)) {
 	$parts = parse_url($_SERVER['REQUEST_URI']);

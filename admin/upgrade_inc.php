@@ -2,7 +2,7 @@
 
 global $gBitSystem, $gUpgradeFrom, $gUpgradeTo, $gBitDb;
 
-require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php' );
 
 $upgrades = array(
 

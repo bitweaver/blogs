@@ -8,7 +8,7 @@
  * required setup
  */
 global $gContent;
-require_once( BLOGS_PKG_PATH.'BitBlog.php' );
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php' );
 require_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
 
 // if we already have a gContent, we assume someone else created it for us, and has properly loaded everything up.

@@ -22,7 +22,7 @@
  */
 require_once( LIBERTY_PKG_PATH.'LibertyComment.php');
 require_once( LIBERTY_PKG_PATH.'LibertyMime.php');
-require_once( BLOGS_PKG_PATH.'BitBlog.php');
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php');
 
 define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
 
@@ -92,9 +92,11 @@ class BitBlogPost extends LibertyMime {
 				$this->mInfo['url'] = BitBlogPost::getDisplayUrlFromHash( $this->mInfo );
 				$this->mInfo['display_url'] = BitBlogPost::getDisplayUrlFromHash( $this->mInfo );
 				foreach( array( 'avatar', 'image' ) as $img ) {
-					$this->mInfo[$img] = liberty_fetch_thumbnails( array(
-						'source_file' => $this->getSourceFile( array( 'user_id'=>$this->getField( 'user_id' ), 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'mime_type' => $this->getField( $img.'_mime_type' ), 'name' =>  $this->getField( $img.'_file_name' ) ) ), 'file_name' => basename( $this->mInfo[$img.'_file_name'] ), 'sub_dir' =>  $this->getField( $img.'_attachment_id' ) ) )
-					));
+					if( !empty( $this->mInfo[$img.'_file_name'] ) ) {
+						$this->mInfo[$img] = liberty_fetch_thumbnails( array(
+							'source_file' => $this->getSourceFile( array( 'user_id'=>$this->getField( 'user_id' ), 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'mime_type' => $this->getField( $img.'_mime_type' ), 'name' =>  $this->getField( $img.'_file_name' ) ) ), 'file_name' => basename( $this->mInfo[$img.'_file_name'] ), 'sub_dir' =>  $this->getField( $img.'_attachment_id' ) ) )
+						));
+					}
 				}
 
 				$this->mInfo['raw'] = $this->mInfo['data'];
@@ -187,7 +189,7 @@ class BitBlogPost extends LibertyMime {
 
 			if( $ret = $this->mDb->getAssoc( $query, $bindVars ) ) {
 				foreach( array_keys( $ret ) as $blogContentId ) {
-					$ret[$blogContentId]['blog_url'] = BitBlog::getDisplayUrlFromHash( $ret[$blogContentId]['blog_id'] );
+					$ret[$blogContentId]['blog_url'] = BitBlog::getDisplayUrlFromHash( $ret[$blogContentId] );
 				}
 			}
 		} else {
@@ -710,7 +712,7 @@ class BitBlogPost extends LibertyMime {
     * @return the fully specified path to file to be included
     */
 	function getRenderFile() {
-		return( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
+		return( BLOGS_PKG_INCLUDE_PATH.'display_bitblogpost_inc.php' );
 	}
 
 	function sendTrackbacks( $pTrackbacks ) {
@@ -950,7 +952,6 @@ class BitBlogPost extends LibertyMime {
 			$res['no_fatal'] = TRUE;
 			$accessError = $this->invokeServices( 'content_verify_access', $res, FALSE );
 			if( empty( $accessError ) ) {
-
 				foreach( array( 'avatar', 'image' ) as $img ) {
 					$res[$img] = liberty_fetch_thumbnails( array(
 						'source_file' => liberty_mime_get_source_file( array( 'user_id'=>$res['user_id'], 'package'=>liberty_mime_get_storage_sub_dir_name( array( 'mime_type' => $res[$img.'_mime_type'], 'name'=>$res[$img.'_file_name'] ) ), 'file_name'=>basename( $res[$img.'_file_name'] ), 'sub_dir'=>$res[$img.'_attachment_id'] ) )
@@ -961,7 +962,7 @@ class BitBlogPost extends LibertyMime {
 				$res['post_url'] = BitBlogPost::getDisplayUrlFromHash( $res );
 				$res['display_url'] = $res['post_url'];
 				$res['display_link'] = $this->getDisplayLink( $res['title'], $res );
-				$res['blogs'] = $this->getBlogMemberships( $res['content_id'] );
+				$res['blogs'] = $this->getBlogMemberships( $res );
 
 				// trackbacks
 				if($res['trackbacks_from']!=null)

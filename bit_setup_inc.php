@@ -37,6 +37,4 @@ if( $gBitSystem->isPackageActive( 'blogs' ) ) {
 
 	$gBitSystem->registerNotifyEvent( array( "blog_post" => tra("An entry is posted to a blog") ) );
 
-	require_once( 'BitBlog.php' );
 }
-?>

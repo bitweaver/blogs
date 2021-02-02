@@ -17,9 +17,9 @@ require_once( '../kernel/setup_inc.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
-require_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php' );
 
-include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
+include_once( BLOGS_PKG_INCLUDE_PATH.'lookup_post_inc.php' );
 
 if( !$gContent->isValid() ) {
 	$gBitSystem->setHttpStatus( 404 );
@@ -44,7 +44,7 @@ if ( $gContent->hasAdminPermission()  || ( $gContent->hasUserPermission( 'p_blog
 }
 
 if ($view == TRUE){
-	include_once( BLOGS_PKG_PATH.'display_bitblogpost_inc.php' );
+	include_once( BLOGS_PKG_INCLUDE_PATH.'display_bitblogpost_inc.php' );
 }else{
 	$gBitSystem->setHttpStatus( 404 );
 	$gBitSystem->fatalError( "The blog post you requested could not be found." );

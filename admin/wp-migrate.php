@@ -20,8 +20,8 @@
 require_once( '../../kernel/setup_inc.php' );
 
 //require_once(USERS_PKG_PATH.'RoleUser.php');
-require_once(BLOGS_PKG_PATH.'BitBlog.php');
-require_once(BLOGS_PKG_PATH.'BitBlogPost.php');
+require_once(BLOGS_PKG_CLASS_PATH.'BitBlog.php');
+require_once(BLOGS_PKG_CLASS_PATH.'BitBlogPost.php');
 require_once(LIBERTY_PKG_PATH.'LibertyComment.php');
 
 $gBitSystem->verifyPermission( 'p_admin' );

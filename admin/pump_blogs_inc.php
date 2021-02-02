@@ -9,7 +9,7 @@
 /**
  * required setup
  */
-include_once( BLOGS_PKG_PATH.'BitBlog.php' );
+include_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php' );
 
 $pageHash = array(
 		'fSavePage' => TRUE,

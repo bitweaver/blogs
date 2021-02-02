@@ -14,7 +14,7 @@ require_once( '../kernel/setup_inc.php' );
 // Is package installed and enabled
 $gBitSystem->verifyPackage( 'blogs' );
 
-require_once( BLOGS_PKG_PATH.'lookup_blog_inc.php');
+require_once( BLOGS_PKG_INCLUDE_PATH.'lookup_blog_inc.php');
 
 // Now check permissions to access this page
 $gContent->verifyViewPermission();

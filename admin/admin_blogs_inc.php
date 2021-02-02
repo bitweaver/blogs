@@ -2,7 +2,7 @@
 // $Header$
 
 // get a list of blogs for the selection of the home blog
-require_once( BLOGS_PKG_PATH.'BitBlog.php' );
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php' );
 $blog = new BitBlog();
 $listHash['sort_mode'] = 'created_desc';
 $blogList = $blog->getList( $listHash );

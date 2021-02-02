@@ -8,7 +8,7 @@
 /**
  * required setup
  */
-require_once( BLOGS_PKG_PATH.'BitBlogPost.php');
+require_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php');
 require_once( LIBERTY_PKG_PATH.'LibertyComment.php');
 
 define( 'BITBLOG_CONTENT_TYPE_GUID', 'bitblog' );
@@ -53,7 +53,7 @@ class BitBlog extends LibertyMime {
 		global $gBitSystem;
 		$ret = NULL;
 
-		if ( BitBase::verifyId( $pParamHash['blog_id'] ) ) {
+		if ( BitBase::verifyIdParameter( $pParamHash, 'blog_id' ) ) {
 			if( $gBitSystem->isFeatureActive( 'pretty_urls_extended' ) ) {
 				$ret = BLOGS_PKG_URL.'view/'.$pParamHash['blog_id'];
 			} elseif( $gBitSystem->isFeatureActive( 'pretty_urls' ) ) {

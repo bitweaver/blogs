@@ -14,7 +14,7 @@
  */
 require_once( '../kernel/setup_inc.php' );
 
-include_once( BLOGS_PKG_PATH.'BitBlogPost.php' );
+include_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php' );
 
 $gBitSystem->verifyPackage( 'blogs' );
 
@@ -22,7 +22,7 @@ if (!isset($_REQUEST["post_id"])) {
 	$gBitSystem->fatalError( tra( 'No post indicated' ));
 }
 
-include_once( BLOGS_PKG_PATH.'lookup_post_inc.php' );
+include_once( BLOGS_PKG_INCLUDE_PATH.'lookup_post_inc.php' );
 
 $gBitSmarty->assign('post_info', $gContent->mInfo );
 
