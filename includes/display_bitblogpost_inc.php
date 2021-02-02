@@ -67,7 +67,7 @@ if ( empty( $_REQUEST['format'] ) || $_REQUEST['format'] == "full" || $_REQUEST[
 	if ($gBitSystem->isFeatureActive( 'blog_posts_comments' ) ) {
 		$comments_return_url = $_SERVER['SCRIPT_NAME']."?post_id=".$gContent->mPostId;
 		$commentsParentId = $gContent->mContentId;
-		include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
+		include_once ( LIBERTY_PKG_INCLUDE_PATH.'comments_inc.php' );
 	}
 	$extendedTitle = isset($gContent->mInfo['blogtitle']) ? ' - '.$gContent->mInfo['blogtitle'] : NULL;
 	$gBitSystem->setBrowserTitle($gContent->mInfo['title'].$extendedTitle);

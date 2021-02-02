@@ -88,7 +88,7 @@ function data_blog($data, $params) { // No change in the parameters with Clyde
 		$pluginParams = $gLibertySystem->mPlugins[PLUGIN_GUID_DATABLOG];
 		
 		require_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php');
-		require_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
+		require_once( LIBERTY_PKG_INCLUDE_PATH.'lookup_content_inc.php' );
 		
 		$module_params = $params;
 		

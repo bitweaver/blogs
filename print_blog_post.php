@@ -60,7 +60,7 @@ $gBitSystem->verifyPermission( 'p_blogs_view' );
 if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
 	$comments_return_url = $_SERVER['SCRIPT_NAME']."?post_id=".$gContent->getField( 'post_id' );
 	$commentsParentId = $gContent->mContentId;
-	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
+	include_once ( LIBERTY_PKG_INCLUDE_PATH.'comments_inc.php' );
 }
 
 

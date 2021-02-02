@@ -20,8 +20,8 @@
 /**
  * required setup
  */
-require_once( LIBERTY_PKG_PATH.'LibertyComment.php');
-require_once( LIBERTY_PKG_PATH.'LibertyMime.php');
+require_once( LIBERTY_PKG_CLASS_PATH.'LibertyComment.php');
+require_once( LIBERTY_PKG_CLASS_PATH.'LibertyMime.php');
 require_once( BLOGS_PKG_CLASS_PATH.'BitBlog.php');
 
 define( 'BITBLOGPOST_CONTENT_TYPE_GUID', 'bitblogpost' );
@@ -725,7 +725,7 @@ class BitBlogPost extends LibertyMime {
 		$parts = parse_url($_SERVER['REQUEST_URI']);
 		$uri = httpPrefix(). str_replace('post',
 			'view_post', $parts['path']). '?post_id=' . $this->mPostId . '&amp;blog_id=' . $this->mInfo['blog_id'];
-		include_once ( UTIL_PKG_INC.'Snoopy.class.inc' );
+		include_once ( UTIL_PKG_INCLUDE_PATH.'Snoopy.class.inc' );
 		$snoopy = new Snoopy;
 
 		foreach ($tracks as $track) {

@@ -9,7 +9,7 @@
  */
 global $gContent; 
 require_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php');
-require_once( LIBERTY_PKG_PATH.'lookup_content_inc.php' );
+require_once( LIBERTY_PKG_INCLUDE_PATH.'lookup_content_inc.php' );
 
 if( empty( $gContent ) || !is_object( $gContent ) || !$gContent->isValid() ) {
 	// if blog_id supplied, use that

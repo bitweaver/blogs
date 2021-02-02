@@ -57,7 +57,7 @@ if ($gBitSystem->isFeatureActive( 'blog_posts_comments' )) {
 	$commentsParentId = $gContent->mContentId;
 	$comments_prefix_var = 'post:';
 	$comments_object_var = 'post_id';
-	include_once ( LIBERTY_PKG_PATH.'comments_inc.php' );
+	include_once ( LIBERTY_PKG_INCLUDE_PATH.'comments_inc.php' );
 }
 
 if (!isset($_REQUEST['addresses'])) {
