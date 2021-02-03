@@ -6,7 +6,7 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 
 if( !@BitBase::verifyId( $_REQUEST['blog_id'] ) && $gBitSystem->isFeatureActive( 'blog_home' )) {
 	$_REQUEST['blog_id'] = $gBitSystem->getConfig( 'blog_home' );

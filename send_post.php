@@ -16,7 +16,7 @@ $_REQUEST['uri_mode'] = TRUE;
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 
 include_once( BLOGS_PKG_CLASS_PATH.'BitBlogPost.php' );
 

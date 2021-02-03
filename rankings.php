@@ -13,7 +13,7 @@
 /**
  * required setup
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 
 include_once( LIBERTY_PKG_PATH . 'LibertyContent.php' );
 require_once( BLOGS_PKG_PATH . 'BitBlog.php' );
@@ -77,7 +77,7 @@ $gBitSystem->display( 'bitpackage:liberty/rankings.tpl', tra( "Blog Post Ranking
 /* ---- below is what blog rankings was - might want to canabalize some of it eventually ---- */
 /*
 
-require_once( '../kernel/setup_inc.php' );
+require_once( '../kernel/includes/setup_inc.php' );
 
 
 $gBitSystem->verifyPackage( 'blogs' );
