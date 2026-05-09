@@ -979,7 +979,9 @@ class BitBlogPost extends LibertyMime {
 				} else {
 					$res['ownsblog'] = 'n';
 				}
-				$res['trackbacks_to_count'] = count($res['trackbacks_to']);
+				if( is_array( $res['trackbacks_to'] ) ) {
+					$res['trackbacks_to_count'] = count($res['trackbacks_to']);
+				}
 
 				$res['pages'] = $this->getNumberOfPages( $res['data'] );
 

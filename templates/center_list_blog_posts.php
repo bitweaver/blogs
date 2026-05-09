@@ -30,8 +30,9 @@ if( $gBitUser->hasPermission( 'p_blog_posts_read_future' ) || $gBitUser->isAdmin
 	// prevent anything lower than publicly visible be displayed in blog roll
 	$futuresHash['enforce_status'] = TRUE;
 	$futuresHash['min_owner_status_id'] = 0;
-    $futures = $blogPost->getFutureList( $futuresHash );
-    $gBitSmarty->assign( 'futures', $futures['data']);
+    if( $futures = $blogPost->getFutureList( $futuresHash ) ) {
+    	$gBitSmarty->assign( 'futures', $futures['data']);
+	}
 } else {
     $_REQUEST['max_records'] = $gBitSystem->getConfig( 'blog_posts_max_list' );
 }
@@ -90,7 +91,9 @@ $listHash['min_owner_status_id'] = 0;
 $blogPost->invokeServices( 'content_list_function', $listHash );
 $blogPosts = $blogPost->getList( $listHash );
 $_template->tpl_vars['paginationPath'] = new Smarty_variable( $paginationPath );
-$_template->tpl_vars['gQueryUserId'] = new Smarty_variable( $listHash['user_id'] );
+if( BitBase::verifyIdParameter( $listHash, 'user_id' ) ) {
+	$_template->tpl_vars['gQueryUserId'] = new Smarty_variable( $listHash['user_id'] );
+}
 $_template->tpl_vars['blogPosts'] = new Smarty_variable( $blogPosts );
 
 $_template->tpl_vars['listInfo'] = new Smarty_variable( $listHash );
